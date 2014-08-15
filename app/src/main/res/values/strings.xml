@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AiMLite Mobile</string>
+    <string name="login_title">Login</string>
+    <string name="list_title">Work Orders</string>
+    <string name="detail_status">Status:</string>
+    <string name="detail_priority">Priority:</string>
+    <string name="detail_est">Est:</string>
+    <string name="detail_shop">Shop:</string>
+    <string name="detail_work_code">Work Code:</string>
+    <string name="detail_date_created">Created:</string>
+
+</resources>
