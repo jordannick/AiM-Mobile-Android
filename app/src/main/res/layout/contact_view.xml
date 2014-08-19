@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:showDividers="middle">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Requestor"
+        android:textSize="14dp"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_margin="8dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Health Department"
+        android:textSize="18dp"
+        android:layout_margin="8dp"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ECB- Health Department (01472)"
+        android:textSize="18dp"
+        android:layout_margin="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="WALK IN"
+        android:textSize="18dp"
+        android:layout_margin="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contact"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_margin="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="John Appleseed"
+        android:textSize="18dp"
+        android:layout_margin="8dp"/>
+
+</LinearLayout>

@@ -53,11 +53,9 @@ public class WorkOrderDetailFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //wo = new WorkOrder();
 
-       // UUID crimeId = (UUID)getActivity().getIntent().getSerializableExtra(WORK_ORDER_ID);
+        UUID workOrderId = ((WorkOrderDetailActivity)getActivity()).workOrderId;
 
-        UUID workOrderId = (UUID)getArguments().getSerializable(WORK_ORDER_ID);
 
         // TODO: implement singleton work order list
        // mWorkOrder = CrimeLab.get(getActivity()).getCrime(crimeId); p.193
@@ -82,7 +80,8 @@ public class WorkOrderDetailFragment extends Fragment{
 
 
 
-
+        ((View)v.findViewById(R.id.leftSideBar)).setBackgroundResource(mWorkOrder.getPriorityColor());
+        ((View)v.findViewById(R.id.rightSideBar)).setBackgroundResource(mWorkOrder.getPriorityColor());
 
         ((TextView)v.findViewById(R.id.priorityTextView)).setText(mWorkOrder.getPriority());
 
