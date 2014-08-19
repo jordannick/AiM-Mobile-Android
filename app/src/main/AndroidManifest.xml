@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jordann.practice1" >
+    package="com.jordann.AiMMobile" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -10,7 +11,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
-        <activity android:name=".LoginActivity"
+        <activity android:name="com.jordann.AiMMobile.LoginActivity"
                   android:label="AiMLite Mobile">
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
@@ -20,14 +21,16 @@
         </activity>
 
         <activity
-            android:name=".WorkOrderListActivity"
+            android:name="com.jordann.AiMMobile.WorkOrderListActivity"
             android:label="@string/app_name" >
 
         </activity>
+
         <activity
-            android:name=".WorkOrderDetailActivity"
+            android:name="com.jordann.AiMMobile.WorkOrderDetailActivity"
             android:label="HELLO WORLD" >
         </activity>
+
     </application>
 
 </manifest>

@@ -7,12 +7,12 @@
               android:background="@color/login_background">
 
 
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:hint="Username"
-
         android:ems="10"
         android:id="@+id/login_username"
         android:layout_margin="32dp"
@@ -21,13 +21,25 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:hint="Password"
         android:ems="10"
         android:id="@+id/login_password"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
+
         />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remember me"
+        android:id="@+id/auto_login"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="32dp"
+        />
+
+
 
     <Button
         android:layout_width="wrap_content"
@@ -36,9 +48,18 @@
         android:textColor="@color/login_blue"
         android:id="@+id/login_button"
         android:layout_gravity="center_horizontal"
-        android:paddingLeft="48dp"
-        android:paddingRight="48dp"
+        android:paddingLeft="96dp"
+        android:paddingRight="96dp"
         android:layout_margin="32dp"
         />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/load_circle"
+        android:layout_gravity="center_horizontal"/>
+
+
+
 
 </LinearLayout>
