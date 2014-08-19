@@ -85,7 +85,7 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
             mPassword = sCurrentUser.getPrefs().getString("password", "");
 
             mUrl = mBaseUrl+'/'+mAPIVersion+'/'+mMethod+'/'+mUsername;//+'/'+mPassword
-            showAutoLoginToast();
+            //showAutoLoginToast();
             executeTask();
         }
 
@@ -140,7 +140,7 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         mLoginButton.setEnabled(false);
 
         mLoadCircle.setVisibility(View.VISIBLE);
-
+        showAutoLoginToast();
         //Start the asynchronous parsing controller
         GetWorkOrdersTask task = new GetWorkOrdersTask(myFragment, mUrl, sCurrentUser, getActivity());
         task.execute();
@@ -166,6 +166,7 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
     }
 
 
+    //TODO: handle network failures and authentication failures separately
     public void onTaskFail(){
         //mUsernameField.setError("Password and username didn't match");
 
@@ -177,6 +178,9 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
 
         mLoadCircle.setVisibility(View.INVISIBLE);
     }
+
+    //public void onNetworkFail(){}
+    //public void onAuthenticateFail(){}
 
 
     public void showAutoLoginToast(){

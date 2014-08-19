@@ -3,6 +3,10 @@ package com.jordann.AiMMobile;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import java.util.ArrayList;
 import java.util.UUID;
 

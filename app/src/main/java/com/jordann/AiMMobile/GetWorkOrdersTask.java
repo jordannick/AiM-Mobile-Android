@@ -72,7 +72,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, Boolean> {
         if (isNetworkOnline()) {
             Log.d(TAG, "Network Available");
             JSONParser jParser = new JSONParser();
-            json = jParser.getJSONFromUrl(url);
+            json = ((ResponsePair)jParser.getJSONFromUrl(url)).getJarray();
         }
 
         //No network, try getting the stored data
@@ -124,17 +124,22 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, Boolean> {
         Log.d(TAG, "username is: "+sCurrentUser.getUsername());
 
         //Save the raw json array for offline use
-        SharedPreferences prefs = sCurrentUser.getPrefs();
-        SharedPreferences.Editor editor = prefs.edit();
+
+        //SharedPreferences prefs = sCurrentUser.getPrefs();
+        //SharedPreferences.Editor editor = prefs.edit();
+
+
 
         String jsonStr = json.toString();
-        editor.putString("jsondata", jsonStr);
-        Log.d(TAG, "json tostring: f"+json.toString());
+        //editor.putString("jsondata", jsonStr);
+        sCurrentUser.getPrefsEditor().putString("jsondata", jsonStr);
 
-        editor.commit();
-        Log.d(TAG, "prefs are: "+prefs.getString("jsondata", ""));
 
-        sCurrentUser.setPrefs(prefs);
+        //editor.commit();
+        sCurrentUser.getPrefsEditor().apply();
+
+
+        //sCurrentUser.setPrefs(prefs);
 
         //Save the work orders array into current user
         sCurrentUser.setWorkOrders(mWorkOrders);
@@ -161,6 +166,8 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, Boolean> {
         return status;
 
     }
+
+
 
 
 }

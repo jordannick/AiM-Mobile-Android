@@ -10,6 +10,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HttpContext;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -17,6 +18,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * Created by jordan_n on 8/13/2014.
@@ -27,22 +30,29 @@ public class JSONParser {
     static InputStream iStream = null;
     static JSONArray jarray = null;
     static String json = "";
+    private CurrentUser sCurrentUser;
+
 
     public JSONParser() {
     }
 
-    public JSONArray getJSONFromUrl(String url) {
+    public ResponsePair getJSONFromUrl(String url) {
 
         StringBuilder builder = new StringBuilder();
-        //TODO: look into saving this defaulthttpclient for future requests (keep session)
+
+        sCurrentUser = CurrentUser.get(null);
+
         HttpClient client = new DefaultHttpClient();
 
-        //HttpGet httpGet = new HttpGet(url);
+        ResponsePair responsePair = new ResponsePair(null, null);
+
         HttpPost httpPost = new HttpPost(url);
+       // httpPost.setHeader("Connection","Keep-Alive");
 
         try {
-            //HttpResponse response = client.execute(httpGet);
+           // HttpResponse response = client.execute(httpPost);
             HttpResponse response = client.execute(httpPost);
+
             StatusLine statusLine = response.getStatusLine();
             int statusCode = statusLine.getStatusCode();
 
@@ -58,13 +68,16 @@ public class JSONParser {
             } else {
                 //TODO: check for different received status codes? 403, 404...
                 Log.e("==>", "Failed to download file");
+                //return responsepair?
             }
         }
         catch (ClientProtocolException e) {
             e.printStackTrace();
+            //return responsepair?
         }
         catch (IOException e) {
             e.printStackTrace();
+            //return responsepair?
         }
 
         // Parse String to JSON object
@@ -74,10 +87,16 @@ public class JSONParser {
         catch (JSONException e) {
             Log.e("JSON Parser", "Error parsing data " + e.toString());
             return null;
+            //return responsepair
         }
         // return JSON Object
-        return jarray;
+        //return jarray;
+        responsePair.setStatus("OK");
+        responsePair.setJarray(jarray);
+        return responsePair;
 
     }
+
+
 
 }
