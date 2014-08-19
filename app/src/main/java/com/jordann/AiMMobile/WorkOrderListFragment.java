@@ -89,10 +89,4 @@ public class WorkOrderListFragment extends ListFragment{
 
 
 
-
-
-
-
-
-
 }

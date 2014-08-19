@@ -25,8 +25,6 @@ import java.util.ArrayList;
  */
 public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskCompleted {
 
-    //private GetWorkOrdersTask.OnTaskCompleted listener;
-
     private LoginFragment myFragment = this;
 
     private static final String TAG = "LoginFragment";
@@ -54,9 +52,7 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         //Create an instance of the user class
         sCurrentUser = CurrentUser.get(/*getActivity()*/);
 
-
         prefs = getActivity().getSharedPreferences("com.jordann.AiMMobile", Context.MODE_PRIVATE);
-
 
         /* SharedPreferences contents:
         autologin: bool
@@ -69,8 +65,6 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         if (!prefs.contains("autologin")){
             prefs.edit().putBoolean("autologin", false);
         }
-
-
     }
 
     @Override
@@ -81,11 +75,10 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
 
         mUsernameField = (EditText)v.findViewById(R.id.login_username);
         mPasswordField = (EditText)v.findViewById(R.id.login_password);
+        mAutoLoginCheckbox = (CheckBox)v.findViewById(R.id.auto_login);
         mLoginButton = (Button)v.findViewById(R.id.login_button);
         mLoadCircle = (ProgressBar)v.findViewById(R.id.load_circle);
         mLoadCircle.setVisibility(View.INVISIBLE);
-
-
 
         sCurrentUser.setPrefs(prefs);
 
@@ -97,35 +90,20 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
             mUrl = mBaseUrl+'/'+mAPIVersion+'/'+mMethod+'/'+mUsername;
 
             //For visual purposes, show what we're logging in as
-            mUsernameField.setText(prefs.getString("username", null));
-            mPasswordField.setText(prefs.getString("password", null));
-            //mPasswordField.
-            //mUsernameField.setEnabled(false);
-           // mPasswordField.setEnabled(false);
-
-
-
+           // mUsernameField.setText(prefs.getString("username", null));
+            //mPasswordField.setText(prefs.getString("password", null));
 
             executeTask();
         }
-
-
 
        // else if (mAutoLoginCheckbox.isChecked()){
             //add username+pw to prefs
         //}
 
 
-        //TODO: check for empty/invalid chars
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mUsernameField.setEnabled(false);
-                //mPasswordField.setEnabled(false);
-                //mLoginButton.setEnabled(false);
-
-
-                //mLoadCircle.setVisibility(View.VISIBLE);
 
                 //Check for empty fields
                 if (mUsernameField.getText().toString().matches(""))
@@ -163,6 +141,15 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
 
 
     public void executeTask(){
+
+        //Disable all fields for now
+        mUsernameField.setEnabled(false);
+        mPasswordField.setEnabled(false);
+        mAutoLoginCheckbox.setEnabled(false);
+        mLoginButton.setEnabled(false);
+
+        mLoadCircle.setVisibility(View.VISIBLE);
+
         //Start the asynchronous parsing controller
         GetWorkOrdersTask task = new GetWorkOrdersTask(myFragment, mUrl, sCurrentUser, getActivity());
         task.execute();
@@ -171,28 +158,33 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
 
     public void onTaskSuccess() {
 
+        mUsernameField.setEnabled(true);
+        mPasswordField.setEnabled(true);
+        mAutoLoginCheckbox.setEnabled(true);
+        mLoginButton.setEnabled(true);
 
+        mLoadCircle.setVisibility(View.INVISIBLE);
 
+        //Move on to the next activity
         Intent i = new Intent(getActivity(), WorkOrderListActivity.class);
-        Log.d(TAG, "made the intent");
         startActivity(i);
-        getActivity().finish();
 
+        //End the login screen activity
+       // getActivity().finish();
     }
 
 
     public void onTaskFail(){
-        Log.d(TAG, "failed the task");
         //mUsernameField.setError("Password and username didn't match");
 
+        //Re-enable all fields so user can try again
         mUsernameField.setEnabled(true);
         mPasswordField.setEnabled(true);
+        mAutoLoginCheckbox.setEnabled(true);
         mLoginButton.setEnabled(true);
+
         mLoadCircle.setVisibility(View.INVISIBLE);
     }
-
-
-
 
 
 

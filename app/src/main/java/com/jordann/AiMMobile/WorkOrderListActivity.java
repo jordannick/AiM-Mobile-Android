@@ -1,9 +1,13 @@
 package com.jordann.AiMMobile;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 
 
 public class WorkOrderListActivity extends SingleFragmentActivity implements WorkOrderListFragment.Callbacks, WorkOrderDetailFragment.Callbacks {
@@ -47,6 +51,32 @@ public class WorkOrderListActivity extends SingleFragmentActivity implements Wor
             ft.commit();
         }
 
+    }
+
+
+    @Override
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Choose your destiny");
+
+        // Add the buttons
+        builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // Logout stuff
+                finish();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // cancel
+            }
+        });
+
+
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }
