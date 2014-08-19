@@ -19,5 +19,4 @@ public class LoginActivity extends SingleFragmentActivity {
 
 
 
-
 }

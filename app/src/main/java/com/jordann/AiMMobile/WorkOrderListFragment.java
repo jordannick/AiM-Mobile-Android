@@ -60,7 +60,7 @@ public class WorkOrderListFragment extends ListFragment{
         super.onCreate(savedInstanceState);
        // getActivity().setTitle(R.string.list_title);
 
-        sCurrentUser = CurrentUser.get(/*getActivity()*/);
+        sCurrentUser = CurrentUser.get(getActivity().getApplicationContext());
         getActivity().setTitle(sCurrentUser.getUsername());
 
 

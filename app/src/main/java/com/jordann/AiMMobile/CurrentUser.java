@@ -13,13 +13,30 @@ public class CurrentUser {
 
     private String mUsername;
     private SharedPreferences prefs;
+    private SharedPreferences.Editor prefsEditor;
     private ArrayList<WorkOrder> mWorkOrders;
     private static CurrentUser sCurrentUser;
-    //private static Context sAppContext;
+    private static Context sAppContext;
 
 
+    public SharedPreferences.Editor getPrefsEditor() {
+        if (prefsEditor == null) {
+            prefsEditor = getPrefs().edit();
+        }
+        return prefsEditor;
+    }
 
+
+    /* SharedPreferences object contents:
+            autologin: bool
+            username: string
+            password: string
+            jsondata: string
+    */
     public SharedPreferences getPrefs() {
+        if (prefs == null) {
+            prefs = sAppContext.getSharedPreferences("com.jordann.AiMMobile", Context.MODE_PRIVATE);
+        }
         return prefs;
     }
 
@@ -28,15 +45,15 @@ public class CurrentUser {
     }
 
 
-    private CurrentUser(/*Context appContext*/){
-        //sAppContext = appContext;
+    private CurrentUser(Context appContext){
+        sAppContext = appContext;
         mWorkOrders = new ArrayList<WorkOrder>();
     }
 
-    public static CurrentUser get(/*Context c*/){
+    public static CurrentUser get(Context c){
         if (sCurrentUser == null) {
-            //sCurrentUser = new CurrentUser(c);
-            sCurrentUser = new CurrentUser();
+            sCurrentUser = new CurrentUser(c);
+            //sCurrentUser = new CurrentUser();
         }
         return sCurrentUser;
     }

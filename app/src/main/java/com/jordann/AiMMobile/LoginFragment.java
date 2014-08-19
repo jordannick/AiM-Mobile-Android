@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -43,28 +44,25 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
     private String mMethod = "getWorkOrders";
     private String mUsername;
     private String mPassword;
-    private SharedPreferences prefs;
+   // private SharedPreferences prefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Create an instance of the user class
-        sCurrentUser = CurrentUser.get(/*getActivity()*/);
+        sCurrentUser = CurrentUser.get(getActivity().getApplicationContext());
 
-        prefs = getActivity().getSharedPreferences("com.jordann.AiMMobile", Context.MODE_PRIVATE);
-
-        /* SharedPreferences contents:
-        autologin: bool
-        username: string
-        password: string
-        jsondata: string
-         */
 
         //First time running
-        if (!prefs.contains("autologin")){
-            prefs.edit().putBoolean("autologin", false);
+        if (!sCurrentUser.getPrefs().contains("autologin")){
+            Log.d(TAG, "First time running");
+            //prefs.edit().putBoolean("autologin", false);
+            sCurrentUser.getPrefsEditor().putBoolean("autologin", false);
+            sCurrentUser.getPrefsEditor().apply();
+
         }
+
     }
 
     @Override
@@ -80,31 +78,20 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         mLoadCircle = (ProgressBar)v.findViewById(R.id.load_circle);
         mLoadCircle.setVisibility(View.INVISIBLE);
 
-        sCurrentUser.setPrefs(prefs);
-
         //Check if autologin should occur
-        if (prefs.getBoolean("autologin", false)){
-            Log.d(TAG, "got to getboolean");
-            mLoginButton.setEnabled(false);
-            mUsername = prefs.getString("username", null);
-            mUrl = mBaseUrl+'/'+mAPIVersion+'/'+mMethod+'/'+mUsername;
+        if (sCurrentUser.getPrefs().getBoolean("autologin", false)){
 
-            //For visual purposes, show what we're logging in as
-           // mUsernameField.setText(prefs.getString("username", null));
-            //mPasswordField.setText(prefs.getString("password", null));
+            mUsername = sCurrentUser.getPrefs().getString("username", "");
+            mPassword = sCurrentUser.getPrefs().getString("password", "");
 
+            mUrl = mBaseUrl+'/'+mAPIVersion+'/'+mMethod+'/'+mUsername;//+'/'+mPassword
+            showAutoLoginToast();
             executeTask();
         }
-
-       // else if (mAutoLoginCheckbox.isChecked()){
-            //add username+pw to prefs
-        //}
-
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //Check for empty fields
                 if (mUsernameField.getText().toString().matches(""))
                     mUsernameField.setError("Username required");
@@ -118,8 +105,8 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
                     mUsername = "CLARKEM";
 
                     //Check if this user has been previously stored
-                    if (prefs.contains(mUsername)){
-                        mPassword = prefs.getString(mUsername, null);
+                    if (sCurrentUser.getPrefs().contains(mUsername)){
+                        mPassword = sCurrentUser.getPrefs().getString(mUsername, null);
 
                     }
 
@@ -127,15 +114,19 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
                     mUrl = mBaseUrl+'/'+mAPIVersion+'/'+mMethod+'/'+mUsername;
                     sCurrentUser.setUsername(mUsername);
 
+                    //Save user info for future autologins
+                    if (mAutoLoginCheckbox.isChecked()){
+                        sCurrentUser.getPrefsEditor().putString("username", mUsername);
+                        sCurrentUser.getPrefsEditor().putString("password", mPassword);
+                        sCurrentUser.getPrefsEditor().putBoolean("autologin", true);
+                        sCurrentUser.getPrefsEditor().apply();
+                    }
+
                     executeTask();
 
-
                 }
-
             }
         });
-
-
         return v;
     }
 
@@ -158,19 +149,20 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
 
     public void onTaskSuccess() {
 
+        //Re-enable, in case we come back to login screen
         mUsernameField.setEnabled(true);
         mPasswordField.setEnabled(true);
         mAutoLoginCheckbox.setEnabled(true);
         mLoginButton.setEnabled(true);
-
         mLoadCircle.setVisibility(View.INVISIBLE);
+
+        sCurrentUser.setUsername(mUsername);
 
         //Move on to the next activity
         Intent i = new Intent(getActivity(), WorkOrderListActivity.class);
         startActivity(i);
 
-        //End the login screen activity
-       // getActivity().finish();
+        //Leave the login screen activity running
     }
 
 
@@ -184,6 +176,18 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         mLoginButton.setEnabled(true);
 
         mLoadCircle.setVisibility(View.INVISIBLE);
+    }
+
+
+    public void showAutoLoginToast(){
+        Context context = getActivity().getApplicationContext();
+        CharSequence text = "Logging in as: "+mUsername;
+        int duration = Toast.LENGTH_LONG;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+
+
     }
 
 
