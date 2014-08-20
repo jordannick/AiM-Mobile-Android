@@ -85,7 +85,13 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
             mPassword = sCurrentUser.getPrefs().getString("password", "");
 
             mUrl = mBaseUrl+'/'+mAPIVersion+'/'+mMethod+'/'+mUsername;//+'/'+mPassword
-            //showAutoLoginToast();
+
+            //Bad urls for testing
+           // mUrl = mBaseUrl+'/'+mAPIVersion+"/nonexistentmethod/"+mUsername;
+           // mUrl = mBaseUrl+'/'+mAPIVersion+'/'+mMethod+'/'+"nonexistentusername";
+           // mUrl = mBaseUrl+'/'+"nonexistentAPIVersion"+'/'+mMethod+'/'+mUsername; //this works for some reason...
+             //mUrl = "http://apps-webdev.campusops.oregonstate.edu/NOPE/portal/aim/api/stuff/getWorkOrders/CROSST";
+
             executeTask();
         }
 
@@ -167,6 +173,7 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
 
 
     //TODO: handle network failures and authentication failures separately
+    /*
     public void onTaskFail(){
         //mUsernameField.setError("Password and username didn't match");
 
@@ -177,10 +184,36 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         mLoginButton.setEnabled(true);
 
         mLoadCircle.setVisibility(View.INVISIBLE);
+    }*/
+
+    public void onNetworkFail(){
+        //Re-enable all fields so user can try again
+        mUsernameField.setEnabled(true);
+        mPasswordField.setEnabled(true);
+        mAutoLoginCheckbox.setEnabled(true);
+        mLoginButton.setEnabled(true);
+
+        mLoadCircle.setVisibility(View.INVISIBLE);
+
+
+        //Display error about network fail
+
     }
 
-    //public void onNetworkFail(){}
-    //public void onAuthenticateFail(){}
+    public void onAuthenticateFail(){
+
+
+        //Re-enable all fields so user can try again
+        mUsernameField.setEnabled(true);
+        mPasswordField.setEnabled(true);
+        mAutoLoginCheckbox.setEnabled(true);
+        mLoginButton.setEnabled(true);
+
+        mLoadCircle.setVisibility(View.INVISIBLE);
+
+
+        //mUsernameField.setError("Password and username didn't match");
+    }
 
 
     public void showAutoLoginToast(){

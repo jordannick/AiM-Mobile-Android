@@ -21,6 +21,8 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+
+
 /**
  * Created by jordan_n on 8/13/2014.
  */
@@ -44,13 +46,12 @@ public class JSONParser {
 
         HttpClient client = new DefaultHttpClient();
 
-        ResponsePair responsePair = new ResponsePair(null, null);
+        ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
 
         HttpPost httpPost = new HttpPost(url);
        // httpPost.setHeader("Connection","Keep-Alive");
 
         try {
-           // HttpResponse response = client.execute(httpPost);
             HttpResponse response = client.execute(httpPost);
 
             StatusLine statusLine = response.getStatusLine();
@@ -68,16 +69,27 @@ public class JSONParser {
             } else {
                 //TODO: check for different received status codes? 403, 404...
                 Log.e("==>", "Failed to download file");
-                //return responsepair?
+
+                if (statusCode == 401){
+                    responsePair.setStatus(ResponsePair.Status.AUTH_FAIL);
+                    return responsePair;
+                }
+
+                responsePair.setStatus(ResponsePair.Status.NET_FAIL);
+                return responsePair;
+
+
             }
         }
         catch (ClientProtocolException e) {
             e.printStackTrace();
-            //return responsepair?
+            responsePair.setStatus(ResponsePair.Status.NET_FAIL);
+            return responsePair;
         }
         catch (IOException e) {
             e.printStackTrace();
-            //return responsepair?
+            responsePair.setStatus(ResponsePair.Status.NET_FAIL);
+            return responsePair;
         }
 
         // Parse String to JSON object
@@ -86,12 +98,13 @@ public class JSONParser {
         }
         catch (JSONException e) {
             Log.e("JSON Parser", "Error parsing data " + e.toString());
-            return null;
-            //return responsepair
+
+            responsePair.setStatus(ResponsePair.Status.JSON_FAIL);
+            return responsePair;
+
         }
-        // return JSON Object
-        //return jarray;
-        responsePair.setStatus("OK");
+
+        responsePair.setStatus(ResponsePair.Status.SUCCESS);
         responsePair.setJarray(jarray);
         return responsePair;
 

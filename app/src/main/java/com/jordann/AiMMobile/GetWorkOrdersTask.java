@@ -17,24 +17,20 @@ import java.util.ArrayList;
  * Created by jordan_n on 8/14/2014.
  */
 
-public class GetWorkOrdersTask extends AsyncTask<String, Void, Boolean> {
+public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
 
     private static final String TAG = "GetWorkOrdersTask";
     private OnTaskCompleted listener;
     private String url;
     private ArrayList<WorkOrder> mWorkOrders;
-
     private JSONArray json;
-
-
     private CurrentUser sCurrentUser;
     private Context mContext;
 
-
     public interface OnTaskCompleted{
-        // void onTaskCompleted(WorkOrderAdapter adapter);
         void onTaskSuccess();
-        void onTaskFail();
+        void onNetworkFail();
+        void onAuthenticateFail();
 
     }
 
@@ -50,29 +46,61 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, Boolean> {
     }
 
 
-    //TODO: change success arg to handle different kinds of failures
     @Override
-    protected void onPostExecute(final Boolean success) {
+    protected void onPostExecute(final ResponsePair responsePair) {
 
-        if (success) {
-            Log.d(TAG, "post success");
-            listener.onTaskSuccess();
-        }
-        else {
+        Log.d(TAG, "BEGIN SWITCH --------------");
 
-            Log.d(TAG, "post fail");
-            listener.onTaskFail();
+        switch(responsePair.getStatus()){
+            case SUCCESS:
+                Log.d(TAG, "Success");
+                listener.onTaskSuccess();
+                break;
+            case AUTH_FAIL:
+                Log.d(TAG, "Auth Fail");
+                listener.onAuthenticateFail();
+                break;
+            case NET_FAIL:
+                Log.d(TAG, "Net Fail");
+                listener.onNetworkFail();
+                break;
+            case JSON_FAIL:
+                Log.d(TAG, "JSON Fail");
+                listener.onNetworkFail();//TODO: custom json failure handler
+                break;
+            case NO_DATA:
+                Log.d(TAG, "No data");
+                listener.onNetworkFail();//TODO: no network no data, should tell user to get network access
+                break;
+            default:
+
+                break;
+
+
         }
+
+        Log.d(TAG, "END SWITCH --------------");
+
     }
 
 
-    protected Boolean doInBackground(final String... args) {
+    protected ResponsePair doInBackground(final String... args) {
+        ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
 
         //Network available
         if (isNetworkOnline()) {
             Log.d(TAG, "Network Available");
             JSONParser jParser = new JSONParser();
-            json = ((ResponsePair)jParser.getJSONFromUrl(url)).getJarray();
+
+            responsePair = jParser.getJSONFromUrl(url);
+
+            if (responsePair.getStatus() != ResponsePair.Status.SUCCESS){
+                return responsePair;
+            }
+
+            //Assume success at this point
+            json = responsePair.getJarray();
+
         }
 
         //No network, try getting the stored data
@@ -81,23 +109,28 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, Boolean> {
             try {
                 Log.d(TAG, "Trying to get stored data");
                 json = new JSONArray(sCurrentUser.getPrefs().getString("jsondata", "[]"));
+                responsePair.setStatus(ResponsePair.Status.SUCCESS);
             }
             catch (JSONException e){
                 Log.d(TAG, "Failed to get stored data");
-                return false;
+                responsePair.setStatus(ResponsePair.Status.JSON_FAIL);
+                return responsePair;
             }
         }
 
         //No network, no stored data. Bye!
         else {
             Log.d(TAG, "No network, no stored data");
-            return false;
+            responsePair.setStatus(ResponsePair.Status.NO_DATA);
+            return responsePair;
         }
 
+        /*
         if (json == null) {
             Log.d(TAG, "Json is null");
-            return false;
+            //return false;
         }
+        */
 
         for (int i = 0; i < json.length(); i++) {
                 try {
@@ -116,7 +149,8 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, Boolean> {
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
-                    return false;
+                    responsePair.setStatus(ResponsePair.Status.JSON_FAIL);
+                    return responsePair;
                 }
         }
 
@@ -125,26 +159,15 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, Boolean> {
 
         //Save the raw json array for offline use
 
-        //SharedPreferences prefs = sCurrentUser.getPrefs();
-        //SharedPreferences.Editor editor = prefs.edit();
-
-
-
         String jsonStr = json.toString();
-        //editor.putString("jsondata", jsonStr);
         sCurrentUser.getPrefsEditor().putString("jsondata", jsonStr);
 
-
-        //editor.commit();
         sCurrentUser.getPrefsEditor().apply();
-
-
-        //sCurrentUser.setPrefs(prefs);
 
         //Save the work orders array into current user
         sCurrentUser.setWorkOrders(mWorkOrders);
 
-        return true;
+        return responsePair;
     }
 
     public boolean isNetworkOnline() {

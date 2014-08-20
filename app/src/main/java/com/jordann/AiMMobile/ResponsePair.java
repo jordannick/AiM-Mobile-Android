@@ -1,5 +1,6 @@
 package com.jordann.AiMMobile;
 
+
 import org.json.JSONArray;
 
 /**
@@ -7,22 +8,25 @@ import org.json.JSONArray;
  */
 public class ResponsePair {
 
-        //TODO: enumerate different statuses
+        public enum Status{
+            NONE, NET_FAIL, AUTH_FAIL, SUCCESS, JSON_FAIL, NO_DATA;
+        }
 
-        public String status;
         public JSONArray jarray;
 
-        public ResponsePair(final String status, final JSONArray jarray) {
+        public Status status;
+
+        public ResponsePair(final Status status, final JSONArray jarray) {
             this.status = status;
             this.jarray = jarray;
         }
 
-        public String getStatus() {
-            return status;
+        public void setStatus(Status status){
+            this.status = status;
         }
 
-        public void setStatus(String status) {
-            this.status = status;
+        public Status getStatus(){
+            return status;
         }
 
         public JSONArray getJarray() {
