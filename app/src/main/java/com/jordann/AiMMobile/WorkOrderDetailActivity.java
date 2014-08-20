@@ -10,7 +10,7 @@ import java.util.UUID;
 /**
  * Created by jordan_n on 8/13/2014.
  */
-public class WorkOrderDetailActivity extends Activity implements WorkOrderDetailFragment.Callbacks {
+public class WorkOrderDetailActivity extends Activity implements WorkOrderDetailFragment.Callbacks, WorkOrderNotesFragment.Callbacks {
 
     ActionBar.Tab Tab1, Tab2, Tab3;
     Fragment fragmentTab1 = new WorkOrderDetailFragment();
@@ -18,18 +18,21 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
     Fragment fragmentTab3 = new WorkOrderContactFragment();
 
     public UUID workOrderId;
+    public WorkOrder mWorkOrder;
 
     public void onWorkOrderUpdated(WorkOrder wo) {
 
     }
 
+
+    
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
 
         workOrderId = (UUID)getIntent().getSerializableExtra(WorkOrderDetailFragment.WORK_ORDER_ID);
-
+        mWorkOrder = CurrentUser.get(getApplicationContext()).getWorkOrder(workOrderId);
 
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);

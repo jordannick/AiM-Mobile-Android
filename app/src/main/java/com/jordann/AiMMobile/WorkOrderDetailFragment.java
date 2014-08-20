@@ -59,7 +59,7 @@ public class WorkOrderDetailFragment extends Fragment{
 
         // TODO: implement singleton work order list
        // mWorkOrder = CrimeLab.get(getActivity()).getCrime(crimeId); p.193
-        mWorkOrder = CurrentUser.get(getActivity().getApplicationContext()).getWorkOrder(workOrderId);
+        mWorkOrder = ((WorkOrderDetailActivity)getActivity()).mWorkOrder;
 
 
     }

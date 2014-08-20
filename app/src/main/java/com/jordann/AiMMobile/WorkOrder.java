@@ -5,6 +5,7 @@ package com.jordann.AiMMobile;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -25,6 +26,7 @@ public class WorkOrder {
     String mPriority;
     int mPriorityColor;
 
+    ArrayList<WorkOrderNote> mNotes;
 
     //Row Display
     String mCategory;
@@ -49,6 +51,25 @@ public class WorkOrder {
                 sb.append(" ");
         }
         return sb.toString();
+    }
+
+    public ArrayList<WorkOrderNote> getNotes() {
+        if(mNotes == null){
+            mNotes = new ArrayList<WorkOrderNote>();
+        }
+
+
+        Date date = new Date();
+
+        WorkOrderNote note = new WorkOrderNote("Example text", "Kevin Sellers", date);
+        mNotes.add(note);
+
+
+        return mNotes;
+    }
+
+    public void setNotes(ArrayList<WorkOrderNote> notes) {
+        mNotes = notes;
     }
 
     public String getMinCraftCode() {

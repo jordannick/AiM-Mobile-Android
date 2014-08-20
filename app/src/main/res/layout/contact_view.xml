@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
@@ -8,6 +8,7 @@
     android:showDividers="middle">
 
     <TextView
+        android:id="@+id/contact_requestorLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Requestor"
@@ -17,39 +18,101 @@
         />
 
     <TextView
+        android:id="@+id/contact_departmentTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/contact_requestorLabel"
         android:text="Health Department"
         android:textSize="18dp"
         android:layout_margin="8dp"/>
 
 
     <TextView
+        android:id="@+id/contact_department2TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/contact_departmentTextView"
         android:text="ECB- Health Department (01472)"
         android:textSize="18dp"
         android:layout_margin="8dp"/>
 
     <TextView
+        android:id="@+id/contact_typeTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/contact_department2TextView"
         android:text="WALK IN"
         android:textSize="18dp"
-        android:layout_margin="8dp"/>
+        android:layout_margin="8dp"
+        />
 
     <TextView
+        android:id="@+id/contact_contactLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/contact_typeTextView"
         android:text="Contact"
         style="?android:attr/listSeparatorTextViewStyle"
-        android:layout_margin="8dp"/>
+        android:layout_margin="8dp"
+
+        />
 
     <TextView
+        android:id="@+id/contact_nameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/contact_contactLabel"
         android:text="John Appleseed"
         android:textSize="18dp"
         android:layout_margin="8dp"/>
+    <LinearLayout
+        android:id="@+id/contact_phoneLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/contact_nameTextView"
+        android:gravity="center_vertical"
+        android:layout_margin="8dp">
 
-</LinearLayout>
+
+        <ImageButton
+            android:id="@+id/contact_phoneButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_call"/>
+
+        <TextView
+            android:id="@+id/contact_phoneNumTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(503) 842 - 5443"
+            android:textSize="20sp"/>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/contact_phoneLayout"
+        android:layout_margin="8dp"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/contact_emailButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_email"/>
+
+        <TextView
+            android:id="@+id/contact_emailTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="clarkem@oregonstate.edu"
+            android:textSize="20sp"/>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
