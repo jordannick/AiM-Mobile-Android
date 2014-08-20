@@ -20,6 +20,8 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
     public UUID workOrderId;
     public WorkOrder mWorkOrder;
 
+    private ActionBar actionBar;
+
     public void onWorkOrderUpdated(WorkOrder wo) {
 
     }
@@ -29,12 +31,15 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_fragment);
 
         workOrderId = (UUID)getIntent().getSerializableExtra(WorkOrderDetailFragment.WORK_ORDER_ID);
         mWorkOrder = CurrentUser.get(getApplicationContext()).getWorkOrder(workOrderId);
 
-        ActionBar actionBar = getActionBar();
+        actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         Tab1 = actionBar.newTab().setText("Overview");
@@ -49,6 +54,19 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
         actionBar.addTab(Tab2);
         actionBar.addTab(Tab3);
 
+        if(savedInstanceState!=null){
+            int currentTab = savedInstanceState.getInt("CurrentTab");
+            actionBar.selectTab(actionBar.getTabAt(currentTab));
+        }
+
+
     }
 
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("CurrentTab", actionBar.getSelectedTab().getPosition());
+
+    }
 }

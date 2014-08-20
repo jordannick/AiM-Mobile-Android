@@ -29,15 +29,22 @@ public class WorkOrderNotesFragment extends ListFragment {
         mCallbacks = (Callbacks)activity;
     }
 
-
+/*
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+*/
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         mWorkOrder = ((WorkOrderDetailActivity)getActivity()).mWorkOrder;
 
         WorkOrderNotesAdapter adapter = new WorkOrderNotesAdapter(getActivity(), mWorkOrder.getNotes());
 
         setListAdapter(adapter);
+
     }
 }

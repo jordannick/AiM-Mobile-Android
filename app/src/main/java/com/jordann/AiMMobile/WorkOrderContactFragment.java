@@ -14,11 +14,20 @@ public class WorkOrderContactFragment extends Fragment {
 
     WorkOrder mWorkOrder;
 
+
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mWorkOrder = ((WorkOrderDetailActivity)getActivity()).mWorkOrder;
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.contact_view, container, false);
-        mWorkOrder = ((WorkOrderDetailActivity)getActivity()).mWorkOrder;
+        //mWorkOrder = ((WorkOrderDetailActivity)getActivity()).mWorkOrder;
 
 
 

@@ -24,6 +24,8 @@ public class WorkOrderDetailFragment extends Fragment{
 
     private Callbacks mCallbacks;
 
+    private View v;
+
     /**
      * Required interface for hosting activities.
      */
@@ -49,42 +51,37 @@ public class WorkOrderDetailFragment extends Fragment{
         return fragment;
     }
 
-
+/*
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        UUID workOrderId = ((WorkOrderDetailActivity)getActivity()).workOrderId;
+
 
 
         // TODO: implement singleton work order list
        // mWorkOrder = CrimeLab.get(getActivity()).getCrime(crimeId); p.193
-        mWorkOrder = ((WorkOrderDetailActivity)getActivity()).mWorkOrder;
+
 
 
     }
+    */
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.detail_view, parent, false);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
+        UUID workOrderId = ((WorkOrderDetailActivity)getActivity()).workOrderId;//Not currently used
+        mWorkOrder = ((WorkOrderDetailActivity)getActivity()).mWorkOrder;
 
         //TODO add phase to proposal
         getActivity().setTitle(mWorkOrder.getProposalPhase());
 
         ((TextView)v.findViewById(R.id.buildingTextView)).setText(mWorkOrder.getBuilding());
-
-
         ((TextView)v.findViewById(R.id.descriptionTextView)).setText(mWorkOrder.getDescription());
-
-
-
         ((View)v.findViewById(R.id.leftSideBar)).setBackgroundResource(mWorkOrder.getPriorityColor());
         ((View)v.findViewById(R.id.rightSideBar)).setBackgroundResource(mWorkOrder.getPriorityColor());
-
         ((TextView)v.findViewById(R.id.priorityTextView)).setText(mWorkOrder.getPriority());
-
         ((TextView)v.findViewById(R.id.workCodeTextView)).setText(mWorkOrder.getCraftCode());
 
         //TODO: format begin+end date
@@ -93,40 +90,14 @@ public class WorkOrderDetailFragment extends Fragment{
 
 
 
-        /*
-        mTitleField = (EditText)v.findViewById(R.id.crime_title);
-        mTitleField.addTextChangedListener(new TextWatcher() {
-            public void onTextChanged(
-                    CharSequence c, int start, int before, int count) {
-                mCrime.setTitle(c.toString());
-            }
-            public void beforeTextChanged(
-                    CharSequence c, int start, int count, int after) {
-                // This space intentionally left blank
-            }
-            public void afterTextChanged(Editable c) {
-                // This one too
-            }
-        });
 
-        mDateButton = (Button)v.findViewById(R.id.crime_date);
-        //Challenge: Formatting the Date
-        DateFormat df = new DateFormat();
-        String date = (df.format("EEEE, MMM dd, yyyy", mCrime.getDate())).toString();
+    }
 
-        mDateButton.setText(date);
-
-        mDateButton.setEnabled(false);
-
-        mSolvedCheckBox = (CheckBox)v.findViewById(R.id.crime_solved);
-        mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // Set the crime's solved property
-                mCrime.setSolved(isChecked);
-            }
-        });
-*/
-
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.detail_view, parent, false);
+        this.v = v;
         return v;
     }
 
