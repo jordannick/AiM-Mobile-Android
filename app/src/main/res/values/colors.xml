@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="emergency_red">#E74C3C</color>
-    <color name="timeSensitive_yellow">#F3CA27</color>
-    <color name="urgent_orange">#F89406</color>
-    <color name="routine_green">#26A65B</color>
-    <color name="scheduled_blue">#2574A9</color>
+    <color name="emergency_red">#af292e</color>
+    <color name="timeSensitive_yellow">#eac863</color>
+    <color name="urgent_orange">#c34500</color>
+    <color name="routine_green">#4e7300</color>
+    <color name="scheduled_blue">#385e86</color>
 
     <color name="login_blue">#2980B9</color>
-    <color name="login_background">#DBEDF9</color>
+    <color name="login_background">#f5f2ed</color>
+    <color name="work_order_day_grey">#373737</color>
+    <color name="work_order_background_white">#ffffff</color>
+    <color name="soothing_background">#f5f1e5</color> <!-- #f0f0d8-->
+
+    <color name="action_add_grey_text">#646464</color> <!-- #f0f0d8-->
 
 
 </resources>
+
+
+    <!--
+        //2574A9 blue
+        26A65B  green
+        E74C3C red
+        F3CA27 yellow
+
+        F89406 orange
+            -->

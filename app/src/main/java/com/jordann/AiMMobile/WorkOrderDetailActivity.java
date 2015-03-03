@@ -3,7 +3,10 @@ package com.jordann.AiMMobile;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import java.util.UUID;
 
@@ -11,6 +14,7 @@ import java.util.UUID;
  * Created by jordan_n on 8/13/2014.
  */
 public class WorkOrderDetailActivity extends Activity implements WorkOrderDetailFragment.Callbacks, WorkOrderNotesFragment.Callbacks {
+    private static final String TAG = "WorkOrderDetailActivity";
 
     ActionBar.Tab Tab1, Tab2, Tab3;
     Fragment fragmentTab1 = new WorkOrderDetailFragment();
@@ -36,7 +40,7 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
 
         setContentView(R.layout.activity_fragment);
 
-        workOrderId = (UUID)getIntent().getSerializableExtra(WorkOrderDetailFragment.WORK_ORDER_ID);
+        workOrderId = (UUID)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_ID);
         mWorkOrder = CurrentUser.get(getApplicationContext()).getWorkOrder(workOrderId);
 
         actionBar = getActionBar();
@@ -54,6 +58,10 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
         actionBar.addTab(Tab2);
         actionBar.addTab(Tab3);
 
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+
+
         if(savedInstanceState!=null){
             int currentTab = savedInstanceState.getInt("CurrentTab");
             actionBar.selectTab(actionBar.getTabAt(currentTab));
@@ -67,6 +75,31 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("CurrentTab", actionBar.getSelectedTab().getPosition());
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_new:
+                Intent i = new Intent(this, WorkOrderAddActionActivity.class);
+                //i.putExtra(WorkOrderDetailFragment.WORK_ORDER_ID, workOrderId);
+                i.putExtra(WorkOrder.WORK_ORDER_ID, workOrderId);
+                startActivity(i);
+                break;
+            case android.R.id.home:
+                finish();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
 
     }
 }

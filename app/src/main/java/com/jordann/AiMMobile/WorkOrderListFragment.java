@@ -2,6 +2,7 @@ package com.jordann.AiMMobile;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -64,13 +65,14 @@ public class WorkOrderListFragment extends ListFragment{
         getActivity().setTitle(sCurrentUser.getUsername());
 
 
+
         WorkOrderAdapter adapter = new WorkOrderAdapter(getActivity(), sCurrentUser.getWorkOrders());
 
         setListAdapter(adapter);
 
         //TODO: fix setdivider crash
         //this.getListView().setDivider(new ColorDrawable(0xFF888888));
-        //this.getListView().setDividerHeight(2);
+        //this.getListView().setDividerHeight(8);
 
 
         //sAllWorkOrders = AllWorkOrders.get(getActivity());

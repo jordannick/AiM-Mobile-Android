@@ -6,8 +6,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.UUID;
 
 /**
@@ -74,18 +81,76 @@ public class WorkOrderDetailFragment extends Fragment{
         UUID workOrderId = ((WorkOrderDetailActivity)getActivity()).workOrderId;//Not currently used
         mWorkOrder = ((WorkOrderDetailActivity)getActivity()).mWorkOrder;
 
+
+
+
         //TODO add phase to proposal
         getActivity().setTitle(mWorkOrder.getProposalPhase());
 
+        RelativeLayout topSection = (RelativeLayout)v.findViewById(R.id.detail_top_section);
+        View topSectionLine = (View)v.findViewById(R.id.detail_top_section_line);
+        TextView topSectionPriorityTextView = (TextView)v.findViewById(R.id.detail_top_section_priority);
+        topSectionPriorityTextView.setText(mWorkOrder.getPriority());
+        switch (mWorkOrder.getPriorityColor()){
+            case R.color.routine_green:
+                topSection.setBackgroundResource(R.drawable.light_green_tile_bg);
+                topSectionLine.setBackgroundColor(getResources().getColor(R.color.routine_green));
+                topSectionPriorityTextView.setBackgroundColor(getResources().getColor(R.color.routine_green));
+                break;
+            case R.color.urgent_orange:
+                topSection.setBackgroundResource(R.drawable.light_orange_tile_bg);
+                topSectionLine.setBackgroundColor(getResources().getColor(R.color.urgent_orange));
+                topSectionPriorityTextView.setBackgroundColor(getResources().getColor(R.color.urgent_orange));
+                break;
+            case R.color.scheduled_blue:
+                topSection.setBackgroundResource(R.drawable.light_blue_tile_bg);
+                topSectionLine.setBackgroundColor(getResources().getColor(R.color.scheduled_blue));
+                topSectionPriorityTextView.setBackgroundColor(getResources().getColor(R.color.scheduled_blue));
+                break;
+            case R.color.timeSensitive_yellow:
+                topSection.setBackgroundResource(R.drawable.light_yellow_tile_bg);
+                topSectionLine.setBackgroundColor(getResources().getColor(R.color.timeSensitive_yellow));
+                topSectionPriorityTextView.setBackgroundColor(getResources().getColor(R.color.timeSensitive_yellow));
+                break;
+        }
         ((TextView)v.findViewById(R.id.buildingTextView)).setText(mWorkOrder.getBuilding());
         ((TextView)v.findViewById(R.id.descriptionTextView)).setText(mWorkOrder.getDescription());
-        ((View)v.findViewById(R.id.leftSideBar)).setBackgroundResource(mWorkOrder.getPriorityColor());
-        ((View)v.findViewById(R.id.rightSideBar)).setBackgroundResource(mWorkOrder.getPriorityColor());
-        ((TextView)v.findViewById(R.id.priorityTextView)).setText(mWorkOrder.getPriority());
+        //((TextView)v.findViewById(R.id.priorityTextView)).setText(mWorkOrder.getPriority());
+        //((TextView)v.findViewById(R.id.priorityTextView)).setTextColor(getResources().getColor(mWorkOrder.getPriorityColor()));
+        //mWorkOrder.getPriorityColor()
         ((TextView)v.findViewById(R.id.workCodeTextView)).setText(mWorkOrder.getCraftCode());
+        ((TextView)v.findViewById(R.id.shopTextView)).setText(mWorkOrder.getShop());
+        ((TextView)v.findViewById(R.id.dateCreatedTextView)).setText(mWorkOrder.getDateCreated());
+        ((TextView)v.findViewById(R.id.statusTextView)).setText(mWorkOrder.getStatus());
 
-        //TODO: format begin+end date
-        ((TextView)v.findViewById(R.id.estTextView)).setText(mWorkOrder.getBeginDate());
+
+        mWorkOrder.getBeginDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        SimpleDateFormat minimalDate = new SimpleDateFormat("MM/dd");
+        SimpleDateFormat minimalDateYear = new SimpleDateFormat("MM/dd/yy");
+        String estText = "";
+        try {
+            Calendar beginCal = new GregorianCalendar();
+            Calendar endCal = new GregorianCalendar();
+            Date beginDate = sdf.parse(mWorkOrder.getBeginDate());
+            Date endDate = sdf.parse(mWorkOrder.getEndDate());
+            beginCal.setTime(beginDate);
+            endCal.setTime(endDate);
+
+
+            if(beginCal.get(Calendar.YEAR) == endCal.get(Calendar.YEAR)){
+                estText = String.format("%s - %s", minimalDateYear.format(beginDate), minimalDateYear.format(endDate));
+
+            }else{
+                estText = String.format("%s - %s", minimalDate.format(beginDate), minimalDate.format(endDate));
+            }
+
+        }catch (Exception e){
+
+        }
+
+        ((TextView)v.findViewById(R.id.estTextView)).setText(estText);
+
 
 
 

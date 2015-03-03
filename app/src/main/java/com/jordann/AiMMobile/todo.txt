@@ -1,0 +1,6 @@
+Add "Network Failure error" notification to display on failed login..
+Add onclick shade effect to list items
+
+Add two tabs to main list... Backlog and Daily Assignments
+
+Show workOrderID on details page in another spot than just the title

@@ -22,6 +22,17 @@ public class CurrentUser {
     private static CurrentUser sCurrentUser;
     private static Context sAppContext;
 
+    //Action Queue variables
+    private ArrayList<Action> mActions;
+
+
+    //TODO: remove test
+    private void setTestListData(int num){
+        for(int i = 0; i < num; i++){
+            //mActions.add(new Action(UUID.randomUUID()));
+        }
+    }
+
 
     public SharedPreferences.Editor getPrefsEditor() {
         if (prefsEditor == null) {
@@ -52,6 +63,9 @@ public class CurrentUser {
     private CurrentUser(Context appContext){
         sAppContext = appContext;
         mWorkOrders = new ArrayList<WorkOrder>();
+        mActions = new ArrayList<Action>();
+        //TODO: remove test
+        setTestListData(10);
     }
 
     public static CurrentUser get(Context c){
@@ -95,5 +109,11 @@ public class CurrentUser {
     }
 
 
+    public ArrayList<Action> getActions() {
+        return mActions;
+    }
 
+    public void addAction(Action action) {
+        mActions.add(action);
+    }
 }

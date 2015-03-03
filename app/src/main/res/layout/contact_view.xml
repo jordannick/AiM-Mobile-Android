@@ -5,16 +5,65 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:showDividers="middle">
+    android:showDividers="middle"
+    android:background="@color/soothing_background">
+
+
+    <TextView
+        android:id="@+id/contact_contactLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contact"
+        android:textSize="12dp"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        />
+
+    <TextView
+        android:id="@+id/contact_nameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/contact_contactLabel"
+        android:text="John Appleseed"
+        android:paddingLeft="8dp"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:layout_margin="8dp"/>
+
+
+    <TextView
+        android:id="@+id/contact_phoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/contact_nameTextView"
+        android:text="(503) 683 - 9382"
+        android:layout_margin="8dp"
+        android:textSize="18dp"
+        android:paddingLeft="8dp"/>
+
+    <TextView
+        android:id="@+id/contact_emailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="clarkem@oregonstate.edu"
+        android:layout_below="@id/contact_phoneNumber"
+        android:layout_margin="8dp"
+        android:textSize="18dp"
+        android:paddingLeft="8dp"/>
 
     <TextView
         android:id="@+id/contact_requestorLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/contact_emailAddress"
         android:text="Requestor"
-        android:textSize="14dp"
+        android:textSize="12dp"
         style="?android:attr/listSeparatorTextViewStyle"
-        android:layout_margin="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         />
 
     <TextView
@@ -23,6 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/contact_requestorLabel"
         android:text="Health Department"
+        android:paddingLeft="8dp"
         android:textSize="18dp"
         android:layout_margin="8dp"/>
 
@@ -33,6 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/contact_departmentTextView"
         android:text="ECB- Health Department (01472)"
+        android:paddingLeft="8dp"
         android:textSize="18dp"
         android:layout_margin="8dp"/>
 
@@ -42,74 +93,37 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/contact_department2TextView"
         android:text="WALK IN"
+        android:paddingLeft="8dp"
         android:textSize="18dp"
         android:layout_margin="8dp"
         />
 
-    <TextView
-        android:id="@+id/contact_contactLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contact_typeTextView"
-        android:text="Contact"
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:layout_margin="8dp"
 
-        />
-
-    <TextView
-        android:id="@+id/contact_nameTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contact_contactLabel"
-        android:text="John Appleseed"
-        android:textSize="18dp"
-        android:layout_margin="8dp"/>
     <LinearLayout
-        android:id="@+id/contact_phoneLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="130dp"
         android:orientation="horizontal"
-        android:layout_below="@id/contact_nameTextView"
+        android:layout_alignParentBottom="true"
         android:gravity="center_vertical"
-        android:layout_margin="8dp">
-
-
+        android:background="#d8d8c0">
         <ImageButton
             android:id="@+id/contact_phoneButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_call"/>
-
-        <TextView
-            android:id="@+id/contact_phoneNumTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="(503) 842 - 5443"
-            android:textSize="20sp"/>
-
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/contact_phoneLayout"
-        android:layout_margin="8dp"
-        android:gravity="center_vertical">
-
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_action_call"
+            android:background="#2ecc71"
+            android:layout_weight=".5"
+            android:layout_margin="22dp"
+            />
         <ImageButton
             android:id="@+id/contact_emailButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_email"/>
-
-        <TextView
-            android:id="@+id/contact_emailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="clarkem@oregonstate.edu"
-            android:textSize="20sp"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_action_email"
+            android:background="#f39c12"
+            android:layout_weight=".5"
+            android:layout_margin="22dp"
+            />
 
     </LinearLayout>
 

@@ -139,11 +139,13 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
                     wo.setBeginDate(mJsonObj.getString("beg_dt"));
                     wo.setEndDate(mJsonObj.getString("end_dt"));
                     wo.setCraftCode(mJsonObj.getString("craft_code"));
+                    wo.setShop(mJsonObj.getString("shop"));
                     wo.setBuilding(mJsonObj.getString("building"));
                     wo.setDescription(mJsonObj.getString("description"));
                     wo.setCategory(mJsonObj.getString("category"));
                     wo.setPriority(mJsonObj.getString("pri_code"));
                     wo.setDateElements(mJsonObj.getString("ent_date"));
+                    wo.setStatus(mJsonObj.getString("status_code"));
                     wo.setProposalPhase(String.format("%s-%s", mJsonObj.getString("proposal"), mJsonObj.getString("sort_code")));
                     mWorkOrders.add(wo);
                 }

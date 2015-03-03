@@ -18,12 +18,15 @@ public class WorkOrder {
 
     private UUID mId;
 
-
+    public static final String WORK_ORDER_ID =
+            "com.jordann.practice1.workorder_id";
 
     String mDescription;
     String mBeginDate;
     String mEndDate;
     String mPriority;
+    String mDateCreated;
+    String mStatus;
     int mPriorityColor;
 
     ArrayList<WorkOrderNote> mNotes;
@@ -32,6 +35,7 @@ public class WorkOrder {
     String mCategory;
     String mPriorityLetter;
     String mCraftCode;
+    String mShop;
 
     String mMinCraftCode;
     String mBuilding;
@@ -56,16 +60,34 @@ public class WorkOrder {
     public ArrayList<WorkOrderNote> getNotes() {
         if(mNotes == null){
             mNotes = new ArrayList<WorkOrderNote>();
+            int day = 86400000;
+
+            mNotes.add(new WorkOrderNote("Single line example text", "WILLIAMSONT", new Date(System.currentTimeMillis()-(int)(day*.3))));
+
+
+            mNotes.add(new WorkOrderNote("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis()-(int)(day*3.4))));
+
+
+            mNotes.add(new WorkOrderNote("Very long example text of something wrong with campus that must be addressed promptly otherwise all students fail.", "MCGILLD", new Date(System.currentTimeMillis()-(int)(day*10.8))));
+
         }
-
-
-        Date date = new Date();
-
-        WorkOrderNote note = new WorkOrderNote("Example text", "Kevin Sellers", date);
-        mNotes.add(note);
-
-
         return mNotes;
+    }
+
+    public String getStatus() {
+        return mStatus;
+    }
+
+    public void setStatus(String status) {
+        mStatus = status;
+    }
+
+    public String getShop() {
+        return mShop;
+    }
+
+    public void setShop(String shop) {
+        mShop = shop;
     }
 
     public void setNotes(ArrayList<WorkOrderNote> notes) {
@@ -181,6 +203,10 @@ public class WorkOrder {
         mProposalPhase = proposalPhase;
     }
 
+    public String getDateCreated() {
+        return mDateCreated;
+    }
+
     public String[] getDateElements() {
         return mDateElements;
     }
@@ -189,6 +215,7 @@ public class WorkOrder {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try{
             Date date = format.parse(dateElements);
+            mDateCreated = date.toString();
 
             format = new SimpleDateFormat("EE");
             mDateElements[0] = format.format(date);
@@ -234,5 +261,7 @@ public class WorkOrder {
     public UUID getId() {
         return mId;
     }
+
+
 
 }

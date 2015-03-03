@@ -20,8 +20,8 @@ public class WorkOrderAdapter extends ArrayAdapter<WorkOrder> {
 
     private final Context context;
 
-    public WorkOrderAdapter(Context c, ArrayList<WorkOrder> WorkOrders) {
-        super(c, 0, WorkOrders);
+    public WorkOrderAdapter(Context c, ArrayList<WorkOrder> workOrders) {
+        super(c, 0, workOrders);
         this.context = c;
     }
 
@@ -45,13 +45,13 @@ public class WorkOrderAdapter extends ArrayAdapter<WorkOrder> {
         // Configure the view for a Work Order row
         WorkOrder wo = getItem(position);
 
-        ((TextView)convertView.findViewById(R.id.row_workCode)).setText(wo.getMinCraftCode());
+        //((TextView)convertView.findViewById(R.id.row_workCode)).setText(wo.getMinCraftCode());
 
         ((TextView)convertView.findViewById(R.id.row_proposal)).setText(wo.getProposalPhase());
 
-        ((TextView)convertView.findViewById(R.id.row_buildingTextView)).setText(wo.getBuilding());
+        //((TextView)convertView.findViewById(R.id.row_buildingTextView)).setText(wo.getBuilding());
 
-        ((TextView)convertView.findViewById(R.id.row_category)).setText(wo.getCategory());
+        //((TextView)convertView.findViewById(R.id.row_category)).setText(wo.getCategory());
 
         ((TextView)convertView.findViewById(R.id.row_dayOfWeek)).setText(wo.getDateElements()[0]);
 
@@ -61,16 +61,20 @@ public class WorkOrderAdapter extends ArrayAdapter<WorkOrder> {
 
         ((TextView)convertView.findViewById(R.id.row_daysAgo)).setText(wo.getDateElements()[3]);
 
-        ((TextView) convertView.findViewById(R.id.row_priorityCodeSection)).setText(wo.getPriorityLetter());
+        //((TextView) convertView.findViewById(R.id.row_priorityCodeSection)).setText(wo.getPriorityLetter());
 
-        Log.d("TAG123", ""+(wo.getPriorityColor()));
-        ((TextView)convertView.findViewById(R.id.row_priorityCodeSection)).setBackgroundResource(wo.getPriorityColor());
+        //Log.d("TAG123", ""+(wo.getPriorityColor()));
+        //((TextView)convertView.findViewById(R.id.row_priorityCodeSection)).setBackgroundResource(wo.getPriorityColor());
+
+        convertView.findViewById(R.id.row_priorityStrip).setBackgroundResource(wo.getPriorityColor());
+
+        ((TextView)convertView.findViewById(R.id.row_description)).setText(wo.getDescription());
 
         //Temp Random
         Random random = new Random();
         int i = random.nextInt();
-        if(i % 5 == 0){
-            ((TextView)convertView.findViewById(R.id.row_newIndicator)).setText("NEW");
+        if(i % 5 == -1){
+            //((TextView)convertView.findViewById(R.id.row_newIndicator)).setText("NEW");
         }else
             ((TextView)convertView.findViewById(R.id.row_newIndicator)).setText("");
 

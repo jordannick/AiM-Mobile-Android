@@ -39,7 +39,8 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
     private static CurrentUser sCurrentUser;
 
     private String mUrl = "";
-    private String mBaseUrl = "http://apps-webdev.campusops.oregonstate.edu/robechar/portal/aim/api";
+    //private String mBaseUrl = "http://apps-webdev.campusops.oregonstate.edu/robechar/portal/aim/api";
+    private String mBaseUrl = "http://portal.campusops.oregonstate.edu/aim/api";
     private String mAPIVersion = "1.0.0";
     private String mMethod = "getWorkOrders";
     private String mUsername;
@@ -108,7 +109,10 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
                 if (!mUsernameField.getText().toString().matches("") && !mPasswordField.getText().toString().matches("")){
 
                     // mUsername = mUsernameField.getText().toString();
-                    mUsername = "CLARKEM";
+                    //mUsername = "DEBAUWB";
+                    //mUsername = "BROWNN";
+                    mUsername = mUsernameField.getText().toString();
+
 
                     //Check if this user has been previously stored
                     if (sCurrentUser.getPrefs().contains(mUsername)){

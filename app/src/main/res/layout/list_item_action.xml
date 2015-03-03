@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@color/soothing_background">
+
+
+
+    <TextView
+        android:id="@+id/action_taken"
+        android:layout_width="wrap_content"
+        android:layout_height="33dp"
+        android:text="136732-001"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:textColor="#555555"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:paddingBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/action_work_order_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:paddingBottom="8dp"
+      />
+
+    <TextView
+        android:id="@+id/action_newStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+    />
+
+    <TextView
+        android:id="@+id/action_timeSince"
+        android:layout_width="wrap_content"
+        android:layout_height="33dp"
+        android:textColor="#555555"
+        android:textSize="16sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical"
+        android:paddingRight="6dp"
+        android:paddingLeft="6dp"
+        android:paddingBottom="8dp"/>
+
+
+</RelativeLayout>
+

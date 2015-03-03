@@ -1,13 +1,11 @@
 package com.jordann.AiMMobile;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -41,7 +39,7 @@ public class WorkOrderListActivity extends SingleFragmentActivity implements Wor
             Intent i = new Intent(this, WorkOrderDetailActivity.class);
             i.putExtra(WorkOrderDetailFragment.WORK_ORDER_ID, wo.getId());
             startActivity(i);
-        } else {
+        } else { //Useful for later if implement swipe to change work order while in detail view
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
             Fragment oldDetail = fm.findFragmentById(R.id.detailFragmentContainer);
@@ -88,7 +86,7 @@ public class WorkOrderListActivity extends SingleFragmentActivity implements Wor
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_options, menu);
+        getMenuInflater().inflate(R.menu.menu_list, menu);
         return true;
     }
 
@@ -98,7 +96,12 @@ public class WorkOrderListActivity extends SingleFragmentActivity implements Wor
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_queue){
+            Intent i = new Intent(this, WorkOrderActionQueueListActivity.class);
+            //i.putExtra(WorkOrderDetailFragment.WORK_ORDER_ID, wo.getId());
+            startActivity(i);
+        }
+        else if (id == R.id.action_settings) {
             return true;
         }
         return super.onOptionsItemSelected(item);

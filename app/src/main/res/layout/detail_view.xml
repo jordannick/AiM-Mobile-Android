@@ -1,225 +1,273 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/work_order_background_white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_weight=".5">
+        >
 
-
-        <TextView
-            android:id="@+id/buildingTextView"
+        <RelativeLayout
+            android:id="@+id/detail_top_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:gravity="center"
-            android:text="building!"
-            android:padding="8dp"/>
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:background="@drawable/light_red_tile_bg">
+
+             <TextView
+                 android:id="@+id/detail_top_section_priority"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentBottom="true"
+                 android:layout_alignParentRight="true"
+                 android:background="@color/emergency_red"
+                 android:text="URGENT"
+                 android:textStyle="bold"
+                 android:textColor="#ffffff"
+                 android:textSize="12sp"
+                 android:paddingTop="4dp"
+                 android:paddingBottom="4dp"
+                 android:paddingRight="8dp"
+                 android:paddingLeft="8dp"/>
+            <TextView
+                android:id="@+id/buildingTextView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:text="building!"
+                android:gravity="center_vertical"
+                android:layout_toLeftOf="@id/detail_top_section_priority"
+                android:singleLine="true"
+                />
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/detail_top_section_line"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="@color/emergency_red"/> <!-- #B3B3B3 -->
 
         <TextView
             android:id="@+id/descriptionTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Hello World2!"
-            android:padding="8dp"/>
+            android:paddingBottom="24dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textSize="20sp"
+            android:minHeight="220dp"
+            android:paddingTop="16dp"
+            android:background="@color/soothing_background"
+            />
 
 
-    </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+
+            android:background="#2f2f2f"> <!-- #ECECEC #E6E6E6 -->
+
+
+
+        <LinearLayout
+           android:id="@+id/line1"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:padding="10dp"
+           android:layout_marginLeft="12dp"
+           android:layout_marginRight="12dp"
+           android:layout_marginBottom="4dp"
+           android:layout_marginTop="12dp"
+            android:background="#6e6e6e">
+
+           <TextView
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="0.3"
+               android:text="@string/detail_status"
+               android:textSize="14sp"
+               android:textColor="#FFFFFF"/>
+
+
+           <TextView
+               android:id="@+id/statusTextView"
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="0.7"
+               android:text="!In Progress"
+               android:textSize="15sp"
+               android:textStyle="bold"
+               android:gravity="center"
+               android:textColor="#FFFFFF"/>
+
+        </LinearLayout>
+
+        <!-- <LinearLayout
+           android:id="@+id/line2"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@id/line1"
+           android:padding="10dp"
+           android:layout_marginRight="24dp"
+           android:layout_marginLeft="24dp">
+
+           <TextView
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="0.3"
+               android:text="@string/detail_priority"
+               android:textColor="#585858"/>
+
+
+           <TextView
+               android:id="@+id/priorityTextView"
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="0.7"
+               android:text="contents"
+               android:gravity="center"/>
+
+       </LinearLayout> -->
 
        <LinearLayout
+           android:id="@+id/line3"
            android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:orientation="horizontal"
+           android:layout_height="wrap_content"
+           android:padding="10dp"
+           android:layout_marginLeft="12dp"
+           android:layout_marginRight="12dp"
+           android:background="#888888">
 
-           android:layout_weight=".5">
-
-
-
-           <RelativeLayout
-               android:layout_width="match_parent"
-               android:layout_height="match_parent">
-               <View
-                   android:id="@+id/leftSideBar"
-                   android:layout_width="25dp"
-                   android:layout_height="wrap_content"/>
-
-               <View
-                   android:id="@+id/rightSideBar"
-                   android:layout_width="25dp"
-                   android:layout_height="match_parent"
-                   android:layout_alignParentRight="true"/>
-
-               <RelativeLayout
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:layout_toRightOf="@id/leftSideBar"
-                   android:layout_toLeftOf="@id/rightSideBar"
-                   android:layout_alignParentBottom="true"
-                   android:gravity="center"
-                   android:background="#DDDDDD">
+           <TextView
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="0.3"
+               android:text="@string/detail_est"
+               android:textSize="14sp"
+               android:textColor="#FFFFFF"/>
 
 
-                   <LinearLayout
-                       android:id="@+id/line1"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:padding="10dp">
-
-                       <TextView
-                           android:layout_width="0dp"
-                           android:layout_height="match_parent"
-                           android:layout_weight="0.3"
-                           android:text="@string/detail_status"/>
-
-
-                       <TextView
-                           android:id="@+id/statusTextView"
-                           android:layout_width="0dp"
-                           android:layout_height="match_parent"
-                           android:layout_weight="0.7"
-                           android:text="contents"
-                           android:gravity="center"/>
-
-                   </LinearLayout>
-
-                   <LinearLayout
-                       android:id="@+id/line2"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:layout_below="@id/line1"
-                       android:padding="10dp" >
-
-                       <TextView
-                           android:layout_width="0dp"
-                           android:layout_height="match_parent"
-                           android:layout_weight="0.3"
-                           android:text="@string/detail_priority"/>
-
-
-                       <TextView
-                           android:id="@+id/priorityTextView"
-                           android:layout_width="0dp"
-                           android:layout_height="match_parent"
-                           android:layout_weight="0.7"
-                           android:text="contents"
-                           android:gravity="center"/>
-
-                   </LinearLayout>
-
-                   <LinearLayout
-                       android:id="@+id/line3"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:padding="10dp"
-                       android:layout_below="@id/line2">
-
-                       <TextView
-                           android:layout_width="0dp"
-                           android:layout_height="match_parent"
-                           android:layout_weight="0.3"
-                           android:text="@string/detail_est"/>
-
-
-                       <TextView
-                           android:id="@+id/estTextView"
-                           android:layout_width="0dp"
-                           android:layout_height="match_parent"
-                           android:layout_weight="0.7"
-                           android:text="contents"
-                           android:gravity="center"/>
-
-                   </LinearLayout>
-
-                   <LinearLayout
-                       android:id="@+id/line4"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:padding="10dp"
-                       android:layout_below="@id/line3">
-
-                       <TextView
-                           android:layout_width="0dp"
-                           android:layout_height="match_parent"
-                           android:layout_weight="0.3"
-                           android:text="@string/detail_shop"/>
-
-
-                       <TextView
-                           android:id="@+id/shopTextView"
-                           android:layout_width="0dp"
-                           android:layout_height="match_parent"
-                           android:layout_weight="0.7"
-                           android:text="contents"
-                           android:gravity="center"/>
-
-                   </LinearLayout>
-
-                   <LinearLayout
-                       android:id="@+id/line5"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:padding="10dp"
-                       android:layout_below="@id/line4">
-
-                       <TextView
-                           android:layout_width="0dp"
-                           android:layout_height="match_parent"
-                           android:layout_weight="0.3"
-                           android:text="@string/detail_work_code"/>
-
-
-                       <TextView
-                           android:id="@+id/workCodeTextView"
-                           android:layout_width="0dp"
-                           android:layout_height="match_parent"
-                           android:layout_weight="0.7"
-                           android:text="contents"
-                           android:gravity="center"/>
-
-                   </LinearLayout>
-
-                   <LinearLayout
-                       android:id="@+id/line6"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:padding="10dp"
-                       android:layout_below="@id/line5">
-
-                       <TextView
-                           android:layout_width="0dp"
-                           android:layout_height="match_parent"
-                           android:layout_weight="0.3"
-                           android:text="@string/detail_date_created"/>
-
-
-                       <TextView
-                           android:id="@+id/dateCreatedTextView"
-                           android:layout_width="0dp"
-                           android:layout_height="match_parent"
-                           android:layout_weight="0.7"
-                           android:text="contents"
-                           android:gravity="center"/>
-
-                   </LinearLayout>
-
-
-
-               </RelativeLayout>
-
-
-
-           </RelativeLayout>
-
-
-
+           <TextView
+               android:id="@+id/estTextView"
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="0.7"
+               android:text="!contents"
+               android:textSize="15sp"
+               android:textStyle="bold"
+               android:gravity="center"
+               android:textColor="#FFFFFF"/>
 
        </LinearLayout>
 
+       <LinearLayout
+           android:id="@+id/line4"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:padding="10dp"
+           android:layout_below="@id/line3"
+           android:layout_marginLeft="12dp"
+           android:layout_marginRight="12dp"
+           android:layout_marginTop="4dp"
+           android:background="#6e6e6e">
+
+           <TextView
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="0.3"
+               android:text="@string/detail_shop"
+               android:textSize="14sp"
+               android:textColor="#FFFFFF"/>
 
 
+           <TextView
+               android:id="@+id/shopTextView"
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="0.7"
+               android:text="!PLUMBING"
+               android:textSize="15sp"
+               android:textStyle="bold"
+               android:gravity="center"
+               android:textColor="#FFFFFF"/>
 
-</LinearLayout>
+       </LinearLayout>
+
+       <LinearLayout
+           android:id="@+id/line5"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:padding="10dp"
+           android:layout_marginLeft="12dp"
+           android:layout_marginRight="12dp"
+           android:layout_marginTop="4dp"
+           android:background="#888888">
+
+           <TextView
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="0.3"
+               android:text="@string/detail_work_code"
+               android:textSize="14sp"
+               android:textColor="#FFFFFF"/>
+
+
+           <TextView
+               android:id="@+id/workCodeTextView"
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="0.7"
+               android:text="!contents"
+               android:textSize="15sp"
+               android:textStyle="bold"
+               android:gravity="center"
+               android:textColor="#FFFFFF"/>
+
+       </LinearLayout>
+
+       <LinearLayout
+           android:id="@+id/line6"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:padding="10dp"
+           android:layout_marginLeft="12dp"
+           android:layout_marginRight="12dp"
+           android:layout_marginTop="4dp"
+           android:layout_marginBottom="12dp"
+           android:background="#6e6e6e">
+
+           <TextView
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="0.3"
+               android:text="@string/detail_date_created"
+               android:textSize="14sp"
+               android:textColor="#FFFFFF"
+               />
+
+
+           <TextView
+               android:id="@+id/dateCreatedTextView"
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="0.7"
+               android:text="!contents"
+               android:textSize="15sp"
+               android:textStyle="bold"
+               android:gravity="center"
+               android:textColor="#FFFFFF"/>
+
+       </LinearLayout>
+       </LinearLayout>
+    </LinearLayout>
+</ScrollView>

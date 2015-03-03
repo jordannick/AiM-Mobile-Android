@@ -1,6 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".WorkOrderListActivity" >
+
+    <item android:id="@+id/action_queue"
+
+          android:orderInCategory="100"
+          android:showAsAction="always"
+          android:title="Action Queue"/>
+
     <item android:id="@+id/action_settings"
 
         android:orderInCategory="100"
