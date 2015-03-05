@@ -28,6 +28,7 @@ import java.util.ArrayList;
  */
 
 public class JSONParser {
+    private final String TAG = "JSONParser";
 
     static InputStream iStream = null;
     static JSONArray jarray = null;
@@ -38,7 +39,8 @@ public class JSONParser {
     public JSONParser() {
     }
 
-    public ResponsePair getJSONFromUrl(String url) {
+    public ResponsePair getJSONFromUrl(String url, boolean isArray) {
+        Log.d(TAG, "Attemping http to: " + url);
 
         StringBuilder builder = new StringBuilder();
 
@@ -58,6 +60,7 @@ public class JSONParser {
             int statusCode = statusLine.getStatusCode();
 
             if (statusCode == 200) {
+                Log.e("==>", "Success");
                 HttpEntity entity = response.getEntity();
                 InputStream content = entity.getContent();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(content));
@@ -92,22 +95,27 @@ public class JSONParser {
             return responsePair;
         }
 
-        // Parse String to JSON object
-        try {
-            jarray = new JSONArray( builder.toString());
+        if(isArray){
+            // Parse String to JSON object
+            try {
+                jarray = new JSONArray( builder.toString());
+                responsePair.setJarray(jarray);
+                responsePair.setStatus(ResponsePair.Status.SUCCESS);
+            }
+            catch (JSONException e) {
+                Log.e("JSON Parser", "Error parsing data " + e.toString());
+
+                responsePair.setStatus(ResponsePair.Status.JSON_FAIL);
+                return responsePair;
+
+            }
+        }else{
+            //Parse String
+            responsePair.setReturnedString(builder.toString());
+            responsePair.setStatus(ResponsePair.Status.SUCCESS);
         }
-        catch (JSONException e) {
-            Log.e("JSON Parser", "Error parsing data " + e.toString());
 
-            responsePair.setStatus(ResponsePair.Status.JSON_FAIL);
-            return responsePair;
-
-        }
-
-        responsePair.setStatus(ResponsePair.Status.SUCCESS);
-        responsePair.setJarray(jarray);
         return responsePair;
-
     }
 
 

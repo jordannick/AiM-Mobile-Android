@@ -11,7 +11,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /*
  * Created by jordan_n on 8/14/2014.
@@ -22,6 +25,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
     private static final String TAG = "GetWorkOrdersTask";
     private OnTaskCompleted listener;
     private String url;
+    private String updateUrl;
     private ArrayList<WorkOrder> mWorkOrders;
     private JSONArray json;
     private CurrentUser sCurrentUser;
@@ -35,9 +39,10 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
     }
 
 
-    public GetWorkOrdersTask(OnTaskCompleted listener, String url, CurrentUser currentUser, Context context) {
+    public GetWorkOrdersTask(OnTaskCompleted listener, String url, String updateUrl, CurrentUser currentUser, Context context) {
         this.listener = listener;
         this.url = url;
+        this.updateUrl = updateUrl;
 
         this.sCurrentUser = currentUser;
         this.mContext = context;
@@ -92,15 +97,20 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
             Log.d(TAG, "Network Available");
             JSONParser jParser = new JSONParser();
 
-            responsePair = jParser.getJSONFromUrl(url);
+            Log.d(TAG, "Calling isRefreshNeeded");
+            boolean needRefresh = isRefreshNeeded(updateUrl);
+            Log.d(TAG, "needRefresh : " + needRefresh);
+            if(needRefresh){
+                responsePair = jParser.getJSONFromUrl(url, true);
+                if (responsePair.getStatus() != ResponsePair.Status.SUCCESS){
+                    return responsePair;
+                }
 
-            if (responsePair.getStatus() != ResponsePair.Status.SUCCESS){
-                return responsePair;
+                //Assume success at this point
+                json = responsePair.getJarray();
+            }else{
+
             }
-
-            //Assume success at this point
-            json = responsePair.getJarray();
-
         }
 
         //No network, try getting the stored data
@@ -172,6 +182,39 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         return responsePair;
     }
 
+    private boolean isRefreshNeeded(String updateUrl){
+        //Check 'last_updated' for user
+        Long stored_lastUpdated = sCurrentUser.getPrefs().getLong("last_updated", 0);
+        Date now = new Date(System.currentTimeMillis()); //TESTING
+        stored_lastUpdated = now.getTime();
+        Date stored_lastUpdatedDate = new Date(stored_lastUpdated);
+
+        if(stored_lastUpdated != 0){ //If date is stored
+            //Convert date string to date obj
+            JSONParser jParser = new JSONParser();
+            ResponsePair responsePair = jParser.getJSONFromUrl(updateUrl, false);
+            if (responsePair.getStatus() != ResponsePair.Status.SUCCESS){
+                //Http fail
+                Log.d(TAG, "isRefreshNeeded Fail");
+                return false;
+            }else{
+                //Http success
+                Log.d(TAG, "isRefreshNeeded Success");
+                String lastUpdated = responsePair.getReturnedString();
+                Date lastUpdatedDate = convertToDate(lastUpdated);
+                if(stored_lastUpdatedDate.before(lastUpdatedDate)){
+                    //Needs Refresh
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }else{ //No date stored. Refresh workOrders
+            return true;
+        }
+    }
+
+
     public boolean isNetworkOnline() {
         boolean status=false;
         try{
@@ -192,7 +235,17 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
 
     }
 
-
+    private Date convertToDate(String dateString){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date convertedDate = new Date();
+        try{
+            convertedDate = dateFormat.parse(dateString);
+        } catch (ParseException e){
+            e.printStackTrace();
+            Log.e(TAG, "Unable to parse dateString: " + dateString);
+        }
+        return convertedDate;
+    }
 
 
 }

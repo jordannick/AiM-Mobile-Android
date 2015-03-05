@@ -6,11 +6,14 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class WorkOrderListActivity extends SingleFragmentActivity implements WorkOrderListFragment.Callbacks, WorkOrderDetailFragment.Callbacks {
+public class WorkOrderListActivity extends SingleFragmentActivity implements WorkOrderListFragment.Callbacks, WorkOrderDetailFragment.Callbacks, GetWorkOrdersTask.OnTaskCompleted {
+
+    private static final String TAG = "WorkOrderListActivity";
 
     @Override
     protected Fragment createFragment() {
@@ -38,6 +41,8 @@ public class WorkOrderListActivity extends SingleFragmentActivity implements Wor
         // Start an instance of WorkOrderDetailActivity
             Intent i = new Intent(this, WorkOrderDetailActivity.class);
             i.putExtra(WorkOrderDetailFragment.WORK_ORDER_ID, wo.getId());
+            Log.d(TAG, "wo: "+wo);
+            Log.d(TAG, "woID sent: "+wo.getId());
             startActivity(i);
         } else { //Useful for later if implement swipe to change work order while in detail view
             FragmentManager fm = getFragmentManager();
@@ -108,9 +113,40 @@ public class WorkOrderListActivity extends SingleFragmentActivity implements Wor
     }
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart");
+
+        updateWorkOrderList();
 
 
+    }
 
 
+    private void updateWorkOrderList(){
+        Log.d(TAG, "updateWorkOrderList");
+        //Check if refresh is needed
+        CurrentUser user = CurrentUser.get(getApplicationContext());
+       // if(user.isRefreshNeeded()){
+            Log.d(TAG, "refresh is needed, do new task execute");
+            GetWorkOrdersTask task = new GetWorkOrdersTask(this, user.getURLGetAll(), user.getURLGetLastUpdated(), user, this);
+            task.execute();
+       // }
+    }
 
+    @Override
+    public void onTaskSuccess() {
+        Log.d(TAG, "list activity task success");
+    }
+
+    @Override
+    public void onNetworkFail() {
+        Log.d(TAG, "list activity net fail");
+    }
+
+    @Override
+    public void onAuthenticateFail() {
+        Log.d(TAG, "list activity auth fail");
+    }
 }

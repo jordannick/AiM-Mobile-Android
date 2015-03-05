@@ -2,25 +2,40 @@ package com.jordann.AiMMobile;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 /**
  * Created by jordan_n on 8/13/2014.
  */
 public class CurrentUser {
-
+    private static final String TAG = "CurrentUser";
     private String mUsername;
     private SharedPreferences prefs;
     private SharedPreferences.Editor prefsEditor;
     private ArrayList<WorkOrder> mWorkOrders;
     private static CurrentUser sCurrentUser;
     private static Context sAppContext;
+    private long lastRefresh;
+
+    public String URLGetAll;
+    public String URLGetLastUpdated;
+    public String URLGetNotices;
+
+    private String urlBase = "http://api-test.facilities.oregonstate.edu";
+    private String urlObject = "WorkOrder";
+    private String urlAPI = "1.0";
+
+
+
+
 
     //Action Queue variables
     private ArrayList<Action> mActions;
@@ -64,8 +79,11 @@ public class CurrentUser {
         sAppContext = appContext;
         mWorkOrders = new ArrayList<WorkOrder>();
         mActions = new ArrayList<Action>();
+        lastRefresh = 0;
         //TODO: remove test
         setTestListData(10);
+        Log.d(TAG, "CurrentUser constructor");
+        buildUrls();
     }
 
     public static CurrentUser get(Context c){
@@ -76,6 +94,31 @@ public class CurrentUser {
         return sCurrentUser;
     }
 
+
+    public String getURLGetAll() {
+        return URLGetAll;
+    }
+
+    public String getURLGetLastUpdated() {
+        return URLGetLastUpdated;
+    }
+
+    public String getURLGetNotices() {
+        return URLGetNotices;
+    }
+
+    private void buildUrls(){
+        URLGetAll = urlBase + '/' + urlAPI + '/' + urlObject + "/getAll/";
+        URLGetNotices = urlBase + '/' + urlAPI + '/' + urlObject + "/getNotices/";
+        URLGetLastUpdated =  urlBase + '/' + urlAPI + '/' + urlObject + "/getLastUpdated/";
+
+        /*temp*/
+        URLGetAll = "http://portal.campusops.oregonstate.edu/aim/api/1.0.0/getWorkOrders/";
+    }
+
+    public void getCurrentRefresh(){
+        lastRefresh = System.currentTimeMillis();
+    }
 
     public void addNewWorkOrder(WorkOrder wo){
         mWorkOrders.add(wo);
@@ -102,10 +145,18 @@ public class CurrentUser {
 
     public String getUsername() {
         return mUsername;
+
     }
 
     public void setUsername(String username) {
         mUsername = username;
+
+    }
+
+    public void appendUsernameURLs(){
+        URLGetAll += mUsername;
+        URLGetNotices += mUsername;
+        URLGetLastUpdated += mUsername;
     }
 
 
@@ -115,5 +166,9 @@ public class CurrentUser {
 
     public void addAction(Action action) {
         mActions.add(action);
+    }
+
+    public boolean isRefreshNeeded(){
+        return System.currentTimeMillis() > lastRefresh;
     }
 }

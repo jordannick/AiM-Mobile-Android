@@ -11,6 +11,7 @@
     <color name="work_order_day_grey">#373737</color>
     <color name="work_order_background_white">#ffffff</color>
     <color name="soothing_background">#f5f1e5</color> <!-- #f0f0d8-->
+    <color name="soothing_background_pressed">#DDD9CE</color> <!-- #f0f0d8-->
 
     <color name="action_add_grey_text">#646464</color> <!-- #f0f0d8-->
 

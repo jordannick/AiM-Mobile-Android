@@ -8,34 +8,42 @@ import org.json.JSONArray;
  */
 public class ResponsePair {
 
-        public enum Status{
-            NONE, NET_FAIL, AUTH_FAIL, SUCCESS, JSON_FAIL, NO_DATA;
-        }
+    public enum Status{
+        NONE, NET_FAIL, AUTH_FAIL, SUCCESS, JSON_FAIL, NO_DATA;
+    }
 
-        public JSONArray jarray;
+    public JSONArray jarray;
 
-        public Status status;
+    public String returnedString;
 
-        public ResponsePair(final Status status, final JSONArray jarray) {
-            this.status = status;
-            this.jarray = jarray;
-        }
+    public Status status;
 
-        public void setStatus(Status status){
-            this.status = status;
-        }
+    public ResponsePair(final Status status, final JSONArray jarray) {
+        this.status = status;
+        this.jarray = jarray;
+    }
 
-        public Status getStatus(){
-            return status;
-        }
+    public void setStatus(Status status){
+        this.status = status;
+    }
 
-        public JSONArray getJarray() {
-            return jarray;
-        }
+    public Status getStatus(){
+        return status;
+    }
 
-        public void setJarray(JSONArray jarray) {
-            this.jarray = jarray;
-        }
+    public JSONArray getJarray() {
+        return jarray;
+    }
 
+    public void setJarray(JSONArray jarray) {
+        this.jarray = jarray;
+    }
 
+    public String getReturnedString() {
+        return returnedString;
+    }
+
+    public void setReturnedString(String returnedString) {
+        this.returnedString = returnedString;
+    }
 }

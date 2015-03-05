@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -41,7 +42,9 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
         setContentView(R.layout.activity_fragment);
 
         workOrderId = (UUID)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_ID);
+        Log.d(TAG, "woID in detail activity: " + workOrderId);
         mWorkOrder = CurrentUser.get(getApplicationContext()).getWorkOrder(workOrderId);
+        Log.d(TAG, "wo in detail activity: " + mWorkOrder);
 
         actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
