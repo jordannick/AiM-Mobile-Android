@@ -23,7 +23,15 @@ public class Action {
     public static String action_MaterialRequest = "Material Request";
     public static String status_WorkComplete = "Work Complete";
 
+    private String mWorkOrderPhaseID;
 
+    public String getWorkOrderPhaseID() {
+        return mWorkOrderPhaseID;
+    }
+
+    public void setWorkOrderPhaseID(String mWorkOrderPhaseID) {
+        this.mWorkOrderPhaseID = mWorkOrderPhaseID;
+    }
 
     public WorkOrder getWorkOrder() {
         return mWorkOrder;

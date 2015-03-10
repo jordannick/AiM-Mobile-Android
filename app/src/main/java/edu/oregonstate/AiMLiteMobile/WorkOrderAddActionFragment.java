@@ -51,6 +51,7 @@ public class WorkOrderAddActionFragment extends Fragment {
     private Activity mActivity;
     private CurrentUser currentUser;
 
+    private TextView workOrderIdText;
     private int hoursEntered = -1;
     private Spinner spinner_ActionTaken;
     private CheckBox checkBox_updateStatus;
@@ -91,11 +92,15 @@ public class WorkOrderAddActionFragment extends Fragment {
         currentUser = CurrentUser.get(mContext);
 
        mActivity.findViewById(R.id.spinner_updateStatus).setEnabled(false);
+       workOrderIdText = (TextView)mActivity.findViewById(R.id.workOrderIdText);
        spinner_ActionTaken = (Spinner)mActivity.findViewById(R.id.spinner_actionTaken);
        checkBox_updateStatus = (CheckBox)mActivity.findViewById(R.id.checkBox_updateStatus);
        spinner_updateStatus = (Spinner)mActivity.findViewById(R.id.spinner_updateStatus);
        textView_hours = (TextView)mActivity.findViewById(R.id.hoursText);
        button_addNote = (Button)mActivity.findViewById(R.id.button_addNote);
+
+       //TODO: can't pass WO object? need phase num.
+       //workOrderIdText.setText(mWorkOrder.getProposalPhase());
 
        newActionNotes = new ArrayList<WorkOrderNote>();
 

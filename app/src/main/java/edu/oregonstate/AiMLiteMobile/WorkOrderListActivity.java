@@ -42,8 +42,8 @@ public class WorkOrderListActivity extends SingleFragmentActivity implements Wor
         // Start an instance of WorkOrderDetailActivity
             Intent i = new Intent(this, WorkOrderDetailActivity.class);
             i.putExtra(WorkOrderDetailFragment.WORK_ORDER_ID, wo.getId());
-            Log.d(TAG, "wo: "+wo);
-            Log.d(TAG, "woID sent: "+wo.getId());
+            //Log.d(TAG, "wo: "+wo);
+            //Log.d(TAG, "woID sent: "+wo.getId());
             startActivity(i);
         } else { //Useful for later if implement swipe to change work order while in detail view
             FragmentManager fm = getFragmentManager();
@@ -107,11 +107,14 @@ public class WorkOrderListActivity extends SingleFragmentActivity implements Wor
             //i.putExtra(WorkOrderDetailFragment.WORK_ORDER_ID, wo.getId());
             startActivity(i);
         }
-        else if (id == R.id.action_settings) {
+       /* else if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
+
+
+
 
 
     @Override

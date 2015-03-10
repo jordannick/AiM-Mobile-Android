@@ -151,10 +151,6 @@ public class WorkOrderDetailFragment extends Fragment{
         ((TextView)v.findViewById(R.id.estTextView)).setText(estText);
 
 
-
-
-
-
     }
 
     @Override
