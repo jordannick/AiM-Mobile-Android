@@ -1,8 +1,7 @@
-package com.jordann.AiMMobile;
+package edu.oregonstate.AiMLiteMobile;
 
 import android.app.Activity;
 import android.app.ListFragment;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;

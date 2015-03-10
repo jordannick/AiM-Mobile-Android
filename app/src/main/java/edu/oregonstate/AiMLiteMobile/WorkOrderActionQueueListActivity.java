@@ -1,13 +1,11 @@
-package com.jordann.AiMMobile;
+package edu.oregonstate.AiMLiteMobile;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
 
 /**
  * Created by sellersk on 2/19/2015.

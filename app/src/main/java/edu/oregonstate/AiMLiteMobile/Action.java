@@ -1,4 +1,4 @@
-package com.jordann.AiMMobile;
+package edu.oregonstate.AiMLiteMobile;
 
 import java.util.ArrayList;
 import java.util.Date;

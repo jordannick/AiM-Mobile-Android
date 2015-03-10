@@ -1,4 +1,4 @@
-package com.jordann.AiMMobile;
+package edu.oregonstate.AiMLiteMobile;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
 
 
 public class WorkOrderListActivity extends SingleFragmentActivity implements WorkOrderListFragment.Callbacks, WorkOrderDetailFragment.Callbacks, GetWorkOrdersTask.OnTaskCompleted {

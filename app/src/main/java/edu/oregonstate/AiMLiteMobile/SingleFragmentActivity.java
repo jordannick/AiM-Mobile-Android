@@ -1,4 +1,4 @@
-package com.jordann.AiMMobile;
+package edu.oregonstate.AiMLiteMobile;
 
 import android.app.Activity;
 import android.app.Fragment;

@@ -1,4 +1,4 @@
-package com.jordann.AiMMobile;
+package edu.oregonstate.AiMLiteMobile;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by sellersk on 2/19/2015.
@@ -27,7 +27,6 @@ public class ActionAdapter extends ArrayAdapter<Action> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d(TAG, "getView.... position: " + position + ", convertView: " + convertView + ", parent: " + parent);
         if(convertView == null){
 
             LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -1,11 +1,8 @@
-package com.jordann.AiMMobile;
+package edu.oregonstate.AiMLiteMobile;
 
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,9 +14,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * Created by jordan_n on 8/15/2014.
@@ -37,37 +31,22 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
     private ProgressBar mLoadCircle;
 
     private static CurrentUser sCurrentUser;
-/*
-    private String mUrl = "";
-    private String mLastUpdateUrl = "";
-    private String mLastUpdateUrlBase = "http://api-test.facilities.oregonstate.edu/1.0/WorkOrder/getLastUpdated/";
-    //private String mBaseUrl = "http://apps-webdev.campusops.oregonstate.edu/robechar/portal/aim/api";
-    private String mBaseUrl = "http://portal.campusops.oregonstate.edu/aim/api";
 
-    private String mAPIVersion = "1.0.0";
-    private String mMethod = "getWorkOrders";
-*/
     private String mUsername;
     private String mPassword;
-   // private SharedPreferences prefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Create an instance of the user class
+        //Create an instance of the user class (singleton)
         sCurrentUser = CurrentUser.get(getActivity().getApplicationContext());
 
-
-        //First time running
+        //Put the autologin preference if it doesn't exist
         if (!sCurrentUser.getPrefs().contains("autologin")){
-            Log.d(TAG, "First time running");
-            //prefs.edit().putBoolean("autologin", false);
             sCurrentUser.getPrefsEditor().putBoolean("autologin", false);
             sCurrentUser.getPrefsEditor().apply();
-
         }
-
     }
 
     @Override
@@ -84,27 +63,22 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         mLoadCircle.setVisibility(View.INVISIBLE);
 
 
-
         //Check if autologin should occur
         if (sCurrentUser.getPrefs().getBoolean("autologin", false)){
 
+            //Retrieve saved info
             mUsername = sCurrentUser.getPrefs().getString("username", "");
             mPassword = sCurrentUser.getPrefs().getString("password", "");
-
-            //mUrl = mBaseUrl+'/'+mAPIVersion+'/'+mMethod+'/'+mUsername;//+'/'+mPassword
-         //   mUrl = "http://api-test.facilities.oregonstate.edu/1.0/WorkOrder/getAll/"+mUsername;
-           // mLastUpdateUrl = mLastUpdateUrlBase + sCurrentUser.getUsername();
-
-            sCurrentUser.setUsername(mUsername);
-            sCurrentUser.buildUrlsWithUsername();
 
             executeTask();
         }
 
+        //TODO: 3/10/15: Handle password authentication/matching to username
         //Autologin did not occur, enter info manually
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //Check for empty fields
                 if (mUsernameField.getText().toString().matches(""))
                     mUsernameField.setError("Username required");
@@ -114,22 +88,12 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
                 //If both fields are not empty
                 if (!mUsernameField.getText().toString().matches("") && !mPasswordField.getText().toString().matches("")){
 
-                    // mUsername = mUsernameField.getText().toString();
-                    //mUsername = "DEBAUWB";
-                    //mUsername = "BROWNN";
                     mUsername = mUsernameField.getText().toString();
-
 
                     //Check if this user has been previously stored
                     if (sCurrentUser.getPrefs().contains(mUsername)){
                         mPassword = sCurrentUser.getPrefs().getString(mUsername, null);
-
                     }
-
-                    //Construct the URL
-                    //mUrl = mBaseUrl+'/'+mAPIVersion+'/'+mMethod+'/'+mUsername;
-                    sCurrentUser.setUsername(mUsername);
-                    sCurrentUser.buildUrlsWithUsername();
 
                     //Save user info for future autologins
                     if (mAutoLoginCheckbox.isChecked()){
@@ -140,15 +104,16 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
                     }
 
                     executeTask();
-
                 }
             }
         });
         return v;
     }
 
-
     public void executeTask(){
+
+        sCurrentUser.setUsername(mUsername);
+        sCurrentUser.buildUrlsWithUsername();
 
         //Disable all fields for now
         mUsernameField.setEnabled(false);
@@ -157,16 +122,15 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         mLoginButton.setEnabled(false);
 
         mLoadCircle.setVisibility(View.VISIBLE);
-        showAutoLoginToast();
-        //Start the asynchronous parsing controller
-        GetWorkOrdersTask task = new GetWorkOrdersTask(myFragment,/* mUrl, mLastUpdateUrl*/ sCurrentUser, getActivity());
+        showToast("Logging in as: "+mUsername, Toast.LENGTH_LONG);
+
+        GetWorkOrdersTask task = new GetWorkOrdersTask(myFragment, sCurrentUser, getActivity());
         task.execute();
     }
 
-
     public void onTaskSuccess() {
 
-        //Re-enable, in case we come back to login screen
+        //Re-enable elements, in case user comes back to login screen later
         mUsernameField.setEnabled(true);
         mPasswordField.setEnabled(true);
         mAutoLoginCheckbox.setEnabled(true);
@@ -183,20 +147,6 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
     }
 
 
-    //TODO: handle network failures and authentication failures separately
-    /*
-    public void onTaskFail(){
-        //mUsernameField.setError("Password and username didn't match");
-
-        //Re-enable all fields so user can try again
-        mUsernameField.setEnabled(true);
-        mPasswordField.setEnabled(true);
-        mAutoLoginCheckbox.setEnabled(true);
-        mLoginButton.setEnabled(true);
-
-        mLoadCircle.setVisibility(View.INVISIBLE);
-    }*/
-
     public void onNetworkFail(){
         //Re-enable all fields so user can try again
         mUsernameField.setEnabled(true);
@@ -206,14 +156,11 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
 
         mLoadCircle.setVisibility(View.INVISIBLE);
 
-
         //Display error about network fail
-
+        showToast("Network Fail", Toast.LENGTH_LONG);
     }
 
     public void onAuthenticateFail(){
-
-
         //Re-enable all fields so user can try again
         mUsernameField.setEnabled(true);
         mPasswordField.setEnabled(true);
@@ -222,24 +169,14 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
 
         mLoadCircle.setVisibility(View.INVISIBLE);
 
-
         //mUsernameField.setError("Password and username didn't match");
+        showToast("Authenticate Fail", Toast.LENGTH_LONG);
     }
 
-
-    public void showAutoLoginToast(){
-        Context context = getActivity().getApplicationContext();
-        CharSequence text = "Logging in as: "+mUsername;
-        int duration = Toast.LENGTH_LONG;
-
-        Toast toast = Toast.makeText(context, text, duration);
+    public void showToast(String text, int duration){
+        Toast toast = Toast.makeText(getActivity().getApplicationContext(), text, duration);
         toast.show();
-
-
     }
-
-
-
 
 }
 

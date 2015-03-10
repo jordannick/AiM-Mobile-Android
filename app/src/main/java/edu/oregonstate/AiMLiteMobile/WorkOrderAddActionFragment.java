@@ -1,4 +1,4 @@
-package com.jordann.AiMMobile;
+package edu.oregonstate.AiMLiteMobile;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,18 +18,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Type;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -40,8 +37,7 @@ import java.util.UUID;
 public class WorkOrderAddActionFragment extends Fragment {
     public static final String TAG = "WorkOrderActionNewFragment";
 
-    public static final String WORK_ORDER_ID =
-            "com.jordann.practice1.workorder_id";
+    public static final String WORK_ORDER_ID = "edu.oregonstate.AiMLiteMobile.workorder_id";
 
     private View v;
 

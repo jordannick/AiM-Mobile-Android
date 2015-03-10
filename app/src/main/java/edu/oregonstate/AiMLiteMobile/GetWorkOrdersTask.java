@@ -1,7 +1,6 @@
-package com.jordann.AiMMobile;
+package edu.oregonstate.AiMLiteMobile;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -35,14 +34,10 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         void onTaskSuccess();
         void onNetworkFail();
         void onAuthenticateFail();
-
     }
 
-
-    public GetWorkOrdersTask(OnTaskCompleted listener,/* String url, String updateUrl,*/ CurrentUser currentUser, Context context) {
+    public GetWorkOrdersTask(OnTaskCompleted listener, CurrentUser currentUser, Context context) {
         this.listener = listener;
-       // this.url = url;
-       // this.updateUrl = updateUrl;
         this.url = currentUser.getURLGetAll();
         this.updateUrl = currentUser.getURLGetLastUpdated();
 
@@ -56,8 +51,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
     @Override
     protected void onPostExecute(final ResponsePair responsePair) {
 
-        Log.d(TAG, "onPostExecute - BEGIN SWITCH --------------");
-
+        Log.d(TAG, "onPostExecute - Start responsePair:");
         switch(responsePair.getStatus()){
             case SUCCESS:
                 Log.d(TAG, "Success");
@@ -80,16 +74,11 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
                 listener.onNetworkFail();//TODO: no network no data, should tell user to get network access
                 break;
             default:
-
                 break;
-
-
         }
-
-        Log.d(TAG, "onPostExecute - END SWITCH --------------");
+        Log.d(TAG, "onPostExecute - End responsePair");
 
     }
-
 
     protected ResponsePair doInBackground(final String... args) {
         ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);

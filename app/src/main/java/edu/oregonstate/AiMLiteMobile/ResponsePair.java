@@ -1,10 +1,13 @@
-package com.jordann.AiMMobile;
+package edu.oregonstate.AiMLiteMobile;
 
 
 import org.json.JSONArray;
 
 /**
  * Created by jordan_n on 8/19/2014.
+ *
+ * ResponsePair is used for returning JSON (or string) data from API calls,
+ * paired with a custom status code to handle in different ways
  */
 public class ResponsePair {
 

@@ -1,9 +1,8 @@
-package com.jordann.AiMMobile;
+package edu.oregonstate.AiMLiteMobile;
 
 
 
 import android.util.Log;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,8 +17,7 @@ public class WorkOrder {
 
     private UUID mId;
 
-    public static final String WORK_ORDER_ID =
-            "com.jordann.practice1.workorder_id";
+    public static final String WORK_ORDER_ID = "edu.oregonstate.AiMLiteMobile.workorder_id";
 
     String mDescription;
     String mBeginDate;

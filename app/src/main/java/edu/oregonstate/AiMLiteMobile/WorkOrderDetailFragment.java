@@ -1,17 +1,15 @@
-package com.jordann.AiMMobile;
+package edu.oregonstate.AiMLiteMobile;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.ParsePosition;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,8 +23,7 @@ public class WorkOrderDetailFragment extends Fragment{
 
     public static String TAG = "WorkOrderDetailFragment";
 
-    public static final String WORK_ORDER_ID =
-            "com.jordann.practice1.workorder_id";
+    public static final String WORK_ORDER_ID = "edu.oregonstate.AiMLiteMobile.workorder_id";
 
     private WorkOrder mWorkOrder;
 

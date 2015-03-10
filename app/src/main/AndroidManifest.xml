@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jordann.AiMMobile" >
+    package="edu.oregonstate.AiMLiteMobile" >
 
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme"
         android:icon="@drawable/osu_icon">
 
-        <activity android:name="com.jordann.AiMMobile.LoginActivity"
+        <activity android:name="edu.oregonstate.AiMLiteMobile.LoginActivity"
                   android:label="AiMLite Mobile">
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
@@ -22,22 +22,22 @@
         </activity>
 
         <activity
-            android:name="com.jordann.AiMMobile.WorkOrderListActivity"
+            android:name="edu.oregonstate.AiMLiteMobile.WorkOrderListActivity"
             android:label="@string/app_name" >
 
         </activity>
 
         <activity
-        android:name="com.jordann.AiMMobile.WorkOrderDetailActivity"
+        android:name="edu.oregonstate.AiMLiteMobile.WorkOrderDetailActivity"
         android:label="@string/detail_activity_title" >
     </activity>
 
     <activity
-        android:name="com.jordann.AiMMobile.WorkOrderAddActionActivity"
+        android:name="edu.oregonstate.AiMLiteMobile.WorkOrderAddActionActivity"
         android:label="@string/add_action_activity_title" >
     </activity>
     <activity
-        android:name=".WorkOrderActionQueueListActivity"
+        android:name="edu.oregonstate.AiMLiteMobile.WorkOrderActionQueueListActivity"
         android:label="@string/add_action_activity_title" >
     </activity>
 
