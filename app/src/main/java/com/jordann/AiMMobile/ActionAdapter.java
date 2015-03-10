@@ -39,7 +39,8 @@ public class ActionAdapter extends ArrayAdapter<Action> {
 
         TextView textView_id = (TextView)convertView.findViewById(R.id.action_work_order_id);
 
-        textView_id.setText(String.valueOf(action.getWorkOrder().getProposalPhase()));
+        //TODO dont store whole workorder object, just need proposal ID
+        //textView_id.setText(String.valueOf(action.getWorkOrder().getProposalPhase()));
 
         ((TextView) convertView.findViewById(R.id.action_taken)).setText(action.getActionTaken());
 

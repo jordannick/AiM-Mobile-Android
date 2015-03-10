@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ListFragment;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -13,12 +14,12 @@ import android.widget.ListView;
 
 public class WorkOrderListFragment extends ListFragment{
 
-    String url = "http://apps-webdev.campusops.oregonstate.edu/robechar/portal/aim/api/1.0.0/getWorkOrders/CLARKEM";
     private static CurrentUser sCurrentUser;
     private static final String TAG = "WorkOrderListFragment";
     private Callbacks mCallbacks;
 
     public void updateUI() {
+        Log.d(TAG, "notifyDataSetChanged");
         ((WorkOrderAdapter)getListAdapter()).notifyDataSetChanged();
     }
 
@@ -85,6 +86,11 @@ public class WorkOrderListFragment extends ListFragment{
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         WorkOrder wo = ((WorkOrderAdapter)getListAdapter()).getItem(position);
+       // Log.d(TAG, "!wo: "+wo);
+
+        for (WorkOrder workOrder : sCurrentUser.getWorkOrders()){
+          //  Log.d(TAG, "1wo: "+workOrder);
+        }
         mCallbacks.onWorkOrderSelected(wo);
 
     }

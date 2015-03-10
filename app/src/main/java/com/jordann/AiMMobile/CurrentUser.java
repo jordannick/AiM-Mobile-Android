@@ -30,9 +30,8 @@ public class CurrentUser {
     public String URLGetNotices;
 
     private String urlBase = "http://api-test.facilities.oregonstate.edu";
+    private String urlAPIVersion = "1.0";
     private String urlObject = "WorkOrder";
-    private String urlAPI = "1.0";
-
 
 
 
@@ -108,12 +107,12 @@ public class CurrentUser {
     }
 
     private void buildUrls(){
-        URLGetAll = urlBase + '/' + urlAPI + '/' + urlObject + "/getAll/";
-        URLGetNotices = urlBase + '/' + urlAPI + '/' + urlObject + "/getNotices/";
-        URLGetLastUpdated =  urlBase + '/' + urlAPI + '/' + urlObject + "/getLastUpdated/";
+
 
         /*temp*/
-        URLGetAll = "http://portal.campusops.oregonstate.edu/aim/api/1.0.0/getWorkOrders/";
+        //URLGetAll = "http://portal.campusops.oregonstate.edu/aim/api/1.0.0/getWorkOrders/";
+
+
     }
 
     public void getCurrentRefresh(){
@@ -125,8 +124,13 @@ public class CurrentUser {
     }
 
 
-    public void setWorkOrders(ArrayList<WorkOrder> workOrders) {
-        mWorkOrders = workOrders;
+    public void setWorkOrders(ArrayList<WorkOrder> newWorkOrders) {
+
+        //mWorkOrders = workOrders;
+
+        //Want to keep same reference to list, just clear it and add anew
+        mWorkOrders.clear();
+        mWorkOrders.addAll(newWorkOrders);
     }
 
 
@@ -137,8 +141,11 @@ public class CurrentUser {
 
     public WorkOrder getWorkOrder(UUID id){
         for (WorkOrder wo : mWorkOrders) {
-            if (wo.getId().equals(id))
+            Log.d(TAG, "trying match: " +id +" vs " + wo.getId());
+            if (wo.getId().equals(id)) {
+                Log.d(TAG, "wo in current user: " + wo);
                 return wo;
+            }
         }
         return null;
     }
@@ -153,10 +160,10 @@ public class CurrentUser {
 
     }
 
-    public void appendUsernameURLs(){
-        URLGetAll += mUsername;
-        URLGetNotices += mUsername;
-        URLGetLastUpdated += mUsername;
+    public void buildUrlsWithUsername(){
+        URLGetAll = urlBase + '/' + urlAPIVersion + '/' + urlObject + "/getAll/" + mUsername;
+        URLGetNotices = urlBase + '/' + urlAPIVersion + '/' + urlObject + "/getNotices/" + mUsername;
+        URLGetLastUpdated =  urlBase + '/' + urlAPIVersion + '/' + urlObject + "/getLastUpdated/" + mUsername;
     }
 
 

@@ -118,6 +118,7 @@ public class WorkOrderListActivity extends SingleFragmentActivity implements Wor
         super.onStart();
         Log.d(TAG, "onStart");
 
+        //TODO: this just here for debug, get refresh needed working and it can stay
         updateWorkOrderList();
 
 
@@ -130,8 +131,9 @@ public class WorkOrderListActivity extends SingleFragmentActivity implements Wor
         CurrentUser user = CurrentUser.get(getApplicationContext());
        // if(user.isRefreshNeeded()){
             Log.d(TAG, "refresh is needed, do new task execute");
-            GetWorkOrdersTask task = new GetWorkOrdersTask(this, user.getURLGetAll(), user.getURLGetLastUpdated(), user, this);
+            GetWorkOrdersTask task = new GetWorkOrdersTask(this,/* user.getURLGetAll(), user.getURLGetLastUpdated(),*/ user, this);
             task.execute();
+            onWorkOrderUpdated(null);//TODO this function doesn't need an arg...
        // }
     }
 

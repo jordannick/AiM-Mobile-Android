@@ -39,10 +39,12 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
     }
 
 
-    public GetWorkOrdersTask(OnTaskCompleted listener, String url, String updateUrl, CurrentUser currentUser, Context context) {
+    public GetWorkOrdersTask(OnTaskCompleted listener,/* String url, String updateUrl,*/ CurrentUser currentUser, Context context) {
         this.listener = listener;
-        this.url = url;
-        this.updateUrl = updateUrl;
+       // this.url = url;
+       // this.updateUrl = updateUrl;
+        this.url = currentUser.getURLGetAll();
+        this.updateUrl = currentUser.getURLGetLastUpdated();
 
         this.sCurrentUser = currentUser;
         this.mContext = context;
@@ -54,7 +56,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
     @Override
     protected void onPostExecute(final ResponsePair responsePair) {
 
-        Log.d(TAG, "BEGIN SWITCH --------------");
+        Log.d(TAG, "onPostExecute - BEGIN SWITCH --------------");
 
         switch(responsePair.getStatus()){
             case SUCCESS:
@@ -84,7 +86,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
 
         }
 
-        Log.d(TAG, "END SWITCH --------------");
+        Log.d(TAG, "onPostExecute - END SWITCH --------------");
 
     }
 
@@ -100,7 +102,8 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
             Log.d(TAG, "Calling isRefreshNeeded");
             boolean needRefresh = isRefreshNeeded(updateUrl);
             Log.d(TAG, "needRefresh : " + needRefresh);
-            if(needRefresh){
+
+           // if(needRefresh){ //Pull from online
                 responsePair = jParser.getJSONFromUrl(url, true);
                 if (responsePair.getStatus() != ResponsePair.Status.SUCCESS){
                     return responsePair;
@@ -108,9 +111,11 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
 
                 //Assume success at this point
                 json = responsePair.getJarray();
-            }else{
+           // }
 
-            }
+          //  else{ //Pull from file
+
+          //  }
         }
 
         //No network, try getting the stored data
@@ -135,12 +140,12 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
             return responsePair;
         }
 
-        /*
+
         if (json == null) {
             Log.d(TAG, "Json is null");
             //return false;
         }
-        */
+
 
         for (int i = 0; i < json.length(); i++) {
                 try {
@@ -201,6 +206,10 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
                 //Http success
                 Log.d(TAG, "isRefreshNeeded Success");
                 String lastUpdated = responsePair.getReturnedString();
+                Log.d(TAG, "ds: "+lastUpdated);
+                lastUpdated = lastUpdated.replace("\"", "");
+                Log.d(TAG, "ds2: "+lastUpdated);
+
                 Date lastUpdatedDate = convertToDate(lastUpdated);
                 if(stored_lastUpdatedDate.before(lastUpdatedDate)){
                     //Needs Refresh

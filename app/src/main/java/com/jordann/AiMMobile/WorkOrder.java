@@ -130,7 +130,6 @@ public class WorkOrder {
     public void setPriority(String priority) {
         mPriority = priority;
         mPriorityLetter = priority.substring(0, 1);
-        Log.d("TAG1", "...");
 
 
         //mPriorityColor = new Color(1, 1,1);

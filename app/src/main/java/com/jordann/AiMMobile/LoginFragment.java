@@ -37,15 +37,16 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
     private ProgressBar mLoadCircle;
 
     private static CurrentUser sCurrentUser;
-
+/*
     private String mUrl = "";
     private String mLastUpdateUrl = "";
     private String mLastUpdateUrlBase = "http://api-test.facilities.oregonstate.edu/1.0/WorkOrder/getLastUpdated/";
     //private String mBaseUrl = "http://apps-webdev.campusops.oregonstate.edu/robechar/portal/aim/api";
     private String mBaseUrl = "http://portal.campusops.oregonstate.edu/aim/api";
+
     private String mAPIVersion = "1.0.0";
     private String mMethod = "getWorkOrders";
-
+*/
     private String mUsername;
     private String mPassword;
    // private SharedPreferences prefs;
@@ -82,23 +83,25 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         mLoadCircle = (ProgressBar)v.findViewById(R.id.load_circle);
         mLoadCircle.setVisibility(View.INVISIBLE);
 
+
+
         //Check if autologin should occur
         if (sCurrentUser.getPrefs().getBoolean("autologin", false)){
 
             mUsername = sCurrentUser.getPrefs().getString("username", "");
             mPassword = sCurrentUser.getPrefs().getString("password", "");
 
-            mUrl = mBaseUrl+'/'+mAPIVersion+'/'+mMethod+'/'+mUsername;//+'/'+mPassword
-            mLastUpdateUrl = mLastUpdateUrlBase + mUsername;
-            //Bad urls for testing
-           // mUrl = mBaseUrl+'/'+mAPIVersion+"/nonexistentmethod/"+mUsername;
-           // mUrl = mBaseUrl+'/'+mAPIVersion+'/'+mMethod+'/'+"nonexistentusername";
-           // mUrl = mBaseUrl+'/'+"nonexistentAPIVersion"+'/'+mMethod+'/'+mUsername; //this works for some reason...
-             //mUrl = "http://apps-webdev.campusops.oregonstate.edu/NOPE/portal/aim/api/stuff/getWorkOrders/CROSST";
+            //mUrl = mBaseUrl+'/'+mAPIVersion+'/'+mMethod+'/'+mUsername;//+'/'+mPassword
+         //   mUrl = "http://api-test.facilities.oregonstate.edu/1.0/WorkOrder/getAll/"+mUsername;
+           // mLastUpdateUrl = mLastUpdateUrlBase + sCurrentUser.getUsername();
+
+            sCurrentUser.setUsername(mUsername);
+            sCurrentUser.buildUrlsWithUsername();
 
             executeTask();
         }
 
+        //Autologin did not occur, enter info manually
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,8 +127,9 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
                     }
 
                     //Construct the URL
-                    mUrl = mBaseUrl+'/'+mAPIVersion+'/'+mMethod+'/'+mUsername;
+                    //mUrl = mBaseUrl+'/'+mAPIVersion+'/'+mMethod+'/'+mUsername;
                     sCurrentUser.setUsername(mUsername);
+                    sCurrentUser.buildUrlsWithUsername();
 
                     //Save user info for future autologins
                     if (mAutoLoginCheckbox.isChecked()){
@@ -155,7 +159,7 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         mLoadCircle.setVisibility(View.VISIBLE);
         showAutoLoginToast();
         //Start the asynchronous parsing controller
-        GetWorkOrdersTask task = new GetWorkOrdersTask(myFragment, mUrl, mLastUpdateUrl, sCurrentUser, getActivity());
+        GetWorkOrdersTask task = new GetWorkOrdersTask(myFragment,/* mUrl, mLastUpdateUrl*/ sCurrentUser, getActivity());
         task.execute();
     }
 
@@ -169,8 +173,6 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         mLoginButton.setEnabled(true);
         mLoadCircle.setVisibility(View.INVISIBLE);
 
-        sCurrentUser.setUsername(mUsername);
-        sCurrentUser.appendUsernameURLs();
         sCurrentUser.getCurrentRefresh();
 
         //Move on to the next activity
