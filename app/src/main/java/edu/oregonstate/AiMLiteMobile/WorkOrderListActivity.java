@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class WorkOrderListActivity extends SingleFragmentActivity implements WorkOrderListFragment.Callbacks, WorkOrderDetailFragment.Callbacks, GetWorkOrdersTask.OnTaskCompleted {
@@ -29,7 +32,7 @@ public class WorkOrderListActivity extends SingleFragmentActivity implements Wor
     }
 
 
-    public void onWorkOrderUpdated(WorkOrder wo) {
+    public void onWorkOrderUpdated() {
         FragmentManager fm = getFragmentManager();
         WorkOrderListFragment listFragment = (WorkOrderListFragment)
                 fm.findFragmentById(R.id.fragmentContainer);
@@ -122,24 +125,25 @@ public class WorkOrderListActivity extends SingleFragmentActivity implements Wor
         super.onStart();
         Log.d(TAG, "onStart");
 
-        //TODO: this just here for debug, get refresh needed working and it can stay
+
         updateWorkOrderList();
 
 
     }
 
-
+    //Makes new request, if refresh needed, CurrentUser workorders will repopulate, and displayed list updated
     private void updateWorkOrderList(){
         Log.d(TAG, "updateWorkOrderList");
-        //Check if refresh is needed
-        CurrentUser user = CurrentUser.get(getApplicationContext());
-       // if(user.isRefreshNeeded()){
-            Log.d(TAG, "refresh is needed, do new task execute");
-            GetWorkOrdersTask task = new GetWorkOrdersTask(this,/* user.getURLGetAll(), user.getURLGetLastUpdated(),*/ user, this);
-            task.execute();
-            onWorkOrderUpdated(null);//TODO this function doesn't need an arg...
-       // }
+
+        CurrentUser currentUser = CurrentUser.get(getApplicationContext());
+
+        GetWorkOrdersTask task = new GetWorkOrdersTask(this, currentUser, this);
+        task.execute();
+        onWorkOrderUpdated();
+
     }
+
+
 
     @Override
     public void onTaskSuccess() {

@@ -89,22 +89,33 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
             JSONParser jParser = new JSONParser();
 
             Log.d(TAG, "Calling isRefreshNeeded");
-            boolean needRefresh = isRefreshNeeded(updateUrl);
+            boolean needRefresh = isRefreshNeeded();
             Log.d(TAG, "needRefresh : " + needRefresh);
 
-           // if(needRefresh){ //Pull from online
+            if (needRefresh) {
+
                 responsePair = jParser.getJSONFromUrl(url, true);
-                if (responsePair.getStatus() != ResponsePair.Status.SUCCESS){
+
+                if (responsePair.getStatus() != ResponsePair.Status.SUCCESS) {
                     return responsePair;
                 }
 
-                //Assume success at this point
                 json = responsePair.getJarray();
-           // }
+            }
+            else{
+                //Have network but don't need refresh. Assume data exists locally. Is this even needed?
+                try {
+                    Log.d(TAG, "Trying to get stored data");
+                    json = new JSONArray(sCurrentUser.getPrefs().getString("jsondata", "[]"));
+                    responsePair.setStatus(ResponsePair.Status.SUCCESS);
+                }
+                catch (JSONException e){
+                    Log.d(TAG, "Failed to get stored data");
+                    responsePair.setStatus(ResponsePair.Status.JSON_FAIL);
+                    return responsePair;
+                }
+            }
 
-          //  else{ //Pull from file
-
-          //  }
         }
 
         //No network, try getting the stored data
@@ -129,6 +140,15 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
             return responsePair;
         }
 
+        /*
+        Only reached here if:
+            1) there is network and refresh is needed
+            2) there is network and refresh is not needed, and stored data exists
+            3) no network, and stored data exists
+
+        First time run to get data:
+            There is network, refresh needed, fills data, saves local jsondata in prefs
+        */
 
         if (json == null) {
             Log.d(TAG, "Json is null");
@@ -168,6 +188,10 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         String jsonStr = json.toString();
         sCurrentUser.getPrefsEditor().putString("jsondata", jsonStr);
 
+        //Save current time in last updated
+        Log.d(TAG, "Saving time to last_updated: "+System.currentTimeMillis()+" = "+ new Date(System.currentTimeMillis()));
+        sCurrentUser.getPrefsEditor().putLong("last_updated", System.currentTimeMillis());
+
         sCurrentUser.getPrefsEditor().apply();
 
         //Save the work orders array into current user
@@ -176,40 +200,44 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         return responsePair;
     }
 
-    private boolean isRefreshNeeded(String updateUrl){
-        //Check 'last_updated' for user
-        Long stored_lastUpdated = sCurrentUser.getPrefs().getLong("last_updated", 0);
-        Date now = new Date(System.currentTimeMillis()); //TESTING
-        stored_lastUpdated = now.getTime();
-        Date stored_lastUpdatedDate = new Date(stored_lastUpdated);
+    private boolean isRefreshNeeded(){
+        String lastUpdated = "";
+        Date retrievedDate = new Date();
+        Date storedDate;
 
-        if(stored_lastUpdated != 0){ //If date is stored
-            //Convert date string to date obj
-            JSONParser jParser = new JSONParser();
-            ResponsePair responsePair = jParser.getJSONFromUrl(updateUrl, false);
-            if (responsePair.getStatus() != ResponsePair.Status.SUCCESS){
-                //Http fail
-                Log.d(TAG, "isRefreshNeeded Fail");
-                return false;
-            }else{
-                //Http success
-                Log.d(TAG, "isRefreshNeeded Success");
-                String lastUpdated = responsePair.getReturnedString();
-                Log.d(TAG, "ds: "+lastUpdated);
-                lastUpdated = lastUpdated.replace("\"", "");
-                Log.d(TAG, "ds2: "+lastUpdated);
+        //Get last_updated from stored prefs
+        Long storedTime = sCurrentUser.getPrefs().getLong("last_updated", 0L);
 
-                Date lastUpdatedDate = convertToDate(lastUpdated);
-                if(stored_lastUpdatedDate.before(lastUpdatedDate)){
-                    //Needs Refresh
-                    return true;
-                }else{
-                    return false;
-                }
-            }
-        }else{ //No date stored. Refresh workOrders
+        if (storedTime == 0L){
+            //No stored time, need refresh
             return true;
         }
+        storedDate = new Date(storedTime);
+        Log.d(TAG, "isRefreshNeeded() Stored Date: "+storedTime+" = "+storedDate);
+
+        //Retrieve last_updated from updateUrl for user
+        JSONParser jParser = new JSONParser();
+        ResponsePair responsePair = jParser.getJSONFromUrl(sCurrentUser.getURLGetLastUpdated(), false);
+
+        if (responsePair.getStatus() == ResponsePair.Status.SUCCESS){
+            lastUpdated = responsePair.getReturnedString();
+            retrievedDate = convertToDate(lastUpdated);
+            Log.d(TAG, "Online last_updated retrieved is: "+retrievedDate.getTime()+" = "+retrievedDate);
+        }else{
+            //TODO 3/12/2015 - below probably indicates http error, maybe just display error and don't try refresh
+            //No retrieved time, need refresh
+            return true;
+        }
+
+        if (retrievedDate.after(storedDate)){
+            //Retrieved time is new than stored time, need refresh
+            return true;
+        } else{
+            //Retrieved time is not newer than stored time, no refresh
+            return false;
+        }
+
+
     }
 
 
@@ -234,6 +262,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
     }
 
     private Date convertToDate(String dateString){
+        dateString = dateString.replace("\"", "");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date convertedDate = new Date();
         try{

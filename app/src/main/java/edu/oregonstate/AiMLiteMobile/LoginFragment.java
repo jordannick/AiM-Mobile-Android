@@ -137,7 +137,7 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         mLoginButton.setEnabled(true);
         mLoadCircle.setVisibility(View.INVISIBLE);
 
-        sCurrentUser.getCurrentRefresh();
+        //sCurrentUser.getCurrentRefresh();
 
         //Move on to the next activity
         Intent i = new Intent(getActivity(), WorkOrderListActivity.class);

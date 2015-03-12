@@ -28,7 +28,7 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
 
     private ActionBar actionBar;
 
-    public void onWorkOrderUpdated(WorkOrder wo) {
+    public void onWorkOrderUpdated() {
 
     }
 
@@ -88,6 +88,8 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
         getMenuInflater().inflate(R.menu.menu_detail, menu);
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

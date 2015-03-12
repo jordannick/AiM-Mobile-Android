@@ -18,7 +18,7 @@ public class CurrentUser {
     private ArrayList<WorkOrder> mWorkOrders;
     private static CurrentUser sCurrentUser;
     private static Context sAppContext;
-    private long lastRefresh;
+   // private long lastRefresh;
 
     public String URLGetAll;
     public String URLGetLastUpdated;
@@ -60,7 +60,7 @@ public class CurrentUser {
         sAppContext = appContext;
         mWorkOrders = new ArrayList<WorkOrder>();
         mActions = new ArrayList<Action>();
-        lastRefresh = 0;
+        //lastRefresh = 0;
     }
 
     public static CurrentUser get(Context c){
@@ -83,9 +83,11 @@ public class CurrentUser {
         return URLGetNotices;
     }
 
+    /*
     public void getCurrentRefresh(){
         lastRefresh = System.currentTimeMillis();
     }
+*/
 
     public void addNewWorkOrder(WorkOrder wo){
         mWorkOrders.add(wo);
@@ -135,7 +137,11 @@ public class CurrentUser {
         mActions.add(action);
     }
 
+    /*
     public boolean isRefreshNeeded(){
+        Log.d(TAG, "System.currentTimeMillis() = "+System.currentTimeMillis());
+        Log.d(TAG, "lastRefresh = "+lastRefresh);
         return System.currentTimeMillis() > lastRefresh;
     }
+    */
 }

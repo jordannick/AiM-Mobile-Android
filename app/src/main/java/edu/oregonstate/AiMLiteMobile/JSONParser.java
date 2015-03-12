@@ -7,6 +7,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
@@ -35,7 +36,7 @@ public class JSONParser {
     }
 
     public ResponsePair getJSONFromUrl(String url, boolean isArray) {
-        Log.d(TAG, "Attemping http to: " + url);
+        Log.d(TAG, "Attemping http get to: " + url);
 
         StringBuilder builder = new StringBuilder();
 
@@ -45,11 +46,13 @@ public class JSONParser {
 
         ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
 
-        HttpPost httpPost = new HttpPost(url);
+        //HttpPost httpPost = new HttpPost(url);
+        HttpGet httpGet = new HttpGet(url);
        // httpPost.setHeader("Connection","Keep-Alive");
 
         try {
-            HttpResponse response = client.execute(httpPost);
+            //HttpResponse response = client.execute(httpPost);
+            HttpResponse response = client.execute(httpGet);
 
             StatusLine statusLine = response.getStatusLine();
             int statusCode = statusLine.getStatusCode();
@@ -98,16 +101,23 @@ public class JSONParser {
                 responsePair.setStatus(ResponsePair.Status.SUCCESS);
             }
             catch (JSONException e) {
-                Log.e("JSON Parser", "Error parsing data " + e.toString());
+                Log.e("JSON Parser", "Error parsing JSON data " + e.toString());
 
                 responsePair.setStatus(ResponsePair.Status.JSON_FAIL);
                 return responsePair;
 
             }
         }else{
-            //Parse String
-            responsePair.setReturnedString(builder.toString());
-            responsePair.setStatus(ResponsePair.Status.SUCCESS);
+            //Parse String only -- for lastUpdated
+            try {
+                responsePair.setReturnedString(builder.toString());
+                responsePair.setStatus(ResponsePair.Status.SUCCESS);
+            }
+            catch (Exception e){
+                Log.e("JSON Parser", "Error parsing String data " + e.toString());
+                responsePair.setStatus(ResponsePair.Status.JSON_FAIL);
+                return responsePair;
+            }
         }
 
         return responsePair;

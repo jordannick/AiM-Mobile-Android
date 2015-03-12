@@ -15,7 +15,7 @@ public class WorkOrderNotesFragment extends ListFragment {
     private WorkOrder mWorkOrder;
 
     public interface Callbacks {
-        void onWorkOrderUpdated(WorkOrder wo);
+        void onWorkOrderUpdated();
     }
 
     @Override
