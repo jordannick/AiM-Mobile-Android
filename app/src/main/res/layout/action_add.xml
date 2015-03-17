@@ -6,25 +6,25 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_weight="1"
+
         android:background="@drawable/add_action_section">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Work Order: "
-            android:textSize="22sp"
-            android:textStyle="bold"
+            android:text="Phase ID: "
+            android:textSize="20sp"
             android:paddingLeft="8dp"
             android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:textColor="@color/action_add_grey_text"/>
         <TextView
             android:id="@+id/workOrderIdText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1234-5678"
+            android:text="123456-002"
             android:textSize="24sp"/>
     </LinearLayout>
 
@@ -33,7 +33,7 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1.5"
+        android:layout_weight="1"
         android:background="@drawable/add_action_section">
 
         <TextView
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:text="Action Taken"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:paddingLeft="8dp"
             android:paddingTop="8dp"
             android:textColor="@color/action_add_grey_text"/>
@@ -52,19 +52,79 @@
             android:id="@+id/spinner_actionTaken"
             android:entries="@array/actionTakenItems"
             android:spinnerMode="dialog"
+
             />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@drawable/add_action_section">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hours"
+            android:textSize="20sp"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/action_add_grey_text"
+            />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter Hours"
+                android:id="@+id/button_setHours"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Clear"
+                android:id="@+id/button_clearHours"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/button_setHours"
+
+                />
+
+            <TextView
+                android:id="@+id/hoursText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="64dp"
+                android:text="-"
+                />
+
+
+
+        </RelativeLayout>
+
     </LinearLayout>
 
 
 
 
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1.5"
+        android:layout_weight="1"
         android:background="@drawable/add_action_section">
 
         <TextView
@@ -73,101 +133,96 @@
             android:layout_height="wrap_content"
             android:text="Status"
             android:layout_gravity="left"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:paddingLeft="8dp"
             android:paddingTop="8dp"
             android:textColor="@color/action_add_grey_text"/>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Update Status"
-            android:id="@+id/checkBox_updateStatus"
-            android:layout_gravity="right"
-            android:paddingTop="8dp"
-            android:layout_toRightOf="@id/action_add_textView_status"
-            android:onClick="onCheckBoxClicked"
-            />
-
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/spinner_updateStatus"
-            android:layout_weight="3"
-            android:entries="@array/statusItems"
-            android:spinnerMode="dialog"
-            android:layout_below="@id/action_add_textView_status"
-            android:clickable="false"
-
-            />
-    </RelativeLayout>
-
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5"
-        android:orientation="vertical"
-        android:background="@drawable/add_action_section">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hours"
-            android:textSize="20dp"
-            android:paddingLeft="8dp"
-            android:paddingTop="8dp"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/action_add_grey_text"
-            />
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="horizontal">
+            android:layout_height="fill_parent">
 
-            <Button
+            <View android:id="@+id/strutStatus"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true"/>
+
+            <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Enter Hours"
-                android:id="@+id/button_setHours"
-                android:gravity="left"/>
+                android:text="Update Status"
+                android:id="@+id/checkBox_updateStatus"
+                android:onClick="onCheckBoxClicked"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:layout_alignRight="@+id/strutStatus"
+                android:layout_alignParentLeft="true"
+                />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-"
-                android:id="@+id/hoursText"
-                android:layout_gravity="center_horizontal"/>
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/spinner_updateStatus"
+                android:layout_weight="3"
+                android:entries="@array/statusItems"
+                android:spinnerMode="dialog"
+                android:clickable="false"
+                android:layout_alignLeft="@+id/strutStatus"
+                android:layout_alignParentRight="true"
+            />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Clear"
-                android:id="@+id/button_clearHours"
-                android:gravity="right"/>
-
-        </LinearLayout>
-
+        </RelativeLayout>
     </LinearLayout>
+
+
+
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:orientation="vertical"
         android:background="@drawable/add_action_section">
 
-        <Button
+        <TextView
+            android:id="@+id/action_add_textView_note"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:text="Add Note"
-            android:id="@+id/button_addNote"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"/>
+            android:layout_height="wrap_content"
+            android:text="Note"
+            android:layout_gravity="left"
+            android:textSize="20sp"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:textColor="@color/action_add_grey_text"/>
 
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Note"
+                android:id="@+id/button_addNote"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                />
+
+            <TextView
+                android:id="@+id/noteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="32dp"
+                android:text="Note text goes here"
+                />
+        </RelativeLayout>
 
     </LinearLayout>
-
 
 
 </LinearLayout>

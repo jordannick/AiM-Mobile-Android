@@ -77,6 +77,39 @@
 
             android:background="#2f2f2f"> <!-- #ECECEC #E6E6E6 -->
 
+            <LinearLayout
+                android:id="@+id/line0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp"
+                android:background="#888888">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:text="@string/detail_id"
+                    android:textSize="14sp"
+                    android:textColor="#FFFFFF"/>
+
+
+                <TextView
+                    android:id="@+id/idTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+                    android:text="!contents"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="#FFFFFF"/>
+
+            </LinearLayout>
+
 
 
         <LinearLayout
@@ -87,7 +120,7 @@
            android:layout_marginLeft="12dp"
            android:layout_marginRight="12dp"
            android:layout_marginBottom="4dp"
-           android:layout_marginTop="12dp"
+
             android:background="#6e6e6e">
 
            <TextView

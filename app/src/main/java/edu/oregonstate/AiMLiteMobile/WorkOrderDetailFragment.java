@@ -23,7 +23,7 @@ public class WorkOrderDetailFragment extends Fragment{
 
     public static String TAG = "WorkOrderDetailFragment";
 
-    public static final String WORK_ORDER_ID = "edu.oregonstate.AiMLiteMobile.workorder_id";
+    //public static final String WORK_ORDER_ID = "edu.oregonstate.AiMLiteMobile.workorder_id";
 
     private WorkOrder mWorkOrder;
 
@@ -48,29 +48,19 @@ public class WorkOrderDetailFragment extends Fragment{
         mCallbacks = null;
     }
 
-    public static WorkOrderDetailFragment newInstance(UUID workOrderId) {
+
+
+    public static WorkOrderDetailFragment newInstance(WorkOrder workOrder) {
         Bundle args = new Bundle();
-        args.putSerializable(WORK_ORDER_ID, workOrderId);
+        args.putSerializable(WorkOrder.WORK_ORDER_EXTRA, workOrder);
         WorkOrderDetailFragment fragment = new WorkOrderDetailFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
-/*
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
 
 
-
-        // TODO: implement singleton work order list
-       // mWorkOrder = CrimeLab.get(getActivity()).getCrime(crimeId); p.193
-
-
-
-    }
-    */
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -112,6 +102,8 @@ public class WorkOrderDetailFragment extends Fragment{
                 topSectionPriorityTextView.setBackgroundColor(getResources().getColor(R.color.timeSensitive_yellow));
                 break;
         }
+
+        ((TextView)v.findViewById(R.id.idTextView)).setText(mWorkOrder.getProposalPhase());
         ((TextView)v.findViewById(R.id.buildingTextView)).setText(mWorkOrder.getBuilding());
         ((TextView)v.findViewById(R.id.descriptionTextView)).setText(mWorkOrder.getDescription());
         //((TextView)v.findViewById(R.id.priorityTextView)).setText(mWorkOrder.getPriority());

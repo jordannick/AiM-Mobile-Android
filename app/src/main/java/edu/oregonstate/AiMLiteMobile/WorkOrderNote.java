@@ -1,11 +1,12 @@
 package edu.oregonstate.AiMLiteMobile;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by sellersk on 8/20/2014.
  */
-public class WorkOrderNote {
+public class WorkOrderNote implements Serializable {
 
     private static final String TAG = "WorkOrderNote";
 

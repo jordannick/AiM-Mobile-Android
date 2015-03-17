@@ -6,16 +6,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+
 import java.util.List;
 
 
@@ -76,9 +68,9 @@ public class PostWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         if (isNetworkOnline()) {
             Log.d(TAG, "Network Available");
 
-            SubmitHTTP submitHTTP = new SubmitHTTP();
+            SubmitChange submitChange = new SubmitChange();
 
-            responsePair = submitHTTP.postToURL("SomeURLGoesHere", nameValuePairs);
+            responsePair = submitChange.postToURL("SomeURLGoesHere", nameValuePairs);
 
             if (responsePair.getStatus() != ResponsePair.Status.SUCCESS) {
                 return responsePair;

@@ -3,6 +3,8 @@ package edu.oregonstate.AiMLiteMobile;
 
 
 import android.util.Log;
+
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,13 +13,14 @@ import java.util.UUID;
 /**
  * Created by jordan_n on 8/13/2014.
  */
-public class WorkOrder {
+public class WorkOrder implements Serializable {
 
     private static final String TAG = "WorkOrder";
 
     private UUID mId;
 
-    public static final String WORK_ORDER_ID = "edu.oregonstate.AiMLiteMobile.workorder_id";
+    //public static final String WORK_ORDER_ID = "edu.oregonstate.AiMLiteMobile.workorder_id";
+    public static final String WORK_ORDER_EXTRA = "edu.oregonstate.AiMLiteMobile.WorkOrder";
 
     String mDescription;
     String mBeginDate;

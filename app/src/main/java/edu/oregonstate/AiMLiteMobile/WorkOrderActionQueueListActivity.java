@@ -79,7 +79,7 @@ public class WorkOrderActionQueueListActivity extends SingleFragmentActivity {
         String timestamp = "";
         String workOrderPhaseID = "";
 
-        //Create namevalue items required by the POST to pass to SubmitHTTP
+        //Create namevalue items required by the POST to pass to SubmitChange
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
         //Variables common to all the methods
         nameValuePairs.add(new BasicNameValuePair("username", username));
@@ -94,6 +94,11 @@ public class WorkOrderActionQueueListActivity extends SingleFragmentActivity {
         String url = "appropriate function call url here";
         PostWorkOrdersTask task = new PostWorkOrdersTask(nameValuePairs, url, this);
         task.execute();
+
+
+        //TODO 3/12/2015 - gray out actions in list after successful submit
+        // sync notes
+
 
     }
 }

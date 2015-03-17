@@ -42,10 +42,11 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
 
         setContentView(R.layout.activity_fragment);
 
-        workOrderId = (UUID)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_ID);
-        Log.d(TAG, "woID in detail activity: " + workOrderId);
-        mWorkOrder = CurrentUser.get(getApplicationContext()).getWorkOrder(workOrderId);
-        Log.d(TAG, "wo in detail activity: " + mWorkOrder);
+        mWorkOrder = (WorkOrder)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
+       // workOrderId = (UUID)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_ID);
+        //Log.d(TAG, "woID in detail activity: " + workOrderId);
+        //mWorkOrder = CurrentUser.get(getApplicationContext()).getWorkOrder(workOrderId);
+        //Log.d(TAG, "wo in detail activity: " + mWorkOrder);
 
         actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -96,8 +97,9 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
         switch (item.getItemId()){
             case R.id.action_new:
                 Intent i = new Intent(this, WorkOrderAddActionActivity.class);
-                //i.putExtra(WorkOrderDetailFragment.WORK_ORDER_ID, workOrderId);
-                i.putExtra(WorkOrder.WORK_ORDER_ID, workOrderId);
+
+               // i.putExtra(WorkOrder.WORK_ORDER_ID, workOrderId);
+                i.putExtra(WorkOrder.WORK_ORDER_EXTRA, mWorkOrder);
                 startActivity(i);
                 break;
             case android.R.id.home:

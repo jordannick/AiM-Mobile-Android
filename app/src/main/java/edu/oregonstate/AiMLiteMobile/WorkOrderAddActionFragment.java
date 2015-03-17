@@ -35,9 +35,9 @@ import java.util.UUID;
  * Created by sellersk on 2/17/2015.
  */
 public class WorkOrderAddActionFragment extends Fragment {
-    public static final String TAG = "WorkOrderActionNewFragment";
+    public static final String TAG = "WorkOrderActionNewFrag";
 
-    public static final String WORK_ORDER_ID = "edu.oregonstate.AiMLiteMobile.workorder_id";
+   // public static final String WORK_ORDER_ID = "edu.oregonstate.AiMLiteMobile.workorder_id";
 
     private View v;
 
@@ -74,7 +74,8 @@ public class WorkOrderAddActionFragment extends Fragment {
         super.onDetach();
     }
 
-    public static WorkOrderAddActionFragment newInstance(/*UUID workOrderId*/){
+    /*
+    public static WorkOrderAddActionFragment newInstance(UUID workOrderId){
         Log.d(TAG, "newInstance");
         //Bundle args = new Bundle();
         //args.putSerializable(WORK_ORDER_ID, workOrderId);
@@ -83,6 +84,7 @@ public class WorkOrderAddActionFragment extends Fragment {
 
         return fragment;
     }
+    */
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -90,6 +92,8 @@ public class WorkOrderAddActionFragment extends Fragment {
         Log.d(TAG, "onActivityCreated");
         mActivity = getActivity();
         currentUser = CurrentUser.get(mContext);
+        //WorkOrderAddActionActivity activity = (WorkOrderAddActionActivity)getActivity();
+        WorkOrder workOrder = ((WorkOrderAddActionActivity)mActivity).mWorkOrder;
 
        mActivity.findViewById(R.id.spinner_updateStatus).setEnabled(false);
        workOrderIdText = (TextView)mActivity.findViewById(R.id.workOrderIdText);
@@ -99,8 +103,9 @@ public class WorkOrderAddActionFragment extends Fragment {
        textView_hours = (TextView)mActivity.findViewById(R.id.hoursText);
        button_addNote = (Button)mActivity.findViewById(R.id.button_addNote);
 
-       //TODO: can't pass WO object? need phase num.
-       //workOrderIdText.setText(mWorkOrder.getProposalPhase());
+
+       workOrderIdText.setText(workOrder.getProposalPhase());
+       // workOrderIdText.setText(workOrderPhaseId);
 
        newActionNotes = new ArrayList<WorkOrderNote>();
 
@@ -149,6 +154,18 @@ public class WorkOrderAddActionFragment extends Fragment {
             }
         });
 
+
+        Button clearHoursButton = (Button)getActivity().findViewById(R.id.button_clearHours);
+        clearHoursButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                textView_hours.setText("-");
+                hoursEntered = -1;
+            }
+        });
+
+
+
     }
 
     private void createNoteEntryDialog() {
@@ -181,6 +198,7 @@ public class WorkOrderAddActionFragment extends Fragment {
                             String toastText = "New note added";
                             Toast toast = Toast.makeText(mContext, toastText, Toast.LENGTH_SHORT);
                             toast.show();
+                            ((TextView)getActivity().findViewById(R.id.noteText)).setText(noteString);
                         }
                     }
                 });
@@ -221,11 +239,45 @@ public class WorkOrderAddActionFragment extends Fragment {
         View v = inflater.inflate(R.layout.action_add, parent, false);
         this.v = v;
 
-        WorkOrderAddActionActivity activity = (WorkOrderAddActionActivity)getActivity();
-        WorkOrder workOrder = activity.getWorkOrder();
+
 
 
         return v;
+    }
+
+
+    private void createConfirmDialog(){
+        final AlertDialog.Builder confirmAddActionDialog = new AlertDialog.Builder(mActivity);
+        confirmAddActionDialog.setTitle("Add new action");
+        confirmAddActionDialog.setMessage("Confirm?");
+
+
+        confirmAddActionDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //Create Action object from form fields
+                //Add new Action object to CurrentUser.Actions
+                //Return to QueueListFragment and update to show added Action
+                Intent intent = new Intent(getActivity(), WorkOrderActionQueueListActivity.class);
+                startActivity(intent);
+
+                String toastText = "New action saved to queue";
+                Toast toast = Toast.makeText(mContext, toastText, Toast.LENGTH_SHORT);
+                toast.show();
+
+                getActivity().finish();
+            }
+        });
+
+        confirmAddActionDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+
+
+        AlertDialog alert = confirmAddActionDialog.create();
+        alert.show();
     }
 
     //Get all values from form. Create Action object. Add to CurrentUser.Actions
@@ -269,17 +321,10 @@ public class WorkOrderAddActionFragment extends Fragment {
                 if(true) { //If all fields filled
                     Log.d(TAG, "'action to queue' button touched");
 
-                    //Create Action object from form fields
-                    //Add new Action object to CurrentUser.Actions
-                    //Return to QueueListFragment and update to show added Action
-                    Intent i = new Intent(getActivity(), WorkOrderActionQueueListActivity.class);
-                    startActivity(i);
+                    createConfirmDialog();
 
-                    String toastText = "New action saved to queue";
-                    Toast toast = Toast.makeText(mContext, toastText, Toast.LENGTH_SHORT);
-                    toast.show();
 
-                    getActivity().finish();
+
                 }
                 return true;
             case android.R.id.home:

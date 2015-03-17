@@ -24,10 +24,10 @@ import java.io.InputStreamReader;
 /**
  * Created by jordan_n on 3/12/2015.
  */
-public class SubmitHTTP {
+public class SubmitChange {
     private CurrentUser sCurrentUser;
 
-    public SubmitHTTP(){
+    public SubmitChange(){
     }
 
     //Usage: pass in a List<NameValuePair> created with values based on the method we want to call

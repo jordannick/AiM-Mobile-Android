@@ -25,20 +25,35 @@ public class WorkOrderAddActionActivity extends SingleFragmentActivity{
     public WorkOrder mWorkOrder;
     public UUID mWorkOrderId;
 
-
-
     @Override
-    protected Fragment createFragment() {
+    public void onCreate(Bundle savedInstanceState) {
+
         Intent intent = getIntent();
-        if(intent.hasExtra(WorkOrder.WORK_ORDER_ID)){
-            mWorkOrderId = (UUID)intent.getSerializableExtra(WorkOrder.WORK_ORDER_ID);
+        if(intent.hasExtra(WorkOrder.WORK_ORDER_EXTRA)){
+            //mWorkOrderId = (UUID)intent.getSerializableExtra(WorkOrder.WORK_ORDER_ID);
+           /* mWorkOrderId = (String)intent.getSerializableExtra(WorkOrder.WORK_ORDER_ID);
             if(mWorkOrderId != null){
                 //Has workOrderId, load Add Action Tab with selected WorkOrder
                 mWorkOrder = CurrentUser.get(getApplicationContext()).getWorkOrder(mWorkOrderId);
-            }
+            }*/
+            mWorkOrder = (WorkOrder) intent.getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
         }
 
 
+
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    protected Fragment createFragment() {
+      /*  Intent intent = getIntent();
+        if(intent.hasExtra(WorkOrder.WORK_ORDER_EXTRA)){
+
+            mWorkOrder = (WorkOrder) intent.getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
+        }
+
+*/
         fragment = new WorkOrderAddActionFragment();
         return fragment;
     }
@@ -97,6 +112,8 @@ public class WorkOrderAddActionActivity extends SingleFragmentActivity{
         boolean checked = ((CheckBox) view).isChecked();
         findViewById(R.id.spinner_updateStatus).setClickable(checked);
         findViewById(R.id.spinner_updateStatus).setEnabled(checked);
+
+        //TODO 3/17/15: return spinner to original item if unchecked.
     }
 
 

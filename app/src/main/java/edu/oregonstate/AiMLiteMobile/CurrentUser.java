@@ -104,9 +104,12 @@ public class CurrentUser {
         return mWorkOrders;
     }
 
-    public WorkOrder getWorkOrder(UUID id){
+    public WorkOrder getWorkOrder(/*UUID id*/String proposalPhase){
         for (WorkOrder wo : mWorkOrders) {
-            if (wo.getId().equals(id)) {
+            /*if (wo.getId().equals(id)) {
+                return wo;
+            }*/
+            if (wo.getProposalPhase().equals(proposalPhase)){
                 return wo;
             }
         }

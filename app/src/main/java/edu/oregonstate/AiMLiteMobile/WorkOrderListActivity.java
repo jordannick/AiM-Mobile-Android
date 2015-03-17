@@ -40,11 +40,11 @@ public class WorkOrderListActivity extends SingleFragmentActivity implements Wor
     }
 
 
-    public void onWorkOrderSelected(WorkOrder wo){
+    public void onWorkOrderSelected(WorkOrder workOrder){
         if (findViewById(R.id.detailFragmentContainer) == null) {
         // Start an instance of WorkOrderDetailActivity
             Intent i = new Intent(this, WorkOrderDetailActivity.class);
-            i.putExtra(WorkOrderDetailFragment.WORK_ORDER_ID, wo.getId());
+            i.putExtra(WorkOrder.WORK_ORDER_EXTRA, workOrder);
             //Log.d(TAG, "wo: "+wo);
             //Log.d(TAG, "woID sent: "+wo.getId());
             startActivity(i);
@@ -52,7 +52,7 @@ public class WorkOrderListActivity extends SingleFragmentActivity implements Wor
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
             Fragment oldDetail = fm.findFragmentById(R.id.detailFragmentContainer);
-            Fragment newDetail = WorkOrderDetailFragment.newInstance(wo.getId());
+            Fragment newDetail = WorkOrderDetailFragment.newInstance(workOrder);
             if (oldDetail != null) {
                 ft.remove(oldDetail);
             }
@@ -125,12 +125,13 @@ public class WorkOrderListActivity extends SingleFragmentActivity implements Wor
         super.onStart();
         Log.d(TAG, "onStart");
 
-
+        //TODO 3/12/2015 - check stored last updated time against current time, if longer than some interval, refresh
         updateWorkOrderList();
 
 
     }
 
+    //TODO 3/12/2015 - implement pull to refresh elsewhere ( to call this function ) - google's SwipeRefreshLayout?
     //Makes new request, if refresh needed, CurrentUser workorders will repopulate, and displayed list updated
     private void updateWorkOrderList(){
         Log.d(TAG, "updateWorkOrderList");
