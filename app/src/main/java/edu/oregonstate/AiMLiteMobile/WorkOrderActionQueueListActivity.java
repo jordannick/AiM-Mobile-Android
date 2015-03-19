@@ -65,7 +65,8 @@ public class WorkOrderActionQueueListActivity extends SingleFragmentActivity {
                 finish(); //TODO: Add confirm to save info before finishing activity
                 break;
             case R.id.action_sync:
-                syncActions();
+                //syncActions();
+                break;
         }
 
         return super.onOptionsItemSelected(item);

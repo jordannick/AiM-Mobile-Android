@@ -25,10 +25,13 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
     private OnTaskCompleted listener;
     private String url;
     private String updateUrl;
+    private boolean forceRefresh;
     private ArrayList<WorkOrder> mWorkOrders;
     private JSONArray json;
     private CurrentUser sCurrentUser;
     private Context mContext;
+    private Date retrievedDate;
+
 
     public interface OnTaskCompleted{
         void onTaskSuccess();
@@ -36,17 +39,18 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         void onAuthenticateFail();
     }
 
-    public GetWorkOrdersTask(OnTaskCompleted listener, CurrentUser currentUser, Context context) {
+    public GetWorkOrdersTask(OnTaskCompleted listener, CurrentUser currentUser, Context context, boolean forceRefresh) {
         this.listener = listener;
-        this.url = currentUser.getURLGetAll();
-        this.updateUrl = currentUser.getURLGetLastUpdated();
-
         this.sCurrentUser = currentUser;
         this.mContext = context;
+        this.forceRefresh = forceRefresh;
 
-        mWorkOrders = new ArrayList<WorkOrder>();
+        this.url = currentUser.getURLGetAll();
+        this.updateUrl = currentUser.getURLGetLastUpdated();
+        this.mWorkOrders = new ArrayList<WorkOrder>();
+
+        retrievedDate = new Date();
     }
-
 
     @Override
     protected void onPostExecute(final ResponsePair responsePair) {
@@ -77,7 +81,6 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
                 break;
         }
         Log.d(TAG, "onPostExecute - End responsePair");
-
     }
 
     protected ResponsePair doInBackground(final String... args) {
@@ -85,6 +88,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
 
         //Network available
         if (isNetworkOnline()) {
+
             Log.d(TAG, "Network Available");
             JSONParser jParser = new JSONParser();
 
@@ -92,7 +96,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
             boolean needRefresh = isRefreshNeeded();
             Log.d(TAG, "needRefresh : " + needRefresh);
 
-            if (needRefresh) {
+            if (needRefresh || forceRefresh) {
 
                 responsePair = jParser.getJSONFromUrl(url, true);
 
@@ -103,7 +107,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
                 json = responsePair.getJarray();
             }
             else{
-                //Have network but don't need refresh. Assume data exists locally. Is this even needed?
+                //Have network but don't need refresh. Assume data exists locally. Is this even needed? Maybe from login?
                 try {
                     Log.d(TAG, "Trying to get stored data");
                     json = new JSONArray(sCurrentUser.getPrefs().getString("jsondata", "[]"));
@@ -146,7 +150,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
             2) there is network and refresh is not needed, and stored data exists
             3) no network, and stored data exists
 
-        First time run to get data:
+        Flow of first time run to get data:
             There is network, refresh needed, fills data, saves local jsondata in prefs
         */
 
@@ -188,9 +192,11 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         String jsonStr = json.toString();
         sCurrentUser.getPrefsEditor().putString("jsondata", jsonStr);
 
-        //Save current time in last updated
-        Log.d(TAG, "Saving time to last_updated: "+System.currentTimeMillis()+" = "+ new Date(System.currentTimeMillis()));
-        sCurrentUser.getPrefsEditor().putLong("last_updated", System.currentTimeMillis());
+        //Save time in last updated
+        Log.d(TAG, "Saving time to last_updated: "+retrievedDate.getTime()+" = "+ retrievedDate);
+        sCurrentUser.getPrefsEditor().putLong("last_updated", retrievedDate.getTime());
+        //Log.d(TAG, "Saving time to last_updated: "+System.currentTimeMillis()+" = "+ new Date(System.currentTimeMillis()));
+        //sCurrentUser.getPrefsEditor().putLong("last_updated", System.currentTimeMillis());
 
         sCurrentUser.getPrefsEditor().apply();
 
@@ -200,9 +206,10 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         return responsePair;
     }
 
+    //Gets the last updated time from url, compares with stored time.
     private boolean isRefreshNeeded(){
         String lastUpdated = "";
-        Date retrievedDate = new Date();
+
         Date storedDate;
 
         //Get last_updated from stored prefs
@@ -210,6 +217,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
 
         if (storedTime == 0L){
             //No stored time, need refresh
+            Log.d(TAG, "storedTime = 0");
             return true;
         }
         storedDate = new Date(storedTime);
@@ -231,9 +239,11 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
 
         if (retrievedDate.after(storedDate)){
             //Retrieved time is new than stored time, need refresh
+            Log.d(TAG, "retrievedDate newer than storedDate");
             return true;
         } else{
             //Retrieved time is not newer than stored time, no refresh
+            Log.d(TAG, "retrievedDate NOT newer than storedDate");
             return false;
         }
 

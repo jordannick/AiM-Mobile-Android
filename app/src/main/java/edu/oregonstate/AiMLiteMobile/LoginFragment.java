@@ -1,10 +1,8 @@
 package edu.oregonstate.AiMLiteMobile;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,8 +48,7 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.login_view, parent, false);
         getActivity().setTitle(R.string.login_title);
 
@@ -62,6 +59,12 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         mLoadCircle = (ProgressBar)v.findViewById(R.id.load_circle);
         mLoadCircle.setVisibility(View.INVISIBLE);
 
+        loginHandler();
+
+        return v;
+    }
+
+    private void loginHandler(){
 
         //Check if autologin should occur
         if (sCurrentUser.getPrefs().getBoolean("autologin", false)){
@@ -74,6 +77,7 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         }
 
         //TODO: 3/10/15: Handle password authentication/matching to username
+        //TODO: 3/19/15: Think about clearing stored JSON/prefs if it's tied to a different user.
         //Autologin did not occur, enter info manually
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,14 +107,14 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
                         sCurrentUser.getPrefsEditor().apply();
                     }
 
+                    //Done authenticating, set up for next activity
                     executeTask();
                 }
             }
         });
-        return v;
     }
 
-    public void executeTask(){
+    private void executeTask(){
 
         sCurrentUser.setUsername(mUsername);
         sCurrentUser.buildUrlsWithUsername();
@@ -124,7 +128,9 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         mLoadCircle.setVisibility(View.VISIBLE);
         showToast("Logging in as: "+mUsername, Toast.LENGTH_LONG);
 
-        GetWorkOrdersTask task = new GetWorkOrdersTask(myFragment, sCurrentUser, getActivity());
+        //Attempt the request, try force pulling new list since we're logging in. Callback to success or fail function in this class.
+        boolean forceRefresh = true;
+        GetWorkOrdersTask task = new GetWorkOrdersTask(this, sCurrentUser, getActivity(), forceRefresh);
         task.execute();
     }
 
@@ -136,8 +142,6 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         mAutoLoginCheckbox.setEnabled(true);
         mLoginButton.setEnabled(true);
         mLoadCircle.setVisibility(View.INVISIBLE);
-
-        //sCurrentUser.getCurrentRefresh();
 
         //Move on to the next activity
         Intent i = new Intent(getActivity(), WorkOrderListActivity.class);

@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class WorkOrderListActivity extends SingleFragmentActivity implements WorkOrderListFragment.Callbacks, WorkOrderDetailFragment.Callbacks, GetWorkOrdersTask.OnTaskCompleted {
+public class WorkOrderListActivity extends SingleFragmentActivity implements WorkOrderListFragment.Callbacks, WorkOrderDetailFragment.Callbacks {
 
     private static final String TAG = "WorkOrderListActivity";
 
@@ -126,38 +126,28 @@ public class WorkOrderListActivity extends SingleFragmentActivity implements Wor
         Log.d(TAG, "onStart");
 
         //TODO 3/12/2015 - check stored last updated time against current time, if longer than some interval, refresh
-        updateWorkOrderList();
+
+
+        // updateWorkOrderList();
 
 
     }
 
-    //TODO 3/12/2015 - implement pull to refresh elsewhere ( to call this function ) - google's SwipeRefreshLayout?
+
     //Makes new request, if refresh needed, CurrentUser workorders will repopulate, and displayed list updated
-    private void updateWorkOrderList(){
+    /*private void updateWorkOrderList(){
         Log.d(TAG, "updateWorkOrderList");
 
         CurrentUser currentUser = CurrentUser.get(getApplicationContext());
 
-        GetWorkOrdersTask task = new GetWorkOrdersTask(this, currentUser, this);
+        GetWorkOrdersTask task = new GetWorkOrdersTask(this, currentUser, this, false);
         task.execute();
         onWorkOrderUpdated();
 
-    }
+    }*/
 
 
 
-    @Override
-    public void onTaskSuccess() {
-        Log.d(TAG, "list activity task success");
-    }
 
-    @Override
-    public void onNetworkFail() {
-        Log.d(TAG, "list activity net fail");
-    }
 
-    @Override
-    public void onAuthenticateFail() {
-        Log.d(TAG, "list activity auth fail");
-    }
 }
