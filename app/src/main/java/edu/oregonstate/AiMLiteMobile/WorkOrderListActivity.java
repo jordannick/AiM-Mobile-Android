@@ -1,36 +1,102 @@
 package edu.oregonstate.AiMLiteMobile;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class WorkOrderListActivity extends SingleFragmentActivity implements WorkOrderListFragment.Callbacks, WorkOrderDetailFragment.Callbacks {
+public class WorkOrderListActivity extends Activity implements WorkOrderListFragment.Callbacks, WorkOrderDetailFragment.Callbacks {
 
     private static final String TAG = "WorkOrderListActivity";
+    private static CurrentUser sCurrentUser;
+    ActionBar.Tab Tab1, Tab2;
+    Fragment fragmentTab1 = new WorkOrderListFragment();
+    Fragment fragmentTab2 = new WorkOrderListFragment();
+    private ActionBar actionBar;
+
 
     @Override
-    protected Fragment createFragment() {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_fragment);
+        actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        sCurrentUser = CurrentUser.get(getApplicationContext());
 
-        return new WorkOrderListFragment();
+
+
+
+
+
+        Tab1 = actionBar.newTab();
+        Tab2 = actionBar.newTab();
+
+        int num_daily = 0;
+        int num_backlog = 0;
+
+        //Show the number of work orders in each section
+        for (WorkOrder wo : sCurrentUser.getWorkOrders()){
+            if (wo.getSection().equals("Daily")){
+                num_daily += 1;
+            } else if (wo.getSection().equals("Backlog")){
+                num_backlog += 1;
+            }
+        }
+        Tab1.setText("Daily ("+num_daily+")");
+        Tab2.setText("Backlog ("+num_backlog+")");
+
+        Bundle bundle1 = new Bundle();
+        bundle1.putString("sectionFilter", "Daily");
+
+        Bundle bundle2 = new Bundle();
+        bundle2.putString("sectionFilter", "Backlog");
+
+        fragmentTab1.setArguments(bundle1);
+        fragmentTab2.setArguments(bundle2);
+
+
+
+        Tab1.setTabListener(new TabListener(fragmentTab1));
+        Tab2.setTabListener(new TabListener(fragmentTab2));
+
+        actionBar.addTab(Tab1);
+        actionBar.addTab(Tab2);
+
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+
+
+        if(savedInstanceState!=null){
+            int currentTab = savedInstanceState.getInt("CurrentSectionTab");
+            actionBar.selectTab(actionBar.getTabAt(currentTab));
+        }
+
     }
-
 
     @Override
-    protected int getLayoutResId() {
-        return R.layout.activity_masterdetail;
-    }
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("CurrentSectionTab", actionBar.getSelectedTab().getPosition());
 
+    }
 
     public void onWorkOrderUpdated() {
         FragmentManager fm = getFragmentManager();

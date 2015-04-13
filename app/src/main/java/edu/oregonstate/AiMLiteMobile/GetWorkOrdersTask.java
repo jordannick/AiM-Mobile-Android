@@ -175,6 +175,15 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
                     wo.setDateElements(mJsonObj.getString("ent_date"));
                     wo.setStatus(mJsonObj.getString("status_code"));
                     wo.setProposalPhase(String.format("%s-%s", mJsonObj.getString("proposal"), mJsonObj.getString("sort_code")));
+
+                    // %%%% DEBUG
+                    if (i < 5){
+                        wo.setSection("Daily");
+                    } else {
+                        wo.setSection("Backlog");
+                    }
+                    // %%%%
+
                     mWorkOrders.add(wo);
                 }
                 catch (JSONException e) {

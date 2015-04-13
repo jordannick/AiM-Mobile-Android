@@ -8,9 +8,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.ListView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.view.ViewCompat;
+import android.widget.TabHost;
+
+import java.util.ArrayList;
 
 
 /**
@@ -23,6 +27,7 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
     private static final String TAG = "WorkOrderListFragment";
     private Callbacks mCallbacks;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
 
     public void updateUI() {
         Log.d(TAG, "notifyDataSetChanged");
@@ -47,11 +52,13 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
                         ViewGroup.LayoutParams.MATCH_PARENT)
         );
 
-
+        final Activity activity = this.getActivity();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
             @Override
             public void onRefresh() {
                 updateWorkOrderList();
+                //activity.getActionBar().hide();
+
             }
         });
 
@@ -120,9 +127,30 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
         sCurrentUser = CurrentUser.get(getActivity().getApplicationContext());
         getActivity().setTitle(sCurrentUser.getUsername());
 
-        WorkOrderAdapter adapter = new WorkOrderAdapter(getActivity(), sCurrentUser.getWorkOrders());
+        Bundle bundle = this.getArguments();
+        final String sectionFilter = bundle.getString("sectionFilter");
+
+        final WorkOrderAdapter adapter = new WorkOrderAdapter(getActivity(), sCurrentUser.getWorkOrders());
+
+
+        // Update the Tab text with latest number of work orders in the section
+        final Activity activity = this.getActivity();
+        Filter.FilterListener countListener = new Filter.FilterListener() {
+            @Override
+            public void onFilterComplete(int i) {
+                if (sectionFilter.equals("Daily")) {
+                    activity.getActionBar().getTabAt(0).setText("Daily (" + adapter.getCount() + ")");
+                } else if (sectionFilter.equals("Backlog")) {
+                    activity.getActionBar().getTabAt(1).setText("Backlog (" + adapter.getCount() + ")");
+                }
+            }
+        };
+
+        adapter.getFilter().filter(sectionFilter, countListener);
 
         setListAdapter(adapter);
+
+        Log.d(TAG, ""+sCurrentUser.getWorkOrders());
 
         super.onActivityCreated(savedInstanceState);
     }
@@ -155,6 +183,7 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
 
     public void onTaskSuccess() {
         Log.d(TAG, "list task success");
+
         if (mSwipeRefreshLayout.isRefreshing()){
             mSwipeRefreshLayout.setRefreshing(false);
         }

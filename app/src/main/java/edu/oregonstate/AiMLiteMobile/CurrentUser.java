@@ -16,6 +16,7 @@ public class CurrentUser {
     private SharedPreferences prefs;
     private SharedPreferences.Editor prefsEditor;
     private ArrayList<WorkOrder> mWorkOrders;
+
     private static CurrentUser sCurrentUser;
     private static Context sAppContext;
    // private long lastRefresh;

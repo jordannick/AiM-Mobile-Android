@@ -68,7 +68,7 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
 
 
         if(savedInstanceState!=null){
-            int currentTab = savedInstanceState.getInt("CurrentTab");
+            int currentTab = savedInstanceState.getInt("CurrentDetailsTab");
             actionBar.selectTab(actionBar.getTabAt(currentTab));
         }
 
@@ -79,7 +79,7 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("CurrentTab", actionBar.getSelectedTab().getPosition());
+        outState.putInt("CurrentDetailsTab", actionBar.getSelectedTab().getPosition());
 
     }
 

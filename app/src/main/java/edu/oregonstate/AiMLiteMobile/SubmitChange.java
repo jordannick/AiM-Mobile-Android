@@ -39,6 +39,10 @@ public class SubmitChange {
 
 
         //TODO 3/12/2015 - POST variables in body or appended in url? Does it matter?
+
+
+
+
         //Attach the variables to the message
        /* List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
         //Variables common to all the methods

@@ -28,6 +28,7 @@ public class WorkOrder implements Serializable {
     String mPriority;
     String mDateCreated;
     String mStatus;
+    String mSection;
     int mPriorityColor;
 
     ArrayList<WorkOrderNote> mNotes;
@@ -127,6 +128,13 @@ public class WorkOrder implements Serializable {
         return mPriority;
     }
 
+    public String getSection() {
+        return mSection;
+    }
+
+    public void setSection(String mSection) {
+        this.mSection = mSection;
+    }
 
     public void setPriority(String priority) {
         mPriority = priority;

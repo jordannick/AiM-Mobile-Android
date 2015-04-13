@@ -1,10 +1,14 @@
 package edu.oregonstate.AiMLiteMobile;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 
@@ -16,14 +20,36 @@ import java.util.Random;
  */
 
 
-public class WorkOrderAdapter extends ArrayAdapter<WorkOrder> {
-
+public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
+    private static final String TAG = "WorkOrderAdapter";
     private final Context context;
+    private ArrayList<WorkOrder> filteredWorkOrders;
+    private ArrayList<WorkOrder> mWorkOrders;
 
     public WorkOrderAdapter(Context c, ArrayList<WorkOrder> workOrders) {
         super(c, 0, workOrders);
+        this.filteredWorkOrders = workOrders;
+        this.mWorkOrders = workOrders;
         this.context = c;
     }
+
+    public int getCount()
+    {
+        return filteredWorkOrders.size();
+    }
+
+    public WorkOrder getItem(int position)
+    {
+        return filteredWorkOrders.get(position);
+    }
+/*
+    public long getItemId(int position)
+    {
+        return position;
+    }
+*/
+
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -44,6 +70,7 @@ public class WorkOrderAdapter extends ArrayAdapter<WorkOrder> {
 
         // Configure the view for a Work Order row
         WorkOrder wo = getItem(position);
+        //WorkOrder wo = filteredWorkOrders.get(position);
 
         //((TextView)convertView.findViewById(R.id.row_workCode)).setText(wo.getMinCraftCode());
 
@@ -82,6 +109,42 @@ public class WorkOrderAdapter extends ArrayAdapter<WorkOrder> {
         //((TextView)convertView.findViewById(R.id.row_newIndicator))
 
         return convertView;
+    }
+
+    //Filters the work order list to display, based on the constraint passed in -- "Daily" or "Backlog"
+    @Override
+    public Filter getFilter() {
+        return new Filter(){
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();
+                ArrayList<WorkOrder> filteredResultsData = new ArrayList<WorkOrder>();
+
+                if (mWorkOrders!=null) {
+                    for (WorkOrder wo : mWorkOrders) {
+                        if (wo.getSection().equals(constraint)) {
+                            filteredResultsData.add(wo);
+                        }
+                    }
+                    results.values = filteredResultsData;
+                    results.count = filteredResultsData.size();
+                }
+
+                return results;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filteredWorkOrders = (ArrayList<WorkOrder>) results.values;
+
+                if (results.count > 0) {
+                    notifyDataSetChanged();
+                } else {
+                    notifyDataSetInvalidated();
+                }
+            }
+        };
     }
 
 
