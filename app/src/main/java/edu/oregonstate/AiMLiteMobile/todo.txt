@@ -1,6 +1,14 @@
 Add "Network Failure error" notification to display on failed login..
+
 Add onclick shade effect to list items
 
-Add two tabs to main list... Backlog and Daily Assignments
+Add two tabs to main list... Backlog and Daily Assignments                  DONE
 
-Show workOrderID on details page in another spot than just the title
+Add change section option for specific/multiple work orders
+
+Show workOrderID on details page in another spot than just the title        DONE
+
+Figure out final authorization format, i.e. send username+password
+
+Implement http POST calls for add/update methods
+
