@@ -17,51 +17,45 @@ import java.util.ArrayList;
 public class WorkOrderActionQueueListFragment extends ListFragment{
     public static final String TAG = "WorkOrderActionQueueListFragment";
 
-    private static CurrentUser sCurrentUser;
+    private Activity mActivity;
     private Context mContext;
+    private static CurrentUser sCurrentUser;
+    private Callbacks mCallbacks;
 
-    public void updateUI() {
-        ((ActionAdapter)getListAdapter()).notifyDataSetChanged();
+    public interface Callbacks{
+        void onActionSelected(Action actionToEdit);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
+        mCallbacks = (Callbacks)activity;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
 
-        mContext = getActivity();
+        mActivity = getActivity();
+        mContext = mActivity.getApplicationContext();
+        sCurrentUser = CurrentUser.get(mContext);
 
-        sCurrentUser = CurrentUser.get(getActivity().getApplicationContext());
         ArrayList<Action> actions = sCurrentUser.getActions();
-        Log.d(TAG, "actions: " + actions);
 
         ActionAdapter adapter = new ActionAdapter(mContext, actions);
         setListAdapter(adapter);
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        Toast toast = Toast.makeText(mContext, "Clicked position : " + position, Toast.LENGTH_SHORT);
-        toast.show();
-        //super.onListItemClick(l, v, position, id);
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
     }
 
-    //    public static WorkOrderActionQueueListFragment newInstance(/*UUID workOrderId*/){
-//        //Bundle args = new Bundle();
-//        //args.putSerializable(WORK_ORDER_ID, workOrderId);
-//        WorkOrderActionQueueListFragment fragment = new WorkOrderActionQueueListFragment();
-//        //fragment.setArguments(args);
-//        return fragment;
-//    }
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Action actionToEdit = ((ActionAdapter)getListAdapter()).getItem(position);
+        mCallbacks.onActionSelected(actionToEdit);
+    }
+
 }

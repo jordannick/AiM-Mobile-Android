@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="statusItems">
-        <item>Assigned</item>
-        <item>Work In Progress</item>
-        <item>Work Complete</item>
+        <item>ASSIGNED</item>
+        <item>WORK IN PROGRESS</item>
+        <item>WORK COMPLETE</item>
     </string-array>
 
     <string-array name="actionTakenItems">

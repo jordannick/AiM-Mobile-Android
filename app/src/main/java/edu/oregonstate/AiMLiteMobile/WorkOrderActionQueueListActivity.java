@@ -2,6 +2,7 @@ package edu.oregonstate.AiMLiteMobile;
 
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,29 +15,14 @@ import java.util.List;
 /**
  * Created by sellersk on 2/19/2015.
  */
-public class WorkOrderActionQueueListActivity extends SingleFragmentActivity {
+public class WorkOrderActionQueueListActivity extends SingleFragmentActivity implements WorkOrderActionQueueListFragment.Callbacks {
     private static final String TAG = "WorkOrderActionQueueActivity";
 
-    Fragment fragment;
-
-    private ActionBar mActionBar;
-
     @Override
-    protected Fragment createFragment() {
-        fragment = new WorkOrderActionQueueListFragment();
-        return fragment;
-    }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    @Override
-    protected int getLayoutResId() {
-        return R.layout.activity_fragment;
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        mActionBar = getActionBar();
+        ActionBar mActionBar = getActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
         setTitle(R.string.action_queue_activity_title);
@@ -46,10 +32,14 @@ public class WorkOrderActionQueueListActivity extends SingleFragmentActivity {
         }
     }
 
+    @Override
+    protected Fragment createFragment() {
+        return new WorkOrderActionQueueListFragment();
+    }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+    protected int getLayoutResId() {
+        return R.layout.activity_fragment;
     }
 
     @Override
@@ -58,21 +48,14 @@ public class WorkOrderActionQueueListActivity extends SingleFragmentActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                finish(); //TODO: Add confirm to save info before finishing activity
-                break;
-            case R.id.action_sync:
-                //syncActions();
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-
+    public void onActionSelected(Action actionToEdit){
+        //Open up edit action form for clicked action
+        Intent i = new Intent(this, WorkOrderAddActionActivity.class);
+        i.putExtra(Action.EDIT_ACTION_EXTRA, actionToEdit);
+        //Log.d(TAG, "wo: "+wo);
+        //Log.d(TAG, "woID sent: "+wo.getId());
+        startActivity(i);
     }
-
 
     public void syncActions(){
 
@@ -94,13 +77,29 @@ public class WorkOrderActionQueueListActivity extends SingleFragmentActivity {
 
         String url = "appropriate function call url here";
 
+        //TODO 4/15/2015 - get this thing working
+        /*
         PostWorkOrdersTask task = new PostWorkOrdersTask(nameValuePairs, url, this);
         task.execute();
-
+        */
 
         //TODO 3/12/2015 - gray out actions in list after successful submit
-        // sync notes
 
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.action_sync:
+                syncActions();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
 
     }
 }

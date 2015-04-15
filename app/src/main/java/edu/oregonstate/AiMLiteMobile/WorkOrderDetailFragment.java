@@ -35,7 +35,7 @@ public class WorkOrderDetailFragment extends Fragment{
      * Required interface for hosting activities.
      */
     public interface Callbacks {
-        void onWorkOrderUpdated();
+        //void onWorkOrderUpdated();
     }
     @Override
     public void onAttach(Activity activity) {

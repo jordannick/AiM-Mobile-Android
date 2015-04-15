@@ -1,5 +1,6 @@
 package edu.oregonstate.AiMLiteMobile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -7,10 +8,10 @@ import java.util.UUID;
 /**
  * Created by sellersk on 2/19/2015.
  */
-public class Action {
+public class Action implements Serializable {
     private static final String TAG = "Action";
 
-    private UUID mUUID;
+    public static final String EDIT_ACTION_EXTRA = "edu.oregonstate.AiMLiteMobile.Action";
 
     private WorkOrder mWorkOrder;
 
@@ -23,15 +24,6 @@ public class Action {
     public static String action_MaterialRequest = "Material Request";
     public static String status_WorkComplete = "Work Complete";
 
-    private String mWorkOrderPhaseID;
-
-    public String getWorkOrderPhaseID() {
-        return mWorkOrderPhaseID;
-    }
-
-    public void setWorkOrderPhaseID(String mWorkOrderPhaseID) {
-        this.mWorkOrderPhaseID = mWorkOrderPhaseID;
-    }
 
     public WorkOrder getWorkOrder() {
         return mWorkOrder;
@@ -91,11 +83,4 @@ public class Action {
 
     }
 
-    public UUID getUUID() {
-        return mUUID;
-    }
-
-    public void setUUID(UUID UUID) {
-        mUUID = UUID;
-    }
 }

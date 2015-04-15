@@ -53,7 +53,7 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
         );
 
         final Activity activity = this.getActivity();
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 updateWorkOrderList();
@@ -62,9 +62,28 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
             }
         });
 
+
+
         return mSwipeRefreshLayout;
     }
 
+    @Override
+    public void onPause() {
+        Log.d(TAG, "listfragment onPause");
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "listfragment onPause");
+        super.onDestroy();
+    }
+
+    @Override
+    public void onStop() {
+
+        super.onStop();
+    }
 
     private class ListFragmentSwipeRefreshLayout extends SwipeRefreshLayout {
 

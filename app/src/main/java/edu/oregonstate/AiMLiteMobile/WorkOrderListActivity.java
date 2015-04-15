@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,12 +43,9 @@ public class WorkOrderListActivity extends Activity implements WorkOrderListFrag
         sCurrentUser = CurrentUser.get(getApplicationContext());
 
 
-
-
-
-
         Tab1 = actionBar.newTab();
         Tab2 = actionBar.newTab();
+
 
         int num_daily = 0;
         int num_backlog = 0;
@@ -97,14 +95,14 @@ public class WorkOrderListActivity extends Activity implements WorkOrderListFrag
         outState.putInt("CurrentSectionTab", actionBar.getSelectedTab().getPosition());
 
     }
-
+/*
     public void onWorkOrderUpdated() {
         FragmentManager fm = getFragmentManager();
         WorkOrderListFragment listFragment = (WorkOrderListFragment)
                 fm.findFragmentById(R.id.fragmentContainer);
         listFragment.updateUI();
     }
-
+*/
 
     public void onWorkOrderSelected(WorkOrder workOrder){
         if (findViewById(R.id.detailFragmentContainer) == null) {

@@ -13,15 +13,17 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,106 +31,118 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Created by sellersk on 2/17/2015.
  */
 public class WorkOrderAddActionFragment extends Fragment {
-    public static final String TAG = "WorkOrderActionNewFrag";
+    public static final String TAG = "WorkOrderAddActionFragment";
 
-   // public static final String WORK_ORDER_ID = "edu.oregonstate.AiMLiteMobile.workorder_id";
+    private boolean editMode;
 
-    private View v;
+    private Activity mActivity;
+    private Context mContext;
+    private static CurrentUser sCurrentUser;
+    private WorkOrder mWorkOrder;
+
+    private TextView workOrderIdText;
+    private TextView workOrderLocationText;
+    private Spinner spinner_ActionTaken;
+    private TextView textView_hours;
+    private int hoursEntered = -1;
+    private CheckBox checkBox_updateStatus;
+    private Spinner spinner_updateStatus;
+    private int defaultStatusSpinnerPosition = -1;
+    private Button button_addNote;
+    private ListView notesListView;
+    private WorkOrderNotesAdapter notesAdapter;
+    private ArrayList<WorkOrderNote> newActionNotes;
 
     private int HOURS_MIN = 0;
     private int HOURS_MAX = 8;
 
 
-    private UUID workOrderId;
-    private WorkOrder mWorkOrder;
-    private Context mContext;
-    private Activity mActivity;
-    private CurrentUser currentUser;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
-    private TextView workOrderIdText;
-    private int hoursEntered = -1;
-    private Spinner spinner_ActionTaken;
-    private CheckBox checkBox_updateStatus;
-    private Spinner spinner_updateStatus;
-    private TextView textView_hours;
-    private Button button_addNote;
+        mActivity = getActivity();
+        mContext = mActivity.getApplicationContext();
+        sCurrentUser = CurrentUser.get(mContext);
 
-    private ArrayList<WorkOrderNote> newActionNotes;
+        Bundle bundle = getArguments();
+        editMode = bundle.getBoolean("editMode");
+
+        mWorkOrder = ((WorkOrderAddActionActivity) mActivity).getWorkOrder();
+
+        if (editMode){
+            Log.d(TAG, "Edit mode");
+            //mWorkOrder = ((WorkOrderAddActionActivity) mActivity).getAction().getWorkOrder();
+
+        } else {
+            Log.d(TAG, "Add mode");
+
+        }
+
+
+
+
+
+    }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        Log.d(TAG, "onAttach");
-        //mCallbacks = (Callbacks)this;
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent,Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.action_add, parent, false);
     }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    /*
-    public static WorkOrderAddActionFragment newInstance(UUID workOrderId){
-        Log.d(TAG, "newInstance");
-        //Bundle args = new Bundle();
-        //args.putSerializable(WORK_ORDER_ID, workOrderId);
-        WorkOrderAddActionFragment fragment = new WorkOrderAddActionFragment();
-        //fragment.setArguments(args);
-
-        return fragment;
-    }
-    */
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d(TAG, "onActivityCreated");
-        mActivity = getActivity();
-        currentUser = CurrentUser.get(mContext);
-        //WorkOrderAddActionActivity activity = (WorkOrderAddActionActivity)getActivity();
-        WorkOrder workOrder = ((WorkOrderAddActionActivity)mActivity).mWorkOrder;
+        Log.d(TAG, "onActivityCreated in mode: "+editMode);
+        workOrderIdText = (TextView)mActivity.findViewById(R.id.workOrderIdText);
+        workOrderLocationText = (TextView)mActivity.findViewById(R.id.workOrderLocationText);
+        spinner_ActionTaken = (Spinner)mActivity.findViewById(R.id.spinner_actionTaken);
+        textView_hours = (TextView)mActivity.findViewById(R.id.hoursText);
+        checkBox_updateStatus = (CheckBox)mActivity.findViewById(R.id.checkBox_updateStatus);
+        spinner_updateStatus = (Spinner)mActivity.findViewById(R.id.spinner_updateStatus);
+        button_addNote = (Button)mActivity.findViewById(R.id.button_addNote);
 
-       mActivity.findViewById(R.id.spinner_updateStatus).setEnabled(false);
-       workOrderIdText = (TextView)mActivity.findViewById(R.id.workOrderIdText);
-       spinner_ActionTaken = (Spinner)mActivity.findViewById(R.id.spinner_actionTaken);
-       checkBox_updateStatus = (CheckBox)mActivity.findViewById(R.id.checkBox_updateStatus);
-       spinner_updateStatus = (Spinner)mActivity.findViewById(R.id.spinner_updateStatus);
-       textView_hours = (TextView)mActivity.findViewById(R.id.hoursText);
-       button_addNote = (Button)mActivity.findViewById(R.id.button_addNote);
+        workOrderIdText.setText(mWorkOrder.getProposalPhase());
+        workOrderLocationText.setText(mWorkOrder.getBuilding());
+        spinner_updateStatus.setEnabled(false);
 
+        //Sets the status spinner to the current status of the work order
+        String defaultStatus = mWorkOrder.getStatus();
+        ArrayAdapter statusAdapter = (ArrayAdapter) spinner_updateStatus.getAdapter();
+        defaultStatusSpinnerPosition = statusAdapter.getPosition(defaultStatus);
+        spinner_updateStatus.setSelection(defaultStatusSpinnerPosition);
 
-       workOrderIdText.setText(workOrder.getProposalPhase());
-       // workOrderIdText.setText(workOrderPhaseId);
+        //Associate new notes with notes list view
+        newActionNotes = new ArrayList<WorkOrderNote>();
+        notesAdapter = new WorkOrderNotesAdapter(getActivity(), newActionNotes);
+        notesListView = (ListView)getActivity().findViewById(R.id.notesListView);
+        notesListView.setEmptyView(getActivity().findViewById(R.id.notesListViewEmpty));
+        notesListView.setAdapter(notesAdapter);
 
-       newActionNotes = new ArrayList<WorkOrderNote>();
-
-       createHoursEntryDialog();
-       createNoteEntryDialog();
-
+        createStatusCheckboxHandler();
+        createHoursEntryDialog();
+        createNoteEntryDialog();
     }
 
-    private void createHoursEntryDialog(){
 
+    private void createHoursEntryDialog(){
         Button setHoursButton = (Button)getActivity().findViewById(R.id.button_setHours);
         setHoursButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final AlertDialog.Builder enterHoursAlert = new AlertDialog.Builder(mActivity);
                 enterHoursAlert.setTitle("Enter hours:");
-                enterHoursAlert.setMessage("Enter hours:");
                 final EditText input = new EditText(getActivity());
                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
                 input.setFilters(new InputFilter[]{ new InputFilterMinMax(HOURS_MIN, HOURS_MAX)});
                 input.setWidth(50);
-
-
                 enterHoursAlert.setView(input);
 
                 enterHoursAlert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -138,22 +152,16 @@ public class WorkOrderAddActionFragment extends Fragment {
                         hoursEntered = Integer.valueOf(input.getText().toString());
                     }
                 });
-
                 enterHoursAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
+                    public void onClick(DialogInterface dialogInterface, int i) {}
                 });
-
 
                 AlertDialog alert = enterHoursAlert.create();
                 alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                 alert.show();
-
             }
         });
-
 
         Button clearHoursButton = (Button)getActivity().findViewById(R.id.button_clearHours);
         clearHoursButton.setOnClickListener(new View.OnClickListener(){
@@ -163,10 +171,8 @@ public class WorkOrderAddActionFragment extends Fragment {
                 hoursEntered = -1;
             }
         });
-
-
-
     }
+
 
     private void createNoteEntryDialog() {
         button_addNote.setOnClickListener(new View.OnClickListener() {
@@ -177,7 +183,6 @@ public class WorkOrderAddActionFragment extends Fragment {
                 final EditText input = new EditText(getActivity());
                 input.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                 input.setHorizontallyScrolling(false);
-                //input.setWidth(50);
                 input.setLines(6);
                 input.setMinLines(6);
                 input.setGravity(Gravity.TOP | Gravity.LEFT);
@@ -189,16 +194,18 @@ public class WorkOrderAddActionFragment extends Fragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Check for null input
                         String noteString = input.getText().toString();
-                        if(!noteString.equals("")){
+                        if (!noteString.equals("")) {
                             //Create noteObject and add to notesArray
-                            WorkOrderNote newNote = new WorkOrderNote(noteString, currentUser.getUsername(), new Date(System.currentTimeMillis()));
-                            newActionNotes.add(newNote);
-
+                            WorkOrderNote newNote = new WorkOrderNote(noteString, sCurrentUser.getUsername(), new Date(System.currentTimeMillis()));
+                            newActionNotes.add(0, newNote);
                             //Display short toast to notify that note has been saved
                             String toastText = "New note added";
                             Toast toast = Toast.makeText(mContext, toastText, Toast.LENGTH_SHORT);
                             toast.show();
-                            ((TextView)getActivity().findViewById(R.id.noteText)).setText(noteString);
+                            notesAdapter.notifyDataSetChanged();
+                            if (notesListView.getVisibility() == View.INVISIBLE) {
+                                notesListView.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 });
@@ -210,39 +217,27 @@ public class WorkOrderAddActionFragment extends Fragment {
                     }
                 });
 
-
                 AlertDialog alert = enterNoteAlert.create();
                 alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                 alert.show();
-
             }
         });
-
     }
 
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-        mContext = getActivity().getApplicationContext();
-    }
+    public void createStatusCheckboxHandler(){
+        checkBox_updateStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                getActivity().findViewById(R.id.spinner_updateStatus).setClickable(checked);
+                getActivity().findViewById(R.id.spinner_updateStatus).setEnabled(checked);
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.action_add, parent, false);
-        this.v = v;
-
-
-
-
-        return v;
+                //Reset to default if user is not changing it
+                if (!checked) {
+                    spinner_updateStatus.setSelection(defaultStatusSpinnerPosition);
+                }
+            }
+        });
     }
 
 
@@ -250,7 +245,6 @@ public class WorkOrderAddActionFragment extends Fragment {
         final AlertDialog.Builder confirmAddActionDialog = new AlertDialog.Builder(mActivity);
         confirmAddActionDialog.setTitle("Add new action");
         confirmAddActionDialog.setMessage("Confirm?");
-
 
         confirmAddActionDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
@@ -275,10 +269,10 @@ public class WorkOrderAddActionFragment extends Fragment {
             }
         });
 
-
         AlertDialog alert = confirmAddActionDialog.create();
         alert.show();
     }
+
 
     //Get all values from form. Create Action object. Add to CurrentUser.Actions
     //Displays error or success
@@ -304,35 +298,27 @@ public class WorkOrderAddActionFragment extends Fragment {
 
         //NOTE  -- handled in notes dialog. new notes added to newActionNotes arrayList
 
-        WorkOrderAddActionActivity activity = (WorkOrderAddActionActivity)mActivity;
 
+        Action newAction = new Action(mWorkOrder, actionTaken, newStatus, hours, newActionNotes);
+        sCurrentUser.addAction(newAction);
 
-        Action newAction = new Action(activity.getWorkOrder(), actionTaken, newStatus, hours, newActionNotes);
-        currentUser.addAction(newAction);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "onOptionsItemSelected in Frag");
         switch (item.getItemId()){
             case R.id.action_queue:
-                //TODO: form validation
                 validateAction();
-                if(true) { //If all fields filled
-                    Log.d(TAG, "'action to queue' button touched");
-
-                    createConfirmDialog();
-
-
-
-                }
+                //TODO: finish form validation
+                //All fields checked to be correct at this point
+                createConfirmDialog();
                 return true;
             case android.R.id.home:
                 //Handled by parent Activity
+                getActivity().finish();
                 return false;
         }
-
-        //return super.onOptionsItemSelected(item);
         return false;
     }
 }

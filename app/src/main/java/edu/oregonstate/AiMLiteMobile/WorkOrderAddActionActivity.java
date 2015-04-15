@@ -1,7 +1,10 @@
 package edu.oregonstate.AiMLiteMobile;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ListView;
 
 
 import java.util.UUID;
@@ -16,59 +20,41 @@ import java.util.UUID;
 /**
  * Created by sellersk on 2/17/2015.
  */
-public class WorkOrderAddActionActivity extends SingleFragmentActivity{
-    private static final String TAG = "WorkOrderActionActivity";
+public class WorkOrderAddActionActivity extends SingleFragmentActivity {
+    private static final String TAG = "WorkOrderAddActionActivity";
 
-    Fragment fragment;
+    private WorkOrder mWorkOrder;
+    private Action mAction;
+    private boolean editMode = false;
 
-    private ActionBar mActionBar;
-    public WorkOrder mWorkOrder;
-    public UUID mWorkOrderId;
+    public WorkOrder getWorkOrder() {
+        return mWorkOrder;
+    }
+
+    public Action getAction(){ return mAction; }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         if(intent.hasExtra(WorkOrder.WORK_ORDER_EXTRA)){
-            //mWorkOrderId = (UUID)intent.getSerializableExtra(WorkOrder.WORK_ORDER_ID);
-           /* mWorkOrderId = (String)intent.getSerializableExtra(WorkOrder.WORK_ORDER_ID);
-            if(mWorkOrderId != null){
-                //Has workOrderId, load Add Action Tab with selected WorkOrder
-                mWorkOrder = CurrentUser.get(getApplicationContext()).getWorkOrder(mWorkOrderId);
-            }*/
+            //ADD mode
+            Log.d(TAG, "has extra work order");
             mWorkOrder = (WorkOrder) intent.getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
+        } else if (intent.hasExtra(Action.EDIT_ACTION_EXTRA)){
+            //EDIT mode
+            Log.d(TAG, "has extra edit action");
+            editMode = true;
+            mAction = (Action) intent.getSerializableExtra(Action.EDIT_ACTION_EXTRA);
+            Log.d(TAG, "The action has work order: "+mAction.getWorkOrder().getDescription());
+        } else {
+            //Nothing
+            finish();
         }
 
 
 
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    protected Fragment createFragment() {
-      /*  Intent intent = getIntent();
-        if(intent.hasExtra(WorkOrder.WORK_ORDER_EXTRA)){
-
-            mWorkOrder = (WorkOrder) intent.getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
-        }
-
-*/
-        fragment = new WorkOrderAddActionFragment();
-        return fragment;
-    }
-
-    @Override
-    protected int getLayoutResId() {
-        return R.layout.activity_fragment;
-    }
-
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        mActionBar = getActionBar();
+        ActionBar mActionBar = getActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
         setTitle(R.string.add_action_activity_title);
@@ -77,12 +63,37 @@ public class WorkOrderAddActionActivity extends SingleFragmentActivity{
             //Restore saved state
         }
 
+        //Work in progress...
+        /*
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
+        WorkOrderAddActionFragment newFragment = new WorkOrderAddActionFragment();
+        Bundle bundle = new Bundle();
+        Log.d(TAG, "activity edit mode to place in bundle:"+editMode );
+        bundle.putBoolean("editMode", editMode);
+        newFragment.setArguments(bundle);
+        //fragmentTransaction.add(R.id.fragment_container, fragment);
+        fragmentTransaction.add(R.layout.activity_fragment, newFragment);
+        fragmentTransaction.commit();
+        */
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+    protected Fragment createFragment() {
+        Fragment newFragment = new WorkOrderAddActionFragment();
+        Bundle bundle = new Bundle();
+        Log.d(TAG, "activity edit mode to place in bundle:"+editMode );
+        bundle.putBoolean("editMode", editMode);
+        newFragment.setArguments(bundle);
+
+        return newFragment;
+    }
+
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_fragment;
     }
 
     @Override
@@ -91,37 +102,4 @@ public class WorkOrderAddActionActivity extends SingleFragmentActivity{
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "onOptionsItemSelected in Activity");
-        switch (item.getItemId()){
-            case R.id.action_queue:
-                //TODO: form validation
-                //Handled by hosted fragment
-                return false;
-                //break;
-            case android.R.id.home:
-                this.finish(); //Add confirm to save info before finishing activity
-                return true;
-        }
-
-        return false;
-    }
-
-    public void onCheckBoxClicked(View view){
-        boolean checked = ((CheckBox) view).isChecked();
-        findViewById(R.id.spinner_updateStatus).setClickable(checked);
-        findViewById(R.id.spinner_updateStatus).setEnabled(checked);
-
-        //TODO 3/17/15: return spinner to original item if unchecked.
-    }
-
-
-    public WorkOrder getWorkOrder() {
-        return mWorkOrder;
-    }
-
-    public UUID getWorkOrderId() {
-        return mWorkOrderId;
-    }
 }
