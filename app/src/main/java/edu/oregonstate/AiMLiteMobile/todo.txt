@@ -10,6 +10,13 @@ Show workOrderID on details page in another spot than just the title        DONE
 
 Implement edit action ability from action queue list                        DONE
 
+Handle add action fragment differently for adding new action and
+    just rotating screen on add action window.
+    i.e. clear all variables on new action, but keep variables on rotate
+
+If you already have status change in an action for a specific work order,
+    don't allow another status change in a new action
+
 Figure out final authorization format, i.e. send username+password
 
 Implement http POST calls for add/update methods

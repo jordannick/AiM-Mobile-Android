@@ -20,11 +20,9 @@ import java.util.Date;
  */
 
 public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
-
     private static final String TAG = "GetWorkOrdersTask";
+
     private OnTaskCompleted listener;
-    private String url;
-    private String updateUrl;
     private boolean forceRefresh;
     private ArrayList<WorkOrder> mWorkOrders;
     private JSONArray json;
@@ -44,43 +42,37 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         this.sCurrentUser = currentUser;
         this.mContext = context;
         this.forceRefresh = forceRefresh;
-
-        this.url = currentUser.getURLGetAll();
-        this.updateUrl = currentUser.getURLGetLastUpdated();
         this.mWorkOrders = new ArrayList<WorkOrder>();
-
         retrievedDate = new Date();
     }
 
     @Override
     protected void onPostExecute(final ResponsePair responsePair) {
 
-        Log.d(TAG, "onPostExecute - Start responsePair:");
         switch(responsePair.getStatus()){
             case SUCCESS:
-                Log.d(TAG, "Success");
+                Log.i(TAG, "Task Success");
                 listener.onTaskSuccess();
                 break;
             case AUTH_FAIL:
-                Log.d(TAG, "Auth Fail");
+                Log.e(TAG, "Authenticate Fail");
                 listener.onAuthenticateFail();
                 break;
             case NET_FAIL:
-                Log.d(TAG, "Net Fail");
+                Log.e(TAG, "Network Fail");
                 listener.onNetworkFail();
                 break;
             case JSON_FAIL:
-                Log.d(TAG, "JSON Fail");
+                Log.e(TAG, "JSON Fail");
                 listener.onNetworkFail();//TODO: custom json failure handler
                 break;
             case NO_DATA:
-                Log.d(TAG, "No data");
+                Log.e(TAG, "No data");
                 listener.onNetworkFail();//TODO: no network no data, should tell user to get network access
                 break;
             default:
                 break;
         }
-        Log.d(TAG, "onPostExecute - End responsePair");
     }
 
     protected ResponsePair doInBackground(final String... args) {
@@ -89,16 +81,15 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         //Network available
         if (isNetworkOnline()) {
 
-            Log.d(TAG, "Network Available");
+            Log.i(TAG, "Network is available");
             JSONParser jParser = new JSONParser();
 
-            Log.d(TAG, "Calling isRefreshNeeded");
             boolean needRefresh = isRefreshNeeded();
-            Log.d(TAG, "needRefresh : " + needRefresh);
-
+            Log.i(TAG, "Need normal refresh? " + needRefresh);
+            Log.i(TAG, "Force refresh? " + forceRefresh);
             if (needRefresh || forceRefresh) {
 
-                responsePair = jParser.getJSONFromUrl(url, true);
+                responsePair = jParser.getJSONFromUrl(sCurrentUser.getURLGetAll(), true);
 
                 if (responsePair.getStatus() != ResponsePair.Status.SUCCESS) {
                     return responsePair;
@@ -109,12 +100,12 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
             else{
                 //Have network but don't need refresh. Assume data exists locally. Is this even needed? Maybe from login?
                 try {
-                    Log.d(TAG, "Trying to get stored data");
+                    Log.i(TAG, "Retrieving stored data");
                     json = new JSONArray(sCurrentUser.getPrefs().getString("jsondata", "[]"));
                     responsePair.setStatus(ResponsePair.Status.SUCCESS);
                 }
                 catch (JSONException e){
-                    Log.d(TAG, "Failed to get stored data");
+                    Log.e(TAG, "Failed to get stored data");
                     responsePair.setStatus(ResponsePair.Status.JSON_FAIL);
                     return responsePair;
                 }
@@ -126,12 +117,12 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         else if (sCurrentUser.getPrefs().contains("jsondata")) {
 
             try {
-                Log.d(TAG, "Trying to get stored data");
+                Log.i(TAG, "Trying to get stored data");
                 json = new JSONArray(sCurrentUser.getPrefs().getString("jsondata", "[]"));
                 responsePair.setStatus(ResponsePair.Status.SUCCESS);
             }
             catch (JSONException e){
-                Log.d(TAG, "Failed to get stored data");
+                Log.e(TAG, "Failed to get stored data");
                 responsePair.setStatus(ResponsePair.Status.JSON_FAIL);
                 return responsePair;
             }
@@ -139,7 +130,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
 
         //No network, no stored data. Bye!
         else {
-            Log.d(TAG, "No network, no stored data");
+            Log.e(TAG, "No network, no stored data");
             responsePair.setStatus(ResponsePair.Status.NO_DATA);
             return responsePair;
         }
@@ -155,7 +146,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         */
 
         if (json == null) {
-            Log.d(TAG, "Json is null");
+            Log.e(TAG, "Json is null");
             //return false;
         }
 
@@ -193,20 +184,13 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
                 }
         }
 
-
-        Log.d(TAG, "username is: "+sCurrentUser.getUsername());
-
         //Save the raw json array for offline use
-
         String jsonStr = json.toString();
         sCurrentUser.getPrefsEditor().putString("jsondata", jsonStr);
 
         //Save time in last updated
-        Log.d(TAG, "Saving time to last_updated: "+retrievedDate.getTime()+" = "+ retrievedDate);
+        Log.i(TAG, "Saving new last_updated: " + retrievedDate);
         sCurrentUser.getPrefsEditor().putLong("last_updated", retrievedDate.getTime());
-        //Log.d(TAG, "Saving time to last_updated: "+System.currentTimeMillis()+" = "+ new Date(System.currentTimeMillis()));
-        //sCurrentUser.getPrefsEditor().putLong("last_updated", System.currentTimeMillis());
-
         sCurrentUser.getPrefsEditor().apply();
 
         //Save the work orders array into current user
@@ -218,7 +202,6 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
     //Gets the last updated time from url, compares with stored time.
     private boolean isRefreshNeeded(){
         String lastUpdated = "";
-
         Date storedDate;
 
         //Get last_updated from stored prefs
@@ -226,11 +209,10 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
 
         if (storedTime == 0L){
             //No stored time, need refresh
-            Log.d(TAG, "storedTime = 0");
             return true;
         }
         storedDate = new Date(storedTime);
-        Log.d(TAG, "isRefreshNeeded() Stored Date: "+storedTime+" = "+storedDate);
+        Log.i(TAG, "Stored last_updated: "+storedDate);
 
         //Retrieve last_updated from updateUrl for user
         JSONParser jParser = new JSONParser();
@@ -239,7 +221,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         if (responsePair.getStatus() == ResponsePair.Status.SUCCESS){
             lastUpdated = responsePair.getReturnedString();
             retrievedDate = convertToDate(lastUpdated);
-            Log.d(TAG, "Online last_updated retrieved is: "+retrievedDate.getTime()+" = "+retrievedDate);
+            Log.i(TAG, "Online last_updated: "+retrievedDate);
         }else{
             //TODO 3/12/2015 - below probably indicates http error, maybe just display error and don't try refresh
             //No retrieved time, need refresh
@@ -248,11 +230,11 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
 
         if (retrievedDate.after(storedDate)){
             //Retrieved time is new than stored time, need refresh
-            Log.d(TAG, "retrievedDate newer than storedDate");
+            Log.i(TAG, "Online date NEWER than stored date");
             return true;
         } else{
             //Retrieved time is not newer than stored time, no refresh
-            Log.d(TAG, "retrievedDate NOT newer than storedDate");
+            Log.i(TAG, "Online date NOT newer than stored date");
             return false;
         }
 

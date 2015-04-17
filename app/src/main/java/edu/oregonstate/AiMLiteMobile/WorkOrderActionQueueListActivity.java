@@ -12,6 +12,7 @@ import android.widget.Adapter;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -20,6 +21,7 @@ import java.util.List;
  */
 public class WorkOrderActionQueueListActivity extends SingleFragmentActivity implements WorkOrderActionQueueListFragment.Callbacks {
     private static final String TAG = "WorkOrderActionQueueActivity";
+    private static CurrentUser sCurrentUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class WorkOrderActionQueueListActivity extends SingleFragmentActivity imp
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
         setTitle(R.string.action_queue_activity_title);
+        sCurrentUser = CurrentUser.get(getApplicationContext());
 
         if(savedInstanceState!=null){
             //Restore saved state
@@ -59,33 +62,59 @@ public class WorkOrderActionQueueListActivity extends SingleFragmentActivity imp
         startActivity(i);
     }
 
+    //Start the HTTP POSTs to submit actions from queue.
+    //Remove from queue upon successful POST
     public void syncActions(){
 
-        String username = "";
-        String timestamp = "";
-        String workOrderPhaseID = "";
 
-        //Create namevalue items required by the POST to pass to SubmitChange
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-        //Variables common to all the methods
-        nameValuePairs.add(new BasicNameValuePair("username", username));
-        nameValuePairs.add(new BasicNameValuePair("timestamp", timestamp));
-        nameValuePairs.add(new BasicNameValuePair("workOrderPhaseId", workOrderPhaseID));
-    /*
-        //Unique variables
-        if (hours != 0) nameValuePairs.add(new BasicNameValuePair("hours", String.valueOf(hours)));
+        for (Action action : sCurrentUser.getActions()){
+            //Variables common to all API methods
+            String username = sCurrentUser.getUsername();
+            //String timestamp = //current system time
+            String workOrderPhaseID = action.getWorkOrder().getProposalPhase();
 
-    */
+             /*Unique variables:
+                date, hours, timetype
+                actiontaken
+                note
+                newStatus
+                value (section)
+            */
 
-        String url = "appropriate function call url here";
+            Date date = action.getDateStamp();
+            int hours = action.getHours();
+            //timetype = ?
+            String actionTaken = action.getActionTaken();
+            //how to handle multiple notes...?
+            String newStatus = action.getUpdatedStatus();
+            //section value = daily or backlog
 
-        //TODO 4/15/2015 - get this thing working
-        /*
-        PostWorkOrdersTask task = new PostWorkOrdersTask(nameValuePairs, url, this);
-        task.execute();
-        */
 
-        //TODO 3/12/2015 - gray out actions in list after successful submit
+
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+
+
+            nameValuePairs.add(new BasicNameValuePair("username", username));
+            //nameValuePairs.add(new BasicNameValuePair("timestamp", timestamp));
+            nameValuePairs.add(new BasicNameValuePair("workOrderPhaseId", workOrderPhaseID));
+
+
+            //  if (hours != 0) nameValuePairs.add(new BasicNameValuePair("hours", String.valueOf(hours)));
+
+
+            String url = "appropriate function call url here";
+
+            //TODO 4/15/2015 - get this thing working
+            /*
+            PostWorkOrdersTask task = new PostWorkOrdersTask(nameValuePairs, url, this);
+            task.execute();
+            */
+
+            //TODO 3/12/2015 - gray out actions in list after successful submit
+
+        }
+
+
 
     }
 
@@ -105,3 +134,30 @@ public class WorkOrderActionQueueListActivity extends SingleFragmentActivity imp
 
     }
 }
+
+/*
+URL Schema
+/[api version]/[object]/[method]/[param1]/[param2]/[param3] …
+
+    o	addTime($username, $date, $hours, $workOrderPhaseId, [$timeType], $timeStamp)
+        ?	Adds hours to the specified work order / phase for the date.
+        ?	Uses default time type, unless otherwise specified
+        ?	Timestamp should give the time at which this update took place.
+        ?	Example: coming soon.
+
+    o	addActionTaken($username, $workOrderPhaseId, $actionTaken, $timeStamp)
+        ?	Adds an Action Taken to the specified work order / phase
+        ?	Timestamp should give the time at which this update took place.
+
+    o	addNote($username, $workOrderPhaseId, $note, $timeStamp)
+        ?	Adds a note to the specified Work Order / Phase
+        ?	Timestamp should give the time at which this update took place.
+
+    o	updateStatus($username, $workOrderPhaseId, $newStatus, $timeStamp)
+        ?	Updates the status of the specified Work Order / Phase to the new status listed.
+        ?	Timestamp should give the time at which this update took place.
+
+    o	updateSection($usename, $workOrderPhaseId, $value, $timeStamp)
+        ?	Allowed values include ‘Backlog’ and ‘Daily Assignment’
+        ?	Timestamp should give the time at which this update took place.
+*/

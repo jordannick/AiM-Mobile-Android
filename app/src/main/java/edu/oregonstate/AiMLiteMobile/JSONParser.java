@@ -23,20 +23,21 @@ import java.io.InputStreamReader;
  * Created by jordan_n on 8/13/2014.
  */
 
+
+
 public class JSONParser {
     private final String TAG = "JSONParser";
 
-    static InputStream iStream = null;
-    static JSONArray jarray = null;
-    static String json = "";
-    private CurrentUser sCurrentUser;
+    static JSONArray jArray = null;
+
+    private CurrentUser sCurrentUser; //TODO: clear current user if different user successfully logs in
 
 
     public JSONParser() {
     }
 
     public ResponsePair getJSONFromUrl(String url, boolean isArray) {
-        Log.d(TAG, "Attemping http get to: " + url);
+        Log.i(TAG, "Attempting HTTP GET from: " + url);
 
         StringBuilder builder = new StringBuilder();
 
@@ -58,7 +59,7 @@ public class JSONParser {
             int statusCode = statusLine.getStatusCode();
 
             if (statusCode == 200) {
-                Log.e("==>", "Success");
+                Log.i(TAG, "HTTP GET Success");
                 HttpEntity entity = response.getEntity();
                 InputStream content = entity.getContent();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(content));
@@ -96,8 +97,8 @@ public class JSONParser {
         if(isArray){
             // Parse String to JSON object
             try {
-                jarray = new JSONArray( builder.toString());
-                responsePair.setJarray(jarray);
+                jArray = new JSONArray( builder.toString());
+                responsePair.setJarray(jArray);
                 responsePair.setStatus(ResponsePair.Status.SUCCESS);
             }
             catch (JSONException e) {

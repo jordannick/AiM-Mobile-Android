@@ -3,6 +3,7 @@ package edu.oregonstate.AiMLiteMobile;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,6 +125,8 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         mLoginButton.setEnabled(false);
 
         mLoadCircle.setVisibility(View.VISIBLE);
+
+        Log.i(TAG, "Logging in as: "+mUsername);
         showToast("Logging in as: "+mUsername, Toast.LENGTH_LONG);
 
         //Attempt the request, try force pulling new list since we're logging in. Callback to success or fail function in this class.
@@ -157,8 +160,6 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         mLoginButton.setEnabled(true);
 
         mLoadCircle.setVisibility(View.INVISIBLE);
-
-        //Display error about network fail
         showToast("Network Fail", Toast.LENGTH_LONG);
     }
 

@@ -109,8 +109,6 @@ public class WorkOrderListActivity extends Activity implements WorkOrderListFrag
         // Start an instance of WorkOrderDetailActivity
             Intent i = new Intent(this, WorkOrderDetailActivity.class);
             i.putExtra(WorkOrder.WORK_ORDER_EXTRA, workOrder);
-            //Log.d(TAG, "wo: "+wo);
-            //Log.d(TAG, "woID sent: "+wo.getId());
             startActivity(i);
         } else { //Useful for later if implement swipe to change work order while in detail view
             FragmentManager fm = getFragmentManager();
@@ -187,20 +185,16 @@ public class WorkOrderListActivity extends Activity implements WorkOrderListFrag
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart");
 
         //TODO 3/12/2015 - check stored last updated time against current time, if longer than some interval, refresh
 
-
         // updateWorkOrderList();
-
 
     }
 
 
     //Makes new request, if refresh needed, CurrentUser workorders will repopulate, and displayed list updated
     /*private void updateWorkOrderList(){
-        Log.d(TAG, "updateWorkOrderList");
 
         CurrentUser currentUser = CurrentUser.get(getApplicationContext());
 

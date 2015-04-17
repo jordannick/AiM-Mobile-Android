@@ -12,10 +12,6 @@ import android.widget.Filter;
 import android.widget.ListView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.view.ViewCompat;
-import android.widget.TabHost;
-
-import java.util.ArrayList;
-
 
 /**
  * Created by jordan_n on 8/13/2014.
@@ -25,16 +21,14 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
 
     private static CurrentUser sCurrentUser;
     private static final String TAG = "WorkOrderListFragment";
+
     private Callbacks mCallbacks;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-
+    //Refresh the list display to reflect new data
     public void updateUI() {
-        Log.d(TAG, "notifyDataSetChanged");
         ((WorkOrderAdapter)getListAdapter()).notifyDataSetChanged();
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,47 +36,22 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
 
         final View listFragmentView = super.onCreateView(inflater, container, savedInstanceState);
 
+        //Add our fragment view to swipe view, allows pull-to-refresh list
         mSwipeRefreshLayout = new ListFragmentSwipeRefreshLayout(container.getContext());
-
         mSwipeRefreshLayout.addView(listFragmentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
         mSwipeRefreshLayout.setLayoutParams(
                 new ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT)
         );
-
-        final Activity activity = this.getActivity();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 updateWorkOrderList();
-                //activity.getActionBar().hide();
-
             }
         });
 
-
-
         return mSwipeRefreshLayout;
-    }
-
-    @Override
-    public void onPause() {
-        Log.d(TAG, "listfragment onPause");
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.d(TAG, "listfragment onPause");
-        super.onDestroy();
-    }
-
-    @Override
-    public void onStop() {
-
-        super.onStop();
     }
 
     private class ListFragmentSwipeRefreshLayout extends SwipeRefreshLayout {
@@ -91,14 +60,14 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
             super(context);
         }
 
-            @Override
-            public boolean canChildScrollUp() {
-                final ListView listView = getListView();
-                if (listView.getVisibility() == View.VISIBLE) {
-                    return canListViewScrollUp(listView);
-                } else {
-                    return false;
-                }
+        @Override
+        public boolean canChildScrollUp() {
+            final ListView listView = getListView();
+            if (listView.getVisibility() == View.VISIBLE) {
+                return canListViewScrollUp(listView);
+            } else {
+                return false;
+            }
         }
     }
 
@@ -116,13 +85,9 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
     }
 
 
-    /**
-     * Required interface for hosting activities.
-     */
     public interface Callbacks {
         void onWorkOrderSelected(WorkOrder wo);
     }
-
 
     @Override
     public void onAttach(Activity activity) {
@@ -140,9 +105,6 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
 
-        //this.getListView().setPadding(0, 96, 0, 0);
-        //this.getListView().setClipToPadding(false);
-
         sCurrentUser = CurrentUser.get(getActivity().getApplicationContext());
         getActivity().setTitle(sCurrentUser.getUsername());
 
@@ -150,7 +112,6 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
         final String sectionFilter = bundle.getString("sectionFilter");
 
         final WorkOrderAdapter adapter = new WorkOrderAdapter(getActivity(), sCurrentUser.getWorkOrders());
-
 
         // Update the Tab text with latest number of work orders in the section
         final Activity activity = this.getActivity();
@@ -169,13 +130,11 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
 
         setListAdapter(adapter);
 
-        Log.d(TAG, ""+sCurrentUser.getWorkOrders());
-
         super.onActivityCreated(savedInstanceState);
     }
 
     private void updateWorkOrderList(){
-        Log.d(TAG, "updateWorkOrderList");
+        Log.i(TAG, "Requested update work order list");
 
         CurrentUser currentUser = CurrentUser.get(getActivity().getApplicationContext());
 
@@ -188,21 +147,12 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         WorkOrder wo = ((WorkOrderAdapter)getListAdapter()).getItem(position);
-       // Log.d(TAG, "!wo: "+wo);
-
-        for (WorkOrder workOrder : sCurrentUser.getWorkOrders()){
-          //  Log.d(TAG, "1wo: "+workOrder);
-        }
         mCallbacks.onWorkOrderSelected(wo);
-
     }
-
 
     //Callback methods
 
     public void onTaskSuccess() {
-        Log.d(TAG, "list task success");
-
         if (mSwipeRefreshLayout.isRefreshing()){
             mSwipeRefreshLayout.setRefreshing(false);
         }
@@ -210,7 +160,6 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
 
 
     public void onNetworkFail() {
-        Log.d(TAG, "list net fail");
         if (mSwipeRefreshLayout.isRefreshing()){
             mSwipeRefreshLayout.setRefreshing(false);
         }
@@ -218,7 +167,7 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
 
 
     public void onAuthenticateFail() {
-        Log.d(TAG, "list auth fail");
+
     }
 
 

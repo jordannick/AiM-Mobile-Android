@@ -34,6 +34,8 @@ public class ActionAdapter extends ArrayAdapter<Action> {
 
         Action action = getItem(position);
 
+        //Populate the layout items with the action data
+
         ((TextView) convertView.findViewById(R.id.action_work_order_id)).setText(action.getWorkOrder().getProposalPhase());
 
         ((TextView) convertView.findViewById(R.id.action_work_order_location)).setText(action.getWorkOrder().getBuilding());

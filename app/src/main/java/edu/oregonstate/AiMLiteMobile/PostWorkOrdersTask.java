@@ -32,32 +32,30 @@ public class PostWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
     @Override
     protected void onPostExecute(final ResponsePair responsePair) {
 
-        Log.d(TAG, "onPostExecute - Start responsePair:");
         switch(responsePair.getStatus()){
             case SUCCESS:
-                Log.d(TAG, "Success");
+                Log.i(TAG, "Task Success");
                 //listener.onTaskSuccess();
                 break;
             case AUTH_FAIL:
-                Log.d(TAG, "Auth Fail");
+                Log.i(TAG, "Auth Fail");
                 //listener.onAuthenticateFail();
                 break;
             case NET_FAIL:
-                Log.d(TAG, "Net Fail");
+                Log.i(TAG, "Net Fail");
               //  listener.onNetworkFail();
                 break;
             case JSON_FAIL:
-                Log.d(TAG, "JSON Fail");
+                Log.i(TAG, "JSON Fail");
               //  listener.onNetworkFail();//TODO: custom json failure handler
                 break;
             case NO_DATA:
-                Log.d(TAG, "No data");
+                Log.i(TAG, "No data");
               //  listener.onNetworkFail();//TODO: no network no data, should tell user to get network access
                 break;
             default:
                 break;
         }
-        Log.d(TAG, "onPostExecute - End responsePair");
 
     }
 
@@ -104,8 +102,34 @@ public class PostWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
     }
 
 
-
 }
+
+/*
+URL Schema
+/[api version]/[object]/[method]/[param1]/[param2]/[param3] …
+
+    o	addTime($username, $date, $hours, $workOrderPhaseId, [$timeType], $timeStamp)
+        ?	Adds hours to the specified work order / phase for the date.
+        ?	Uses default time type, unless otherwise specified
+        ?	Timestamp should give the time at which this update took place.
+        ?	Example: coming soon.
+
+    o	addActionTaken($username, $workOrderPhaseId, $actionTaken, $timeStamp)
+        ?	Adds an Action Taken to the specified work order / phase
+        ?	Timestamp should give the time at which this update took place.
+
+    o	addNote($username, $workOrderPhaseId, $note, $timeStamp)
+        ?	Adds a note to the specified Work Order / Phase
+        ?	Timestamp should give the time at which this update took place.
+
+    o	updateStatus($username, $workOrderPhaseId, $newStatus, $timeStamp)
+        ?	Updates the status of the specified Work Order / Phase to the new status listed.
+        ?	Timestamp should give the time at which this update took place.
+
+    o	updateSection($usename, $workOrderPhaseId, $value, $timeStamp)
+        ?	Allowed values include ‘Backlog’ and ‘Daily Assignment’
+        ?	Timestamp should give the time at which this update took place.
+*/
 
 
 

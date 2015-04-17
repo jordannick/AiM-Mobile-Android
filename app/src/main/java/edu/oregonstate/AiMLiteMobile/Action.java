@@ -3,7 +3,6 @@ package edu.oregonstate.AiMLiteMobile;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Created by sellersk on 2/19/2015.
@@ -80,7 +79,6 @@ public class Action implements Serializable {
         this.hours = hours;
         this.notes = notes;
         this.dateStamp = new Date(System.currentTimeMillis());
-
     }
 
 }

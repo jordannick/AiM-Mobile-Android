@@ -35,10 +35,12 @@ public class WorkOrderAddActionActivity extends Activity{
 
         if(intent.hasExtra(WorkOrder.WORK_ORDER_EXTRA)){ //Add mode
             mWorkOrder = (WorkOrder) intent.getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
+            setTitle(R.string.add_action_activity_title);
         } else if (intent.hasExtra(Action.EDIT_ACTION_EXTRA)){ //Edit mode
             editMode = true;
             int actionPosition = intent.getIntExtra(Action.EDIT_ACTION_EXTRA, 0);
             mAction = sCurrentUser.getAction(actionPosition);
+            setTitle(R.string.edit_action_activity_title);
         } else { //Neither mode, get out of here!
             finish();
         }
@@ -46,8 +48,6 @@ public class WorkOrderAddActionActivity extends Activity{
         ActionBar mActionBar = getActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
-        setTitle(R.string.add_action_activity_title);
-
 
         setContentView(getLayoutResId());
         FragmentManager fm = getFragmentManager();
@@ -62,13 +62,16 @@ public class WorkOrderAddActionActivity extends Activity{
 
     }
 
-
     protected Fragment createFragment() {
         Fragment newFragment = new WorkOrderAddActionFragment();
         Bundle bundle = new Bundle();
+
         //Send which mode we're in to the fragment
         bundle.putBoolean("editMode", editMode);
         newFragment.setArguments(bundle);
+
+        //Retains the fragment for orientation change
+        //newFragment.setRetainInstance(true);
 
         return newFragment;
     }
@@ -83,6 +86,5 @@ public class WorkOrderAddActionActivity extends Activity{
         getMenuInflater().inflate(R.menu.menu_add_action, menu);
         return true;
     }
-
 
 }

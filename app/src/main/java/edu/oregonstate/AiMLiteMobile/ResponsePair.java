@@ -21,9 +21,9 @@ public class ResponsePair {
 
     public Status status;
 
-    public ResponsePair(final Status status, final JSONArray jarray) {
+    public ResponsePair(final Status status, final JSONArray jArray) {
         this.status = status;
-        this.jarray = jarray;
+        this.jarray = jArray;
     }
 
     public void setStatus(Status status){

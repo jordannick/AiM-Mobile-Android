@@ -2,24 +2,23 @@ package edu.oregonstate.AiMLiteMobile;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * Created by jordan_n on 8/13/2014.
  */
 public class CurrentUser {
     private static final String TAG = "CurrentUser";
+
     private String mUsername;
     private SharedPreferences prefs;
     private SharedPreferences.Editor prefsEditor;
     private ArrayList<WorkOrder> mWorkOrders;
+    private ArrayList<Action> mActions;
 
     private static CurrentUser sCurrentUser;
     private static Context sAppContext;
-   // private long lastRefresh;
 
     public String URLGetAll;
     public String URLGetLastUpdated;
@@ -28,10 +27,6 @@ public class CurrentUser {
     private String urlBase = "http://api-test.facilities.oregonstate.edu";
     private String urlAPIVersion = "1.0";
     private String urlObject = "WorkOrder";
-
-    //Action Queue variables
-    private ArrayList<Action> mActions;
-    private Action currentActionToEdit;
 
 
     public SharedPreferences.Editor getPrefsEditor() {
@@ -62,13 +57,11 @@ public class CurrentUser {
         sAppContext = appContext;
         mWorkOrders = new ArrayList<WorkOrder>();
         mActions = new ArrayList<Action>();
-        //lastRefresh = 0;
     }
 
     public static CurrentUser get(Context c){
         if (sCurrentUser == null) {
             sCurrentUser = new CurrentUser(c);
-            //sCurrentUser = new CurrentUser();
         }
         return sCurrentUser;
     }
@@ -85,19 +78,12 @@ public class CurrentUser {
         return URLGetNotices;
     }
 
-    /*
-    public void getCurrentRefresh(){
-        lastRefresh = System.currentTimeMillis();
-    }
-*/
-
     public void addNewWorkOrder(WorkOrder wo){
         mWorkOrders.add(wo);
     }
 
     public void setWorkOrders(ArrayList<WorkOrder> newWorkOrders) {
-        //mWorkOrders = workOrders;
-        //Want to keep same reference to list, so just clear it and add anew
+        //Want to keep same list reference, so just clearing it here and add repopulating
         mWorkOrders.clear();
         mWorkOrders.addAll(newWorkOrders);
     }
@@ -106,26 +92,12 @@ public class CurrentUser {
         return mWorkOrders;
     }
 
-    public WorkOrder getWorkOrder(/*UUID id*/String proposalPhase){
-        for (WorkOrder wo : mWorkOrders) {
-            /*if (wo.getId().equals(id)) {
-                return wo;
-            }*/
-            if (wo.getProposalPhase().equals(proposalPhase)){
-                return wo;
-            }
-        }
-        return null;
-    }
-
     public String getUsername() {
         return mUsername;
-
     }
 
     public void setUsername(String username) {
         mUsername = username;
-
     }
 
     public void buildUrlsWithUsername(){
