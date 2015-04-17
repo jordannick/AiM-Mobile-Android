@@ -20,10 +20,11 @@ public class WorkOrderActionQueueListFragment extends ListFragment{
     private Activity mActivity;
     private Context mContext;
     private static CurrentUser sCurrentUser;
+    private ActionAdapter mActionQueueAdapter;
     private Callbacks mCallbacks;
 
     public interface Callbacks{
-        void onActionSelected(Action actionToEdit);
+        void onActionSelected(int position);
     }
 
     @Override
@@ -42,8 +43,15 @@ public class WorkOrderActionQueueListFragment extends ListFragment{
 
         ArrayList<Action> actions = sCurrentUser.getActions();
 
-        ActionAdapter adapter = new ActionAdapter(mContext, actions);
-        setListAdapter(adapter);
+        mActionQueueAdapter = new ActionAdapter(mContext, actions);
+
+        setListAdapter(mActionQueueAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(mActionQueueAdapter != null) mActionQueueAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -54,8 +62,8 @@ public class WorkOrderActionQueueListFragment extends ListFragment{
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Action actionToEdit = ((ActionAdapter)getListAdapter()).getItem(position);
-        mCallbacks.onActionSelected(actionToEdit);
+        //Pass position for retrieving action from it later
+        mCallbacks.onActionSelected(position);
     }
 
 }

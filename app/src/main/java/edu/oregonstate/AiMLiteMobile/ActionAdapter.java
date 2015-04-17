@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class ActionAdapter extends ArrayAdapter<Action> {
     private final static String TAG = "ActionAdapter";
 
-
     private final Context mContext;
 
     public ActionAdapter(Context c, ArrayList<Action> actions) {
@@ -27,25 +26,25 @@ public class ActionAdapter extends ArrayAdapter<Action> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null){
 
+        if(convertView == null){
             LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.list_item_action, parent, false);
-
         }
+
         Action action = getItem(position);
 
+        ((TextView) convertView.findViewById(R.id.action_work_order_id)).setText(action.getWorkOrder().getProposalPhase());
 
-        TextView textView_id = (TextView)convertView.findViewById(R.id.action_work_order_id);
-
-        //TODO dont store whole workorder object, just need proposal ID
-        //textView_id.setText(String.valueOf(action.getWorkOrder().getProposalPhase()));
+        ((TextView) convertView.findViewById(R.id.action_work_order_location)).setText(action.getWorkOrder().getBuilding());
 
         ((TextView) convertView.findViewById(R.id.action_taken)).setText(action.getActionTaken());
 
         ((TextView) convertView.findViewById(R.id.action_newStatus)).setText(action.getUpdatedStatus());
 
         ((TextView) convertView.findViewById(R.id.action_timeSince)).setText(action.getDateStamp().toString());
+
+        ((TextView) convertView.findViewById(R.id.action_hours)).setText(String.valueOf(action.getHours()));
 
         return convertView;
     }

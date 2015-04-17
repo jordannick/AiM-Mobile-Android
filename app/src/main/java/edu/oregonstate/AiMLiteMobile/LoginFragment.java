@@ -18,8 +18,6 @@ import android.widget.Toast;
  */
 public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskCompleted {
 
-    private LoginFragment myFragment = this;
-
     private static final String TAG = "LoginFragment";
 
     private EditText mUsernameField;

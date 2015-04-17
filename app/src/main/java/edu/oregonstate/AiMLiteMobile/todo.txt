@@ -8,6 +8,8 @@ Add change section option for specific/multiple work orders
 
 Show workOrderID on details page in another spot than just the title        DONE
 
+Implement edit action ability from action queue list                        DONE
+
 Figure out final authorization format, i.e. send username+password
 
 Implement http POST calls for add/update methods

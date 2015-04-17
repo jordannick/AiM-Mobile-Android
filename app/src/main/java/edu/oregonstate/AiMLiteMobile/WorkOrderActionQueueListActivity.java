@@ -4,8 +4,11 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Adapter;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
@@ -32,6 +35,7 @@ public class WorkOrderActionQueueListActivity extends SingleFragmentActivity imp
         }
     }
 
+
     @Override
     protected Fragment createFragment() {
         return new WorkOrderActionQueueListFragment();
@@ -48,12 +52,10 @@ public class WorkOrderActionQueueListActivity extends SingleFragmentActivity imp
         return true;
     }
 
-    public void onActionSelected(Action actionToEdit){
-        //Open up edit action form for clicked action
+    //Open edit action form for clicked action, with position of action in queue
+    public void onActionSelected(int actionPosition){
         Intent i = new Intent(this, WorkOrderAddActionActivity.class);
-        i.putExtra(Action.EDIT_ACTION_EXTRA, actionToEdit);
-        //Log.d(TAG, "wo: "+wo);
-        //Log.d(TAG, "woID sent: "+wo.getId());
+        i.putExtra(Action.EDIT_ACTION_EXTRA, actionPosition);
         startActivity(i);
     }
 

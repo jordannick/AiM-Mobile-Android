@@ -31,6 +31,7 @@ public class CurrentUser {
 
     //Action Queue variables
     private ArrayList<Action> mActions;
+    private Action currentActionToEdit;
 
 
     public SharedPreferences.Editor getPrefsEditor() {
@@ -137,15 +138,12 @@ public class CurrentUser {
         return mActions;
     }
 
+    public Action getAction(int position) {
+        return mActions.get(position);
+    }
+
     public void addAction(Action action) {
         mActions.add(action);
     }
 
-    /*
-    public boolean isRefreshNeeded(){
-        Log.d(TAG, "System.currentTimeMillis() = "+System.currentTimeMillis());
-        Log.d(TAG, "lastRefresh = "+lastRefresh);
-        return System.currentTimeMillis() > lastRefresh;
-    }
-    */
 }
