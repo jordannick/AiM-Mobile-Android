@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 /**
  * Created by jordan_n on 8/13/2014.
+ * Maintains the local session of the logged in user.
  */
 public class CurrentUser {
     private static final String TAG = "CurrentUser";

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Example arrays for testing -->
     <string-array name="statusItems">
         <item>ASSIGNED</item>
         <item>WORK IN PROGRESS</item>

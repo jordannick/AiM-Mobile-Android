@@ -15,14 +15,15 @@ import java.util.ArrayList;
  * Created by sellersk on 8/20/2014.
  */
 public class NoteAdapter extends ArrayAdapter<Note> {
+    private final static String TAG = "NoteAdapter";
 
     private final Context mContext;
     private ArrayList<Note> mNotes;
 
     public NoteAdapter(Context c, ArrayList<Note> notes){
         super(c, 0, notes);
-        mNotes = notes;
         mContext = c;
+        mNotes = notes;
     }
 
     @Override
@@ -33,14 +34,15 @@ public class NoteAdapter extends ArrayAdapter<Note> {
         }
 
         Note note = mNotes.get(position);
+
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         String formattedDate = format.format(note.getDate());
 
-        //Name
+        //Populate the layout items with the note data
         ((TextView) convertView.findViewById(R.id.note_nameTextView)).setText(note.getAuthor());
-        //Date
+
         ((TextView)convertView.findViewById(R.id.note_dateTextView)).setText(formattedDate);
-        //Note
+
         ((TextView)convertView.findViewById(R.id.note_noteTextView)).setText(note.getNote());
 
         return convertView;

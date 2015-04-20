@@ -20,19 +20,13 @@ import java.util.GregorianCalendar;
  * Created by jordan_n on 8/13/2014.
  */
 public class DetailMainFragment extends Fragment{
-
     public static String TAG = "DetailMainFragment";
 
     private Activity mActivity;
     private WorkOrder mWorkOrder;
-
     private Callbacks mCallbacks;
-
     private View v;
 
-    /**
-     * Required interface for hosting activities.
-     */
     public interface Callbacks {
         //void onWorkOrderUpdated();
     }

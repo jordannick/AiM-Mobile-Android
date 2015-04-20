@@ -68,7 +68,7 @@ public class WorkOrder implements Serializable {
             mNotes.add(new Note("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis() - (int) (day * 3.4))));
 
 
-            mNotes.add(new Note("Very long example text of something wrong with campus that must be addressed promptly otherwise all students fail.", "MCGILLD", new Date(System.currentTimeMillis() - (int) (day * 10.8))));
+            mNotes.add(new Note("This is an example description. I ate oatmeal this morning. With some coffee, and a wrap. It was quite good. I'm gonna continue writing, because I need to fill more space. How is your day going? That's great.", "MCGILLD", new Date(System.currentTimeMillis() - (int) (day * 10.8))));
 
         }
         return mNotes;

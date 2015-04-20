@@ -18,24 +18,24 @@ public class ActionAdapter extends ArrayAdapter<Action> {
     private final static String TAG = "ActionAdapter";
 
     private final Context mContext;
+    private ArrayList<Action> mActions;
 
     public ActionAdapter(Context c, ArrayList<Action> actions) {
         super(c, 0, actions);
         mContext = c;
+        mActions = actions;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         if(convertView == null){
-            LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.list_item_action, parent, false);
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.list_item_action, parent, false);
         }
 
-        Action action = getItem(position);
+        Action action = mActions.get(position);
 
         //Populate the layout items with the action data
-
         ((TextView) convertView.findViewById(R.id.action_work_order_id)).setText(action.getWorkOrder().getProposalPhase());
 
         ((TextView) convertView.findViewById(R.id.action_work_order_location)).setText(action.getWorkOrder().getBuilding());

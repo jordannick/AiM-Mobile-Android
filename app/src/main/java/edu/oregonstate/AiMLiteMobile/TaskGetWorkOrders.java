@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,14 +83,23 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
         if (isNetworkOnline()) {
 
             Log.i(TAG, "Network is available");
-            NetworkGetJSON jParser = new NetworkGetJSON();
+            //NetworkGetJSON jParser = new NetworkGetJSON();
 
             boolean needRefresh = isRefreshNeeded();
             Log.i(TAG, "Need normal refresh? " + needRefresh);
             Log.i(TAG, "Force refresh? " + forceRefresh);
             if (needRefresh || forceRefresh) {
 
-                responsePair = jParser.getJSONFromUrl(sCurrentUser.getURLGetAll(), true);
+
+                responsePair = new NetworkGetJSON().getJSONFromUrl(sCurrentUser.getURLGetAll(), true);
+
+                /*
+                try {
+                    responsePair = new NetworkGetJSON_TEST().downloadUrl(sCurrentUser.getURLGetAll(), true, responsePair);
+                } catch (IOException e){
+                    Log.e(TAG, e.toString());
+                }
+                */
 
                 if (responsePair.getStatus() != ResponsePair.Status.SUCCESS) {
                     return responsePair;
@@ -218,9 +228,16 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
         Log.i(TAG, "Stored last_updated: "+storedDate);
 
         //Retrieve last_updated from updateUrl for user
-        NetworkGetJSON jParser = new NetworkGetJSON();
-        ResponsePair responsePair = jParser.getJSONFromUrl(sCurrentUser.getURLGetLastUpdated(), false);
 
+        ResponsePair responsePair = new NetworkGetJSON().getJSONFromUrl(sCurrentUser.getURLGetLastUpdated(), false);
+        /*
+        ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
+        try {
+            responsePair = new NetworkGetJSON_TEST().downloadUrl(sCurrentUser.getURLGetLastUpdated(), false, responsePair);
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+           */
         if (responsePair.getStatus() == ResponsePair.Status.SUCCESS){
             lastUpdated = responsePair.getReturnedString();
             retrievedDate = convertToDate(lastUpdated);

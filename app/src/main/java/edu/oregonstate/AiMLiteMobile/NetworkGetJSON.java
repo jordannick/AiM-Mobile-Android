@@ -46,10 +46,9 @@ public class NetworkGetJSON {
         HttpClient client = new DefaultHttpClient();
 
         ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
-
-        //HttpPost httpPost = new HttpPost(url);
+        
         HttpGet httpGet = new HttpGet(url);
-       // httpPost.setHeader("Connection","Keep-Alive");
+
 
         try {
             //HttpResponse response = client.execute(httpPost);

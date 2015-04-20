@@ -52,6 +52,7 @@ public class DetailActivity extends Activity implements DetailMainFragment.Callb
         actionBar.setHomeButtonEnabled(true);
 
         if(savedInstanceState!=null){
+            //Restore the tab the user was last at
             int currentTab = savedInstanceState.getInt("CurrentDetailsTab");
             actionBar.selectTab(actionBar.getTabAt(currentTab));
         }
@@ -61,13 +62,13 @@ public class DetailActivity extends Activity implements DetailMainFragment.Callb
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        //Save which tab the user was last on
+
+        //Save which tab the user was last at
         outState.putInt("CurrentDetailsTab", actionBar.getSelectedTab().getPosition());
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail, menu);
         return true;
     }
@@ -77,6 +78,7 @@ public class DetailActivity extends Activity implements DetailMainFragment.Callb
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_new:
+                //Create and start the AddAction activity, sending the work order object
                 Intent i = new Intent(this, AddActionActivity.class);
                 i.putExtra(WorkOrder.WORK_ORDER_EXTRA, mWorkOrder);
                 startActivity(i);
