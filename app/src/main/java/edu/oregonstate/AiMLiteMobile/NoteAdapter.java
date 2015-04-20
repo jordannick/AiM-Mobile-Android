@@ -14,12 +14,12 @@ import java.util.ArrayList;
 /**
  * Created by sellersk on 8/20/2014.
  */
-public class WorkOrderNotesAdapter extends ArrayAdapter<WorkOrderNote> {
+public class NoteAdapter extends ArrayAdapter<Note> {
 
     private final Context mContext;
-    private ArrayList<WorkOrderNote> mNotes;
+    private ArrayList<Note> mNotes;
 
-    public WorkOrderNotesAdapter(Context c, ArrayList<WorkOrderNote> notes){
+    public NoteAdapter(Context c, ArrayList<Note> notes){
         super(c, 0, notes);
         mNotes = notes;
         mContext = c;
@@ -32,12 +32,12 @@ public class WorkOrderNotesAdapter extends ArrayAdapter<WorkOrderNote> {
             convertView = inflater.inflate(R.layout.list_item_note, parent, false);
         }
 
-        WorkOrderNote note = mNotes.get(position);
+        Note note = mNotes.get(position);
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         String formattedDate = format.format(note.getDate());
 
         //Name
-                ((TextView) convertView.findViewById(R.id.note_nameTextView)).setText(note.getAuthor());
+        ((TextView) convertView.findViewById(R.id.note_nameTextView)).setText(note.getAuthor());
         //Date
         ((TextView)convertView.findViewById(R.id.note_dateTextView)).setText(formattedDate);
         //Note

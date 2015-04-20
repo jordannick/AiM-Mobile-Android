@@ -1,14 +1,11 @@
 package edu.oregonstate.AiMLiteMobile;
 
-
-
 import android.util.Log;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Created by jordan_n on 8/13/2014.
@@ -17,9 +14,6 @@ public class WorkOrder implements Serializable {
 
     private static final String TAG = "WorkOrder";
 
-    private UUID mId;
-
-    //public static final String WORK_ORDER_ID = "edu.oregonstate.AiMLiteMobile.workorder_id";
     public static final String WORK_ORDER_EXTRA = "edu.oregonstate.AiMLiteMobile.WorkOrder";
 
     String mDescription;
@@ -31,7 +25,11 @@ public class WorkOrder implements Serializable {
     String mSection;
     int mPriorityColor;
 
-    ArrayList<WorkOrderNote> mNotes;
+
+    ArrayList<Note> mNotes;
+
+    String mContactName;
+    String mDepartment;
 
     //Row Display
     String mCategory;
@@ -45,32 +43,32 @@ public class WorkOrder implements Serializable {
     String[] mDateElements = new String[4]; //[0] DayOfWeek  [1] MonthDay  [2] Year  [3] DaysAgo
 
     //Utility Functions
-    private String capitalizeStr(String input){
+    private String capitalizeStr(String input) {
         StringBuilder sb = new StringBuilder();
-        input = input.substring(input.indexOf("_")+1, input.length());
+        input = input.substring(input.indexOf("_") + 1, input.length());
         input = input.toLowerCase();
         String[] words = input.split(" ");
-        for(int i = 0; i < words.length; i++){
+        for (int i = 0; i < words.length; i++) {
             words[i] = String.format("%s%s", words[i].substring(0, 1).toUpperCase(), words[i].substring(1, words[i].length()));
             sb.append(words[i]);
-            if(i != words.length -1)
+            if (i != words.length - 1)
                 sb.append(" ");
         }
         return sb.toString();
     }
 
-    public ArrayList<WorkOrderNote> getNotes() {
-        if(mNotes == null){
-            mNotes = new ArrayList<WorkOrderNote>();
+    public ArrayList<Note> getNotes() {
+        if (mNotes == null) {
+            mNotes = new ArrayList<Note>();
             int day = 86400000;
 
-            mNotes.add(new WorkOrderNote("Single line example text", "WILLIAMSONT", new Date(System.currentTimeMillis()-(int)(day*.3))));
+            mNotes.add(new Note("Single line example text", "WILLIAMSONT", new Date(System.currentTimeMillis() - (int) (day * .3))));
 
 
-            mNotes.add(new WorkOrderNote("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis()-(int)(day*3.4))));
+            mNotes.add(new Note("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis() - (int) (day * 3.4))));
 
 
-            mNotes.add(new WorkOrderNote("Very long example text of something wrong with campus that must be addressed promptly otherwise all students fail.", "MCGILLD", new Date(System.currentTimeMillis()-(int)(day*10.8))));
+            mNotes.add(new Note("Very long example text of something wrong with campus that must be addressed promptly otherwise all students fail.", "MCGILLD", new Date(System.currentTimeMillis() - (int) (day * 10.8))));
 
         }
         return mNotes;
@@ -92,8 +90,24 @@ public class WorkOrder implements Serializable {
         mShop = shop;
     }
 
-    public void setNotes(ArrayList<WorkOrderNote> notes) {
+    public void setNotes(ArrayList<Note> notes) {
         mNotes = notes;
+    }
+
+    public String getContactName() {
+        return mContactName;
+    }
+
+    public void setContactName(String mContactName) {
+        this.mContactName = mContactName;
+    }
+
+    public String getDepartment() {
+        return mDepartment;
+    }
+
+    public void setDepartment(String mDepartment) {
+        this.mDepartment = mDepartment;
     }
 
     public String getMinCraftCode() {
@@ -143,7 +157,7 @@ public class WorkOrder implements Serializable {
 
         //mPriorityColor = new Color(1, 1,1);
 
-        switch(priority.charAt(0)){
+        switch (priority.charAt(0)) {
             case 'U':
                 mPriorityColor = R.color.urgent_orange;
                 break;
@@ -221,7 +235,7 @@ public class WorkOrder implements Serializable {
 
     public void setDateElements(String dateElements) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try{
+        try {
             Date date = format.parse(dateElements);
             mDateCreated = date.toString();
 
@@ -234,42 +248,32 @@ public class WorkOrder implements Serializable {
 
             Date currentDate = new Date();
 
-            float secondsInHour = 60*60;
-            float secondsInDay = 60*60*24;
+            float secondsInHour = 60 * 60;
+            float secondsInDay = 60 * 60 * 24;
             long millisInSecond = 1000;
 
-            long interval = (currentDate.getTime()-date.getTime())/millisInSecond;
-            if(interval < secondsInHour){
-                if(interval < 60)
+            long interval = (currentDate.getTime() - date.getTime()) / millisInSecond;
+            if (interval < secondsInHour) {
+                if (interval < 60)
                     mDateElements[3] = "1 min ago";
                 else
-                    mDateElements[3] = String.format("%.0f mins ago", (interval/60.0));
-            }else if(interval < secondsInDay){
-                if(interval < secondsInHour*2)
+                    mDateElements[3] = String.format("%.0f mins ago", (interval / 60.0));
+            } else if (interval < secondsInDay) {
+                if (interval < secondsInHour * 2)
                     mDateElements[3] = "1 hour ago";
                 else
-                    mDateElements[3] = String.format("%.0f hours ago", interval/secondsInHour);
-            }else{
-                if(interval < secondsInDay*2)
+                    mDateElements[3] = String.format("%.0f hours ago", interval / secondsInHour);
+            } else {
+                if (interval < secondsInDay * 2)
                     mDateElements[3] = "1 day ago";
                 else
-                    mDateElements[3] = String.format("%.0f days ago", interval/secondsInDay);
+                    mDateElements[3] = String.format("%.0f days ago", interval / secondsInDay);
             }
-        }catch(Exception e){
-            Log.d(TAG,"Error: Parsing Date");
+        } catch (Exception e) {
+            Log.d(TAG, "Error: Parsing Date");
             e.printStackTrace();
         }
     }
-
-    public WorkOrder(){
-        mId = UUID.randomUUID();
-
-    }
-
-    public UUID getId() {
-        return mId;
-    }
-
 
 
 }

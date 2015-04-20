@@ -34,8 +34,8 @@ import java.util.Date;
 /**
  * Created by sellersk on 2/17/2015.
  */
-public class WorkOrderAddActionFragment extends Fragment {
-    public static final String TAG = "WorkOrderAddActionFragment";
+public class AddActionFragment extends Fragment {
+    public static final String TAG = "AddActionFragment";
 
     private boolean editMode; //False = add new action from scratch //True = edit existing action
 
@@ -54,8 +54,8 @@ public class WorkOrderAddActionFragment extends Fragment {
     private static Spinner spinner_updateStatus;
     private static Button button_addNote;
     private static ListView notesListView;
-    private static WorkOrderNotesAdapter notesAdapter;
-    private static ArrayList<WorkOrderNote> newActionNotes;
+    private static NoteAdapter notesAdapter;
+    private static ArrayList<Note> newActionNotes;
 
     private int HOURS_MIN = 0;
     private int HOURS_MAX = 8;
@@ -73,10 +73,10 @@ public class WorkOrderAddActionFragment extends Fragment {
         editMode = bundle.getBoolean("editMode");
 
         if (editMode){
-            mActionToEdit = ((WorkOrderAddActionActivity) mActivity).getAction();
+            mActionToEdit = ((AddActionActivity) mActivity).getAction();
             if (mActionToEdit != null) mWorkOrder = mActionToEdit.getWorkOrder();
         } else {
-            mWorkOrder = ((WorkOrderAddActionActivity) mActivity).getWorkOrder();
+            mWorkOrder = ((AddActionActivity) mActivity).getWorkOrder();
         }
 
         if (savedInstanceState != null){
@@ -88,13 +88,6 @@ public class WorkOrderAddActionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,Bundle savedInstanceState) {
         return inflater.inflate(R.layout.action_add, parent, false);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable("WorkOrder", mWorkOrder);
-        outState.putSerializable("Action", mActionToEdit);
-        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -136,7 +129,7 @@ public class WorkOrderAddActionFragment extends Fragment {
 
             defaultStatus = mWorkOrder.getStatus(); //Sets the status spinner to the current status of the work order
 
-            if (newActionNotes == null) newActionNotes = new ArrayList<WorkOrderNote>();//Associate new notes with notes list view
+            if (newActionNotes == null) newActionNotes = new ArrayList<Note>();//Associate new notes with notes list view
         }
 
 
@@ -144,7 +137,7 @@ public class WorkOrderAddActionFragment extends Fragment {
         int defaultStatusSpinnerPosition = statusAdapter.getPosition(defaultStatus);
         spinner_updateStatus.setSelection(defaultStatusSpinnerPosition);
 
-        notesAdapter = new WorkOrderNotesAdapter(getActivity(), newActionNotes);
+        notesAdapter = new NoteAdapter(getActivity(), newActionNotes);
         notesListView = (ListView)getActivity().findViewById(R.id.notesListView);
         notesListView.setEmptyView(getActivity().findViewById(R.id.notesListViewEmpty));
         notesListView.setAdapter(notesAdapter);
@@ -159,6 +152,14 @@ public class WorkOrderAddActionFragment extends Fragment {
         createHoursEntryDialog();
         createNoteEntryDialog();
 
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("WorkOrder", mWorkOrder);
+        outState.putSerializable("Action", mActionToEdit);
+        super.onSaveInstanceState(outState);
     }
 
     private void createHoursEntryDialog(){
@@ -225,7 +226,7 @@ public class WorkOrderAddActionFragment extends Fragment {
                         String noteString = input.getText().toString();
                         if (!noteString.equals("")) {
                             //Create noteObject and add to notesArray
-                            WorkOrderNote newNote = new WorkOrderNote(noteString, sCurrentUser.getUsername(), new Date(System.currentTimeMillis()));
+                            Note newNote = new Note(noteString, sCurrentUser.getUsername(), new Date(System.currentTimeMillis()));
                             newActionNotes.add(0, newNote);
                             //Display short toast to notify that note has been saved
                             String toastText = "New note added";
@@ -299,7 +300,7 @@ public class WorkOrderAddActionFragment extends Fragment {
                     //Create Action object from form fields
                     //Add new Action object to CurrentUser.Actions
                     //Return to QueueListFragment and update to show added Action
-                    Intent intent = new Intent(getActivity(), WorkOrderActionQueueListActivity.class);
+                    Intent intent = new Intent(getActivity(), ActionQueueListActivity.class);
                     startActivity(intent);
 
                     String toastText = "Action Added";

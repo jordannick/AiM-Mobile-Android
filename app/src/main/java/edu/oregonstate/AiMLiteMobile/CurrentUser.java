@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class CurrentUser {
     private static final String TAG = "CurrentUser";
 
-    private String mUsername;
+    private static String mUsername;
     private SharedPreferences prefs;
     private SharedPreferences.Editor prefsEditor;
     private ArrayList<WorkOrder> mWorkOrders;
@@ -24,9 +24,9 @@ public class CurrentUser {
     public String URLGetLastUpdated;
     public String URLGetNotices;
 
-    private String urlBase = "http://api-test.facilities.oregonstate.edu";
-    private String urlAPIVersion = "1.0";
-    private String urlObject = "WorkOrder";
+    private static String urlBase = "http://api-test.facilities.oregonstate.edu";
+    private static String urlAPIVersion = "1.0";
+    private static String urlObject = "WorkOrder";
 
 
     public SharedPreferences.Editor getPrefsEditor() {

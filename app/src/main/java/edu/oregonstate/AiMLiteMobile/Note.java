@@ -6,15 +6,15 @@ import java.util.Date;
 /**
  * Created by sellersk on 8/20/2014.
  */
-public class WorkOrderNote implements Serializable {
+public class Note implements Serializable {
 
-    private static final String TAG = "WorkOrderNote";
+    private static final String TAG = "Note";
 
     String mNote;
     String mAuthor;
     Date mDate;
 
-    public WorkOrderNote(String note, String author, Date date) {
+    public Note(String note, String author, Date date) {
         mNote = note;
         mAuthor = author;
         mDate = date;

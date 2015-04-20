@@ -11,9 +11,9 @@ import org.apache.http.NameValuePair;
 import java.util.List;
 
 
-public class PostWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
+public class TaskPostAction extends AsyncTask<String, Void, ResponsePair> {
 
-    private static final String TAG = "PostWorkOrdersTask";
+    private static final String TAG = "TaskPostAction";
     private OnTaskCompleted listener;
     private List<NameValuePair> nameValuePairs;
     private Context mContext;
@@ -22,7 +22,7 @@ public class PostWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
 
     }
 
-    public PostWorkOrdersTask(List<NameValuePair> nameValuePairs, String url, Context context) {
+    public TaskPostAction(List<NameValuePair> nameValuePairs, String url, Context context) {
         //this.listener = listener;
         this.nameValuePairs = nameValuePairs;
         this.mContext = context;
@@ -66,9 +66,9 @@ public class PostWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         if (isNetworkOnline()) {
             Log.d(TAG, "Network Available");
 
-            SubmitChange submitChange = new SubmitChange();
+            NetworkPostAction networkPostAction = new NetworkPostAction();
 
-            responsePair = submitChange.postToURL("SomeURLGoesHere", nameValuePairs);
+            responsePair = networkPostAction.postToURL("SomeURLGoesHere", nameValuePairs);
 
             if (responsePair.getStatus() != ResponsePair.Status.SUCCESS) {
                 return responsePair;
@@ -103,35 +103,6 @@ public class PostWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
 
 
 }
-
-/*
-URL Schema
-/[api version]/[object]/[method]/[param1]/[param2]/[param3] …
-
-    o	addTime($username, $date, $hours, $workOrderPhaseId, [$timeType], $timeStamp)
-        ?	Adds hours to the specified work order / phase for the date.
-        ?	Uses default time type, unless otherwise specified
-        ?	Timestamp should give the time at which this update took place.
-        ?	Example: coming soon.
-
-    o	addActionTaken($username, $workOrderPhaseId, $actionTaken, $timeStamp)
-        ?	Adds an Action Taken to the specified work order / phase
-        ?	Timestamp should give the time at which this update took place.
-
-    o	addNote($username, $workOrderPhaseId, $note, $timeStamp)
-        ?	Adds a note to the specified Work Order / Phase
-        ?	Timestamp should give the time at which this update took place.
-
-    o	updateStatus($username, $workOrderPhaseId, $newStatus, $timeStamp)
-        ?	Updates the status of the specified Work Order / Phase to the new status listed.
-        ?	Timestamp should give the time at which this update took place.
-
-    o	updateSection($usename, $workOrderPhaseId, $value, $timeStamp)
-        ?	Allowed values include ‘Backlog’ and ‘Daily Assignment’
-        ?	Timestamp should give the time at which this update took place.
-*/
-
-
 
 
 

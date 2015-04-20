@@ -5,51 +5,36 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-import java.util.UUID;
-
 /**
  * Created by jordan_n on 8/13/2014.
  */
-public class WorkOrderDetailActivity extends Activity implements WorkOrderDetailFragment.Callbacks, WorkOrderNotesFragment.Callbacks {
-    private static final String TAG = "WorkOrderDetailActivity";
+public class DetailActivity extends Activity implements DetailMainFragment.Callbacks, DetailNotesFragment.Callbacks {
+    private static final String TAG = "DetailActivity";
 
-    ActionBar.Tab Tab1, Tab2, Tab3;
-    Fragment fragmentTab1 = new WorkOrderDetailFragment();
-    Fragment fragmentTab2 = new WorkOrderNotesFragment();
-    Fragment fragmentTab3 = new WorkOrderContactFragment();
-
-    public UUID workOrderId;
     public WorkOrder mWorkOrder;
-
     private ActionBar actionBar;
 
     public void onWorkOrderUpdated() {
 
     }
 
-
-    
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
-
-
         setContentView(R.layout.activity_fragment);
 
         mWorkOrder = (WorkOrder)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
-       // workOrderId = (UUID)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_ID);
-        //Log.d(TAG, "woID in detail activity: " + workOrderId);
-        //mWorkOrder = CurrentUser.get(getApplicationContext()).getWorkOrder(workOrderId);
-        //Log.d(TAG, "wo in detail activity: " + mWorkOrder);
-
         actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        ActionBar.Tab Tab1, Tab2, Tab3;
+        Fragment fragmentTab1 = new DetailMainFragment();
+        Fragment fragmentTab2 = new DetailNotesFragment();
+        Fragment fragmentTab3 = new DetailContactFragment();
 
         Tab1 = actionBar.newTab().setText("Overview");
         Tab2 = actionBar.newTab().setText("Notes");
@@ -66,21 +51,18 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
-
         if(savedInstanceState!=null){
             int currentTab = savedInstanceState.getInt("CurrentDetailsTab");
             actionBar.selectTab(actionBar.getTabAt(currentTab));
         }
-
-
     }
 
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        //Save which tab the user was last on
         outState.putInt("CurrentDetailsTab", actionBar.getSelectedTab().getPosition());
-
     }
 
     @Override
@@ -91,14 +73,11 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_new:
-                Intent i = new Intent(this, WorkOrderAddActionActivity.class);
-
-               // i.putExtra(WorkOrder.WORK_ORDER_ID, workOrderId);
+                Intent i = new Intent(this, AddActionActivity.class);
                 i.putExtra(WorkOrder.WORK_ORDER_EXTRA, mWorkOrder);
                 startActivity(i);
                 break;
@@ -109,5 +88,9 @@ public class WorkOrderDetailActivity extends Activity implements WorkOrderDetail
 
         return super.onOptionsItemSelected(item);
 
+    }
+
+    public WorkOrder getWorkOrder() {
+        return mWorkOrder;
     }
 }

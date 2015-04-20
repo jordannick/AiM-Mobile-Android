@@ -9,28 +9,14 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
-public class WorkOrderListActivity extends Activity implements WorkOrderListFragment.Callbacks, WorkOrderDetailFragment.Callbacks {
+public class OverviewListActivity extends Activity implements OverviewListFragment.Callbacks, DetailMainFragment.Callbacks {
+    private static final String TAG = "OverviewListActivity";
 
-    private static final String TAG = "WorkOrderListActivity";
     private static CurrentUser sCurrentUser;
-    ActionBar.Tab Tab1, Tab2;
-    Fragment fragmentTab1 = new WorkOrderListFragment();
-    Fragment fragmentTab2 = new WorkOrderListFragment();
     private ActionBar actionBar;
 
 
@@ -40,17 +26,16 @@ public class WorkOrderListActivity extends Activity implements WorkOrderListFrag
         setContentView(R.layout.activity_fragment);
         actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
         sCurrentUser = CurrentUser.get(getApplicationContext());
 
-
-        Tab1 = actionBar.newTab();
-        Tab2 = actionBar.newTab();
-
-
-        int num_daily = 0;
-        int num_backlog = 0;
+        ActionBar.Tab Tab1, Tab2;
+        Fragment fragmentTab1 = new OverviewListFragment();
+        Fragment fragmentTab2 = new OverviewListFragment();
 
         //Show the number of work orders in each section
+        int num_daily = 0;
+        int num_backlog = 0;
         for (WorkOrder wo : sCurrentUser.getWorkOrders()){
             if (wo.getSection().equals("Daily")){
                 num_daily += 1;
@@ -58,8 +43,9 @@ public class WorkOrderListActivity extends Activity implements WorkOrderListFrag
                 num_backlog += 1;
             }
         }
-        Tab1.setText("Daily ("+num_daily+")");
-        Tab2.setText("Backlog ("+num_backlog+")");
+
+        Tab1 = actionBar.newTab().setText("Daily ("+num_daily+")");
+        Tab2 = actionBar.newTab().setText("Backlog ("+num_backlog+")");
 
         Bundle bundle1 = new Bundle();
         bundle1.putString("sectionFilter", "Daily");
@@ -69,8 +55,6 @@ public class WorkOrderListActivity extends Activity implements WorkOrderListFrag
 
         fragmentTab1.setArguments(bundle1);
         fragmentTab2.setArguments(bundle2);
-
-
 
         Tab1.setTabListener(new TabListener(fragmentTab1));
         Tab2.setTabListener(new TabListener(fragmentTab2));
@@ -90,6 +74,16 @@ public class WorkOrderListActivity extends Activity implements WorkOrderListFrag
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        //TODO 3/12/2015 - check stored last updated time against current time, if longer than some interval, refresh
+
+        // updateWorkOrderList();
+
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("CurrentSectionTab", actionBar.getSelectedTab().getPosition());
@@ -98,7 +92,7 @@ public class WorkOrderListActivity extends Activity implements WorkOrderListFrag
 /*
     public void onWorkOrderUpdated() {
         FragmentManager fm = getFragmentManager();
-        WorkOrderListFragment listFragment = (WorkOrderListFragment)
+        OverviewListFragment listFragment = (OverviewListFragment)
                 fm.findFragmentById(R.id.fragmentContainer);
         listFragment.updateUI();
     }
@@ -106,15 +100,15 @@ public class WorkOrderListActivity extends Activity implements WorkOrderListFrag
 
     public void onWorkOrderSelected(WorkOrder workOrder){
         if (findViewById(R.id.detailFragmentContainer) == null) {
-        // Start an instance of WorkOrderDetailActivity
-            Intent i = new Intent(this, WorkOrderDetailActivity.class);
+        // Start an instance of DetailActivity
+            Intent i = new Intent(this, DetailActivity.class);
             i.putExtra(WorkOrder.WORK_ORDER_EXTRA, workOrder);
             startActivity(i);
         } else { //Useful for later if implement swipe to change work order while in detail view
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
             Fragment oldDetail = fm.findFragmentById(R.id.detailFragmentContainer);
-            Fragment newDetail = WorkOrderDetailFragment.newInstance(workOrder);
+            Fragment newDetail = DetailMainFragment.newInstance(workOrder);
             if (oldDetail != null) {
                 ft.remove(oldDetail);
             }
@@ -144,14 +138,9 @@ public class WorkOrderListActivity extends Activity implements WorkOrderListFrag
             }
         });
 
-
-
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-
-
 
 
     @Override
@@ -168,8 +157,8 @@ public class WorkOrderListActivity extends Activity implements WorkOrderListFrag
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_queue){
-            Intent i = new Intent(this, WorkOrderActionQueueListActivity.class);
-            //i.putExtra(WorkOrderDetailFragment.WORK_ORDER_ID, wo.getId());
+            Intent i = new Intent(this, ActionQueueListActivity.class);
+            //i.putExtra(DetailMainFragment.WORK_ORDER_ID, wo.getId());
             startActivity(i);
         }
        /* else if (id == R.id.action_settings) {
@@ -180,25 +169,12 @@ public class WorkOrderListActivity extends Activity implements WorkOrderListFrag
 
 
 
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        //TODO 3/12/2015 - check stored last updated time against current time, if longer than some interval, refresh
-
-        // updateWorkOrderList();
-
-    }
-
-
     //Makes new request, if refresh needed, CurrentUser workorders will repopulate, and displayed list updated
     /*private void updateWorkOrderList(){
 
         CurrentUser currentUser = CurrentUser.get(getApplicationContext());
 
-        GetWorkOrdersTask task = new GetWorkOrdersTask(this, currentUser, this, false);
+        TaskGetWorkOrders task = new TaskGetWorkOrders(this, currentUser, this, false);
         task.execute();
         onWorkOrderUpdated();
 

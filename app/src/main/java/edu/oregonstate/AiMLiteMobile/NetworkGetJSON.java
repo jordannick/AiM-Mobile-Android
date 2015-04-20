@@ -25,15 +25,15 @@ import java.io.InputStreamReader;
 
 
 
-public class JSONParser {
-    private final String TAG = "JSONParser";
+public class NetworkGetJSON {
+    private final String TAG = "NetworkGetJSON";
 
     static JSONArray jArray = null;
 
     private CurrentUser sCurrentUser; //TODO: clear current user if different user successfully logs in
 
 
-    public JSONParser() {
+    public NetworkGetJSON() {
     }
 
     public ResponsePair getJSONFromUrl(String url, boolean isArray) {

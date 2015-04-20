@@ -4,10 +4,8 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Adapter;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -19,7 +17,7 @@ import java.util.List;
 /**
  * Created by sellersk on 2/19/2015.
  */
-public class WorkOrderActionQueueListActivity extends SingleFragmentActivity implements WorkOrderActionQueueListFragment.Callbacks {
+public class ActionQueueListActivity extends SingleFragmentActivity implements ActionQueueListFragment.Callbacks {
     private static final String TAG = "WorkOrderActionQueueActivity";
     private static CurrentUser sCurrentUser;
 
@@ -41,7 +39,7 @@ public class WorkOrderActionQueueListActivity extends SingleFragmentActivity imp
 
     @Override
     protected Fragment createFragment() {
-        return new WorkOrderActionQueueListFragment();
+        return new ActionQueueListFragment();
     }
 
     @Override
@@ -57,7 +55,7 @@ public class WorkOrderActionQueueListActivity extends SingleFragmentActivity imp
 
     //Open edit action form for clicked action, with position of action in queue
     public void onActionSelected(int actionPosition){
-        Intent i = new Intent(this, WorkOrderAddActionActivity.class);
+        Intent i = new Intent(this, AddActionActivity.class);
         i.putExtra(Action.EDIT_ACTION_EXTRA, actionPosition);
         startActivity(i);
     }
@@ -106,7 +104,7 @@ public class WorkOrderActionQueueListActivity extends SingleFragmentActivity imp
 
             //TODO 4/15/2015 - get this thing working
             /*
-            PostWorkOrdersTask task = new PostWorkOrdersTask(nameValuePairs, url, this);
+            TaskPostAction task = new TaskPostAction(nameValuePairs, url, this);
             task.execute();
             */
 
@@ -134,30 +132,3 @@ public class WorkOrderActionQueueListActivity extends SingleFragmentActivity imp
 
     }
 }
-
-/*
-URL Schema
-/[api version]/[object]/[method]/[param1]/[param2]/[param3] …
-
-    o	addTime($username, $date, $hours, $workOrderPhaseId, [$timeType], $timeStamp)
-        ?	Adds hours to the specified work order / phase for the date.
-        ?	Uses default time type, unless otherwise specified
-        ?	Timestamp should give the time at which this update took place.
-        ?	Example: coming soon.
-
-    o	addActionTaken($username, $workOrderPhaseId, $actionTaken, $timeStamp)
-        ?	Adds an Action Taken to the specified work order / phase
-        ?	Timestamp should give the time at which this update took place.
-
-    o	addNote($username, $workOrderPhaseId, $note, $timeStamp)
-        ?	Adds a note to the specified Work Order / Phase
-        ?	Timestamp should give the time at which this update took place.
-
-    o	updateStatus($username, $workOrderPhaseId, $newStatus, $timeStamp)
-        ?	Updates the status of the specified Work Order / Phase to the new status listed.
-        ?	Timestamp should give the time at which this update took place.
-
-    o	updateSection($usename, $workOrderPhaseId, $value, $timeStamp)
-        ?	Allowed values include ‘Backlog’ and ‘Daily Assignment’
-        ?	Timestamp should give the time at which this update took place.
-*/

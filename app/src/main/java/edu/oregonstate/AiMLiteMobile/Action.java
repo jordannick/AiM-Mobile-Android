@@ -17,7 +17,7 @@ public class Action implements Serializable {
     private String actionTaken;
     private String updatedStatus;
     private int hours;
-    private ArrayList<WorkOrderNote> notes;
+    private ArrayList<Note> notes;
     private Date dateStamp;
 
     public static String action_MaterialRequest = "Material Request";
@@ -56,11 +56,11 @@ public class Action implements Serializable {
         this.hours = hours;
     }
 
-    public ArrayList<WorkOrderNote> getNotes() {
+    public ArrayList<Note> getNotes() {
         return notes;
     }
 
-    public void setNotes(ArrayList<WorkOrderNote> notes) {
+    public void setNotes(ArrayList<Note> notes) {
         this.notes = notes;
     }
 
@@ -72,7 +72,7 @@ public class Action implements Serializable {
         this.dateStamp = dateStamp;
     }
 
-    public Action(WorkOrder workOrder, String actionTaken, String updatedStatus, int hours, ArrayList<WorkOrderNote> notes) {
+    public Action(WorkOrder workOrder, String actionTaken, String updatedStatus, int hours, ArrayList<Note> notes) {
         this.mWorkOrder = workOrder;
         this.actionTaken = actionTaken;
         this.updatedStatus = updatedStatus;

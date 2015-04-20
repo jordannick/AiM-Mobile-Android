@@ -19,8 +19,8 @@ import java.util.Date;
  * Created by jordan_n on 8/14/2014.
  */
 
-public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
-    private static final String TAG = "GetWorkOrdersTask";
+public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
+    private static final String TAG = "TaskGetWorkOrders";
 
     private OnTaskCompleted listener;
     private boolean forceRefresh;
@@ -37,7 +37,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         void onAuthenticateFail();
     }
 
-    public GetWorkOrdersTask(OnTaskCompleted listener, CurrentUser currentUser, Context context, boolean forceRefresh) {
+    public TaskGetWorkOrders(OnTaskCompleted listener, CurrentUser currentUser, Context context, boolean forceRefresh) {
         this.listener = listener;
         this.sCurrentUser = currentUser;
         this.mContext = context;
@@ -82,7 +82,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         if (isNetworkOnline()) {
 
             Log.i(TAG, "Network is available");
-            JSONParser jParser = new JSONParser();
+            NetworkGetJSON jParser = new NetworkGetJSON();
 
             boolean needRefresh = isRefreshNeeded();
             Log.i(TAG, "Need normal refresh? " + needRefresh);
@@ -165,9 +165,12 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
                     wo.setPriority(mJsonObj.getString("pri_code"));
                     wo.setDateElements(mJsonObj.getString("ent_date"));
                     wo.setStatus(mJsonObj.getString("status_code"));
+                    wo.setContactName(mJsonObj.getString("contact"));
+                    wo.setDepartment(mJsonObj.getString("department"));
                     wo.setProposalPhase(String.format("%s-%s", mJsonObj.getString("proposal"), mJsonObj.getString("sort_code")));
 
-                    // %%%% DEBUG
+
+                    // %%%% TEST BLOCK - marks first 5 as daily
                     if (i < 5){
                         wo.setSection("Daily");
                     } else {
@@ -215,7 +218,7 @@ public class GetWorkOrdersTask extends AsyncTask<String, Void, ResponsePair> {
         Log.i(TAG, "Stored last_updated: "+storedDate);
 
         //Retrieve last_updated from updateUrl for user
-        JSONParser jParser = new JSONParser();
+        NetworkGetJSON jParser = new NetworkGetJSON();
         ResponsePair responsePair = jParser.getJSONFromUrl(sCurrentUser.getURLGetLastUpdated(), false);
 
         if (responsePair.getStatus() == ResponsePair.Status.SUCCESS){

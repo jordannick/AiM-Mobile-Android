@@ -6,14 +6,13 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 
 /**
  * Created by sellersk on 2/17/2015.
  */
-public class WorkOrderAddActionActivity extends Activity{
-    private static final String TAG = "WorkOrderAddActionActivity";
+public class AddActionActivity extends Activity{
+    private static final String TAG = "AddActionActivity";
 
     private static CurrentUser sCurrentUser;
     private WorkOrder mWorkOrder;
@@ -63,7 +62,7 @@ public class WorkOrderAddActionActivity extends Activity{
     }
 
     protected Fragment createFragment() {
-        Fragment newFragment = new WorkOrderAddActionFragment();
+        Fragment newFragment = new AddActionFragment();
         Bundle bundle = new Bundle();
 
         //Send which mode we're in to the fragment

@@ -12,7 +12,7 @@ import org.json.JSONArray;
 public class ResponsePair {
 
     public enum Status{
-        NONE, NET_FAIL, AUTH_FAIL, SUCCESS, JSON_FAIL, NO_DATA;
+        NONE, NET_FAIL, AUTH_FAIL, SUCCESS, JSON_FAIL, NO_DATA
     }
 
     public JSONArray jarray;

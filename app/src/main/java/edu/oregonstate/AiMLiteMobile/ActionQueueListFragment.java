@@ -14,8 +14,8 @@ import java.util.ArrayList;
 /**
  * Created by sellersk on 2/17/2015.
  */
-public class WorkOrderActionQueueListFragment extends ListFragment{
-    public static final String TAG = "WorkOrderActionQueueListFragment";
+public class ActionQueueListFragment extends ListFragment{
+    public static final String TAG = "ActionQueueListFragment";
 
     private Activity mActivity;
     private Context mContext;

@@ -17,7 +17,7 @@ import android.widget.Toast;
 /**
  * Created by jordan_n on 8/15/2014.
  */
-public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskCompleted {
+public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskCompleted {
 
     private static final String TAG = "LoginFragment";
 
@@ -131,7 +131,7 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
 
         //Attempt the request, try force pulling new list since we're logging in. Callback to success or fail function in this class.
         boolean forceRefresh = true;
-        GetWorkOrdersTask task = new GetWorkOrdersTask(this, sCurrentUser, getActivity(), forceRefresh);
+        TaskGetWorkOrders task = new TaskGetWorkOrders(this, sCurrentUser, getActivity(), forceRefresh);
         task.execute();
     }
 
@@ -145,7 +145,7 @@ public class LoginFragment extends Fragment implements GetWorkOrdersTask.OnTaskC
         mLoadCircle.setVisibility(View.INVISIBLE);
 
         //Move on to the next activity
-        Intent i = new Intent(getActivity(), WorkOrderListActivity.class);
+        Intent i = new Intent(getActivity(), OverviewListActivity.class);
         startActivity(i);
 
         //Leave the login screen activity running

@@ -7,9 +7,10 @@ import android.os.Bundle;
 /**
  * Created by sellersk on 8/19/2014.
  */
-public class WorkOrderNotesFragment extends ListFragment {
+public class DetailNotesFragment extends ListFragment {
 
-    private static final String TAG = "WorkOrderNotesFragment";
+    private static final String TAG = "DetailNotesFragment";
+    private Activity mActivity;
     private Callbacks mCallbacks;
     private static CurrentUser sCurrentUser;
     private WorkOrder mWorkOrder;
@@ -24,22 +25,15 @@ public class WorkOrderNotesFragment extends ListFragment {
         mCallbacks = (Callbacks)activity;
     }
 
-/*
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-*/
+        mActivity = getActivity();
+        mWorkOrder = ((DetailActivity)mActivity).getWorkOrder();
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        mWorkOrder = ((WorkOrderDetailActivity)getActivity()).mWorkOrder;
-
-        WorkOrderNotesAdapter adapter = new WorkOrderNotesAdapter(getActivity(), mWorkOrder.getNotes());
+        NoteAdapter adapter = new NoteAdapter(mActivity, mWorkOrder.getNotes());
 
         setListAdapter(adapter);
-
     }
+
 }

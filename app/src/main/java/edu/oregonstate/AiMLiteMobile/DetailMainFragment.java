@@ -3,6 +3,7 @@ package edu.oregonstate.AiMLiteMobile;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +15,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.UUID;
 
 /**
  * Created by jordan_n on 8/13/2014.
  */
-public class WorkOrderDetailFragment extends Fragment{
+public class DetailMainFragment extends Fragment{
 
-    public static String TAG = "WorkOrderDetailFragment";
+    public static String TAG = "DetailMainFragment";
 
-    //public static final String WORK_ORDER_ID = "edu.oregonstate.AiMLiteMobile.workorder_id";
-
+    private Activity mActivity;
     private WorkOrder mWorkOrder;
 
     private Callbacks mCallbacks;
@@ -37,47 +36,45 @@ public class WorkOrderDetailFragment extends Fragment{
     public interface Callbacks {
         //void onWorkOrderUpdated();
     }
+
+    //Useful for later if implement swipe to change work order while in detail view
+    public static DetailMainFragment newInstance(WorkOrder workOrder) {
+        Bundle args = new Bundle();
+        args.putSerializable(WorkOrder.WORK_ORDER_EXTRA, workOrder);
+        DetailMainFragment fragment = new DetailMainFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mCallbacks = (Callbacks)activity;
     }
+
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallbacks = null;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mActivity = getActivity();
+        mWorkOrder = ((DetailActivity)mActivity).getWorkOrder();
     }
 
-
-
-    public static WorkOrderDetailFragment newInstance(WorkOrder workOrder) {
-        Bundle args = new Bundle();
-        args.putSerializable(WorkOrder.WORK_ORDER_EXTRA, workOrder);
-        WorkOrderDetailFragment fragment = new WorkOrderDetailFragment();
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.detail_view, parent, false);
+        this.v = v;
+        return v;
     }
-
-
-
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        UUID workOrderId = ((WorkOrderDetailActivity)getActivity()).workOrderId;//Not currently used
-        mWorkOrder = ((WorkOrderDetailActivity)getActivity()).mWorkOrder;
-
-
-
-
-        //TODO add phase to proposal
-       // Log.d(TAG, "wo issues: "+mWorkOrder);
         getActivity().setTitle(mWorkOrder.getProposalPhase());
 
         RelativeLayout topSection = (RelativeLayout)v.findViewById(R.id.detail_top_section);
-        View topSectionLine = (View)v.findViewById(R.id.detail_top_section_line);
+        View topSectionLine = v.findViewById(R.id.detail_top_section_line);
         TextView topSectionPriorityTextView = (TextView)v.findViewById(R.id.detail_top_section_priority);
         topSectionPriorityTextView.setText(mWorkOrder.getPriority());
         switch (mWorkOrder.getPriorityColor()){
@@ -137,20 +134,17 @@ public class WorkOrderDetailFragment extends Fragment{
             }
 
         }catch (Exception e){
-
+            Log.e(TAG, "Calendar formatting error");
         }
 
         ((TextView)v.findViewById(R.id.estTextView)).setText(estText);
 
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.detail_view, parent, false);
-        this.v = v;
-        return v;
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
     }
 
 

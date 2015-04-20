@@ -17,10 +17,10 @@ import android.support.v4.view.ViewCompat;
  * Created by jordan_n on 8/13/2014.
  */
 
-public class WorkOrderListFragment extends ListFragment implements GetWorkOrdersTask.OnTaskCompleted{
+public class OverviewListFragment extends ListFragment implements TaskGetWorkOrders.OnTaskCompleted{
 
     private static CurrentUser sCurrentUser;
-    private static final String TAG = "WorkOrderListFragment";
+    private static final String TAG = "OverviewListFragment";
 
     private Callbacks mCallbacks;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -47,7 +47,7 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                updateWorkOrderList();
+                updateWorkOrderList(true); //Calls with force refresh enabled
             }
         });
 
@@ -133,12 +133,12 @@ public class WorkOrderListFragment extends ListFragment implements GetWorkOrders
         super.onActivityCreated(savedInstanceState);
     }
 
-    private void updateWorkOrderList(){
+    private void updateWorkOrderList(boolean swipeToRefresh){
         Log.i(TAG, "Requested update work order list");
 
         CurrentUser currentUser = CurrentUser.get(getActivity().getApplicationContext());
 
-        GetWorkOrdersTask task = new GetWorkOrdersTask(this, currentUser, getActivity(), false);
+        TaskGetWorkOrders task = new TaskGetWorkOrders(this, currentUser, getActivity(), swipeToRefresh);
         task.execute();
         updateUI();
 
