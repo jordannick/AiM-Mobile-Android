@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -56,6 +57,8 @@ public class AddActionFragment extends Fragment {
     private static ListView notesListView;
     private static NoteAdapter notesAdapter;
     private static ArrayList<Note> newActionNotes;
+
+    private AlertDialog.Builder editOrDeleteDialog;
 
     private int HOURS_MIN = 0;
     private int HOURS_MAX = 8;
@@ -142,6 +145,28 @@ public class AddActionFragment extends Fragment {
         notesListView.setEmptyView(getActivity().findViewById(R.id.notesListViewEmpty));
         notesListView.setAdapter(notesAdapter);
 
+
+        //Check for long click on items in ListView
+        notesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d(TAG, "LongClick detected on notesListView. View: " + view + ", i: " + i + ", l: " + l);
+                int clickedNoteIndex = i;
+
+                //Grab clicked Note obj
+                Note clickedNote = newActionNotes.get(i);
+
+                Log.d(TAG, "Clicked Note: " + clickedNote.getNote());
+
+                //Show dialog to prompt user to Delete or Edit the Note
+                //PARAMS: clickedNoteIndex
+                createNoteLongClickDialog(clickedNoteIndex);
+                //Respond to User input
+                return true;
+            }
+        });
+
+
         if (hoursEntered == -1){
             textView_hours.setText("-");
         } else {
@@ -150,7 +175,16 @@ public class AddActionFragment extends Fragment {
 
         createStatusCheckboxHandler(defaultStatusSpinnerPosition);
         createHoursEntryDialog();
-        createNoteEntryDialog();
+        //createNoteEntryDialog(); //REMOVED since the click handler has been moved below, instead of inside the function.
+            //This allows the function to also be called when editing an existing note.
+
+
+        button_addNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createNoteEntryDialog(null);
+            }
+        });
 
     }
 
@@ -161,6 +195,35 @@ public class AddActionFragment extends Fragment {
         outState.putSerializable("Action", mActionToEdit);
         super.onSaveInstanceState(outState);
     }
+
+    //Creates dialog for editing/deleting notes if none exists. Otherwise, uses previously built.
+    //PARAMS: clickedNoteIndex: index of clicked Note within newActionNotes
+    private void createNoteLongClickDialog(final int clickedNoteIndex){
+        if(editOrDeleteDialog == null){
+            Log.d(TAG, "Creating new dialog");
+            editOrDeleteDialog = new AlertDialog.Builder(mActivity);
+            editOrDeleteDialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    //Remove the note and update list
+                    newActionNotes.remove(clickedNoteIndex);
+                    notesAdapter.notifyDataSetChanged();
+                    Toast.makeText(mContext, "Note Deleted", Toast.LENGTH_SHORT).show();
+                }
+            });
+            editOrDeleteDialog.setNegativeButton("Edit", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    createNoteEntryDialog(newActionNotes.get(clickedNoteIndex));
+                    Toast.makeText(mContext, "Note Edit", Toast.LENGTH_SHORT).show();
+                }
+            });
+            editOrDeleteDialog.show();
+        }else{
+            editOrDeleteDialog.show();
+        }
+    }
+
 
     private void createHoursEntryDialog(){
         Button setHoursButton = (Button)getActivity().findViewById(R.id.button_setHours);
@@ -204,54 +267,66 @@ public class AddActionFragment extends Fragment {
     }
 
 
-    private void createNoteEntryDialog() {
-        button_addNote.setOnClickListener(new View.OnClickListener() {
+    //PARAMS: toBeEditedText: set if 'editing an existing note'
+    private void createNoteEntryDialog(final Note toBeEditedNote) {
+        final AlertDialog.Builder enterNoteAlert = new AlertDialog.Builder(mActivity);
+        enterNoteAlert.setTitle("Enter note:");
+
+        //Populate input if editing
+        final EditText input = new EditText(getActivity());
+        if(toBeEditedNote != null){
+            input.setText(toBeEditedNote.getNote());
+        }
+
+
+        input.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        input.setHorizontallyScrolling(false);
+        input.setLines(6);
+        input.setMinLines(6);
+        input.setGravity(Gravity.TOP | Gravity.LEFT);
+        input.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 26);
+        enterNoteAlert.setView(input);
+
+        enterNoteAlert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                final AlertDialog.Builder enterNoteAlert = new AlertDialog.Builder(mActivity);
-                enterNoteAlert.setTitle("Enter note:");
-                final EditText input = new EditText(getActivity());
-                input.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-                input.setHorizontallyScrolling(false);
-                input.setLines(6);
-                input.setMinLines(6);
-                input.setGravity(Gravity.TOP | Gravity.LEFT);
-                input.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 26);
-                enterNoteAlert.setView(input);
-
-                enterNoteAlert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //Check for null input
-                        String noteString = input.getText().toString();
-                        if (!noteString.equals("")) {
-                            //Create noteObject and add to notesArray
-                            Note newNote = new Note(noteString, sCurrentUser.getUsername(), new Date(System.currentTimeMillis()));
-                            newActionNotes.add(0, newNote);
-                            //Display short toast to notify that note has been saved
-                            String toastText = "New note added";
-                            Toast toast = Toast.makeText(mContext, toastText, Toast.LENGTH_SHORT);
-                            toast.show();
-                            notesAdapter.notifyDataSetChanged();
-                            if (notesListView.getVisibility() == View.INVISIBLE) {
-                                notesListView.setVisibility(View.VISIBLE);
-                            }
-                        }
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //Check for null input
+                String noteString = input.getText().toString();
+                if (!noteString.equals("")) {
+                    if(toBeEditedNote != null){
+                        //Update existing note
+                        toBeEditedNote.setNote(noteString);
+                        Toast.makeText(mContext, "Note updated", Toast.LENGTH_SHORT).show();
+                    }else{
+                        //Create noteObject and add to notesArray
+                        Note newNote = new Note(noteString, sCurrentUser.getUsername(), new Date(System.currentTimeMillis()));
+                        newActionNotes.add(0, newNote);
+                        Toast.makeText(mContext, "Note added", Toast.LENGTH_SHORT).show();
                     }
-                });
+                    notesAdapter.notifyDataSetChanged();
 
-                enterNoteAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
+                    if (notesListView.getVisibility() == View.INVISIBLE) {
+                        notesListView.setVisibility(View.VISIBLE);
                     }
-                });
-
-                AlertDialog alert = enterNoteAlert.create();
-                alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                alert.show();
+                }
             }
         });
+
+        enterNoteAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog alert = enterNoteAlert.create();
+        alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alert.show();
+
+        //Sets cursor to end of input for editing when in EDIT mode
+        if(toBeEditedNote != null) {
+            input.setSelection(toBeEditedNote.getNote().length(), toBeEditedNote.getNote().length());
+        }
     }
 
 

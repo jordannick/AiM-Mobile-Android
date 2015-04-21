@@ -156,6 +156,8 @@
         android:background="@drawable/add_action_section">
 
         <TextView
+
+            android:id="@+id/action_add_notes_section_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Notes"
@@ -163,6 +165,14 @@
             android:paddingLeft="24dp"
             android:layout_centerVertical="true"
             android:textColor="@color/action_add_grey_text"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="*LongPress a row\nto make changes"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:textSize="13sp"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -184,7 +194,7 @@
         android:layout_height="wrap_content"
         android:text="No Notes Added"
         android:textSize="20sp"
-        android:textColor="@color/action_add_grey_text"
+        android:textColor="@color/no_notes_text"
         android:paddingTop="20dp"
         android:layout_gravity="center"
         android:visibility="gone"/>

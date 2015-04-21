@@ -36,6 +36,8 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         //Create an instance of the user class (singleton)
         sCurrentUser = CurrentUser.get(getActivity().getApplicationContext());
 
@@ -57,6 +59,11 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
         mLoginButton = (Button)v.findViewById(R.id.login_button);
         mLoadCircle = (ProgressBar)v.findViewById(R.id.load_circle);
         mLoadCircle.setVisibility(View.INVISIBLE);
+
+        //TO REMOVE: placement details to pass screen quickly
+        mUsernameField.setText("crosst");
+        mPasswordField.setText("abc");
+        //%%%
 
         loginHandler();
 
