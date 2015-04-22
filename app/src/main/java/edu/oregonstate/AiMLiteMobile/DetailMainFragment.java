@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  * Created by jordan_n on 8/13/2014.
@@ -107,15 +108,21 @@ public class DetailMainFragment extends Fragment{
 
 
         mWorkOrder.getBeginDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        SimpleDateFormat minimalDate = new SimpleDateFormat("MM/dd");
-        SimpleDateFormat minimalDateYear = new SimpleDateFormat("MM/dd/yy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
+        SimpleDateFormat minimalDate = new SimpleDateFormat("MM/dd", Locale.US);
+        SimpleDateFormat minimalDateYear = new SimpleDateFormat("MM/dd/yy", Locale.US);
         String estText = "";
         try {
             Calendar beginCal = new GregorianCalendar();
             Calendar endCal = new GregorianCalendar();
-            Date beginDate = sdf.parse(mWorkOrder.getBeginDate());
-            Date endDate = sdf.parse(mWorkOrder.getEndDate());
+            Date beginDate = null;
+            Date endDate = null;
+            if (mWorkOrder.getBeginDate() != null){
+                beginDate = sdf.parse(mWorkOrder.getBeginDate());
+            }
+            if (mWorkOrder.getEndDate() != null) {
+                endDate = sdf.parse(mWorkOrder.getEndDate());
+            }
             beginCal.setTime(beginDate);
             endCal.setTime(endDate);
 

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by sellersk on 8/20/2014.
@@ -35,7 +36,7 @@ public class NoteAdapter extends ArrayAdapter<Note> {
 
         Note note = mNotes.get(position);
 
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         String formattedDate = format.format(note.getDate());
 
         //Populate the layout items with the note data

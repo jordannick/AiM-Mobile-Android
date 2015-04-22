@@ -87,7 +87,7 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
             String newStatus = action.getUpdatedStatus();
             //section value = daily or backlog
 
-
+            //TODO: namevaluepairs deprecated find new way to pass in variables
 
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 

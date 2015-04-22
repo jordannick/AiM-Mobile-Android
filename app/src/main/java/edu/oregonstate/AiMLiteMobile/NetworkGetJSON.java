@@ -7,6 +7,7 @@ import org.json.JSONException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -58,7 +59,7 @@ public class NetworkGetJSON {
                     StringBuilder stringBuilder = new StringBuilder();
                     String line;
                     while ((line = bufferedReader.readLine()) != null) {
-                        stringBuilder.append(line+"\n");
+                        stringBuilder.append(line).append("\n");
                     }
                     bufferedReader.close();
                     responsePair = convertResponseString(isArray, stringBuilder.toString(), responsePair);
@@ -78,7 +79,11 @@ public class NetworkGetJSON {
             }
 
             return responsePair;
-        } finally { //Clean up
+        } catch (ConnectException e){
+            responsePair.setStatus(ResponsePair.Status.NET_FAIL);
+            return responsePair;
+        }
+        finally { //Clean up
             connection.disconnect();
         }
     }

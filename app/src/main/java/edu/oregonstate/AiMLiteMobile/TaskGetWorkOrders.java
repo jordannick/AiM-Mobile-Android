@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /*
  * Created by jordan_n on 8/14/2014.
@@ -49,7 +50,6 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
 
     @Override
     protected void onPostExecute(final ResponsePair responsePair) {
-
         switch(responsePair.getStatus()){
             case SUCCESS:
                 Log.i(TAG, "Task Success");
@@ -72,6 +72,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
                 listener.onNetworkFail();//TODO: no network no data, should tell user to get network access
                 break;
             default:
+                Log.e(TAG, "No status");
                 break;
         }
     }
@@ -89,8 +90,6 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
             Log.i(TAG, "Force refresh? " + forceRefresh);
             if (needRefresh || forceRefresh) {
 
-
-
                 try {
                     responsePair = new NetworkGetJSON(mContext).downloadUrl(sCurrentUser.getURLGetAll(), true, responsePair,null);
                 } catch (IOException e){
@@ -99,6 +98,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
 
 
                 if (responsePair.getStatus() != ResponsePair.Status.SUCCESS) {
+                    Log.e(TAG, "Connection error!");
                     return responsePair;
                 }
 
@@ -222,7 +222,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
             return true;
         }
         storedDate = new Date(storedTime);
-        Log.i(TAG, "Stored last_updated: "+storedDate);
+        Log.i(TAG, "Stored last_updated: " + storedDate);
 
         //Retrieve last_updated from updateUrl for user
 
@@ -238,8 +238,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
             retrievedDate = convertToDate(lastUpdated);
             Log.i(TAG, "Online last_updated: "+retrievedDate);
         }else{
-            //TODO 3/12/2015 - below probably indicates http error, maybe just display error and don't try refresh
-            //No retrieved time, need refresh
+            Log.e(TAG, "Connection error!");
             return true;
         }
 
@@ -278,7 +277,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
 
     private Date convertToDate(String dateString){
         dateString = dateString.replace("\"", "");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
         Date convertedDate = new Date();
         try{
             convertedDate = dateFormat.parse(dateString);

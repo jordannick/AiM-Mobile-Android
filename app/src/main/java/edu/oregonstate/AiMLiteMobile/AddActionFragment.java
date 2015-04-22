@@ -399,6 +399,7 @@ public class AddActionFragment extends Fragment {
         alert.show();
     }
 
+
     private void saveEdits(){
         String newStatus = mActionToEdit.getUpdatedStatus();
 
@@ -451,15 +452,18 @@ public class AddActionFragment extends Fragment {
 
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_queue:
+
                 if (editMode){
                     saveEdits();
                 } else {
                     validateAction();
                 }
+
                 //TODO: finish form validation
                 //All fields checked to be correct at this point
                 createConfirmDialog();

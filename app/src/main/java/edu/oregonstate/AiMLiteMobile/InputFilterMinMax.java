@@ -3,8 +3,10 @@ package edu.oregonstate.AiMLiteMobile;
 
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.util.Log;
 
 public class InputFilterMinMax implements InputFilter {
+    private final static String TAG = "InputFilterMinMax";
 
     private int min, max;
 
@@ -24,7 +26,9 @@ public class InputFilterMinMax implements InputFilter {
             int input = Integer.parseInt(dest.toString() + source.toString());
             if (isInRange(min, max, input))
                 return null;
-        } catch (NumberFormatException nfe) { }
+        } catch (NumberFormatException nfe) {
+            Log.e(TAG, nfe.toString());
+        }
         return "";
     }
 

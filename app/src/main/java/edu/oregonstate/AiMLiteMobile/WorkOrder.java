@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by jordan_n on 8/13/2014.
@@ -234,16 +235,16 @@ public class WorkOrder implements Serializable {
     }
 
     public void setDateElements(String dateElements) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         try {
             Date date = format.parse(dateElements);
             mDateCreated = date.toString();
 
-            format = new SimpleDateFormat("EE");
+            format = new SimpleDateFormat("EE", Locale.US);
             mDateElements[0] = format.format(date);
-            format = new SimpleDateFormat("MM/dd");
+            format = new SimpleDateFormat("MM/dd", Locale.US);
             mDateElements[1] = format.format(date);
-            format = new SimpleDateFormat("yyyy");
+            format = new SimpleDateFormat("yyyy", Locale.US);
             mDateElements[2] = format.format(date);
 
             Date currentDate = new Date();

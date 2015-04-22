@@ -30,7 +30,7 @@ public class NetworkGetJSON_OLD {
 
     static JSONArray jArray = null;
 
-    private CurrentUser sCurrentUser; //TODO: clear current user if different user successfully logs in
+    private CurrentUser sCurrentUser;
 
 
     public NetworkGetJSON_OLD() {
@@ -68,7 +68,6 @@ public class NetworkGetJSON_OLD {
                     builder.append(line);
                 }
             } else {
-                //TODO: check for different received status codes? 403, 404...
                 Log.e("==>", "Failed to download file");
 
                 if (statusCode == 401){

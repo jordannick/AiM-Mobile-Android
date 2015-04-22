@@ -17,6 +17,7 @@ public class TaskPostAction extends AsyncTask<String, Void, ResponsePair> {
     private OnTaskCompleted listener;
     private List<NameValuePair> nameValuePairs;
     private Context mContext;
+    private static CurrentUser sCurrentUser;
 
     public interface OnTaskCompleted{
 
@@ -26,6 +27,7 @@ public class TaskPostAction extends AsyncTask<String, Void, ResponsePair> {
         //this.listener = listener;
         this.nameValuePairs = nameValuePairs;
         this.mContext = context;
+        this.sCurrentUser = CurrentUser.get(context);
     }
 
 
@@ -66,9 +68,7 @@ public class TaskPostAction extends AsyncTask<String, Void, ResponsePair> {
         if (isNetworkOnline()) {
             Log.d(TAG, "Network Available");
 
-            NetworkPostAction networkPostAction = new NetworkPostAction();
-
-            responsePair = networkPostAction.postToURL("SomeURLGoesHere", nameValuePairs);
+            responsePair = new NetworkPostAction(mContext).postURL("SomeURLGoesHere", sCurrentUser.getUsername());
 
             if (responsePair.getStatus() != ResponsePair.Status.SUCCESS) {
                 return responsePair;

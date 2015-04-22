@@ -3,20 +3,29 @@ package edu.oregonstate.AiMLiteMobile;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.TabHost;
 
 
 /**
  * Created by jordan_n on 8/13/2014.
  */
-public class DetailActivity extends Activity implements DetailMainFragment.Callbacks, DetailNotesFragment.Callbacks {
+public class DetailActivity extends Activity implements DetailMainFragment.Callbacks, DetailNotesFragment.Callbacks, TabHost.OnTabChangeListener {
     private static final String TAG = "DetailActivity";
 
     public WorkOrder mWorkOrder;
     private ActionBar actionBar;
+    private View v;
 
     public void onWorkOrderUpdated() {
 
@@ -26,6 +35,8 @@ public class DetailActivity extends Activity implements DetailMainFragment.Callb
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
+
+        v = this.findViewById(android.R.id.content);
 
         mWorkOrder = (WorkOrder)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
         actionBar = getActionBar();
@@ -56,6 +67,8 @@ public class DetailActivity extends Activity implements DetailMainFragment.Callb
             int currentTab = savedInstanceState.getInt("CurrentDetailsTab");
             actionBar.selectTab(actionBar.getTabAt(currentTab));
         }
+
+
     }
 
 
@@ -95,4 +108,49 @@ public class DetailActivity extends Activity implements DetailMainFragment.Callb
     public WorkOrder getWorkOrder() {
         return mWorkOrder;
     }
+
+    //For possible tab switch animation
+    @Override
+    public void onTabChanged(String tabId) {
+        /*View currentView = this.getCurrentView();
+        if (getTabHost().getCurrentTab() > currentTab)
+        {
+            currentView.setAnimation( inFromRightAnimation() );
+        }
+        else
+        {
+            currentView.setAnimation( outToRightAnimation() );
+        }
+
+        currentTab = getTabHost().getCurrentTab();*/
+
+    }
+
+/*
+    public Animation inFromRightAnimation()
+    {
+        Animation inFromRight = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, +1.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f);
+        inFromRight.setDuration(240);
+        inFromRight.setInterpolator(new AccelerateInterpolator());
+        return inFromRight;
+    }
+
+    public Animation outToRightAnimation()
+    {
+        Animation outtoLeft = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, -1.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f);
+        outtoLeft.setDuration(240);
+        outtoLeft.setInterpolator(new AccelerateInterpolator());
+        return outtoLeft;
+    }
+*/
+
+
 }
