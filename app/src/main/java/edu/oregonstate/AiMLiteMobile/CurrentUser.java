@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class CurrentUser {
     private static final String TAG = "CurrentUser";
 
-    private static String mUsername;
+    private String mUsername;
     private SharedPreferences prefs;
     private SharedPreferences.Editor prefsEditor;
     private ArrayList<WorkOrder> mWorkOrders;
@@ -25,9 +25,11 @@ public class CurrentUser {
     public String URLGetLastUpdated;
     public String URLGetNotices;
 
-    private static String urlBase = "http://api-test.facilities.oregonstate.edu";
-    private static String urlAPIVersion = "1.0";
-    private static String urlObject = "WorkOrder";
+    private String urlBase = "http://api-test.facilities.oregonstate.edu";
+    private String urlAPIVersion = "1.0";
+    private String urlObject = "WorkOrder";
+
+    private String mCookies;
 
 
     public SharedPreferences.Editor getPrefsEditor() {
@@ -119,4 +121,12 @@ public class CurrentUser {
         mActions.add(action);
     }
 
+
+    public String getCookies() {
+        return mCookies;
+    }
+
+    public void setCookies(String mCookies) {
+        this.mCookies = mCookies;
+    }
 }

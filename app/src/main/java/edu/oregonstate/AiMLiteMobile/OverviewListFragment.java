@@ -47,7 +47,7 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                updateWorkOrderList(true); //Calls with force refresh enabled
+                updateWorkOrderList();
             }
         });
 
@@ -133,12 +133,12 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
         super.onActivityCreated(savedInstanceState);
     }
 
-    private void updateWorkOrderList(boolean swipeToRefresh){
+    private void updateWorkOrderList(){
         Log.i(TAG, "Requested update work order list");
 
         CurrentUser currentUser = CurrentUser.get(getActivity().getApplicationContext());
 
-        TaskGetWorkOrders task = new TaskGetWorkOrders(this, currentUser, getActivity(), swipeToRefresh);
+        TaskGetWorkOrders task = new TaskGetWorkOrders(this, currentUser, getActivity(), false);
         task.execute();
         updateUI();
 

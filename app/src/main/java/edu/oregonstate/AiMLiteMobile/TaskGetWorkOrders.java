@@ -83,7 +83,6 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
         if (isNetworkOnline()) {
 
             Log.i(TAG, "Network is available");
-            //NetworkGetJSON jParser = new NetworkGetJSON();
 
             boolean needRefresh = isRefreshNeeded();
             Log.i(TAG, "Need normal refresh? " + needRefresh);
@@ -91,15 +90,13 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
             if (needRefresh || forceRefresh) {
 
 
-                responsePair = new NetworkGetJSON().getJSONFromUrl(sCurrentUser.getURLGetAll(), true);
 
-                /*
                 try {
-                    responsePair = new NetworkGetJSON_TEST().downloadUrl(sCurrentUser.getURLGetAll(), true, responsePair);
+                    responsePair = new NetworkGetJSON(mContext).downloadUrl(sCurrentUser.getURLGetAll(), true, responsePair,null);
                 } catch (IOException e){
-                    Log.e(TAG, e.toString());
+                    Log.e(TAG, e.toString()); //TODO: why is this giving malformedURL exception?
                 }
-                */
+
 
                 if (responsePair.getStatus() != ResponsePair.Status.SUCCESS) {
                     return responsePair;
@@ -229,15 +226,13 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
 
         //Retrieve last_updated from updateUrl for user
 
-        ResponsePair responsePair = new NetworkGetJSON().getJSONFromUrl(sCurrentUser.getURLGetLastUpdated(), false);
-        /*
         ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
         try {
-            responsePair = new NetworkGetJSON_TEST().downloadUrl(sCurrentUser.getURLGetLastUpdated(), false, responsePair);
+            responsePair = new NetworkGetJSON(mContext).downloadUrl(sCurrentUser.getURLGetLastUpdated(), false, responsePair, null);
         } catch (IOException e) {
-            Log.e(TAG, e.toString());
+            Log.e(TAG, e.toString()); //TODO: why is this giving malformedURL exception?
         }
-           */
+
         if (responsePair.getStatus() == ResponsePair.Status.SUCCESS){
             lastUpdated = responsePair.getReturnedString();
             retrievedDate = convertToDate(lastUpdated);
@@ -260,7 +255,6 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
 
 
     }
-
 
     public boolean isNetworkOnline() {
         boolean status=false;

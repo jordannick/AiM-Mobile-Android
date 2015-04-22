@@ -128,7 +128,7 @@ public class DetailMainFragment extends Fragment{
             }
 
         }catch (Exception e){
-            Log.e(TAG, "Calendar formatting error");
+            Log.e(TAG, "Calendar formatting error: " + e);
         }
 
         ((TextView)v.findViewById(R.id.estTextView)).setText(estText);
