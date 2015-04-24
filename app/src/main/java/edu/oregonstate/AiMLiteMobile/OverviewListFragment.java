@@ -12,6 +12,12 @@ import android.widget.Filter;
 import android.widget.ListView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.view.ViewCompat;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by jordan_n on 8/13/2014.
@@ -34,7 +40,8 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        final View listFragmentView = super.onCreateView(inflater, container, savedInstanceState);
+        //final View listFragmentView = super.onCreateView(inflater, container, savedInstanceState);
+        final View listFragmentView = inflater.inflate(R.layout.workorder_list_with_last_updated, container, false);
 
         //Add our fragment view to swipe view, allows pull-to-refresh list
         mSwipeRefreshLayout = new ListFragmentSwipeRefreshLayout(container.getContext());
@@ -52,6 +59,7 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
         });
 
         return mSwipeRefreshLayout;
+
     }
 
     private class ListFragmentSwipeRefreshLayout extends SwipeRefreshLayout {
@@ -135,6 +143,15 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
 
     private void updateWorkOrderList(){
         Log.i(TAG, "Requested update work order list");
+
+        //TODO clean this up, add null checking, also show last updated on initial list load
+        long stored_date = sCurrentUser.getPrefs().getLong("last_updated", 0L);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm:ss z");
+        Date date = new Date(stored_date);
+        String dateText = formatter.format(date);
+        ((TextView) getActivity().findViewById(R.id.lastUpdated_TextView)).setText(dateText);
+        //
+
 
         CurrentUser currentUser = CurrentUser.get(getActivity().getApplicationContext());
 

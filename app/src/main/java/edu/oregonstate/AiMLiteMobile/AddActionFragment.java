@@ -60,6 +60,8 @@ public class AddActionFragment extends Fragment {
 
     private AlertDialog.Builder editOrDeleteDialog;
 
+    private int originalHours;
+
     private int HOURS_MIN = 0;
     private int HOURS_MAX = 8;
 
@@ -127,6 +129,7 @@ public class AddActionFragment extends Fragment {
             newActionNotes = mActionToEdit.getNotes();//Associate new notes with notes list view
 
             hoursEntered = mActionToEdit.getHours();
+            originalHours = hoursEntered;
         } else {
             spinner_updateStatus.setEnabled(false);
 
@@ -420,6 +423,9 @@ public class AddActionFragment extends Fragment {
         mActionToEdit.setUpdatedStatus(newStatus);
         mActionToEdit.setNotes(newActionNotes);
         mActionToEdit.setDateStamp(new Date(System.currentTimeMillis()));
+
+        sCurrentUser.replaceHoursWorked(originalHours, hoursEntered);
+        
     }
 
 
@@ -446,9 +452,10 @@ public class AddActionFragment extends Fragment {
         //NOTE  -- handled in notes dialog. new notes added to newActionNotes arrayList
 
         //TODO: don't add action immediately, allow confirming first
-        Log.i(TAG, "Adding new Action ( "+actionTaken+" ) for Work Order "+mWorkOrder.getProposalPhase()+" to Queue");
+        Log.i(TAG, "Adding new Action ( " + actionTaken + " ) for Work Order " + mWorkOrder.getProposalPhase() + " to Queue");
         Action newAction = new Action(mWorkOrder, actionTaken, newStatus, hours, newActionNotes);
         sCurrentUser.addAction(newAction);
+        sCurrentUser.addHoursWorked(hours);
 
     }
 

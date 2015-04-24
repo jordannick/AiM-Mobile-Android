@@ -54,7 +54,9 @@ public class NetworkPostAction {
             connection.setInstanceFollowRedirects(false);
             connection.setReadTimeout(10000 /* milliseconds */);
             connection.setConnectTimeout(15000 /* milliseconds */);
+            connection.setDoOutput(true); //allow us to write to output stream for POST request
 
+            /*
             if (sCurrentUser.getCookies() == null) {
                 String cookies = connection.getHeaderField("Set-Cookie");
                 Log.d(TAG, "The cookie is: " + cookies);
@@ -62,6 +64,7 @@ public class NetworkPostAction {
             }else {
                 connection.setRequestProperty("Cookie", sCurrentUser.getCookies());
             }
+            */
 
             //Start sending the data
 

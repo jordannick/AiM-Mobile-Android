@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -45,6 +46,7 @@ public class ActionQueueListFragment extends ListFragment{
 
         mActionQueueAdapter = new ActionAdapter(mContext, actions);
 
+
         setListAdapter(mActionQueueAdapter);
     }
 
@@ -52,8 +54,36 @@ public class ActionQueueListFragment extends ListFragment{
     public void onResume() {
         super.onResume();
         if(mActionQueueAdapter != null) mActionQueueAdapter.notifyDataSetChanged();
+
+
+        //TODO: put code in custom function, also needs to update text coming from add action
+        TextView hoursText = (TextView)mActivity.findViewById(R.id.hoursTotal_textView);
+        if (hoursText!=null) hoursText.setText(String.valueOf(sCurrentUser.getHoursWorked()));
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+      //  View v = super.onCreateView(inflater, container, savedInstanceState);
+       // return v;
+
+        return inflater.inflate(R.layout.action_list_with_hours, container, false);
+    }
+
+/*
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View footerView = inflater.inflate(R.layout.action_list_with_hours, getListView(), false);
+
+        //Log.d(TAG, "footerView = "+footerView);
+        //getListView().addFooterView(footerView);
+
+
+    }
+*/
     @Override
     public void onDetach() {
         super.onDetach();

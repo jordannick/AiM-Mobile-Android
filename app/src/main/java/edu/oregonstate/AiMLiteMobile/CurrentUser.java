@@ -29,7 +29,11 @@ public class CurrentUser {
     private String urlAPIVersion = "1.0";
     private String urlObject = "WorkOrder";
 
+    private int hoursWorked;
+
     private String mCookies;
+
+    String lastUpdated;
 
 
     public SharedPreferences.Editor getPrefsEditor() {
@@ -128,5 +132,26 @@ public class CurrentUser {
 
     public void setCookies(String mCookies) {
         this.mCookies = mCookies;
+    }
+
+    public int getHoursWorked() {
+        return hoursWorked;
+    }
+
+    public void addHoursWorked(int hoursWorked) {
+        this.hoursWorked += hoursWorked;
+    }
+
+    public void replaceHoursWorked(int lastHours, int newHours){
+        this.hoursWorked -= lastHours;
+        this.hoursWorked += newHours;
+    }
+
+    public String getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(String lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 }

@@ -36,8 +36,6 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         //Create an instance of the user class (singleton)
         sCurrentUser = CurrentUser.get(getActivity().getApplicationContext());
 
