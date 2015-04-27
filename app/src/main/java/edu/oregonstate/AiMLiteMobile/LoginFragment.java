@@ -1,7 +1,9 @@
 package edu.oregonstate.AiMLiteMobile;
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,6 +76,7 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
         return v;
     }
 
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
     private void loginHandler(){
 
         //Check if autologin should occur

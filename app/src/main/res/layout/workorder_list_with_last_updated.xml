@@ -16,23 +16,22 @@
 
         <TextView
             android:id="@+id/lastUpdatedLabel_TextView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
             android:text="Last Update:"
             android:textColor="#FFFFFF"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:padding="12dp"
-            android:gravity="center"/>
+/>
 
         <TextView
             android:id="@+id/lastUpdated_TextView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
+
             android:text="0"
             android:textColor="#FFFFFF"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:padding="12dp"/>
 
     </LinearLayout>

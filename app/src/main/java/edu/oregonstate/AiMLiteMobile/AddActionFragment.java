@@ -424,8 +424,6 @@ public class AddActionFragment extends Fragment {
         mActionToEdit.setNotes(newActionNotes);
         mActionToEdit.setDateStamp(new Date(System.currentTimeMillis()));
 
-        sCurrentUser.replaceHoursWorked(originalHours, hoursEntered);
-        
     }
 
 
@@ -455,7 +453,6 @@ public class AddActionFragment extends Fragment {
         Log.i(TAG, "Adding new Action ( " + actionTaken + " ) for Work Order " + mWorkOrder.getProposalPhase() + " to Queue");
         Action newAction = new Action(mWorkOrder, actionTaken, newStatus, hours, newActionNotes);
         sCurrentUser.addAction(newAction);
-        sCurrentUser.addHoursWorked(hours);
 
     }
 

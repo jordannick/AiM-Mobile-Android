@@ -38,7 +38,9 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
 
     private Callbacks mCallbacks;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
     private OverviewListActivity hostActivity;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,6 +96,14 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        /*TextView lastUpdatedTextView = ((TextView) getActivity().findViewById(R.id.lastUpdated_TextView));
+        lastUpdatedTextView.setText(sCurrentUser.getLastUpdated());*/
+        updateUI();
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mCallbacks = (Callbacks)activity;
@@ -143,26 +153,17 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
     private void updateWorkOrderList(){
         Log.i(TAG, "Requested update work order list");
 
-        //TODO clean this up, add null checking, also show last updated on initial list load
-        long stored_date = sCurrentUser.getPrefs().getLong("last_updated", 0L);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm:ss z");
-        Date date = new Date(stored_date);
-        String dateText = formatter.format(date);
-        ((TextView) getActivity().findViewById(R.id.lastUpdated_TextView)).setText(dateText);
-        //
-
-
         CurrentUser currentUser = CurrentUser.get(getActivity().getApplicationContext());
 
         TaskGetWorkOrders task = new TaskGetWorkOrders(this, currentUser, getActivity(), false);
         task.execute();
-        updateUI();
-
     }
 
     //Refresh the list display to reflect new data
     public void updateUI() {
         ((WorkOrderAdapter)getListAdapter()).notifyDataSetChanged();
+        TextView lastUpdatedTextView = ((TextView) getActivity().findViewById(R.id.lastUpdated_TextView));
+        lastUpdatedTextView.setText(sCurrentUser.getLastUpdated());
     }
 
     private static boolean canListViewScrollUp(ListView listView) {
@@ -223,11 +224,11 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
 
 
     //Callback methods
-
     public void onTaskSuccess() {
         if (mSwipeRefreshLayout.isRefreshing()){
             mSwipeRefreshLayout.setRefreshing(false);
         }
+        updateUI();
     }
 
 
