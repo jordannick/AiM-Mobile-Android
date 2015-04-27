@@ -21,6 +21,11 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
 
     private static final String TAG = "LoginFragment";
 
+    // %% DEBUG %%
+    private static final boolean BYPASS_LOGIN_SCREEN = false;
+    private static final String BYPASS_USER_NAME = "crosst";
+    // %% DEBUG %%
+
     private EditText mUsernameField;
     private EditText mPasswordField;
     private Button mLoginButton;
@@ -58,9 +63,10 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
         mLoadCircle = (ProgressBar)v.findViewById(R.id.load_circle);
         mLoadCircle.setVisibility(View.INVISIBLE);
 
-        //TO REMOVE: placement details to pass screen quickly
-        mUsernameField.setText("crosst");
-        mPasswordField.setText("abc");
+        if(BYPASS_LOGIN_SCREEN){
+            mUsernameField.setText(BYPASS_USER_NAME);
+            mPasswordField.setText("abc");
+        }
         //%%%
 
         loginHandler();
@@ -116,6 +122,7 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
                 }
             }
         });
+        if(BYPASS_LOGIN_SCREEN) mLoginButton.callOnClick();
     }
 
     private void executeTask(){
@@ -141,6 +148,8 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
     }
 
     public void onTaskSuccess() {
+        Log.d(TAG, "OnTaskSuccess in LoginFragment");
+
 
         //Re-enable elements, in case user comes back to login screen later
         mUsernameField.setEnabled(true);

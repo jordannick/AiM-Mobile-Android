@@ -14,13 +14,17 @@ import java.util.List;
 public class TaskPostAction extends AsyncTask<String, Void, ResponsePair> {
 
     private static final String TAG = "TaskPostAction";
+
+    private static NetworkHandler sNetworkHandler;
     private OnTaskCompleted listener;
     private List<NameValuePair> nameValuePairs;
     private Context mContext;
     private static CurrentUser sCurrentUser;
 
     public interface OnTaskCompleted{
-
+        void onTaskSuccess();
+        void onNetworkFail();
+        void onAuthenticateFail();
     }
 
     public TaskPostAction(List<NameValuePair> nameValuePairs, String url, Context context) {
@@ -28,16 +32,16 @@ public class TaskPostAction extends AsyncTask<String, Void, ResponsePair> {
         this.nameValuePairs = nameValuePairs;
         this.mContext = context;
         this.sCurrentUser = CurrentUser.get(context);
+        sNetworkHandler = NetworkHandler.get(context);
     }
-
 
     @Override
     protected void onPostExecute(final ResponsePair responsePair) {
 
-        switch(responsePair.getStatus()){
+        switch (responsePair.getStatus()) {
             case SUCCESS:
                 Log.i(TAG, "Task Success");
-                //listener.onTaskSuccess();
+                listener.onTaskSuccess();
                 break;
             case AUTH_FAIL:
                 Log.i(TAG, "Auth Fail");
@@ -45,63 +49,55 @@ public class TaskPostAction extends AsyncTask<String, Void, ResponsePair> {
                 break;
             case NET_FAIL:
                 Log.i(TAG, "Net Fail");
-              //  listener.onNetworkFail();
+                //  listener.onNetworkFail();
                 break;
             case JSON_FAIL:
                 Log.i(TAG, "JSON Fail");
-              //  listener.onNetworkFail();//TODO: custom json failure handler
+                //  listener.onNetworkFail();//TODO: custom json failure handler
                 break;
             case NO_DATA:
                 Log.i(TAG, "No data");
-              //  listener.onNetworkFail();//TODO: no network no data, should tell user to get network access
+                //  listener.onNetworkFail();//TODO: no network no data, should tell user to get network access
                 break;
             default:
                 break;
         }
-
     }
+
 
     protected ResponsePair doInBackground(final String... args) {
         ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
-
         //Network available
-        if (isNetworkOnline()) {
+        if (isNetworkOnline(mContext)) {
             Log.d(TAG, "Network Available");
 
-            responsePair = new NetworkPostAction(mContext).postURL("SomeURLGoesHere", sCurrentUser.getUsername());
+            responsePair = sNetworkHandler.postURL("SomeURLGoesHere", sCurrentUser.getUsername());
 
             if (responsePair.getStatus() != ResponsePair.Status.SUCCESS) {
                 return responsePair;
             }
-
         }
-
-
         return responsePair;
     }
 
-
-    public boolean isNetworkOnline() {
-        boolean status=false;
-        try{
-            ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+    protected boolean isNetworkOnline(Context c) {
+        boolean status = false;
+        try {
+            ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = cm.getNetworkInfo(0);
-            if (netInfo != null && netInfo.getState()==NetworkInfo.State.CONNECTED) {
-                status= true;
-            }else {
+            if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
+                status = true;
+            } else {
                 netInfo = cm.getNetworkInfo(1);
-                if(netInfo!=null && netInfo.getState()==NetworkInfo.State.CONNECTED)
-                    status= true;
+                if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED)
+                    status = true;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
         return status;
-
     }
-
-
 }
 
 

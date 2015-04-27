@@ -9,6 +9,7 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -18,6 +19,8 @@ public class OverviewListActivity extends Activity implements OverviewListFragme
 
     private static CurrentUser sCurrentUser;
     private ActionBar actionBar;
+    private AlertDialog logoutDialog; //Set in onBackPressed()
+
 
 
     @Override
@@ -119,27 +122,30 @@ public class OverviewListActivity extends Activity implements OverviewListFragme
     }
 
 
+    // FUNCTION:
+    //      Creates a new AlertDialog if one hasn't been already. Then displays it.     //
+    //      Prompts the user to confirm Logout or Cancel.                               //
     @Override
     public void onBackPressed(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle("Are you done?");
-
-        // Add the buttons
-        builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // Logout stuff
-                finish();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // cancel
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        if(logoutDialog == null) {
+            quickLog("logoutDialog was null");
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            // Set attributes
+            builder.setTitle("Are you done?");
+            builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // Logout by finishing the Activity
+                    finish();
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // Cancel
+                }
+            });
+            logoutDialog = builder.create();
+        }
+        logoutDialog.show();
     }
 
 
@@ -181,7 +187,13 @@ public class OverviewListActivity extends Activity implements OverviewListFragme
     }*/
 
 
+    public ActionBar.Tab getCurrentlySelectedTab(){
+        return actionBar.getSelectedTab();
+    }
 
+    private void quickLog(String text){
+        Log.d(TAG, text);
+    }
 
 
 }

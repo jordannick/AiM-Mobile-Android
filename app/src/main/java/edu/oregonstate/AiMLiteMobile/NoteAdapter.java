@@ -25,6 +25,8 @@ public class NoteAdapter extends ArrayAdapter<Note> {
         super(c, 0, notes);
         mContext = c;
         mNotes = notes;
+
+
     }
 
     @Override

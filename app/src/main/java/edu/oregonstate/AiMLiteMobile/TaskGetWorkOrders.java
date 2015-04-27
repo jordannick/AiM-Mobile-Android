@@ -24,13 +24,15 @@ import java.util.Locale;
 public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
     private static final String TAG = "TaskGetWorkOrders";
 
+    private static NetworkHandler sNetworkHandler;
     private OnTaskCompleted listener;
     private boolean forceRefresh;
     private ArrayList<WorkOrder> mWorkOrders;
     private JSONArray json;
-    private CurrentUser sCurrentUser;
+    private static CurrentUser sCurrentUser;
     private Context mContext;
     private Date retrievedDate;
+
 
 
     public interface OnTaskCompleted{
@@ -39,40 +41,41 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
         void onAuthenticateFail();
     }
 
-    public TaskGetWorkOrders(OnTaskCompleted listener, CurrentUser currentUser, Context context, boolean forceRefresh) {
-        this.listener = listener;
+    public TaskGetWorkOrders(OnTaskCompleted l, CurrentUser currentUser, Context context, boolean forceRefresh) {
+        listener = l;
         this.sCurrentUser = currentUser;
         this.mContext = context;
         this.forceRefresh = forceRefresh;
         this.mWorkOrders = new ArrayList<WorkOrder>();
         retrievedDate = new Date();
+        sNetworkHandler = NetworkHandler.get(mContext);
     }
 
     @Override
     protected void onPostExecute(final ResponsePair responsePair) {
-        switch(responsePair.getStatus()){
+
+        switch (responsePair.getStatus()) {
             case SUCCESS:
                 Log.i(TAG, "Task Success");
                 listener.onTaskSuccess();
                 break;
             case AUTH_FAIL:
-                Log.e(TAG, "Authenticate Fail");
+                Log.i(TAG, "Auth Fail");
                 listener.onAuthenticateFail();
                 break;
             case NET_FAIL:
-                Log.e(TAG, "Network Fail");
-                listener.onNetworkFail();
+                Log.i(TAG, "Net Fail");
+                  listener.onNetworkFail();
                 break;
             case JSON_FAIL:
-                Log.e(TAG, "JSON Fail");
-                listener.onNetworkFail();//TODO: custom json failure handler
+                Log.i(TAG, "JSON Fail");
+                // listener.onNetworkFail();//TODO: custom json failure handler
                 break;
             case NO_DATA:
-                Log.e(TAG, "No data");
-                listener.onNetworkFail();//TODO: no network no data, should tell user to get network access
+                Log.i(TAG, "No data");
+                //  listener.onNetworkFail();//TODO: no network no data, should tell user to get network access
                 break;
             default:
-                Log.e(TAG, "No status");
                 break;
         }
     }
@@ -81,7 +84,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
         ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
 
         //Network available
-        if (isNetworkOnline()) {
+        if (isNetworkOnline(mContext)) {
 
             Log.i(TAG, "Network is available");
 
@@ -91,7 +94,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
             if (needRefresh || forceRefresh) {
 
                 try {
-                    responsePair = new NetworkGetJSON(mContext).downloadUrl(sCurrentUser.getURLGetAll(), true, responsePair,null);
+                    responsePair = sNetworkHandler.downloadUrl(sCurrentUser.getURLGetAll(), true, responsePair, null);
                 } catch (IOException e){
                     Log.e(TAG, e.toString()); //TODO: why is this giving malformedURL exception?
                 }
@@ -228,7 +231,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
 
         ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
         try {
-            responsePair = new NetworkGetJSON(mContext).downloadUrl(sCurrentUser.getURLGetLastUpdated(), false, responsePair, null);
+            responsePair = sNetworkHandler.downloadUrl(sCurrentUser.getURLGetLastUpdated(), false, responsePair, null);
         } catch (IOException e) {
             Log.e(TAG, e.toString()); //TODO: why is this giving malformedURL exception?
         }
@@ -255,25 +258,6 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
 
     }
 
-    public boolean isNetworkOnline() {
-        boolean status=false;
-        try{
-            ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo netInfo = cm.getNetworkInfo(0);
-            if (netInfo != null && netInfo.getState()==NetworkInfo.State.CONNECTED) {
-                status= true;
-            }else {
-                netInfo = cm.getNetworkInfo(1);
-                if(netInfo!=null && netInfo.getState()==NetworkInfo.State.CONNECTED)
-                    status= true;
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-            return false;
-        }
-        return status;
-
-    }
 
     private Date convertToDate(String dateString){
         dateString = dateString.replace("\"", "");
@@ -288,7 +272,24 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
         return convertedDate;
     }
 
-
+    protected boolean isNetworkOnline(Context c) {
+        boolean status = false;
+        try {
+            ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = cm.getNetworkInfo(0);
+            if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
+                status = true;
+            } else {
+                netInfo = cm.getNetworkInfo(1);
+                if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED)
+                    status = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return status;
+    }
 }
 
 

@@ -8,6 +8,7 @@
     </string-array>
 
     <string-array name="actionTakenItems">
+        <item>No Action</item>
         <item>Material Request</item>
         <item>Team Bonding</item>
         <item>Critical Action</item>
