@@ -9,21 +9,29 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTabHost;
+import android.support.v4.view.PagerTabStrip;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class OverviewListActivity extends Activity implements OverviewListFragment.Callbacks, DetailMainFragment.Callbacks {
+public class OverviewListActivity extends FragmentActivity implements OverviewListFragment.Callbacks, DetailMainFragment.Callbacks {
     private static final String TAG = "OverviewListActivity";
 
     private static CurrentUser sCurrentUser;
     private ActionBar actionBar;
 
+    private FragmentTabHost mTabHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
+
+
+
         actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -32,6 +40,8 @@ public class OverviewListActivity extends Activity implements OverviewListFragme
         ActionBar.Tab Tab1, Tab2;
         Fragment fragmentTab1 = new OverviewListFragment();
         Fragment fragmentTab2 = new OverviewListFragment();
+
+
 
         //Show the number of work orders in each section
         int num_daily = 0;

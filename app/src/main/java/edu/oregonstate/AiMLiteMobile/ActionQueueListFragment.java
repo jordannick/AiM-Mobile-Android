@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,11 +55,19 @@ public class ActionQueueListFragment extends ListFragment{
     public void onResume() {
         super.onResume();
         if(mActionQueueAdapter != null) mActionQueueAdapter.notifyDataSetChanged();
+        updateTotalHoursText();
+    }
 
-
-        //TODO: put code in custom function, also needs to update text coming from add action
+    //Refresh the hours every time fragment comes into focus
+    private void updateTotalHoursText(){
         TextView hoursText = (TextView)mActivity.findViewById(R.id.hoursTotal_textView);
-        if (hoursText!=null) hoursText.setText(String.valueOf(sCurrentUser.getHoursWorked()));
+
+        int totalHours = 0;
+        for (Action action : sCurrentUser.getActions()){
+            totalHours += action.getHours();
+        }
+
+        if (hoursText!=null) hoursText.setText(String.valueOf(totalHours));
     }
 
     @Override

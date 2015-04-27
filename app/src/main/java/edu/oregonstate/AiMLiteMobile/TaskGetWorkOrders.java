@@ -83,12 +83,16 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
         //Network available
         if (isNetworkOnline()) {
 
+            sCurrentUser.setLastUpdated(new Date(System.currentTimeMillis()).toString());
+
             Log.i(TAG, "Network is available");
 
             boolean needRefresh = isRefreshNeeded();
             Log.i(TAG, "Need normal refresh? " + needRefresh);
             Log.i(TAG, "Force refresh? " + forceRefresh);
             if (needRefresh || forceRefresh) {
+
+
 
                 try {
                     responsePair = new NetworkGetJSON(mContext).downloadUrl(sCurrentUser.getURLGetAll(), true, responsePair,null);
