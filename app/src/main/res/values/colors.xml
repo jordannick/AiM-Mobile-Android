@@ -17,14 +17,36 @@
     <color name="no_notes_text">#8E8E8E</color> <!-- #f0f0d8-->
 
 
+    <color name="synced_green">#CFEDCB</color> <!-- Used in ActionQueue to show a SYNCED Action    Lighter: E7F6E5  Darker: CFEDCB C3E9BE-->
+    <color name="unsynced_red">#F0A5A3</color> <!-- Used in ActionQueue to show an UNSYNCED Action    Lighter: F4BCBA F7D2D1 Darker: EC8F8C  E87874-->
+
+
+
+
+
 </resources>
 
 
-    <!--
-        //2574A9 blue
-        26A65B  green
-        E74C3C red
-        F3CA27 yellow
-
-        F89406 orange
+    <!-- HEX TRANSPARENCY VALUES
+            100% — FF
+            95% — F2
+            90% — E6
+            85% — D9
+            80% — CC
+            75% — BF
+            70% — B3
+            65% — A6
+            60% — 99
+            55% — 8C
+            50% — 80
+            45% — 73
+            40% — 66
+            35% — 59
+            30% — 4D
+            25% — 40
+            20% — 33
+            15% — 26
+            10% — 1A
+            5% — 0D
+            0% — 00
             -->

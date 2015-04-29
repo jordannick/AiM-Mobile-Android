@@ -12,8 +12,10 @@ import org.json.JSONArray;
 public class ResponsePair {
 
     public enum Status{
-        NONE, NET_FAIL, AUTH_FAIL, SUCCESS, JSON_FAIL, NO_DATA
+        NONE, NET_FAIL, AUTH_FAIL, SUCCESS, JSON_FAIL, NO_DATA, FAIL
     }
+
+    private int statusInt;
 
     public JSONArray jarray;
 
@@ -24,10 +26,21 @@ public class ResponsePair {
     public ResponsePair(final Status status, final JSONArray jArray) {
         this.status = status;
         this.jarray = jArray;
+
+        //TODO: Perhaps change initialization to something other than -1
+        this.statusInt = -1;
     }
 
     public void setStatus(Status status){
         this.status = status;
+    }
+
+    public int getStatusInt() {
+        return statusInt;
+    }
+
+    public void setStatusInt(int statusInt) {
+        this.statusInt = statusInt;
     }
 
     public Status getStatus(){

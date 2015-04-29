@@ -1,0 +1,46 @@
+ /* TO BE REMOVED --- OLD ONE
+    public ResponsePair postURL(Action action){
+        ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
+        HttpURLConnection connection = null;
+
+        String baseURL = sCurrentUser.getBaseURL();
+        URL addTime = null;
+
+        //  if (action.getHours() > 0){
+        try {
+            addTime = new URL(baseURL+"/addTime");
+        }catch (Exception e){
+            Log.e(TAG, "Exception: " + e);
+        }
+        String defaultTimeType = "REG_NB";
+        //String urlParameters = "&username="+sCurrentUser.getUsername()+"&date="+action.getDateStamp().toString()+
+           //     "&hours="+action.getHours()+"&workOrderPhaseId="+action.getWorkOrder().getProposalPhase()+"&timeType="+defaultTimeType+"&timeStamp="+System.currentTimeMillis();
+        String urlParameters = "&hours=3";
+        ConnectionResponse response = createConnection(addTime, urlParameters);
+        if(response.redirectUrl != null){
+            Log.d(TAG, "Response redirectURL: " + response.redirectUrl);
+        }
+        if(response.statusCode != HttpURLConnection.HTTP_OK){
+            URL redirect = null;
+            try {
+                redirect = new URL(response.redirectUrl);
+            }catch (Exception e){
+                Log.e(TAG, "Exception: " + e);
+            }
+            ConnectionResponse response1 = createConnection(redirect, urlParameters);
+            Log.d(TAG, "Response1: " + response1.statusCode + ", redirect1 : " + response1.redirectUrl);
+
+            if (response1.statusCode != HttpURLConnection.HTTP_OK){
+                URL redirect1 = null;
+                try {
+                    redirect1 = new URL(response1.redirectUrl);
+                }catch (Exception e){
+                    Log.e(TAG, "Exception: " + e);
+                }
+                ConnectionResponse response2 = createConnection(redirect1, urlParameters);
+                Log.d(TAG, "Response2: " + response2.statusCode + ", redirect2 : " + response2.redirectUrl);
+
+            }
+
+        }
+    }

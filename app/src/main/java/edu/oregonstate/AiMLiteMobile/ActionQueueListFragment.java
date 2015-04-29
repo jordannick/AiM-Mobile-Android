@@ -48,6 +48,7 @@ public class ActionQueueListFragment extends ListFragment{
         mActionQueueAdapter = new ActionAdapter(mContext, actions);
 
 
+
         setListAdapter(mActionQueueAdapter);
     }
 

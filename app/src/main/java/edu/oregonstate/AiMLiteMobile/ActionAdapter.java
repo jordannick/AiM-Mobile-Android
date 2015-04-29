@@ -1,11 +1,13 @@
 package edu.oregonstate.AiMLiteMobile;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -34,13 +36,19 @@ public class ActionAdapter extends ArrayAdapter<Action> {
         }
 
         Action action = mActions.get(position);
+        RelativeLayout relativeLayout = (RelativeLayout)convertView.findViewById(R.id.action_layout);
+        if(action.isSynced()){
+            relativeLayout.setBackgroundColor(mContext.getResources().getColor(R.color.synced_green));
+        }else{
+            relativeLayout.setBackgroundColor(mContext.getResources().getColor(R.color.unsynced_red));
+        }
 
         //Populate the layout items with the action data
         ((TextView) convertView.findViewById(R.id.action_work_order_id)).setText(action.getWorkOrder().getProposalPhase());
 
         ((TextView) convertView.findViewById(R.id.action_work_order_location)).setText(action.getWorkOrder().getBuilding());
 
-        ((TextView) convertView.findViewById(R.id.action_taken)).setText(action.getActionTaken());
+        ((TextView) convertView.findViewById(R.id.action_taken)).setText(action.getActionTakenString());
 
         ((TextView) convertView.findViewById(R.id.action_newStatus)).setText(action.getUpdatedStatus());
 

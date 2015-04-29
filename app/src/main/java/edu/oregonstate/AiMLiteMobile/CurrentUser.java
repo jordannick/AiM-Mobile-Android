@@ -2,6 +2,7 @@ package edu.oregonstate.AiMLiteMobile;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -32,6 +33,18 @@ public class CurrentUser {
     private String mCookies;
 
     private String lastUpdated = "Never";
+
+    public ArrayList<Action> getUnsyncedActions(){
+        ArrayList<Action> unsyncedActions = new ArrayList<>();
+
+        for (int i = 0; i < mActions.size(); i++) {
+            if(!mActions.get(i).isSynced()){
+                unsyncedActions.add(mActions.get(i));
+            }
+        }
+        Log.d(TAG, "UnsyncedActions built with " + unsyncedActions.size() + " action(s).");
+        return unsyncedActions;
+    }
 
 
     public SharedPreferences.Editor getPrefsEditor() {
@@ -109,6 +122,10 @@ public class CurrentUser {
         URLGetAll = urlBase + '/' + urlAPIVersion + '/' + urlObject + "/getAll/" + mUsername;
         URLGetNotices = urlBase + '/' + urlAPIVersion + '/' + urlObject + "/getNotices/" + mUsername;
         URLGetLastUpdated =  urlBase + '/' + urlAPIVersion + '/' + urlObject + "/getLastUpdated/" + mUsername;
+    }
+
+    public String getBaseURL(){
+        return urlBase+'/'+urlAPIVersion + '/' + urlObject;
     }
 
     public ArrayList<Action> getActions() {

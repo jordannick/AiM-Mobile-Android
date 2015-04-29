@@ -117,7 +117,7 @@ public class AddActionFragment extends Fragment {
 
         if (editMode){
             ArrayAdapter actionTakenAdapter = (ArrayAdapter) spinner_ActionTaken.getAdapter();
-            int defaultActionTakenSpinnerPosition = actionTakenAdapter.getPosition(mActionToEdit.getActionTaken());
+            int defaultActionTakenSpinnerPosition = actionTakenAdapter.getPosition(mActionToEdit.getActionTakenString());
             spinner_ActionTaken.setSelection(defaultActionTakenSpinnerPosition);
 
             spinner_updateStatus.setEnabled(true);
@@ -418,7 +418,7 @@ public class AddActionFragment extends Fragment {
         //NOTE  -- handled in notes dialog. new notes added to newActionNotes arrayList
 
         //TODO: don't edit immediately, allow confirm first
-        mActionToEdit.setActionTaken(actionTaken);
+        mActionToEdit.setActionTakenString(actionTaken);
         mActionToEdit.setHours(hoursEntered);
         mActionToEdit.setUpdatedStatus(newStatus);
         mActionToEdit.setNotes(newActionNotes);
@@ -431,13 +431,15 @@ public class AddActionFragment extends Fragment {
     //Displays error or success
     private void validateAction(){
         int hours = -1; //-1 signifies no hours entered
+        String selectedStatus = spinner_updateStatus.getSelectedItem().toString();
+        String currentStatus = mWorkOrder.getStatus();
         String newStatus = null;
 
         //STATUS
-        if(checkBox_updateStatus.isChecked()){
-            //Assign newStatus the value of selected Status from spinner
-            newStatus = spinner_updateStatus.getSelectedItem().toString();
-        }// else newStatus stays null
+        if(!selectedStatus.equals(currentStatus)){ //If selectedStatus is different than current
+            newStatus = selectedStatus;
+            Log.d(TAG, "New status set.");
+        } //else newStatus stays null
 
         //HOURS
         if(hoursEntered != -1){
@@ -446,15 +448,18 @@ public class AddActionFragment extends Fragment {
 
         //ACTION
         String actionTaken = spinner_ActionTaken.getSelectedItem().toString();
-
         //NOTE  -- handled in notes dialog. new notes added to newActionNotes arrayList
+
+
+
 
         //TODO: don't add action immediately, allow confirming first
         Log.i(TAG, "Adding new Action ( " + actionTaken + " ) for Work Order " + mWorkOrder.getProposalPhase() + " to Queue");
         Action newAction = new Action(mWorkOrder, actionTaken, newStatus, hours, newActionNotes);
+        newAction.setTimeType(Action.TimeType.REG_NB); //%% DEBUG %% Default time type
         sCurrentUser.addAction(newAction);
-
     }
+
 
 
     @Override

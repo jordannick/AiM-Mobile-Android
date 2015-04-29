@@ -4,6 +4,8 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -14,11 +16,12 @@ import java.util.Date;
 import java.util.List;
 
 
+
 /**
  * Created by sellersk on 2/19/2015.
  */
-public class ActionQueueListActivity extends SingleFragmentActivity implements ActionQueueListFragment.Callbacks {
-    private static final String TAG = "WorkOrderActionQueueActivity";
+public class ActionQueueListActivity extends SingleFragmentActivity implements ActionQueueListFragment.Callbacks, TaskPostAction.OnTaskCompleted {
+    private static final String TAG = "ActionQueueActivity";
     private static CurrentUser sCurrentUser;
 
     @Override
@@ -65,56 +68,24 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
     //Start the HTTP POSTs to submit actions from queue.
     //Remove from queue upon successful POST
     public void syncActions(){
+        final TaskPostAction task = new TaskPostAction(this, "testurl",getApplicationContext());
 
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    task.execute(sCurrentUser.getAction(0));
+                } catch (Exception e) {
+                    Log.e(TAG, "Exception e: " + e);
+                }
 
-        for (Action action : sCurrentUser.getActions()){
-            //Variables common to all API methods
-            String username = sCurrentUser.getUsername();
-            //String timestamp = //current system time
-            String workOrderPhaseID = action.getWorkOrder().getProposalPhase();
+            }
+        }, 1000);
 
-             /*Unique variables:
-                date, hours, timetype
-                actiontaken
-                note
-                newStatus
-                value (section)
-            */
+        // %% DEBUG %%
 
-            Date date = action.getDateStamp();
-            int hours = action.getHours();
-            //timetype = ?
-            String actionTaken = action.getActionTaken();
-            //how to handle multiple notes...?
-            String newStatus = action.getUpdatedStatus();
-            //section value = daily or backlog
-
-            //TODO: namevaluepairs deprecated find new way to pass in variables
-
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-
-
-            nameValuePairs.add(new BasicNameValuePair("username", username));
-            //nameValuePairs.add(new BasicNameValuePair("timestamp", timestamp));
-            nameValuePairs.add(new BasicNameValuePair("workOrderPhaseId", workOrderPhaseID));
-
-
-            //  if (hours != 0) nameValuePairs.add(new BasicNameValuePair("hours", String.valueOf(hours)));
-
-
-            String url = "appropriate function call url here";
-
-            //TODO 4/15/2015 - get this thing working
-            /*
-            TaskPostAction task = new TaskPostAction(nameValuePairs, url, this);
-            task.execute();
-            */
-
-            //TODO 3/12/2015 - gray out actions in list after successful submit
-
-        }
-
-
+        // %% END_DEBUG %%
 
     }
 
@@ -132,5 +103,18 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
 
         return super.onOptionsItemSelected(item);
 
+    }
+
+    public void onTaskSuccess(){
+        Log.d(TAG, "SUCCESS QUEUE LIST");
+    }
+
+    public void onAuthenticateFail() {
+
+    }
+
+
+    public void onNetworkFail() {
+        Log.d(TAG, "NET FAIL QUEUE LIST");
     }
 }

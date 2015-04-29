@@ -10,7 +10,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -84,7 +91,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
         ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
 
         //Network available
-        if (isNetworkOnline(mContext)) {
+        if (sNetworkHandler.isNetworkOnline(mContext)) {
 
             sCurrentUser.setLastUpdated(new Date(System.currentTimeMillis()).toString());
 
@@ -276,24 +283,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
         return convertedDate;
     }
 
-    protected boolean isNetworkOnline(Context c) {
-        boolean status = false;
-        try {
-            ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo netInfo = cm.getNetworkInfo(0);
-            if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
-                status = true;
-            } else {
-                netInfo = cm.getNetworkInfo(1);
-                if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED)
-                    status = true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return status;
-    }
+
 }
 
 
