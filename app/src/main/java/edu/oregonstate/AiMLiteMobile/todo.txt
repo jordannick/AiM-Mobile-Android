@@ -1,3 +1,7 @@
+NEW SLIDING TAB LINK
+http://www.exoguru.com/android/material-design/navigation/android-sliding-tabs-with-material-design.html
+
+
 Add "Network Failure error" notification to display on failed login..
 
 

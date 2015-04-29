@@ -21,6 +21,11 @@
     <color name="unsynced_red">#F0A5A3</color> <!-- Used in ActionQueue to show an UNSYNCED Action    Lighter: F4BCBA F7D2D1 Darker: EC8F8C  E87874-->
 
 
+    <!-- TEST COLORS -->
+    <color name="ColorPrimary">#e62117</color>
+    <color name="ColorPrimaryDark">#c31c13</color>
+    <color name="tabsScrollColor">#8a140e</color>
+
 
 
 

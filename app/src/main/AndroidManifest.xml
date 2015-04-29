@@ -2,46 +2,55 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.oregonstate.AiMLiteMobile" >
 
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:icon="@drawable/osu_icon">
+        android:icon="@drawable/osu_icon"
+        android:label="@string/app_name" android:theme="@style/AppTheme" >
+        <!--android:theme="@style/AppTheme"-->
+        <activity
+            android:name=".LoginActivity"
+            android:label="AiMLite Mobile" >
 
-        <activity android:name="edu.oregonstate.AiMLiteMobile.LoginActivity"
-                  android:label="AiMLite Mobile">
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
+<!--            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+
         </activity>
-
         <activity
             android:name=".OverviewListActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            >
+        </activity>
+        <activity
+            android:name=".DetailActivity"
+            android:label="@string/detail_activity_title" >
+        </activity>
+        <activity
+            android:name=".AddActionActivity"
+            android:label="@string/add_action_activity_title" >
+        </activity>
+        <activity
+            android:name=".ActionQueueListActivity"
+            android:label="@string/add_action_activity_title" >
+        </activity>
+        <activity
+            android:name=".TestActivity"
+            android:label="@string/title_activity_test"
+            android:theme="@style/Theme.AppCompat.Light">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
-
-        <activity
-        android:name=".DetailActivity"
-        android:label="@string/detail_activity_title" >
-    </activity>
-
-    <activity
-        android:name=".AddActionActivity"
-        android:label="@string/add_action_activity_title" >
-    </activity>
-    <activity
-        android:name=".ActionQueueListActivity"
-        android:label="@string/add_action_activity_title" >
-    </activity>
-
     </application>
 
 </manifest>

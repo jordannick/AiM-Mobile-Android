@@ -217,15 +217,14 @@ public class NetworkHandler {
 
             returnResponsePair = checkResponsePairs(responsePairs);
 
-
         } catch (Exception e){
             Log.e(TAG, "Exception e: " + e);
         }
 
         // ------------ LOG THAT DISPLAYS RESPONSE AND STATUS CODE ------------
-        /*Log.d(TAG, ".\n\n ------------ POST Series Action ------------ \n\n Post #1: AddTime :::\n\t status: " + addTimeResponsePair.getStatusInt() +
+        Log.d(TAG, ".\n\n ------------ POST Series Action ------------ \n\n Post #1: AddTime :::\n\t status: " + addTimeResponsePair.getStatusInt() +
                 "\n\t response: " + addTimeResponsePair.getReturnedString() + "\n\n Post #2: AddActionTaken :::\n\t status: " +
-                addActionTakenResponsePair.getStatusInt() + "\n\t response: " + addActionTakenResponsePair.getReturnedString());*/
+                addActionTakenResponsePair.getStatusInt() + "\n\t response: " + addActionTakenResponsePair.getReturnedString());
         return returnResponsePair;
     }
 
@@ -251,6 +250,24 @@ public class NetworkHandler {
         return returnPair;
     }
 
+    /*  FUNCTION
+           Builds encodedString of all necessary parameters for the AddTime POST.
+    */
+    private String buildAddTimeParams(Action action, String encoding){
+        //AddTime ===== addTime($username, $date, $hours, $workOrderPhaseId, [$timeType], $timeStamp)
+        String userName = sCurrentUser.getUsername();
+        String dateString = action.getDateStamp().toString();
+        String hoursString = String.valueOf(action.getHours());
+        String workOrderPhaseIdString = action.getWorkOrder().getProposalPhase();
+        String timeTypeString = action.getTimeType().toString();
+        String timeStampString = String.valueOf(System.currentTimeMillis());
+
+        //Encode and create parameter String
+        String[] stringArgs = {"username", userName, "date", dateString, "hours", hoursString,
+                "workOrderPhaseId", workOrderPhaseIdString, "timeType", timeTypeString, "timeStamp",  timeStampString};
+
+        return buildEncodedString(stringArgs, encoding);
+    }
 
      /*  FUNCTION
             Builds encodedString of all necessary parameters for the AddActionTaken POST.
@@ -286,25 +303,6 @@ public class NetworkHandler {
         return encodedStrings;
     }
 
-
-    /*  FUNCTION
-           Builds encodedString of all necessary parameters for the AddTime POST.
-    */
-    private String buildAddTimeParams(Action action, String encoding){
-        //AddTime ===== addTime($username, $date, $hours, $workOrderPhaseId, [$timeType], $timeStamp)
-        String userName = sCurrentUser.getUsername();
-        String dateString = action.getDateStamp().toString();
-        String hoursString = String.valueOf(action.getHours());
-        String workOrderPhaseIdString = action.getWorkOrder().getProposalPhase();
-        String timeTypeString = action.getTimeType().toString();
-        String timeStampString = String.valueOf(System.currentTimeMillis());
-
-        //Encode and create parameter String
-        String[] stringArgs = {"username", userName, "date", dateString, "hours", hoursString,
-                "workOrderPhaseId", workOrderPhaseIdString, "timeType", timeTypeString, "timeStamp",  timeStampString};
-
-        return buildEncodedString(stringArgs, encoding);
-    }
 
     private String buildUpdateStatusParams(Action action, String encoding){
         //UpdateStatus ===== updateStatus($username, $workOrderPhaseId, $newStatus, $timeStamp)
