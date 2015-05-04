@@ -2,7 +2,28 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:windowContentOverlay">@null</item>
+<!--        <item name="android:actionBarTabTextStyle">@style/TabTextStyle</item>
+        <item name="android:actionMenuTextColor">@color/actionbar_text</item>-->
+
+        <!-- Support library compatibility -->
+<!--        <item name="actionBarTabTextStyle">@style/TabTextStyle</item>
+        <item name="actionMenuTextColor">@color/actionbar_text</item>-->
+
     </style>
 
+    !-- general styles for the action bar -->
+    <style name="MyActionBar"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+<!--        <item name="android:titleTextStyle">@style/TitleTextStyle</item>-->
+        <item name="android:background">@color/theme_primary</item>
+<!--        <item name="android:backgroundStacked">@drawable/actionbar_background</item>
+        <item name="android:backgroundSplit">@drawable/actionbar_background</item>-->
+
+        <!-- Support library compatibility -->
+<!--        <item name="titleTextStyle">@style/TitleTextStyle</item>-->
+<!--        <item name="backgroundStacked">@drawable/actionbar_background</item>
+        <item name="backgroundSplit">@drawable/actionbar_background</item>-->
+    </style>
 </resources>

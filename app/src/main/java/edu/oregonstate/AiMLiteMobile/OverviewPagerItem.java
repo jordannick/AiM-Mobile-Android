@@ -6,19 +6,23 @@ import android.support.v4.app.Fragment;
 /**
  * Created by sellersk on 5/4/2015.
  */
-public class DetailPagerItem {
+public class OverviewPagerItem {
 
     private final CharSequence mTitle;
     private final int mIndicatorColor;
     private final int mDividerColor;
     private final Fragment mFragment;
 
-    DetailPagerItem(CharSequence title, int indicatorColor, int dividerColor, Fragment fragment) {
+    OverviewPagerItem(CharSequence title, int indicatorColor, int dividerColor) {
         mTitle = title;
         mIndicatorColor = indicatorColor;
         mDividerColor = dividerColor;
-        mFragment = fragment;
+        mFragment = new OverviewListFragment();
 
+
+        Bundle bundle = new Bundle();
+        bundle.putString("sectionFilter", title.toString());
+        mFragment.setArguments(bundle);
     }
 
     CharSequence getTitle() {

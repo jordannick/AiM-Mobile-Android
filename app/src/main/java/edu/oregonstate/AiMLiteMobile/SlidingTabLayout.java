@@ -17,6 +17,7 @@
 package edu.oregonstate.AiMLiteMobile;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -172,7 +173,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TAB_VIEW_TEXT_SIZE_SP);
         textView.setTypeface(Typeface.DEFAULT_BOLD);
         textView.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, TEXT_ALIGNMENT_CENTER));
 
         TypedValue outValue = new TypedValue();
         getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
@@ -180,9 +181,12 @@ public class SlidingTabLayout extends HorizontalScrollView {
         textView.setBackgroundResource(outValue.resourceId);
         textView.setAllCaps(true);
 
-        int padding = (int) (TAB_VIEW_PADDING_DIPS * getResources().getDisplayMetrics().density);
+        // CUSTOM
+
+        int padding = (int) ((TAB_VIEW_PADDING_DIPS * getResources().getDisplayMetrics().density)*.75);
         textView.setPadding(padding, padding, padding, padding);
 
+        // END CUSTOM
 
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
@@ -207,6 +211,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 tabView = LayoutInflater.from(getContext()).inflate(mTabViewLayoutId, mTabStrip,
                         false);
                 tabTitleView = (TextView) tabView.findViewById(mTabViewTextViewId);
+
             }
 
             if (tabView == null) {
@@ -224,6 +229,10 @@ public class SlidingTabLayout extends HorizontalScrollView {
             }
 
             tabTitleView.setText(adapter.getPageTitle(i));
+
+            // CUSTOM
+            tabTitleView.setTextColor(Color.WHITE);
+            // END CUSTOM
             tabView.setOnClickListener(tabClickListener);
             String desc = mContentDescriptions.get(i, null);
             if (desc != null) {

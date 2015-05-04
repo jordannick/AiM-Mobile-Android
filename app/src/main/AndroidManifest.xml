@@ -44,12 +44,6 @@
             android:label="@string/add_action_activity_title" >
         </activity>
 
-        <activity
-            android:name=".TestActivity"
-            android:label="Test Activity Name" >
-
-        </activity>
-
 
     </application>
 

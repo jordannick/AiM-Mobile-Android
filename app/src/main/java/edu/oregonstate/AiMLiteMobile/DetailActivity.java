@@ -54,9 +54,9 @@ public class DetailActivity extends FragmentActivity implements DetailMainFragme
 
 
         final List<DetailPagerItem> mTabs = new ArrayList<>();
-        mTabs.add(new DetailPagerItem("Overview", Color.BLUE, Color.GRAY, new DetailMainFragment()));
-        mTabs.add(new DetailPagerItem("Notes", Color.RED, Color.GRAY, new DetailNotesFragment()));
-        mTabs.add(new DetailPagerItem("Contact", Color.YELLOW, Color.GRAY, new DetailContactFragment()));
+        mTabs.add(new DetailPagerItem("Overview", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailMainFragment()));
+        mTabs.add(new DetailPagerItem("Notes", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailNotesFragment()));
+        mTabs.add(new DetailPagerItem("Contact", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailContactFragment()));
 
         //Set ViewPager Adapter
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -80,7 +80,9 @@ public class DetailActivity extends FragmentActivity implements DetailMainFragme
         });
 
         mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
+        mSlidingTabLayout.setBackgroundResource(R.color.theme_primary);
         mSlidingTabLayout.setViewPager(mViewPager);
+
 
 
 

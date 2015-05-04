@@ -8,14 +8,21 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.PagerTabStrip;
 
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class OverviewListActivity extends FragmentActivity implements OverviewListFragment.Callbacks, DetailMainFragment.Callbacks {
@@ -25,25 +32,68 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
     private ActionBar actionBar;
     private AlertDialog logoutDialog; //Set in onBackPressed()
 
+    //Sliding Tabs
+    private ViewPager mViewPager;
+    private SlidingTabLayout mSlidingTabLayout;
 
     private FragmentTabHost mTabHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
-
-
+        setContentView(R.layout.overview_activity);
 
         actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        //actionBar.setBackgroundDrawable(new ColorDrawable(R.color.theme_primary));
 
         sCurrentUser = CurrentUser.get(getApplicationContext());
 
-        ActionBar.Tab Tab1, Tab2;
+       /* ActionBar.Tab Tab1, Tab2;
         Fragment fragmentTab1 = new OverviewListFragment();
-        Fragment fragmentTab2 = new OverviewListFragment();
+        Fragment fragmentTab2 = new OverviewListFragment();*/
 
+        final List<OverviewPagerItem> mTabs = new ArrayList<>();
+        mTabs.add(new OverviewPagerItem("Daily", getResources().getColor(R.color.tab_color), Color.GRAY));
+        mTabs.add(new OverviewPagerItem("Backlog", getResources().getColor(R.color.tab_color), Color.GRAY));
+
+        //Set ViewPager Adapter
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+
+        mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public android.support.v4.app.Fragment getItem(int position) {
+                return mTabs.get(position).getFragment();
+            }
+
+            @Override
+            public int getCount() {
+                return mTabs.size();
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position){
+                return mTabs.get(position).getTitle();
+            }
+
+
+        });
+
+        mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
+        mSlidingTabLayout.setBackgroundResource(R.color.theme_primary);
+        mSlidingTabLayout.setDistributeEvenly(true);
+        mSlidingTabLayout.setViewPager(mViewPager);
+
+
+
+
+        mSlidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return mTabs.get(position).getIndicatorColor();
+            }
+        });
 
 
         //Show the number of work orders in each section
@@ -57,27 +107,20 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
             }
         }
 
+/*
         Tab1 = actionBar.newTab().setText("Daily ("+num_daily+")");
-        Tab2 = actionBar.newTab().setText("Backlog ("+num_backlog+")");
-
+        Tab2 = actionBar.newTab().setText("Backlog (" + num_backlog + ")");
         Bundle bundle1 = new Bundle();
         bundle1.putString("sectionFilter", "Daily");
-
         Bundle bundle2 = new Bundle();
         bundle2.putString("sectionFilter", "Backlog");
-
         fragmentTab1.setArguments(bundle1);
         fragmentTab2.setArguments(bundle2);
-
         Tab1.setTabListener(new TabListener(fragmentTab1));
         Tab2.setTabListener(new TabListener(fragmentTab2));
-
         actionBar.addTab(Tab1);
         actionBar.addTab(Tab2);
-
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-
+*/
 
         if(savedInstanceState!=null){
             int currentTab = savedInstanceState.getInt("CurrentSectionTab");
@@ -99,7 +142,7 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("CurrentSectionTab", actionBar.getSelectedTab().getPosition());
+        //outState.putInt("CurrentSectionTab", actionBar.getSelectedTab().getPosition());
 
     }
 /*
