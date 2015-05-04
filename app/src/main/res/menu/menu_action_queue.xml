@@ -5,9 +5,10 @@
 
 
     <item android:id="@+id/action_sync"
-        android:icon="@drawable/sync"
         android:orderInCategory="100"
         android:showAsAction="always|withText"
+        android:icon="@drawable/sync_white"
+
         android:title="Sync"/>
     <!--
         <item android:id="@+id/action_settings"

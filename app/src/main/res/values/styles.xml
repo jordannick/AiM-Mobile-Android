@@ -4,6 +4,8 @@
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:homeAsUpIndicator">@drawable/back_arrow_white</item>
+
 <!--        <item name="android:actionBarTabTextStyle">@style/TabTextStyle</item>
         <item name="android:actionMenuTextColor">@color/actionbar_text</item>-->
 
@@ -15,9 +17,14 @@
 
     !-- general styles for the action bar -->
     <style name="MyActionBar"
-        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse"
+        >
+        <!--parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse"-->
 <!--        <item name="android:titleTextStyle">@style/TitleTextStyle</item>-->
-        <item name="android:background">@color/theme_primary</item>
+        <item name="android:background">@color/theme_secondary</item>
+        <item name="android:displayOptions">showTitle</item>
+        <item name="android:titleTextStyle">@style/MyTitleTextStyle</item>
+
 <!--        <item name="android:backgroundStacked">@drawable/actionbar_background</item>
         <item name="android:backgroundSplit">@drawable/actionbar_background</item>-->
 
@@ -26,4 +33,11 @@
 <!--        <item name="backgroundStacked">@drawable/actionbar_background</item>
         <item name="backgroundSplit">@drawable/actionbar_background</item>-->
     </style>
+
+    <style name="MyTitleTextStyle" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

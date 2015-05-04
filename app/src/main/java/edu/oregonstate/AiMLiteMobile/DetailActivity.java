@@ -126,7 +126,7 @@ public class DetailActivity extends FragmentActivity implements DetailMainFragme
         super.onSaveInstanceState(outState);
 
         //Save which tab the user was last at
-        outState.putInt("CurrentDetailsTab", actionBar.getSelectedTab().getPosition());
+        //outState.putInt("CurrentDetailsTab", actionBar.getSelectedTab().getPosition());
     }
 
     @Override

@@ -10,8 +10,7 @@
     <color name="login_background">#f5f2ed</color>
     <color name="work_order_day_grey">#373737</color>
     <color name="work_order_background_white">#ffffff</color>
-    <color name="soothing_background">#f5f1e5</color> <!-- #f0f0d8-->
-    <color name="soothing_background_pressed">#DDD9CE</color> <!-- #f0f0d8-->
+
 
     <color name="action_add_grey_text">#646464</color> <!-- #f0f0d8-->
     <color name="no_notes_text">#8E8E8E</color> <!-- #f0f0d8-->
@@ -22,17 +21,25 @@
 
 
 
-    //Material Theme
-    <color name="theme_primary">#3F51B5</color>
-    <color name="theme_secondary">#303F9F</color>
+    <!-- Material Theme -->
+    <color name="theme_primary">#E65100</color>
+    <color name="theme_secondary">#FF6F00</color>
     <color name="theme_accent">#C5CAE9</color>
 
+    <color name="soothing_background">#C5CAE9</color> <!-- #f0f0d8-->
+    <color name="soothing_background_pressed">#B3B8D4</color> <!-- #f0f0d8-->
+
+
+    <!-- OLD SOOTHING COLOR
+    <color name="soothing_background">#f5f1e5</color> &lt;!&ndash; #f0f0d8&ndash;&gt;
+    <color name="soothing_background_pressed">#DDD9CE</color> &lt;!&ndash; #f0f0d8&ndash;&gt;-->
 
     <!--<color name="tab_color">#FFFFFF</color>-->
-    <color name="tab_color">#C5CAE9</color>
+    <color name="tab_color">#FDD835</color>
 
 
-
+    <color name="overviewCard_workOrderNum">#9E9E9E</color>
+    <color name="cardView_background">#CDCDCD</color>
 
 
 

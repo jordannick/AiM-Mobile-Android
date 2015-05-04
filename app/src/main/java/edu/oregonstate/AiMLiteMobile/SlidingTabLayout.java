@@ -183,7 +183,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
         // CUSTOM
 
-        int padding = (int) ((TAB_VIEW_PADDING_DIPS * getResources().getDisplayMetrics().density)*.75);
+        int padding = (int) ((TAB_VIEW_PADDING_DIPS * getResources().getDisplayMetrics().density)*1);
         textView.setPadding(padding, padding, padding, padding);
 
         // END CUSTOM

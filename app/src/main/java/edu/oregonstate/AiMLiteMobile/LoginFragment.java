@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 
 /**
  * Created by jordan_n on 8/15/2014.
@@ -144,7 +146,7 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
             sCurrentUser.getPrefsEditor().apply();
         }
 
-
+        Log.d(TAG, "username caps: "+mUsername);
         sCurrentUser.setUsername(mUsername);
         sCurrentUser.buildUrlsWithUsername();
 

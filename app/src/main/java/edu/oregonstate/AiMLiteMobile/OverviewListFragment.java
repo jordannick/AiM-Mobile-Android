@@ -123,7 +123,7 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
     public void onActivityCreated(Bundle savedInstanceState) {
 
         sCurrentUser = CurrentUser.get(getActivity().getApplicationContext());
-        getActivity().setTitle(sCurrentUser.getUsername());
+        getActivity().setTitle("  "+sCurrentUser.getUsername().toUpperCase());
 
         Bundle bundle = this.getArguments();
         final String sectionFilter = bundle.getString("sectionFilter");
@@ -148,6 +148,7 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
 
 
         setListAdapter(adapter);
+        getListView().setDividerHeight(0);
 
         //Sets up long-click listener to allow WO Section to be updated
         setCustomOnLongClickListHandler();
