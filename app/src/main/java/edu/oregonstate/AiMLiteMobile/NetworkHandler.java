@@ -57,27 +57,22 @@ public class NetworkHandler {
 
         try {
             URL url = new URL(inputUrl);
-
             Log.d(TAG, "Attempting GET from: " + url);
-
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            connection.setInstanceFollowRedirects(false);
-            connection.setReadTimeout(10000 /* milliseconds */);
-            connection.setConnectTimeout(15000 /* milliseconds */);
+            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(15000);
 
-            //Save the cookies which include session variable. Session variable from server lasts ~8 days.
-            //TODO: check if saved session within cookie has expired?
+            //Cookies just used through redirects?
             if (sCurrentUser.getCookies() == null) {
                 String cookies = connection.getHeaderField("Set-Cookie");
-                Log.d(TAG, "The cookie is: " + cookies);
+                //Log.d(TAG, "The cookie is: " + cookies);
                 sCurrentUser.setCookies(cookies);
             }else {
                 connection.setRequestProperty("Cookie", sCurrentUser.getCookies());
             }
 
             //Ready to connect
-            connection.connect();
             int statusCode = connection.getResponseCode();
             Log.d(TAG, "The response is: " + statusCode + " " + connection.getResponseMessage());
 
@@ -118,8 +113,6 @@ public class NetworkHandler {
         }
     }
 
-    //Usage: pass in a List<NameValuePair> created with values based on the method we want to call
-
 
     public void postUnsyncedActions() {
         ResponsePair responsePair;
@@ -130,12 +123,13 @@ public class NetworkHandler {
             Log.d(TAG, " ------------ Syncing... ------------ ");
             Log.d(TAG, " ------------ " + unsyncedAction.getWorkOrder().getProposalPhase() + " ------------ ");
             responsePair = postAction(unsyncedAction);
-            if(responsePair.getStatus() == ResponsePair.Status.SUCCESS){
+            if (responsePair.getStatus() == ResponsePair.Status.SUCCESS) {
                 Log.d(TAG, " ------------ Action synced ------------ ");
                 unsyncedAction.setSynced(true);
-            }else{
+            } else {
                 Log.d(TAG, "------------ Synced failed ------------ Status: " + responsePair.getStatus());
             }
+
         }
     }
 
@@ -240,7 +234,7 @@ public class NetworkHandler {
                 statusOk = false;
             }
             returnedStrings += rp.getReturnedString() + " ||| ";
-            //Log.d(TAG, "responsePair #" + i + " : status= " + rp.getStatus() + ", statusInt= " + rp.getStatusInt() + ", response= " + rp.getReturnedString());
+            Log.d(TAG, "responsePair #" + i + " : status= " + rp.getStatus() + ", statusInt= " + rp.getStatusInt() + ", response= " + rp.getReturnedString());
 
         }
         if(!statusOk){
@@ -432,7 +426,7 @@ public class NetworkHandler {
                  encodingCharSet = Encoding for returned string
         Builds encoded String and returns it.
      */
-    private String buildEncodedString(String[] args, String encodingCharSet){
+    public String buildEncodedString(String[] args, String encodingCharSet){
         String returnString = "";
         try {
             for (int i = 0; i < args.length; i++) {

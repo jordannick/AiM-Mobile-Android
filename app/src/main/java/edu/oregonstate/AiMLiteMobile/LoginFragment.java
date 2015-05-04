@@ -19,7 +19,7 @@ import android.widget.Toast;
 /**
  * Created by jordan_n on 8/15/2014.
  */
-public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskCompleted {
+public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskCompleted, TaskLogin.OnLoginCompleted {
 
     private static final String TAG = "LoginFragment";
 
@@ -39,9 +39,12 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
     private String mUsername;
     private String mPassword;
 
+    private TaskLogin.OnLoginCompleted selfListener;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        selfListener = this;
 
         //Create an instance of the user class (singleton)
         sCurrentUser = CurrentUser.get(getActivity().getApplicationContext());
@@ -86,7 +89,7 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
             mUsername = sCurrentUser.getPrefs().getString("username", "");
             mPassword = sCurrentUser.getPrefs().getString("password", "");
 
-            executeTask();
+            attemptLogin();
         }
 
         //TODO: 3/10/15: Handle password authentication/matching to username
@@ -103,32 +106,44 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
                     mPasswordField.setError("Password required");
 
                 //If both fields are not empty
-                if (!mUsernameField.getText().toString().matches("") && !mPasswordField.getText().toString().matches("")){
+                if (!mUsernameField.getText().toString().matches("") && !mPasswordField.getText().toString().matches("")) {
 
                     mUsername = mUsernameField.getText().toString();
 
                     //Check if this user has been previously stored
-                    if (sCurrentUser.getPrefs().contains(mUsername)){
+                    if (sCurrentUser.getPrefs().contains(mUsername)) {
                         mPassword = sCurrentUser.getPrefs().getString(mUsername, null);
                     }
 
-                    //Save user info for future autologins
-                    if (mAutoLoginCheckbox.isChecked()){
-                        sCurrentUser.getPrefsEditor().putString("username", mUsername);
-                        sCurrentUser.getPrefsEditor().putString("password", mPassword);
-                        sCurrentUser.getPrefsEditor().putBoolean("autologin", true);
-                        sCurrentUser.getPrefsEditor().apply();
-                    }
 
-                    //Done authenticating, set up for next activity
-                    executeTask();
+
+
+                    attemptLogin();
+
+
                 }
             }
         });
         if(BYPASS_LOGIN_SCREEN) mLoginButton.callOnClick();
     }
 
-    private void executeTask(){
+    private void attemptLogin(){
+        sCurrentUser.buildLoginUrl(mUsername);
+        String URLLogin = sCurrentUser.getURLLogin();
+        TaskLogin loginTask = new TaskLogin(selfListener, URLLogin, getActivity());
+        loginTask.execute();
+    }
+
+    public void onLoginSuccess(){
+        Log.d(TAG, "Login Success");
+        //Save user info for future autologins
+        if (mAutoLoginCheckbox.isChecked()) {
+            sCurrentUser.getPrefsEditor().putString("username", mUsername);
+            sCurrentUser.getPrefsEditor().putString("password", mPassword);
+            sCurrentUser.getPrefsEditor().putBoolean("autologin", true);
+            sCurrentUser.getPrefsEditor().apply();
+        }
+
 
         sCurrentUser.setUsername(mUsername);
         sCurrentUser.buildUrlsWithUsername();
@@ -146,8 +161,12 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
 
         //Attempt the request, try force pulling new list since we're logging in. Callback to success or fail function in this class.
         boolean forceRefresh = true;
-        TaskGetWorkOrders task = new TaskGetWorkOrders(this, sCurrentUser, getActivity(), forceRefresh);
-        task.execute();
+        TaskGetWorkOrders getWorkOrdersTask = new TaskGetWorkOrders(this, sCurrentUser, getActivity(), forceRefresh);
+        getWorkOrdersTask.execute();
+    }
+
+    public void onLoginFail(){
+        Log.e(TAG, "Login Failed");
     }
 
     public void onTaskSuccess() {

@@ -25,6 +25,7 @@ public class CurrentUser {
     public String URLGetAll;
     public String URLGetLastUpdated;
     public String URLGetNotices;
+    public String URLLogin;
 
     private String urlBase = "http://api-test.facilities.oregonstate.edu";
     private String urlAPIVersion = "1.0";
@@ -33,6 +34,8 @@ public class CurrentUser {
     private String mCookies;
 
     private String lastUpdated = "Never";
+
+    private String mToken;
 
     public ArrayList<Action> getUnsyncedActions(){
         ArrayList<Action> unsyncedActions = new ArrayList<>();
@@ -124,6 +127,14 @@ public class CurrentUser {
         URLGetLastUpdated =  urlBase + '/' + urlAPIVersion + '/' + urlObject + "/getLastUpdated/" + mUsername;
     }
 
+    public void buildLoginUrl(String username){
+        URLLogin = urlBase + '/' + urlAPIVersion + "/User/login" + '/' + username;
+    }
+
+    public String getURLLogin(){
+        return URLLogin;
+    }
+
     public String getBaseURL(){
         return urlBase+'/'+urlAPIVersion + '/' + urlObject;
     }
@@ -155,5 +166,13 @@ public class CurrentUser {
 
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public String getToken() {
+        return mToken;
+    }
+
+    public void setToken(String mToken) {
+        this.mToken = mToken;
     }
 }
