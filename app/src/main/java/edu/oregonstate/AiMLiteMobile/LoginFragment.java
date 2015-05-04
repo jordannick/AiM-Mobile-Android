@@ -39,12 +39,12 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
     private String mUsername;
     private String mPassword;
 
-    private TaskLogin.OnLoginCompleted selfListener;
+    private TaskLogin.OnLoginCompleted callback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        selfListener = this;
+        callback = this;
 
         //Create an instance of the user class (singleton)
         sCurrentUser = CurrentUser.get(getActivity().getApplicationContext());
@@ -130,7 +130,7 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
     private void attemptLogin(){
         sCurrentUser.buildLoginUrl(mUsername);
         String URLLogin = sCurrentUser.getURLLogin();
-        TaskLogin loginTask = new TaskLogin(selfListener, URLLogin, getActivity());
+        TaskLogin loginTask = new TaskLogin(callback, URLLogin, getActivity());
         loginTask.execute();
     }
 
