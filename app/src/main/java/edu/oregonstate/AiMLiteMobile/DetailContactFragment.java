@@ -1,7 +1,12 @@
 package edu.oregonstate.AiMLiteMobile;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentManager;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,9 +38,13 @@ public class DetailContactFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((TextView) mActivity.findViewById(R.id.contact_nameTextView)).setText(mWorkOrder.getContactName());
 
+
+        ((TextView) mActivity.findViewById(R.id.contact_nameTextView)).setText(mWorkOrder.getContactName());
         ((TextView) mActivity.findViewById(R.id.contact_departmentTextView)).setText(mWorkOrder.getDepartment());
+
+
+
         /*
 
         ((TextView)rootView.findViewById(R.id.contact_department2TextView)).setText();

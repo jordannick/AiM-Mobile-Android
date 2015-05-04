@@ -112,7 +112,7 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
 */
 
     public void onWorkOrderSelected(WorkOrder workOrder){
-        if (findViewById(R.id.detailFragmentContainer) == null) {
+/*        if (findViewById(R.id.detailFragmentContainer) == null) {
         // Start an instance of DetailActivity
             Intent i = new Intent(this, DetailActivity.class);
             i.putExtra(WorkOrder.WORK_ORDER_EXTRA, workOrder);
@@ -127,8 +127,11 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
             }
             ft.add(R.id.detailFragmentContainer, newDetail);
             ft.commit();
-        }
-
+        }*/
+        // Start an instance of DetailActivity
+        Intent i = new Intent(this, DetailActivity.class);
+        i.putExtra(WorkOrder.WORK_ORDER_EXTRA, workOrder);
+        startActivity(i);
     }
 
 
