@@ -3,10 +3,13 @@ package edu.oregonstate.AiMLiteMobile;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ListFragment;
+
+
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -129,7 +132,7 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
 
         // Update the Tab text with latest number of work orders in the section
         final Activity activity = this.getActivity();
-        Filter.FilterListener countListener = new Filter.FilterListener() {
+/*        Filter.FilterListener countListener = new Filter.FilterListener() {
             @Override
             public void onFilterComplete(int i) {
                 if (sectionFilter.equals("Daily")) {
@@ -138,9 +141,11 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
                     activity.getActionBar().getTabAt(1).setText("Backlog (" + adapter.getCount() + ")");
                 }
             }
-        };
+        };*/
 
-        adapter.getFilter().filter(sectionFilter, countListener);
+        //adapter.getFilter().filter(sectionFilter, countListener);
+        adapter.getFilter().filter(sectionFilter);
+
 
         setListAdapter(adapter);
 

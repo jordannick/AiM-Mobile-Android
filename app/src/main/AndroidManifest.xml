@@ -15,11 +15,11 @@
 
         <activity android:name="edu.oregonstate.AiMLiteMobile.LoginActivity"
                   android:label="AiMLite Mobile">
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -31,16 +31,19 @@
         <activity
         android:name=".DetailActivity"
         android:label="@string/detail_activity_title" >
-    </activity>
 
-    <activity
-        android:name=".AddActionActivity"
-        android:label="@string/add_action_activity_title" >
-    </activity>
-    <activity
-        android:name=".ActionQueueListActivity"
-        android:label="@string/add_action_activity_title" >
-    </activity>
+
+        </activity>
+
+        <activity
+            android:name=".AddActionActivity"
+            android:label="@string/add_action_activity_title" >
+        </activity>
+        <activity
+            android:name=".ActionQueueListActivity"
+            android:label="@string/add_action_activity_title" >
+        </activity>
+
 
     </application>
 

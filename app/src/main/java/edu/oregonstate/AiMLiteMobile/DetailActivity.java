@@ -5,8 +5,12 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,17 +20,25 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.TabHost;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by jordan_n on 8/13/2014.
  */
-public class DetailActivity extends Activity implements DetailMainFragment.Callbacks, DetailNotesFragment.Callbacks, TabHost.OnTabChangeListener {
+public class DetailActivity extends FragmentActivity implements DetailMainFragment.Callbacks, DetailNotesFragment.Callbacks {
     private static final String TAG = "DetailActivity";
 
     public WorkOrder mWorkOrder;
     private ActionBar actionBar;
     private View v;
 
+    //Sliding Tabs
+    private ViewPager mViewPager;
+    private SlidingTabLayout mSlidingTabLayout;
+
+    //Callback
     public void onWorkOrderUpdated() {
 
     }
@@ -34,33 +46,70 @@ public class DetailActivity extends Activity implements DetailMainFragment.Callb
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
+        setContentView(R.layout.detail_activity);
 
-        v = this.findViewById(android.R.id.content);
+        v = this.findViewById(R.id.detail_activity_layout);
 
         mWorkOrder = (WorkOrder)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
-        actionBar = getActionBar();
+
+
+        final List<DetailPagerItem> mTabs = new ArrayList<>();
+        mTabs.add(new DetailPagerItem("Overview", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailMainFragment()));
+        mTabs.add(new DetailPagerItem("Notes", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailNotesFragment()));
+        mTabs.add(new DetailPagerItem("Contact", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailContactFragment()));
+
+        //Set ViewPager Adapter
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public android.support.v4.app.Fragment getItem(int position) {
+                return mTabs.get(position).getFragment();
+            }
+
+            @Override
+            public int getCount() {
+                return mTabs.size();
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position){
+                return mTabs.get(position).getTitle();
+            }
+
+
+        });
+
+        mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
+        mSlidingTabLayout.setBackgroundResource(R.color.theme_primary);
+        mSlidingTabLayout.setViewPager(mViewPager);
+
+
+
+
+
+        mSlidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return mTabs.get(position).getIndicatorColor();
+            }
+        });
+
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+
+/*        actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        ActionBar.Tab Tab1, Tab2, Tab3;*/
 
-        ActionBar.Tab Tab1, Tab2, Tab3;
-        Fragment fragmentTab1 = new DetailMainFragment();
+/*        Fragment fragmentTab1 = new DetailMainFragment();
         Fragment fragmentTab2 = new DetailNotesFragment();
-        Fragment fragmentTab3 = new DetailContactFragment();
+        Fragment fragmentTab3 = new DetailContactFragment();*/
 
-        Tab1 = actionBar.newTab().setText("Overview");
-        Tab2 = actionBar.newTab().setText("Notes");
-        Tab3 = actionBar.newTab().setText("Contact");
-
+/*        Tab1 = actionBar.newTab().setText("Overview");
         Tab1.setTabListener(new TabListener(fragmentTab1));
-        Tab2.setTabListener(new TabListener(fragmentTab2));
-        Tab3.setTabListener(new TabListener(fragmentTab3));
+        actionBar.addTab(Tab1); */
 
-        actionBar.addTab(Tab1);
-        actionBar.addTab(Tab2);
-        actionBar.addTab(Tab3);
-
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
 
         if(savedInstanceState!=null){
             //Restore the tab the user was last at
@@ -108,49 +157,4 @@ public class DetailActivity extends Activity implements DetailMainFragment.Callb
     public WorkOrder getWorkOrder() {
         return mWorkOrder;
     }
-
-    //For possible tab switch animation
-    @Override
-    public void onTabChanged(String tabId) {
-        /*View currentView = this.getCurrentView();
-        if (getTabHost().getCurrentTab() > currentTab)
-        {
-            currentView.setAnimation( inFromRightAnimation() );
-        }
-        else
-        {
-            currentView.setAnimation( outToRightAnimation() );
-        }
-
-        currentTab = getTabHost().getCurrentTab();*/
-
-    }
-
-/*
-    public Animation inFromRightAnimation()
-    {
-        Animation inFromRight = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, +1.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f);
-        inFromRight.setDuration(240);
-        inFromRight.setInterpolator(new AccelerateInterpolator());
-        return inFromRight;
-    }
-
-    public Animation outToRightAnimation()
-    {
-        Animation outtoLeft = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, -1.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f);
-        outtoLeft.setDuration(240);
-        outtoLeft.setInterpolator(new AccelerateInterpolator());
-        return outtoLeft;
-    }
-*/
-
-
 }
