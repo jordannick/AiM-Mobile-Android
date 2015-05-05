@@ -232,6 +232,8 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
             // CUSTOM
             tabTitleView.setTextColor(Color.WHITE);
+            //tabTitleView.setTextSize(50, TypedValue.COMPLEX_UNIT_SP);
+            tabTitleView.setTextSize(14);
             // END CUSTOM
             tabView.setOnClickListener(tabClickListener);
             String desc = mContentDescriptions.get(i, null);

@@ -4,14 +4,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     card_view:cardCornerRadius="8dp"
     card_view:cardPreventCornerOverlap="true"
+    card_view:contentPaddingRight="8dp"
     android:layout_margin="5dp">
 
     <RelativeLayout android:layout_width="match_parent"
-                    android:layout_height="109dp"
-                    >
+        android:layout_height="109dp"
+        >
 
 
 
@@ -20,55 +21,51 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="@color/work_order_day_grey"
             android:orientation="vertical"
-            android:paddingLeft="6dp"
-            android:paddingRight="6dp"
-            android:paddingTop="6dp">
+            android:gravity="center_vertical"
+            android:padding="6dp">
 
             <TextView
                 android:id="@+id/row_dayOfWeek"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
                 android:text="Fri"
-                android:textStyle="bold"
-                android:textColor="@color/overviewCard_workOrderNum"
+                android:textColor="#FFFFFF"
                 android:textSize="22sp"
                 android:padding="2dp"
                 />
 
             <TextView
                 android:id="@+id/row_monthDay"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="6/27"
-                android:textStyle="bold"
-                android:textColor="@color/overviewCard_workOrderNum"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 android:padding="2dp" />
             <TextView
                 android:id="@+id/row_year"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="2014"
                 android:textSize="12sp"
-                android:textStyle="bold"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/overviewCard_workOrderNum"
+                android:textColor="#FFFFFF"
                 android:padding="2dp"/>
 
-            <View
-                android:id="@+id/row_priorityStrip"
-                android:layout_width="40dp"
-                android:layout_height="20dp"
-                android:layout_gravity="bottom|center_horizontal"
-                android:background="#FFFF00"
-                />
         </LinearLayout>
 
-
+        <View
+            android:id="@+id/row_priorityStrip"
+            android:layout_width="8dp"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:layout_toLeftOf="@id/row_dateSection"
+            />
 
         <TextView
             android:id="@+id/row_newIndicator"
@@ -101,12 +98,11 @@
             android:layout_width="fill_parent"
             android:layout_height="76dp"
             android:layout_below="@id/row_proposal"
-            android:layout_toLeftOf="@id/row_dateSection"
+            android:layout_toLeftOf="@id/row_priorityStrip"
             android:text="LANDSCAPE COMPOSTING SHED FOR THE MULTI-ANIMAL TEACHING FACILITY - PLANS REVIEW"
             android:textStyle="bold"
             android:textSize="16sp"
             android:gravity="center_vertical"
-            android:maxLines="3"
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
             android:paddingTop="0dp"
@@ -120,10 +116,9 @@
             android:layout_width="wrap_content"
             android:layout_height="33dp"
             android:text="4 hours ago"
-            android:textStyle="bold"
-            android:textColor="@color/overviewCard_workOrderNum"
-            android:textSize="14sp"
-            android:layout_toLeftOf="@id/row_dateSection"
+            android:textColor="#555555"
+            android:layout_toLeftOf="@id/row_priorityStrip"
+            android:layout_alignParentTop="true"
             android:gravity="center_vertical"
             android:paddingRight="6dp"
             android:paddingLeft="6dp"

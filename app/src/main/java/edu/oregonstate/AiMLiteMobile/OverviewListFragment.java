@@ -168,8 +168,8 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
     //Refresh the list display to reflect new data
     public void updateUI() {
         ((WorkOrderAdapter)getListAdapter()).notifyDataSetChanged();
-        TextView lastUpdatedTextView = ((TextView) getActivity().findViewById(R.id.lastUpdated_TextView));
-        lastUpdatedTextView.setText(sCurrentUser.getLastUpdated());
+        //TextView lastUpdatedTextView = ((TextView) getActivity().findViewById(R.id.lastUpdated_TextView));
+        //lastUpdatedTextView.setText(sCurrentUser.getLastUpdated());
     }
 
     private static boolean canListViewScrollUp(ListView listView) {
