@@ -29,6 +29,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -362,10 +365,6 @@ public class AddActionFragment extends Fragment {
                     //Add new Action object to CurrentUser.Actions
                     //Return to QueueListFragment and update to show added Action
 
-                    String toastText = "Action Saved";
-                    Toast toast = Toast.makeText(mContext, toastText, Toast.LENGTH_SHORT);
-                    toast.show();
-
                     getActivity().finish();
                 }
             });
@@ -380,10 +379,6 @@ public class AddActionFragment extends Fragment {
                     //Return to QueueListFragment and update to show added Action
                     Intent intent = new Intent(getActivity(), ActionQueueListActivity.class);
                     startActivity(intent);
-
-                    String toastText = "Action Added";
-                    Toast toast = Toast.makeText(mContext, toastText, Toast.LENGTH_SHORT);
-                    toast.show();
 
                     getActivity().finish();
                 }

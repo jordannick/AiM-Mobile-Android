@@ -38,6 +38,12 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
 
     private FragmentTabHost mTabHost;
 
+    private int num_daily = 0;
+    private int num_backlog = 0;
+
+    private OverviewPagerItem dailyPagerItem;
+    private OverviewPagerItem backlogPagerItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,9 +60,13 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
         Fragment fragmentTab1 = new OverviewListFragment();
         Fragment fragmentTab2 = new OverviewListFragment();*/
 
+
+        dailyPagerItem = new OverviewPagerItem("Daily", num_daily ,getResources().getColor(R.color.tab_color), Color.GRAY);
+        backlogPagerItem = new OverviewPagerItem("Backlog", num_backlog ,getResources().getColor(R.color.tab_color), Color.GRAY);
+
         final List<OverviewPagerItem> mTabs = new ArrayList<>();
-        mTabs.add(new OverviewPagerItem("Daily", getResources().getColor(R.color.tab_color), Color.GRAY));
-        mTabs.add(new OverviewPagerItem("Backlog", getResources().getColor(R.color.tab_color), Color.GRAY));
+        mTabs.add(dailyPagerItem);
+        mTabs.add(backlogPagerItem);
 
         //Set ViewPager Adapter
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -73,19 +83,18 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
             }
 
             @Override
-            public CharSequence getPageTitle(int position){
+            public CharSequence getPageTitle(int position) {
                 return mTabs.get(position).getTitle();
             }
 
 
         });
 
+
         mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
         mSlidingTabLayout.setBackgroundResource(R.color.theme_primary);
         mSlidingTabLayout.setDistributeEvenly(true);
         mSlidingTabLayout.setViewPager(mViewPager);
-
-
 
 
         mSlidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
@@ -96,16 +105,9 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
         });
 
 
-        //Show the number of work orders in each section
-        int num_daily = 0;
-        int num_backlog = 0;
-        for (WorkOrder wo : sCurrentUser.getWorkOrders()){
-            if (wo.getSection().equals("Daily")){
-                num_daily += 1;
-            } else if (wo.getSection().equals("Backlog")){
-                num_backlog += 1;
-            }
-        }
+    }
+
+
 
 /*
         Tab1 = actionBar.newTab().setText("Daily ("+num_daily+")");
@@ -121,13 +123,14 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
         actionBar.addTab(Tab1);
         actionBar.addTab(Tab2);
 */
-
+/*
         if(savedInstanceState!=null){
             int currentTab = savedInstanceState.getInt("CurrentSectionTab");
             actionBar.selectTab(actionBar.getTabAt(currentTab));
         }
 
     }
+*/
 
     @Override
     protected void onStart() {
@@ -251,5 +254,32 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
         Log.d(TAG, text);
     }
 
+    //Currently nonfunctional
+    public void updateSectionCounts() {
+        //Update the number of work orders in each section
+       /*for (WorkOrder wo : sCurrentUser.getWorkOrders()) {
+            if (wo.getSection().equals("Daily")) {
+                num_daily += 1;
+            } else if (wo.getSection().equals("Backlog")) {
+                num_backlog += 1;
+            }
+
+        }*/
+        num_daily += 1;
+        num_backlog += 3;
+
+
+        Log.d(TAG, "updating section counts");
+        dailyPagerItem.updateTitle("Daily", num_daily);
+        backlogPagerItem.updateTitle("Backlog", num_backlog);
+
+        //mViewPager.getAdapter().notifyDataSetChanged();
+
+        Log.d(TAG, "daily: "+dailyPagerItem.getTitle());
+
+        mViewPager.getAdapter().notifyDataSetChanged();
+        mSlidingTabLayout.invalidate();
+        mViewPager.destroyDrawingCache();
+    }
 
 }

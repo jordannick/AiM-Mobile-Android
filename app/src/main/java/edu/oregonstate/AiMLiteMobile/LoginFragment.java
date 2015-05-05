@@ -3,6 +3,7 @@ package edu.oregonstate.AiMLiteMobile;
 import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
 
 import java.util.Locale;
 
@@ -42,6 +46,8 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
     private String mPassword;
 
     private TaskLogin.OnLoginCompleted callback;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -128,6 +134,8 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
     private void attemptLogin(){
         sCurrentUser.buildLoginUrl(mUsername);
         String URLLogin = sCurrentUser.getURLLogin();
+        Log.i(TAG, "Logging in as: " + mUsername);
+        SnackbarManager.show(Snackbar.with(getActivity()).text("Logging in as: " + mUsername).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
         TaskLogin loginTask = new TaskLogin(callback, URLLogin, getActivity());
         loginTask.execute();
     }
@@ -142,7 +150,7 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
             sCurrentUser.getPrefsEditor().apply();
         }
 
-        Log.d(TAG, "username caps: "+mUsername);
+        Log.d(TAG, "username caps: " + mUsername);
         sCurrentUser.setUsername(mUsername);
         sCurrentUser.buildUrlsWithUsername();
 
@@ -154,9 +162,6 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
 
         mLoadCircle.setVisibility(View.VISIBLE);
 
-        Log.i(TAG, "Logging in as: "+mUsername);
-        showToast("Logging in as: "+mUsername, Toast.LENGTH_LONG);
-
         //Attempt the request, try force pulling new list since we're logging in. Callback to success or fail function in this class.
         boolean forceRefresh = true;
         TaskGetWorkOrders getWorkOrdersTask = new TaskGetWorkOrders(this, sCurrentUser, getActivity(), forceRefresh);
@@ -165,6 +170,7 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
 
     public void onLoginFail(){
         Log.e(TAG, "Login Failed");
+        SnackbarManager.show(Snackbar.with(getActivity()).text("Login Failed").actionLabel("DISMISS").actionColor(Color.RED).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE));
     }
 
     public void onTaskSuccess() {
@@ -194,7 +200,8 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
         mLoginButton.setEnabled(true);
 
         mLoadCircle.setVisibility(View.INVISIBLE);
-        showToast("Network Fail", Toast.LENGTH_LONG);
+        SnackbarManager.show(Snackbar.with(getActivity()).text("Network Access Failed").actionLabel("DISMISS").actionColor(Color.RED).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE));
+
     }
 
     public void onAuthenticateFail(){
@@ -207,7 +214,7 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
         mLoadCircle.setVisibility(View.INVISIBLE);
 
         //mUsernameField.setError("Password and username didn't match");
-        showToast("Authenticate Fail", Toast.LENGTH_LONG);
+        SnackbarManager.show(Snackbar.with(getActivity()).text("Authentication Failed").actionLabel("DISMISS").actionColor(Color.RED).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE));
     }
 
     public void showToast(String text, int duration){

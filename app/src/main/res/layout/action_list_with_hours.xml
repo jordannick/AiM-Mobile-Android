@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
-
+<!--
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/subTotalHoursLayout"
@@ -36,14 +36,17 @@
             android:padding="16dp"/>
 
     </LinearLayout>
+    -->
 <ListView
     android:id="@android:id/list"
-    android:layout_above="@id/subTotalHoursLayout"
+
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true">
 
 </ListView>
+    <!--put this back in list: android:layout_above="@id/subTotalHoursLayout"-->
+
     <!-- the list -->
 
 </RelativeLayout>

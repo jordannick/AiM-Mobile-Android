@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+
 import java.util.ArrayList;
 
 /**
@@ -24,6 +27,7 @@ public class ActionQueueListFragment extends ListFragment{
     private static CurrentUser sCurrentUser;
     private ActionAdapter mActionQueueAdapter;
     private Callbacks mCallbacks;
+    private static int actionCount = 0;
 
     public interface Callbacks{
         void onActionSelected(int position);
@@ -47,8 +51,6 @@ public class ActionQueueListFragment extends ListFragment{
 
         mActionQueueAdapter = new ActionAdapter(mContext, actions);
 
-
-
         setListAdapter(mActionQueueAdapter);
     }
 
@@ -57,18 +59,25 @@ public class ActionQueueListFragment extends ListFragment{
         super.onResume();
         if(mActionQueueAdapter != null) mActionQueueAdapter.notifyDataSetChanged();
         updateTotalHoursText();
+
+
+        Log.d(TAG, "adapter count: " + mActionQueueAdapter.getCount() + " ; actionCount: " + actionCount);
+        if (mActionQueueAdapter.getCount() > actionCount) {
+            SnackbarManager.show(Snackbar.with(getActivity()).text("Action Added").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
+        }
+        actionCount = mActionQueueAdapter.getCount();
     }
 
     //Refresh the hours every time fragment comes into focus
     private void updateTotalHoursText(){
-        TextView hoursText = (TextView)mActivity.findViewById(R.id.hoursTotal_textView);
+       /* TextView hoursText = (TextView)mActivity.findViewById(R.id.hoursTotal_textView);
 
         int totalHours = 0;
         for (Action action : sCurrentUser.getActions()){
             totalHours += action.getHours();
         }
 
-        if (hoursText!=null) hoursText.setText(String.valueOf(totalHours));
+        if (hoursText!=null) hoursText.setText(String.valueOf(totalHours));*/
     }
 
     @Override

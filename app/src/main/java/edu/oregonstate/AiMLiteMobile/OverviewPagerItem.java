@@ -8,18 +8,16 @@ import android.support.v4.app.Fragment;
  */
 public class OverviewPagerItem {
 
-    private final CharSequence mTitle;
+    private CharSequence mTitle;
     private final int mIndicatorColor;
     private final int mDividerColor;
     private final Fragment mFragment;
 
-    OverviewPagerItem(CharSequence title, int indicatorColor, int dividerColor) {
-        mTitle = title;
+    OverviewPagerItem(CharSequence title, int sectionCount, int indicatorColor, int dividerColor) {
+        mTitle = title;// + " - " +String.valueOf(sectionCount);
         mIndicatorColor = indicatorColor;
         mDividerColor = dividerColor;
         mFragment = new OverviewListFragment();
-
-
         Bundle bundle = new Bundle();
         bundle.putString("sectionFilter", title.toString());
         mFragment.setArguments(bundle);
@@ -28,6 +26,11 @@ public class OverviewPagerItem {
     CharSequence getTitle() {
         return mTitle;
     }
+
+    void updateTitle(CharSequence title, int sectionCount){
+        mTitle = title + " - " +String.valueOf(sectionCount);
+    };
+
 
     int getIndicatorColor() {
         return mIndicatorColor;

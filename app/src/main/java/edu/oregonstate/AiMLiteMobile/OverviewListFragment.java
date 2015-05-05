@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -20,6 +21,9 @@ import android.widget.ListView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.view.ViewCompat;
 import android.widget.TextView;
+
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
 
 import org.w3c.dom.Text;
 
@@ -49,8 +53,8 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //final View listFragmentView = super.onCreateView(inflater, container, savedInstanceState);
-        final View listFragmentView = inflater.inflate(R.layout.workorder_list_with_last_updated, container, false);
+        final View listFragmentView = super.onCreateView(inflater, container, savedInstanceState);
+        //final View listFragmentView = inflater.inflate(R.layout.workorder_list_with_last_updated, container, false);
 
         //Set activity var
         hostActivity = (OverviewListActivity)getActivity();
@@ -161,7 +165,7 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
 
         CurrentUser currentUser = CurrentUser.get(getActivity().getApplicationContext());
 
-        TaskGetWorkOrders task = new TaskGetWorkOrders(this, currentUser, getActivity(), false);
+        TaskGetWorkOrders task = new TaskGetWorkOrders(this, currentUser, getActivity(), true);
         task.execute();
     }
 
@@ -170,6 +174,7 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
         ((WorkOrderAdapter)getListAdapter()).notifyDataSetChanged();
         //TextView lastUpdatedTextView = ((TextView) getActivity().findViewById(R.id.lastUpdated_TextView));
         //lastUpdatedTextView.setText(sCurrentUser.getLastUpdated());
+        hostActivity.updateSectionCounts();
     }
 
     private static boolean canListViewScrollUp(ListView listView) {
@@ -235,6 +240,7 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
             mSwipeRefreshLayout.setRefreshing(false);
         }
         updateUI();
+        SnackbarManager.show(Snackbar.with(getActivity()).text("Updated " + sCurrentUser.getLastUpdated()).duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
     }
 
 
@@ -242,6 +248,7 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
         if (mSwipeRefreshLayout.isRefreshing()){
             mSwipeRefreshLayout.setRefreshing(false);
         }
+        SnackbarManager.show(Snackbar.with(getActivity()).text("Network Access Failed").actionLabel("DISMISS").actionColor(Color.RED).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE));
     }
 
 
