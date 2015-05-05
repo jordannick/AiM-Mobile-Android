@@ -142,7 +142,7 @@ public class NetworkHandler {
         ResponsePair dummyResponsePair = new ResponsePair(ResponsePair.Status.NONE, null);
         // %% DEBUG %%
 
-        ResponsePair returnResponsePair = null;
+        ResponsePair returnResponsePair = new ResponsePair(ResponsePair.Status.NONE, null);
 
         /*
             NOTES
@@ -214,6 +214,7 @@ public class NetworkHandler {
 
         } catch (Exception e){
             Log.e(TAG, "Exception e: " + e);
+            returnResponsePair.setStatus(ResponsePair.Status.FAIL);
         }
 
         // ------------ LOG THAT DISPLAYS RESPONSE AND STATUS CODE ------------
@@ -295,7 +296,7 @@ public class NetworkHandler {
 
         //Encode and create parameter String
         String[] stringArgs = {"username", userName, "date", dateString, "hours", hoursString,
-                "workOrderPhaseId", workOrderPhaseIdString, "timeType", timeTypeString, "timeStamp",  timeStampString};
+                "workOrderPhaseId", workOrderPhaseIdString, "timeType", timeTypeString, "timeStamp",  timeStampString/*, "token", sCurrentUser.getToken()*/};
 
         return buildEncodedString(stringArgs, encoding);
     }

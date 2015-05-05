@@ -109,16 +109,12 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
 
                 //If both fields are not empty
                 if (!mUsernameField.getText().toString().matches("") && !mPasswordField.getText().toString().matches("")) {
-
                     mUsername = mUsernameField.getText().toString();
 
                     //Check if this user has been previously stored
                     if (sCurrentUser.getPrefs().contains(mUsername)) {
                         mPassword = sCurrentUser.getPrefs().getString(mUsername, null);
                     }
-
-
-
 
                     attemptLogin();
 
