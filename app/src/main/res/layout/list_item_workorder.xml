@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp"
+    android:paddingTop="4dp"
+    >
+
 <android.support.v7.widget.CardView
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="8dp"
+    card_view:cardCornerRadius="0dp"
     card_view:cardPreventCornerOverlap="true"
-    android:layout_margin="5dp">
+    >
 
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="109dp"
+        android:layout_margin="6dp"
                     >
 
 
@@ -23,7 +31,7 @@
             android:orientation="vertical"
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
-            android:paddingTop="6dp">
+            android:paddingTop="2dp">
 
             <TextView
                 android:id="@+id/row_dayOfWeek"
@@ -131,3 +139,4 @@
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>
+</LinearLayout>

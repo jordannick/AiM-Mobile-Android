@@ -42,11 +42,11 @@ public class NoteAdapter extends ArrayAdapter<Note> {
         String formattedDate = format.format(note.getDate());
 
         //Populate the layout items with the note data
-        ((TextView) convertView.findViewById(R.id.note_nameTextView)).setText(note.getAuthor());
+        ((TextView) convertView.findViewById(R.id.note_name_textView)).setText(note.getAuthor());
 
-        ((TextView)convertView.findViewById(R.id.note_dateTextView)).setText(formattedDate);
+        ((TextView)convertView.findViewById(R.id.note_date_textView)).setText(formattedDate);
 
-        ((TextView)convertView.findViewById(R.id.note_noteTextView)).setText(note.getNote());
+        ((TextView)convertView.findViewById(R.id.note_note_textView)).setText(note.getNote());
 
         return convertView;
     }

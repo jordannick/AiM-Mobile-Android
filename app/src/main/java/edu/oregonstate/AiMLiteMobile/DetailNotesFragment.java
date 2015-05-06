@@ -9,6 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Created by sellersk on 8/19/2014.
@@ -42,4 +45,9 @@ public class DetailNotesFragment extends ListFragment {
         setListAdapter(adapter);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getListView().setDividerHeight(0);
+        super.onActivityCreated(savedInstanceState);
+    }
 }

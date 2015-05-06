@@ -73,44 +73,12 @@ public class DetailMainFragment extends Fragment{
 
         getActivity().setTitle(mWorkOrder.getProposalPhase());
 
-        RelativeLayout topSection = (RelativeLayout)v.findViewById(R.id.detail_top_section);
-        View topSectionLine = v.findViewById(R.id.detail_top_section_line);
-        TextView topSectionPriorityTextView = (TextView)v.findViewById(R.id.detail_top_section_priority);
-        topSectionPriorityTextView.setText(mWorkOrder.getPriority());
-        switch (mWorkOrder.getPriorityColor()){
-            case R.color.routine_green:
-                topSection.setBackgroundResource(R.drawable.light_green_tile_bg);
-                topSectionLine.setBackgroundColor(getResources().getColor(R.color.routine_green));
-                topSectionPriorityTextView.setBackgroundColor(getResources().getColor(R.color.routine_green));
-                break;
-            case R.color.urgent_orange:
-                topSection.setBackgroundResource(R.drawable.light_orange_tile_bg);
-                topSectionLine.setBackgroundColor(getResources().getColor(R.color.urgent_orange));
-                topSectionPriorityTextView.setBackgroundColor(getResources().getColor(R.color.urgent_orange));
-                break;
-            case R.color.scheduled_blue:
-                topSection.setBackgroundResource(R.drawable.light_blue_tile_bg);
-                topSectionLine.setBackgroundColor(getResources().getColor(R.color.scheduled_blue));
-                topSectionPriorityTextView.setBackgroundColor(getResources().getColor(R.color.scheduled_blue));
-                break;
-            case R.color.timeSensitive_yellow:
-                topSection.setBackgroundResource(R.drawable.light_yellow_tile_bg);
-                topSectionLine.setBackgroundColor(getResources().getColor(R.color.timeSensitive_yellow));
-                topSectionPriorityTextView.setBackgroundColor(getResources().getColor(R.color.timeSensitive_yellow));
-                break;
-        }
-
-        ((TextView)v.findViewById(R.id.idTextView)).setText(mWorkOrder.getProposalPhase());
         ((TextView)v.findViewById(R.id.buildingTextView)).setText(mWorkOrder.getBuilding());
         ((TextView)v.findViewById(R.id.descriptionTextView)).setText(mWorkOrder.getDescription());
-        //((TextView)v.findViewById(R.id.priorityTextView)).setText(mWorkOrder.getPriority());
-        //((TextView)v.findViewById(R.id.priorityTextView)).setTextColor(getResources().getColor(mWorkOrder.getPriorityColor()));
-        //mWorkOrder.getPriorityColor()
         ((TextView)v.findViewById(R.id.workCodeTextView)).setText(mWorkOrder.getCraftCode());
         ((TextView)v.findViewById(R.id.shopTextView)).setText(mWorkOrder.getShop());
         ((TextView)v.findViewById(R.id.dateCreatedTextView)).setText(mWorkOrder.getDateCreated());
         ((TextView)v.findViewById(R.id.statusTextView)).setText(mWorkOrder.getStatus());
-
 
         mWorkOrder.getBeginDate();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);

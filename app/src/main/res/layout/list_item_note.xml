@@ -1,66 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/selector_note_list"
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp"
+    android:paddingTop="4dp"
     >
-             <!-- android:background="@color/soothing_background" -->
-    <LinearLayout
-        android:id="@+id/note_header"
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#555555"
-        >
+        card_view:cardCornerRadius="0dp"
+        card_view:cardPreventCornerOverlap="true">
 
-        <View
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:background="#00A500"/>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/note_name_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Paul Marrow"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/note_author_text"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="8dp"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="4dp">
+                <TextView
+                    android:id="@+id/note_date_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4/13/15  9:47 AM"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/tertiary_text_light"
+                    android:gravity="center_vertical"
+                    android:layout_toLeftOf="@id/note_name_textView"
+                    android:layout_alignParentRight="true"
+                    android:paddingRight="12dp"
+                    android:paddingTop="18dp"/>
+                </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/note_divider"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"/>
 
             <TextView
-                android:id="@+id/note_nameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:text="Example Name"
-                android:textSize="16sp"
-                android:textColor="#FFFFFF"/>
-
-            <TextView
-                android:id="@+id/note_dateTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:paddingRight="8dp"
-                android:text="10/04/14"
-                android:textSize="16sp"
-                android:textColor="#FFFFFF"
-                />
+                android:id="@+id/note_note_textView"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:text="This is an example description. I ate oatmeal this morning.With some coffee, and a wrap. It was quite good. I'm gonna continue writing,because I need to fill more space. How is your day going? That's great."
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="18sp"
+                android:padding="8dp"/>
+        </LinearLayout>
 
 
-        </RelativeLayout>
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/note_noteTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/note_header"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:text="This is an example description. I ate oatmeal this morning. With some coffee, and a wrap. It was quite good. I'm gonna continue writing, because I need to fill more space. How is your day going? That's great."
-        android:textSize="18sp"/>
 
 
-</RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

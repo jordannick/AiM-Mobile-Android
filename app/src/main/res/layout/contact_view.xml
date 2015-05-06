@@ -1,132 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp"
+    android:paddingBottom="2dp"
+    android:paddingTop="4dp"
+    >
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="0dp"
+    card_view:cardPreventCornerOverlap="true">
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:showDividers="middle"
-    android:background="@color/soothing_background">
-
-
-    <TextView
-        android:id="@+id/contact_contactLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Contact"
-        android:textSize="12dp"
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        />
-
-    <TextView
-        android:id="@+id/contact_nameTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contact_contactLabel"
-        android:text="John Appleseed"
-        android:paddingLeft="8dp"
-        android:textSize="18dp"
-        android:textStyle="bold"
-        android:layout_margin="8dp"/>
-
-
-    <TextView
-        android:id="@+id/contact_phoneNumber"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contact_nameTextView"
-        android:text="999-999-9999"
-        android:layout_margin="8dp"
-        android:textSize="18dp"
-        android:paddingLeft="8dp"/>
-
-    <TextView
-        android:id="@+id/contact_emailAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="test@test.com"
-        android:layout_below="@id/contact_phoneNumber"
-        android:layout_margin="8dp"
-        android:textSize="18dp"
-        android:paddingLeft="8dp"/>
-
-    <TextView
-        android:id="@+id/contact_requestorLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contact_emailAddress"
-        android:text="Requestor"
-        android:textSize="12dp"
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:layout_marginTop="24dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        />
-
-    <TextView
-        android:id="@+id/contact_departmentTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contact_requestorLabel"
-        android:text="Health Department"
-        android:paddingLeft="8dp"
-        android:textSize="18dp"
-        android:layout_margin="8dp"/>
-
-
-    <TextView
-        android:id="@+id/contact_department2TextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contact_departmentTextView"
-        android:text="---"
-        android:paddingLeft="8dp"
-        android:textSize="18dp"
-        android:layout_margin="8dp"/>
-
-    <TextView
-        android:id="@+id/contact_typeTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contact_department2TextView"
-        android:text="---"
-        android:paddingLeft="8dp"
-        android:textSize="18dp"
-        android:layout_margin="8dp"
-        />
-
+    android:showDividers="middle">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_vertical"
-        android:background="#d8d8c0">
-        <ImageButton
-            android:id="@+id/contact_phoneButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_action_call"
-            android:background="#2ecc71"
-            android:layout_weight=".5"
-            android:layout_margin="22dp"
+        android:layout_height="150dp"
+        android:orientation="vertical"
+        android:background="@color/contact_title_bg">
+
+        <!--Contact Name -->
+        <TextView
+            android:id="@+id/contact_nameTextView"
+            android:textColor="@color/contact_title_font"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paul Marrow"
+            android:paddingTop="20dp"
+            android:paddingLeft="8dp"
+            android:paddingBottom="18dp"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_margin="8dp"
+
             />
-        <ImageButton
-            android:id="@+id/contact_emailButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_action_email"
-            android:background="#f39c12"
-            android:layout_weight=".5"
-            android:layout_margin="22dp"
-            />
+
+        <!--Requestor Name -->
+        <TextView
+            android:id="@+id/contact_departmentTextView"
+            android:textColor="@color/contact_title_font"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="YIA - General Operations"
+            android:paddingLeft="36dp"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:layout_margin="8dp"/>
 
     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/contact_bg">
+
+        <!-- Left Icon Area -->
+        <LinearLayout
+            android:id="@+id/contact_left_icon_layout"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentLeft="true"
+            > <!--android:background="#64FFDA"-->
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/phone_icon_blue"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/email_icon_blue"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="60dp"/>
+
+        </LinearLayout>
+        <!-- Right Icon Area -->
+        <LinearLayout
+            android:id="@+id/contact_right_icon_layout"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical"
+            >
+            <!--android:background="#64FFDA"-->
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/message_icon_blue"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                />
 
 
 
-</RelativeLayout>
+
+        </LinearLayout>
+        <!-- Center Area -->
+        <LinearLayout
+            android:layout_toLeftOf="@id/contact_right_icon_layout"
+            android:layout_toRightOf="@id/contact_left_icon_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="36dp"
+            >
+
+            <TextView
+                android:id="@+id/contact_phoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="999-999-9999"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical"
+                android:paddingTop="36dp"
+                android:paddingLeft="16dp"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone"
+                android:textColor="@android:color/tertiary_text_dark"
+                android:textSize="12sp"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:layout_marginTop="4dp"
+                />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:background="@color/contact_divider" />
+
+            <TextView
+                android:id="@+id/contact_emailAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="paul.marrow@google.com"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="24dp"
+                android:paddingLeft="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textColor="@android:color/tertiary_text_dark"
+                android:textSize="12sp"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:layout_marginTop="4dp"
+                />
+
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>
+</android.support.v7.widget.CardView>
+</LinearLayout>

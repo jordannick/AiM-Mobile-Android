@@ -43,6 +43,33 @@
 
 
 
+    <!-- Contact Page   -->
+    <color name="contact_bg">#FFFFFF</color>
+    <color name="contact_title_bg">#57717E</color>
+    <color name="contact_title_font">#FFFFFF</color>
+    <color name="contact_divider">#E0E0E0</color>
+
+
+
+    <!--Note Page-->
+    <color name="note_divider">#BDBDBD</color>
+    <color name="note_author_text">#455A64</color>
+
+
+
+    <!--Detail Overview-->
+    <color name="details_overview_divider">#757575</color>
+    <color name="details_text">#ffffff</color>
+    <color name="details_text_title">#E0E0E0</color>
+    <color name="details_card_background">#57717E</color>
+
+
+    <!--GREAT MATERIAL COLORS
+
+     57717E  - Semi-Dark blue for Details page
+
+    -->
+
 
 
 </resources>
