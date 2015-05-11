@@ -3,9 +3,6 @@ package edu.oregonstate.AiMLiteMobile;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-
-
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -16,19 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Filter;
 import android.widget.ListView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.view.ViewCompat;
-import android.widget.TextView;
-
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
-
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by jordan_n on 8/13/2014.

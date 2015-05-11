@@ -135,8 +135,9 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Status:"
-                        android:textSize="13sp"
+                        android:text="STATUS"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
                         android:textColor="@color/details_text_title"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -175,8 +176,9 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Estimate:"
-                        android:textSize="13sp"
+                        android:text="ESTIMATE"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
                         android:textColor="@color/details_text_title"
                         android:layout_weight="1"
                         android:gravity="center"/>
@@ -213,8 +215,9 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Shop:"
-                        android:textSize="13sp"
+                        android:text="SHOP"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
                         android:textColor="@color/details_text_title"
                         android:layout_weight="1"
                         android:gravity="center"/>
@@ -252,8 +255,9 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Work Code:"
-                        android:textSize="13sp"
+                        android:text="WORK CODE"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
                         android:textColor="@color/details_text_title"
                         android:layout_weight="1"
                         android:gravity="center"/>
@@ -289,8 +293,9 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Created:"
-                        android:textSize="13sp"
+                        android:text="CREATED"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
                         android:textColor="@color/details_text_title"
                         android:layout_weight="1"
                         android:gravity="center"/>

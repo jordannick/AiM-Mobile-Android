@@ -13,6 +13,7 @@ public class Note implements Serializable {
     String mNote;
     String mAuthor;
     Date mDate;
+    Boolean isNew;
 
     public Note(String note, String author, Date date) {
         mNote = note;
@@ -42,5 +43,13 @@ public class Note implements Serializable {
 
     public void setDate(Date date) {
         mDate = date;
+    }
+
+    public void setNew(){
+        isNew = true;
+    }
+
+    public boolean isNew(){
+        return isNew;
     }
 }

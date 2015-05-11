@@ -132,6 +132,11 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
     }
 
     private void attemptLogin(){
+
+        // %% DEBUG %%
+        sCurrentUser.setUsername(mUsername);
+        // %% END DEBUG %%
+
         sCurrentUser.buildLoginUrl(mUsername);
         String URLLogin = sCurrentUser.getURLLogin();
         Log.i(TAG, "Logging in as: " + mUsername);
@@ -170,6 +175,7 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
 
     public void onLoginFail(){
         Log.e(TAG, "Login Failed");
+
         SnackbarManager.show(Snackbar.with(getActivity()).text("Login Failed").actionLabel("DISMISS").actionColor(Color.RED).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE));
     }
 

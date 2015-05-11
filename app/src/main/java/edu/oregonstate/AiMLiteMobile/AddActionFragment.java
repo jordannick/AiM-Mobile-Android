@@ -51,6 +51,7 @@ public class AddActionFragment extends Fragment {
 
     private static TextView workOrderIdText;
     private static TextView workOrderLocationText;
+    private static TextView workOrderDescriptionText;
     private static Spinner spinner_ActionTaken;
     private static TextView textView_hours;
     private static int hoursEntered = -1;
@@ -60,6 +61,9 @@ public class AddActionFragment extends Fragment {
     private static ListView notesListView;
     private static NoteAdapter notesAdapter;
     private static ArrayList<Note> newActionNotes;
+
+    private static TextView notesAddedText;
+    private static TextView notesExistingText;
 
     private AlertDialog.Builder editOrDeleteDialog;
 
@@ -107,6 +111,7 @@ public class AddActionFragment extends Fragment {
 
         workOrderIdText = (TextView)mActivity.findViewById(R.id.workOrderIdText);
         workOrderLocationText = (TextView)mActivity.findViewById(R.id.workOrderLocationText);
+        workOrderDescriptionText = (TextView)mActivity.findViewById(R.id.workOrderDescriptionText);
         spinner_ActionTaken = (Spinner)mActivity.findViewById(R.id.spinner_actionTaken);
         textView_hours = (TextView)mActivity.findViewById(R.id.hoursText);
         checkBox_updateStatus = (CheckBox)mActivity.findViewById(R.id.checkBox_updateStatus);
@@ -115,6 +120,7 @@ public class AddActionFragment extends Fragment {
 
         workOrderIdText.setText(mWorkOrder.getProposalPhase());
         workOrderLocationText.setText(mWorkOrder.getBuilding());
+        workOrderDescriptionText.setText(mWorkOrder.getDescription());
 
         String defaultStatus = "";
 
@@ -123,9 +129,9 @@ public class AddActionFragment extends Fragment {
             int defaultActionTakenSpinnerPosition = actionTakenAdapter.getPosition(mActionToEdit.getActionTakenString());
             spinner_ActionTaken.setSelection(defaultActionTakenSpinnerPosition);
 
-            spinner_updateStatus.setEnabled(true);
-            spinner_updateStatus.setClickable(true);
-            checkBox_updateStatus.setChecked(true);
+           // spinner_updateStatus.setEnabled(true);
+           // spinner_updateStatus.setClickable(true);
+          //  checkBox_updateStatus.setChecked(true);
 
             defaultStatus = mActionToEdit.getUpdatedStatus(); //Sets the status spinner to the current status of the work order
 
@@ -134,7 +140,7 @@ public class AddActionFragment extends Fragment {
             hoursEntered = mActionToEdit.getHours();
             originalHours = hoursEntered;
         } else {
-            spinner_updateStatus.setEnabled(false);
+            //spinner_updateStatus.setEnabled(false);
 
             defaultStatus = mWorkOrder.getStatus(); //Sets the status spinner to the current status of the work order
 
@@ -146,7 +152,14 @@ public class AddActionFragment extends Fragment {
         int defaultStatusSpinnerPosition = statusAdapter.getPosition(defaultStatus);
         spinner_updateStatus.setSelection(defaultStatusSpinnerPosition);
 
+
         notesAdapter = new NoteAdapter(getActivity(), newActionNotes);
+
+        notesAddedText = (TextView) mActivity.findViewById(R.id.notes_added_text);
+        notesExistingText = (TextView) mActivity.findViewById(R.id.notes_existing_text);
+        //notesExistingText.setText(mWorkOrder.getNotes().size() + "existing");
+
+        /* // %% DEBUG %%
         notesListView = (ListView)getActivity().findViewById(R.id.notesListView);
         notesListView.setEmptyView(getActivity().findViewById(R.id.notesListViewEmpty));
         notesListView.setAdapter(notesAdapter);
@@ -171,7 +184,7 @@ public class AddActionFragment extends Fragment {
                 return true;
             }
         });
-
+*/
 
         if (hoursEntered == -1){
             textView_hours.setText("-");
@@ -302,18 +315,27 @@ public class AddActionFragment extends Fragment {
                     if(toBeEditedNote != null){
                         //Update existing note
                         toBeEditedNote.setNote(noteString);
-                        Toast.makeText(mContext, "Note updated", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(mContext, "Note updated", Toast.LENGTH_SHORT).show();
+                        SnackbarManager.show(Snackbar.with(getActivity()).text("Note updated").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
                     }else{
                         //Create noteObject and add to notesArray
                         Note newNote = new Note(noteString, sCurrentUser.getUsername(), new Date(System.currentTimeMillis()));
+                        newNote.setNew();
                         newActionNotes.add(0, newNote);
-                        Toast.makeText(mContext, "Note added", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(mContext, "Note added", Toast.LENGTH_SHORT).show();
+                        SnackbarManager.show(Snackbar.with(getActivity()).text("Note added").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
                     }
                     notesAdapter.notifyDataSetChanged();
-
+/*
                     if (notesListView.getVisibility() == View.INVISIBLE) {
                         notesListView.setVisibility(View.VISIBLE);
                     }
+                    */
+                    if (notesAddedText.getVisibility() == View.INVISIBLE) {
+                        notesAddedText.setVisibility(View.VISIBLE);
+                    }
+
+                    notesAddedText.setText(newActionNotes.size()+" added");
                 }
             }
         });
@@ -337,7 +359,7 @@ public class AddActionFragment extends Fragment {
 
 
     public void createStatusCheckboxHandler(final int defaultStatusSpinnerPosition){
-        checkBox_updateStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      /*  checkBox_updateStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 getActivity().findViewById(R.id.spinner_updateStatus).setClickable(checked);
@@ -349,6 +371,7 @@ public class AddActionFragment extends Fragment {
                 }
             }
         });
+        */
     }
 
 
