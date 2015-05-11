@@ -17,9 +17,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:layout_marginLeft="8dp"
-            android:text="New Action"
+            android:text="NEW ACTION"
+            android:textStyle="bold"
             android:textColor="@color/add_green"
-            android:textSize="22sp"
+            android:textSize="18sp"
             />
 
         <!-- android:textColor="@android:color/tertiary_text_light"
@@ -29,7 +30,7 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="@color/details_overview_divider"
+            android:background="@color/add_green"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="4dp"/>
@@ -46,9 +47,11 @@
                 card_view:cardCornerRadius="0dp"
                 card_view:cardPreventCornerOverlap="true">
                 <LinearLayout
+                    android:id="@+id/action_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
                     <TextView
+                        android:id="@+id/action_label"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="ACTION"
@@ -218,7 +221,7 @@
                             android:id="@+id/notes_existing_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="No existing"
+                            android:text="0 existing"
                             android:layout_centerVertical="true"
                             android:paddingLeft="8dp"/>
 
@@ -266,9 +269,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:layout_marginLeft="8dp"
-            android:text="Work Order"
+            android:text="WORK ORDER"
             android:textColor="@color/details_overview_divider"
-            android:textSize="22sp"/>
+            android:textSize="18sp"/>
 
         <!-- android:textColor="@android:color/tertiary_text_light"
 

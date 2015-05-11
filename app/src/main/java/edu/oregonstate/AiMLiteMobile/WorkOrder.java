@@ -276,5 +276,13 @@ public class WorkOrder implements Serializable {
         }
     }
 
+    public int getNewNotesCount(){
+        int count = 0;
+        for (Note note : mNotes){
+            if (note.isNew()) count++;
+        }
+        return count;
+    }
+
 
 }

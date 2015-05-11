@@ -19,6 +19,7 @@ public class Note implements Serializable {
         mNote = note;
         mAuthor = author;
         mDate = date;
+        isNew = false;
     }
 
     public String getNote() {
@@ -48,6 +49,7 @@ public class Note implements Serializable {
     public void setNew(){
         isNew = true;
     }
+
 
     public boolean isNew(){
         return isNew;
