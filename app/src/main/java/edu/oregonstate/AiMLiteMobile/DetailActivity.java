@@ -87,6 +87,7 @@ public class DetailActivity extends FragmentActivity implements DetailMainFragme
 
 
 
+
         mSlidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {

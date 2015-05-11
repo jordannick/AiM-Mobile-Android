@@ -24,6 +24,7 @@ import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Display;
@@ -53,6 +54,7 @@ import android.widget.TextView;
  * providing the layout ID of your custom layout.
  */
 public class SlidingTabLayout extends HorizontalScrollView {
+    private static final String TAG = "SlidingTabLayout";
     /**
      * Allows complete control over the colors drawn in the tab layout. Set with
      * {@link #setCustomTabColorizer(TabColorizer)}.
@@ -159,6 +161,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
         mViewPager = viewPager;
         if (viewPager != null) {
             viewPager.setOnPageChangeListener(new InternalViewPagerListener());
+
             populateTabStrip();
         }
     }
@@ -229,6 +232,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             }
 
             tabTitleView.setText(adapter.getPageTitle(i));
+            tabTitleView.setId(R.id.sliding_tab_title);
 
             // CUSTOM
             tabTitleView.setTextColor(Color.WHITE);
@@ -246,6 +250,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 tabView.setSelected(true);
             }
         }
+        dimOtherTabs(0);
     }
 
     public void setContentDescription(int i, String desc) {
@@ -335,10 +340,23 @@ public class SlidingTabLayout extends HorizontalScrollView {
             for (int i = 0; i < mTabStrip.getChildCount(); i++) {
                 if (v == mTabStrip.getChildAt(i)) {
                     mViewPager.setCurrentItem(i);
+                    dimOtherTabs(i);
                     return;
                 }
             }
         }
+    }
+
+    private void dimOtherTabs(int exceptionTab){
+        for (int i = 0; i < mTabStrip.getChildCount(); i++) {
+            TextView title = (TextView)mTabStrip.getChildAt(i).findViewById(R.id.sliding_tab_title);
+            if(i == exceptionTab){
+                title.setTextColor(getResources().getColor(R.color.sliding_tab_layout_selected_title));
+                continue;
+            }
+            title.setTextColor(getResources().getColor(R.color.sliding_tab_layout_unselected_title));
+        }
+
     }
 
 }

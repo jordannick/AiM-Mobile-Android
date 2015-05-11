@@ -72,15 +72,19 @@
             android:layout_alignParentLeft="true"
             > <!--android:background="#64FFDA"-->
 
-            <ImageView
+            <ImageButton
+                android:id="@+id/contact_button_phone"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/phone_icon_blue"
+                android:background="@null"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="40dp"/>
-            <ImageView
+            <ImageButton
+                android:id="@+id/contact_button_email"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:background="@null"
                 android:src="@drawable/email_icon_blue"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="60dp"/>
@@ -94,17 +98,15 @@
             android:layout_alignParentRight="true"
             android:orientation="vertical"
             >
-            <!--android:background="#64FFDA"-->
-            <ImageView
+            <ImageButton
+                android:id="@+id/contact_button_message"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:background="@null"
                 android:src="@drawable/message_icon_blue"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="40dp"
                 />
-
-
-
 
         </LinearLayout>
         <!-- Center Area -->
