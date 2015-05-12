@@ -4,8 +4,8 @@
     <item android:id="@+id/action_queue"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:title="Save to Queue"
-        android:icon="@drawable/action_confirm_white"
+        android:title="Submit"
     />
+    <!--android:icon="@drawable/action_confirm_white"-->
 
 </menu>

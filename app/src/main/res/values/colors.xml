@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="white">#FFFFFF</color>
     <color name="emergency_red">#af292e</color>
     <color name="timeSensitive_yellow">#eac863</color>
     <color name="urgent_orange">#c34500</color>
@@ -23,7 +24,7 @@
 
     <!-- Material Theme -->
     <color name="theme_primary">#E65100</color>
-    <color name="theme_secondary">#FF6F00</color>
+    <color name="theme_secondary">#EF6C00</color>
     <color name="theme_accent">#C5CAE9</color>
 
     <color name="soothing_background">#C5CAE9</color> <!-- #f0f0d8-->
@@ -35,17 +36,18 @@
     <color name="soothing_background_pressed">#DDD9CE</color> &lt;!&ndash; #f0f0d8&ndash;&gt;-->
 
     <!--<color name="tab_color">#FFFFFF</color>-->
-    <color name="tab_color">#FDD835</color>
+    <color name="tab_color">#FFD740</color>
 
 
-    <color name="overviewCard_workOrderNum">#9E9E9E</color>
-    <color name="cardView_background">#CDCDCD</color>
-
-
+    <color name="overviewCard_workOrderNum">#00796B</color>
+    <!--<color name="overviewCard_workOrderNum">#9E9E9E</color>-->
+    <color name="cardView_background">#E0E0E0</color>
+    <!--<color name="cardView_background">#FFF9F0</color>-->
+    <color name="overall_card_background">#FFFFFF</color>
 
     <!-- Contact Page   -->
     <color name="contact_bg">#FFFFFF</color>
-    <color name="contact_title_bg">#57717E</color>
+    <color name="contact_title_bg">#00796B</color>
     <color name="contact_title_font">#FFFFFF</color>
     <color name="contact_divider">#E0E0E0</color>
 
@@ -53,18 +55,26 @@
 
     <!--Note Page-->
     <color name="note_divider">#BDBDBD</color>
-    <color name="note_author_text">#455A64</color>
+    <color name="note_author_text">#00796B</color>
+    <!--<color name="note_author_text">#455A64</color>-->
 
 
 
     <!--Detail Overview-->
-    <color name="details_overview_divider">#757575</color>
-    <color name="details_text">#ffffff</color>
-    <color name="details_text_title">#E0E0E0</color>
-    <color name="details_card_background">#57717E</color>
+    <color name="details_overview_divider">#00796B</color>
+    <!--<color name="details_overview_divider">#757575</color>-->
+    <color name="details_text">#FFFFFF</color>
+    <color name="details_text_title">#FFFFFF</color>
+    <color name="details_card_background">#00796B</color>
 
 
-    <color name="add_green">#4CAF50</color>
+
+
+    <!--<color name="details_card_background">#57717E</color>-->
+
+
+    <color name="add_green">#00796B</color>
+    <!--<color name="add_green">#4CAF50</color>-->
     <color name="confirm_red">#F44336</color>
 
 
@@ -77,6 +87,13 @@
     <!--SlidingTabLayout-->
     <color name="sliding_tab_layout_selected_title">#FFFFFF</color>
     <color name="sliding_tab_layout_unselected_title">#A6FFFFFF</color>
+
+
+
+    <!--Action Add-->
+    <color name="action_add_spinner_action_background">@null</color>
+    <color name="action_add_spinner_status_background">@null</color>
+    <color name="actionAdd_sectionTitles">#F57C00</color>
 
 
 </resources>

@@ -3,10 +3,10 @@
     tools:context=".OverviewListActivity" >
 
     <item android:id="@+id/action_queue"
-        android:icon="@drawable/action_queue_white"
           android:orderInCategory="100"
           android:showAsAction="always"
-          android:title="Action Queue"/>
+          android:title="Action Log"/>
+    <!--android:icon="@drawable/action_queue_white"-->
     <!--
         <item android:id="@+id/action_settings"
 

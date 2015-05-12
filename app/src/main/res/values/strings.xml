@@ -11,9 +11,14 @@
     <string name="detail_shop">Shop:</string>
     <string name="detail_work_code">Work Code:</string>
     <string name="detail_date_created">Created:</string>
-    <string name="action_queue_activity_title">Action Queue</string>
-    <string name="add_action_activity_title">Add New Action</string>
+    <string name="action_queue_activity_title">Action Log</string>
+    <string name="add_action_activity_title">New Action</string>
     <string name="edit_action_activity_title">Edit Action</string>
     <string name="detail_activity_title">Work Order Detail</string>
+
+
+    <!--Add Action Fragment-->
+    <string name="add_action_spinner_action_prompt">Select Action</string>
+    <string name="add_action_spinner_status_prompt">Select New Status</string>
 
 </resources>

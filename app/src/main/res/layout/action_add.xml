@@ -15,12 +15,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:layout_marginLeft="8dp"
-            android:text="NEW ACTION"
+            android:layout_marginTop="12dp"
+            android:text="NEW ACTION FORM"
+            android:layout_gravity="center"
             android:textStyle="bold"
             android:textColor="@color/add_green"
-            android:textSize="18sp"
+            android:textSize="24sp"
             />
 
         <!-- android:textColor="@android:color/tertiary_text_light"
@@ -40,238 +40,323 @@
             android:layout_height="wrap_content"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
-            android:paddingTop="4dp">
+            android:paddingTop="4dp"
+            android:background="@color/action_add_spinner_status_background">
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 card_view:cardCornerRadius="0dp"
-                card_view:cardPreventCornerOverlap="true">
+                card_view:cardPreventCornerOverlap="true"
+                android:background="@null">
                 <LinearLayout
-                    android:id="@+id/action_layout"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/overall_card_background">
+
                     <TextView
                         android:id="@+id/action_label"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ACTION"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:textColor="@android:color/tertiary_text_light"
+                        android:textColor="@color/actionAdd_sectionTitles"
                         android:layout_weight="1"
-                        android:gravity="center"
-                        android:layout_gravity="center"/>
+                        android:paddingTop="12dp"
+                        android:paddingLeft="12dp"/>
+
+
+                <LinearLayout
+                    android:id="@+id/action_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
                     <Spinner
                         android:id="@+id/spinner_actionTaken"
                         android:layout_height="wrap_content"
-                        android:layout_width="0dp"
+                        android:layout_width="fill_parent"
+                        android:minHeight="50dp"
                         android:entries="@array/actionTakenItems"
                         android:spinnerMode="dialog"
-                        android:layout_weight="3"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="24dp"
+                        android:paddingRight="24dp"
+                        android:layout_marginLeft="48dp"
+                        android:layout_marginRight="24dp"
+                        android:layout_marginBottom="8dp"
+
+                        android:prompt="@string/add_action_spinner_action_prompt"
                         />
 
 
                 </LinearLayout>
+                </LinearLayout>
             </android.support.v7.widget.CardView>
 
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
-            android:paddingTop="4dp">
+            android:paddingTop="4dp"
+            android:background="@color/action_add_spinner_status_background">
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 card_view:cardCornerRadius="0dp"
                 card_view:cardPreventCornerOverlap="true">
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="HOURS"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/tertiary_text_light"
+                    android:orientation="vertical"
+                    android:background="@color/overall_card_background">
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:gravity="center"
-                        android:layout_gravity="center"/>
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3">
-
+                        android:orientation="horizontal">
                         <TextView
-                            android:id="@+id/hoursText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:textSize="24sp"
-                            android:padding="12dp"
-                            android:layout_marginRight="12dp"/>
-                        <Button
-                            android:layout_width="wrap_content"
+                            android:text="STATUS"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/actionAdd_sectionTitles"
+                            android:paddingTop="12dp"
+                            android:paddingLeft="12dp"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+                        <Spinner
+                            android:id="@+id/spinner_updateStatus"
                             android:layout_height="wrap_content"
-                            android:text="ENTER"
-                            android:id="@+id/button_setHours"
-                            android:layout_centerVertical="true"
-                            android:layout_toLeftOf="@+id/button_clearHours"
-                            style="?android:attr/borderlessButtonStyle"
-                            android:textColor="@android:color/holo_blue_dark"
-                            />
+                            android:layout_width="fill_parent"
+                            android:minHeight="50dp"
+                            android:entries="@array/statusItems"
+                            android:spinnerMode="dialog"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="24dp"
+                            android:paddingRight="24dp"
+                            android:layout_marginLeft="48dp"
+                            android:layout_marginRight="24dp"
+                            android:layout_marginBottom="8dp"
+                            android:prompt="@string/add_action_spinner_status_prompt"/>
 
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="CLEAR"
-                            android:id="@+id/button_clearHours"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            style="?android:attr/borderlessButtonStyle"
-                            android:textColor="@android:color/holo_blue_dark"
-
-                            />
-
-                    </RelativeLayout>
-
+                    </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:paddingTop="4dp">
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                card_view:cardCornerRadius="0dp"
-                card_view:cardPreventCornerOverlap="true">
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="STATUS"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/tertiary_text_light"
-                        android:layout_gravity="center"
-                        android:layout_centerVertical="true"
-                        android:gravity="center"
-                        android:layout_weight="1"/>
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="4dp">
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    card_view:cardCornerRadius="0dp"
+                    card_view:cardPreventCornerOverlap="true">
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical"
+                        android:background="@color/overall_card_background">
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="8dp">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="NOTES"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/actionAdd_sectionTitles"/>
 
-                    <Spinner
-                        android:id="@+id/spinner_updateStatus"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:entries="@array/statusItems"
-                        android:spinnerMode="dialog"
-                        android:layout_weight="3"/>
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center">
+                                <TextView
+                                    android:id="@+id/notes_existing_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0 existing"
+                                    android:textSize="16sp"
+                                    android:layout_centerVertical="true"
+                                    android:paddingBottom="8dp"/>
+                                <TextView
+                                    android:id="@+id/notes_added_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="1 added"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/add_green"
+                                    android:visibility="visible"/>
+                            </LinearLayout>
 
 
 
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center"
+                            android:padding="8dp">
+
+                            <Button
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="VIEW"
+                                android:padding="14dp"
+                                android:textSize="20sp"
+                                android:id="@+id/button_viewNotes"
+                                style="?android:attr/borderlessButtonStyle"
+                                android:textColor="@android:color/holo_blue_dark"
+                                />
+
+                            <Button
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:padding="14dp"
+                                android:text="ADD"
+                                android:textSize="20sp"
+                                android:id="@+id/button_addNote"
+                                style="?android:attr/borderlessButtonStyle"
+                                android:textColor="@android:color/holo_blue_dark"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="fill_parent"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="4dp">
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    card_view:cardCornerRadius="0dp"
+                    card_view:cardPreventCornerOverlap="true">
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical"
+                        android:background="@color/overall_card_background">
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="@color/overall_card_background"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="fill_parent"
+                                android:text="HOURS"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/actionAdd_sectionTitles"/>
+                            <TextView
+                                android:id="@+id/hoursText"
+
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+
+                                android:gravity="center"
+                                android:textSize="24sp"
+                                android:padding="12dp"
+                                android:layout_marginRight="12dp"
+                                android:text="-"
+                                />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center"
+                            android:padding="8dp">
+
+                            <Button
+                                android:text="CLEAR"
+                                android:id="@+id/button_clearHours"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="14dp"
+                                android:paddingBottom="14dp"
+                                android:textSize="20sp"
+                                style="?android:attr/borderlessButtonStyle"
+                                android:textColor="@android:color/holo_blue_dark"/>
+                            <Button
+                                android:text="ENTER"
+                                android:id="@+id/button_setHours"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="14dp"
+                                android:paddingBottom="14dp"
+                                android:textSize="20sp"
+                                style="?android:attr/borderlessButtonStyle"
+                                android:textColor="@android:color/holo_blue_dark"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:paddingTop="4dp">
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardCornerRadius="0dp"
-                card_view:cardPreventCornerOverlap="true">
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="NOTES"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/tertiary_text_light"
-                        android:paddingLeft="24dp"
-                        android:layout_gravity="center"
-                        android:layout_centerVertical="true"
-                        android:layout_weight="1"/>
 
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3">
 
-                        <TextView
-                            android:id="@+id/notes_existing_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0 existing"
-                            android:layout_centerVertical="true"
-                            android:paddingLeft="8dp"/>
 
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="VIEW"
-                            android:id="@+id/button_viewNotes"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            style="?android:attr/borderlessButtonStyle"
-                            android:textColor="@android:color/holo_blue_dark"/>
 
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ADD"
-                            android:id="@+id/button_addNote"
-                            android:layout_toLeftOf="@id/button_viewNotes"
-                            style="?android:attr/borderlessButtonStyle"
-                            android:textColor="@android:color/holo_blue_dark"/>
-
-                        <TextView
-                            android:id="@+id/notes_added_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1 added"
-                            android:layout_centerVertical="true"
-                            android:layout_toLeftOf="@id/button_addNote"
-                            android:paddingRight="8dp"
-                            android:textColor="@color/add_green"
-                            android:visibility="invisible"/>
-
-                    </RelativeLayout>
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-        </LinearLayout>
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:layout_marginLeft="8dp"
-            android:text="WORK ORDER"
+            android:layout_marginTop="12dp"
+            android:text="WORK ORDER DETAILS"
+            android:textStyle="bold"
+            android:layout_gravity="center"
             android:textColor="@color/details_overview_divider"
-            android:textSize="18sp"/>
+            android:textSize="20sp"/>
 
         <!-- android:textColor="@android:color/tertiary_text_light"
 
@@ -314,6 +399,7 @@
                         android:text="Kerr Administration"
                         android:textColor="@android:color/secondary_text_light"
                         android:gravity="center"
+                        android:background="@color/overall_card_background"
                         />
 
                 </android.support.v7.widget.CardView>
@@ -339,7 +425,8 @@
                         android:textSize="16sp"
                         android:text="123456-001"
                         android:gravity="center"
-                        android:singleLine="true"/>
+                        android:singleLine="true"
+                        android:background="@color/overall_card_background"/>
 
                 </android.support.v7.widget.CardView>
 
@@ -363,7 +450,7 @@
                     android:id="@+id/workOrderDescriptionText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/primary_text_light"
+                    android:background="@color/overall_card_background"
                     android:text="QCP300 QF13 LANDSCAPE - SHOPS SUPPORT - CAMPUS WAY BETWEEN 30TH AND 35TH STREETS SIDEWALK LIGHT POLE INSTALLATION"
                     android:paddingRight="8dp"
                     android:textSize="20sp"

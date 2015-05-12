@@ -6,8 +6,11 @@
 
           android:orderInCategory="100"
           android:showAsAction="always"
-          android:title="Add Action"
-        android:icon="@drawable/action_add_white"/>
+          android:title="@string/add_action_activity_title"/>
+
+    <!--
+        android:icon="@drawable/action_add_white"-->
+
 <!--
     <item android:id="@+id/action_settings"
 
