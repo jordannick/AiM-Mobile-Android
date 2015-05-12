@@ -27,7 +27,7 @@ import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 /**
  * Created by jordan_n on 8/13/2014.
  */
-public class DetailActivity extends FragmentActivity implements DetailMainFragment.Callbacks, DetailNotesFragment.Callbacks {
+public class DetailActivity extends FragmentActivity implements DetailNotesFragment.Callbacks {
     private static final String TAG = "DetailActivity";
 
     public static WorkOrder mWorkOrder;

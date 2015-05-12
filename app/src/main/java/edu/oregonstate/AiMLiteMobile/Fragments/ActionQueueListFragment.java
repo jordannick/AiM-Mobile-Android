@@ -89,7 +89,7 @@ public class ActionQueueListFragment extends ListFragment{
       //  View v = super.onCreateView(inflater, container, savedInstanceState);
        // return v;
 
-        return inflater.inflate(R.layout.action_list_with_hours, container, false);
+        return inflater.inflate(R.layout.action_list, container, false);
     }
 
 /*
@@ -99,7 +99,7 @@ public class ActionQueueListFragment extends ListFragment{
 
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View footerView = inflater.inflate(R.layout.action_list_with_hours, getListView(), false);
+        View footerView = inflater.inflate(R.layout.action_list, getListView(), false);
 
         //Log.d(TAG, "footerView = "+footerView);
         //getListView().addFooterView(footerView);

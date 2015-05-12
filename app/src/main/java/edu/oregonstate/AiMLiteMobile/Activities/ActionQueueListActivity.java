@@ -38,7 +38,6 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
         }
     }
 
-
     @Override
     protected Fragment createFragment() {
         return new ActionQueueListFragment();
@@ -54,8 +53,6 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
         getMenuInflater().inflate(R.menu.menu_action_queue, menu);
         return true;
     }
-
-
 
     //Open edit action form for clicked action, with position of action in queue
     public void onActionSelected(int actionPosition){
@@ -81,11 +78,6 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
 
             }
         }, 1000);
-
-        // %% DEBUG %%
-
-        // %% END_DEBUG %%
-
     }
 
 
@@ -109,10 +101,7 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
         Log.d(TAG, "SUCCESS QUEUE LIST");
     }
 
-    public void onAuthenticateFail() {
-
-    }
-
+    public void onAuthenticateFail() {}
 
     public void onNetworkFail() {
         Log.d(TAG, "NET FAIL QUEUE LIST");

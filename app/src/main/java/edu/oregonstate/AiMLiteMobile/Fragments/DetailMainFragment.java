@@ -29,26 +29,11 @@ public class DetailMainFragment extends Fragment{
 
     private Activity mActivity;
     private WorkOrder mWorkOrder;
-    private Callbacks mCallbacks;
     private View v;
-
-    public interface Callbacks {
-        //void onWorkOrderUpdated();
-    }
-
-    //Useful for later if implement swipe to change work order while in detail view
-    public static DetailMainFragment newInstance(WorkOrder workOrder) {
-        Bundle args = new Bundle();
-        args.putSerializable(WorkOrder.WORK_ORDER_EXTRA, workOrder);
-        DetailMainFragment fragment = new DetailMainFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mCallbacks = (Callbacks)activity;
     }
 
     @Override
@@ -70,9 +55,9 @@ public class DetailMainFragment extends Fragment{
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-       /* getActivity().setTitle(mWorkOrder.getProposalPhase());*/
         getActivity().setTitle("Work Order");
 
+        /**/
         ((TextView)v.findViewById(R.id.buildingTextView)).setText(mWorkOrder.getBuilding());
         ((TextView)v.findViewById(R.id.descriptionTextView)).setText(mWorkOrder.getDescription());
         ((TextView)v.findViewById(R.id.workCodeTextView)).setText(mWorkOrder.getCraftCode());
@@ -99,7 +84,6 @@ public class DetailMainFragment extends Fragment{
             beginCal.setTime(beginDate);
             endCal.setTime(endDate);
 
-
             if(beginCal.get(Calendar.YEAR) == endCal.get(Calendar.YEAR)){
                 estText = String.format("%s - %s", minimalDateYear.format(beginDate), minimalDateYear.format(endDate));
 
@@ -112,13 +96,11 @@ public class DetailMainFragment extends Fragment{
         }
 
         ((TextView)v.findViewById(R.id.estTextView)).setText(estText);
-
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallbacks = null;
     }
 
 

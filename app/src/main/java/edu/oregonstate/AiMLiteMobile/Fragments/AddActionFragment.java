@@ -88,6 +88,9 @@ public class AddActionFragment extends Fragment {
         Bundle bundle = getArguments();
         editMode = bundle.getBoolean("editMode");
 
+        /* Determine which mode we're in:
+        Edit = modify specific action item living in the action list
+        Add = Get work order reference to later add action to */
         if (editMode){
             mActionToEdit = ((AddActionActivity) mActivity).getAction();
             if (mActionToEdit != null) mWorkOrder = mActionToEdit.getWorkOrder();
@@ -95,11 +98,12 @@ public class AddActionFragment extends Fragment {
             mWorkOrder = ((AddActionActivity) mActivity).getWorkOrder();
         }
 
+        // Save the reference for rotation changes
+        //TODO: Don't want to save for non-rotations, i.e. reusing fragment later
         if (savedInstanceState != null){
             mWorkOrder = (WorkOrder) savedInstanceState.getSerializable("WorkOrder");
             mActionToEdit = (Action) savedInstanceState.getSerializable("Action");
         }
-
     }
 
     @Override
@@ -148,8 +152,10 @@ public class AddActionFragment extends Fragment {
         spinner_actionTaken.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Restore the colors in case view was changed to red requirement indication
                 layout_action.setBackgroundResource(0);
                 label_action.setTextColor(getResources().getColor(R.color.actionAdd_sectionTitles));
+                //When "Custom" is selected, start dialog
                 if (position == 1) {
                     actionCustomText = (TextView) view;
                     createCustomActionEntryDialog();
@@ -181,10 +187,7 @@ public class AddActionFragment extends Fragment {
                 createNoteEntryDialog(null);
             }
         });
-
-
     }
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -282,7 +285,6 @@ public class AddActionFragment extends Fragment {
             input.setText(toBeEditedNote.getNote());
         }
 
-
         input.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         input.setHorizontallyScrolling(false);
         input.setLines(6);
@@ -309,11 +311,7 @@ public class AddActionFragment extends Fragment {
                         SnackbarManager.show(Snackbar.with(getActivity()).text("Note added").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
                     }
                     notesAdapter.notifyDataSetChanged();
-/*
-                    if (notesListView.getVisibility() == View.INVISIBLE) {
-                        notesListView.setVisibility(View.VISIBLE);
-                    }
-                    */
+
                     if (notesAddedText.getVisibility() == View.INVISIBLE) {
                         notesAddedText.setVisibility(View.VISIBLE);
                     }
@@ -351,37 +349,26 @@ public class AddActionFragment extends Fragment {
         Button confirmButton = (Button)dialogView.findViewById(R.id.dialogConfirm_buttonConfirm);
         Button cancelButton = (Button)dialogView.findViewById(R.id.dialogConfirm_buttonCancel);
         final AlertDialog alert = confirmAddActionDialog.create();
+
+        //TODO: edit mode should only save edits if it reached this point
         if (editMode){
-            //todo: set title to edit mode
             confirmButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Create Action object from form fields
-                    //Add new Action object to CurrentUser.Actions
-                    //Return to QueueListFragment and update to show added Action
                     alert.dismiss();
                     getActivity().finish();
 
                 }
             });
-        } else { //New Action
-            //todo: set title to new action
+        } else {
             confirmButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Create Action object from form fields
-                    //Add new Action object to CurrentUser.Actions
-
                     sCurrentUser.addAction(newAction);
-
                     alert.dismiss();
-                    //Return to QueueListFragment and update to show added Action
                     Intent intent = new Intent(getActivity(), ActionQueueListActivity.class);
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out_top);
-
-
-
                 }
             });
         }
@@ -397,16 +384,8 @@ public class AddActionFragment extends Fragment {
 
 
     private void saveEdits(){
-        String newStatus = mActionToEdit.getUpdatedStatus();
-
-        //STATUS
-       // if(checkBox_updateStatus.isChecked()){
-            //Assign newStatus the value of selected Status from spinner
-            newStatus = spinner_updateStatus.getSelectedItem().toString();
-       // }// else newStatus stays null
-
-        //ACTION
         String actionTaken = spinner_actionTaken.getSelectedItem().toString();
+        String newStatus = spinner_updateStatus.getSelectedItem().toString();
 
         //NOTE  -- handled in notes dialog. new notes added to newActionNotes arrayList
 
@@ -416,17 +395,15 @@ public class AddActionFragment extends Fragment {
         mActionToEdit.setUpdatedStatus(newStatus);
         mActionToEdit.setNotes(newActionNotes);
         mActionToEdit.setDateStamp(new Date(System.currentTimeMillis()));
-
     }
 
-
-    //Get all values from form. Create Action object. Add to CurrentUser.Actions
-    //Displays error or success
+    /* Get all values from form. Create Action object.
+    Returns error or success depending on required fields. */
     private boolean validateAction(){
         int hours = -1; //-1 signifies no hours entered
         String selectedStatus = spinner_updateStatus.getSelectedItem().toString();
         String currentStatus = mWorkOrder.getStatus();
-        String newStatus = null;
+        String newStatus = null; //null indicates no change in status
 
         //ACTION
         String actionTaken = spinner_actionTaken.getSelectedItem().toString();
@@ -434,49 +411,40 @@ public class AddActionFragment extends Fragment {
         if (spinner_actionTaken.getSelectedItemPosition() == 0){
             layout_action.setBackgroundColor(getResources().getColor(R.color.confirm_red));
             label_action.setTextColor(Color.WHITE);
-            return false;
+            return false; //Failure, an action taken is required!
         }
 
         //STATUS
-        if(!selectedStatus.equals(currentStatus)){ //If selectedStatus is different than current
+        if(!selectedStatus.equals(currentStatus)){
             newStatus = selectedStatus;
             Log.d(TAG, "New status set.");
-        } //else newStatus stays null
+        }
 
         //HOURS
         if(hoursEntered != -1){
             hours = hoursEntered;
         }
 
-
         //NOTE  -- handled in notes dialog. new notes added to newActionNotes arrayList
 
-
-        //TODO: don't add action immediately, allow confirming first
         Log.i(TAG, "Adding new Action ( " + actionTaken + " ) for Work Order " + mWorkOrder.getProposalPhase() + " to Queue");
         newAction = new Action(mWorkOrder, actionTaken, newStatus, hours, newActionNotes);
         newAction.setTimeType(Action.TimeType.REG_NB); //%% DEBUG %% Default time type
-
         return true;
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_queue:
 
+                //TODO: finish form validation - i.e. red X for action required
                 if (editMode){
                     saveEdits();
                     createConfirmDialog();
                 } else {
                     if (validateAction()) createConfirmDialog();
                 }
-
-                //TODO: finish form validation
-                //All fields checked to be correct at this point
-
 
                 return true;
             case android.R.id.home:
