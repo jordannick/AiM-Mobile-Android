@@ -29,7 +29,7 @@ public class WorkOrder implements Serializable {
 
     ArrayList<Note> mNotes;
 
-    String mContactName;
+    String mContactName = "";
     String mDepartment;
 
     //Row Display

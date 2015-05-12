@@ -22,15 +22,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
-
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -44,31 +42,26 @@ public class AddActionFragment extends Fragment {
 
     private Activity mActivity;
     private Context mContext;
+
     private static CurrentUser sCurrentUser;
     private static WorkOrder mWorkOrder;
     private static Action mActionToEdit;
     private static Action newAction;
 
-    private static TextView workOrderIdText;
-    private static TextView workOrderLocationText;
-    private static TextView workOrderDescriptionText;
-    private static Spinner spinner_ActionTaken;
+    private static LinearLayout layout_action;
+    private static TextView label_action;
+    private static Spinner spinner_actionTaken;
+    private static TextView actionCustomText;
     private static TextView textView_hours;
     private static int hoursEntered = -1;
     private static Spinner spinner_updateStatus;
+
     private static Button button_addNote;
+    private static TextView notesAddedText;
+    private static TextView notesExistingText;
     private static ListView notesListView;
     private static NoteAdapter notesAdapter;
     private static ArrayList<Note> newActionNotes;
-
-    private static TextView notesAddedText;
-    private static TextView notesExistingText;
-
-    private static TextView actionCustomText;
-
-    private AlertDialog.Builder editOrDeleteDialog;
-
-    private int originalHours;
 
     private int HOURS_MIN = 0;
     private int HOURS_MAX = 8;
@@ -96,6 +89,7 @@ public class AddActionFragment extends Fragment {
             mWorkOrder = (WorkOrder) savedInstanceState.getSerializable("WorkOrder");
             mActionToEdit = (Action) savedInstanceState.getSerializable("Action");
         }
+
     }
 
     @Override
@@ -107,13 +101,13 @@ public class AddActionFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //Get activity again for after rotation change
-        mActivity = getActivity();
+        TextView workOrderIdText = (TextView)mActivity.findViewById(R.id.workOrderIdText);
+        TextView workOrderLocationText = (TextView)mActivity.findViewById(R.id.workOrderLocationText);
+        TextView workOrderDescriptionText = (TextView)mActivity.findViewById(R.id.workOrderDescriptionText);
 
-        workOrderIdText = (TextView)mActivity.findViewById(R.id.workOrderIdText);
-        workOrderLocationText = (TextView)mActivity.findViewById(R.id.workOrderLocationText);
-        workOrderDescriptionText = (TextView)mActivity.findViewById(R.id.workOrderDescriptionText);
-        spinner_ActionTaken = (Spinner)mActivity.findViewById(R.id.spinner_actionTaken);
+        layout_action = (LinearLayout) mActivity.findViewById(R.id.action_layout);
+        label_action = ((TextView)mActivity.findViewById(R.id.action_label));
+        spinner_actionTaken = (Spinner)mActivity.findViewById(R.id.spinner_actionTaken);
         textView_hours = (TextView)mActivity.findViewById(R.id.hoursText);
         spinner_updateStatus = (Spinner)mActivity.findViewById(R.id.spinner_updateStatus);
         button_addNote = (Button)mActivity.findViewById(R.id.button_addNote);
@@ -122,103 +116,54 @@ public class AddActionFragment extends Fragment {
         workOrderLocationText.setText(mWorkOrder.getBuilding());
         workOrderDescriptionText.setText(mWorkOrder.getDescription());
 
-        String defaultStatus = "";
-
+        // Pre-populate fields as needed
+        String defaultStatus;
         if (editMode){
-            ArrayAdapter actionTakenAdapter = (ArrayAdapter) spinner_ActionTaken.getAdapter();
+            ArrayAdapter actionTakenAdapter = (ArrayAdapter) spinner_actionTaken.getAdapter();
             int defaultActionTakenSpinnerPosition = actionTakenAdapter.getPosition(mActionToEdit.getActionTakenString());
-            spinner_ActionTaken.setSelection(defaultActionTakenSpinnerPosition);
+            spinner_actionTaken.setSelection(defaultActionTakenSpinnerPosition);
 
             defaultStatus = mActionToEdit.getUpdatedStatus(); //Sets the status spinner to the current status of the work order
-
             newActionNotes = mActionToEdit.getNotes();//Associate new notes with notes list view
-
             hoursEntered = mActionToEdit.getHours();
-            originalHours = hoursEntered;
+
+            if (hoursEntered != -1){
+                textView_hours.setText(String.valueOf(hoursEntered));
+            }
         } else {
-            //spinner_updateStatus.setEnabled(false);
-
             defaultStatus = mWorkOrder.getStatus(); //Sets the status spinner to the current status of the work order
-
             if (newActionNotes == null) newActionNotes = new ArrayList<Note>();//Associate new notes with notes list view
         }
 
+        spinner_actionTaken.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                layout_action.setBackgroundResource(0);
+                label_action.setTextColor(getResources().getColor(android.R.color.tertiary_text_light));
+                if (position == 1) {
+                    actionCustomText = (TextView) view;
+                    createCustomActionEntryDialog();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
 
         ArrayAdapter statusAdapter = (ArrayAdapter) spinner_updateStatus.getAdapter();
         int defaultStatusSpinnerPosition = statusAdapter.getPosition(defaultStatus);
         spinner_updateStatus.setSelection(defaultStatusSpinnerPosition);
 
-
         notesAdapter = new NoteAdapter(getActivity(), newActionNotes);
-
         notesAddedText = (TextView) mActivity.findViewById(R.id.notes_added_text);
+        //notesExistingText = (TextView) mActivity.findViewById(R.id.notes_existing_text);
+        //notesExistingText.setText(mWorkOrder.getNotes().size() + " existing");
 
-        notesExistingText = (TextView) mActivity.findViewById(R.id.notes_existing_text);
-        //notesExistingText.setText(mWorkOrder.getNotes().size() + "existing");
-
-
-        spinner_ActionTaken.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                spinner_ActionTaken.setBackgroundColor(Color.TRANSPARENT);
-
-                if (position == 1){
-                    actionCustomText = (TextView) view;
-                    createCustomActionEntryDialog();
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-
-
-
-
-
-
-        /* // %% DEBUG %%
-        notesListView = (ListView)getActivity().findViewById(R.id.notesListView);
-        notesListView.setEmptyView(getActivity().findViewById(R.id.notesListViewEmpty));
-        notesListView.setAdapter(notesAdapter);
-
-
-        //Check for long click on items in ListView
-        notesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d(TAG, "LongClick detected on notesListView. View: " + view + ", i: " + i + ", l: " + l);
-                int clickedNoteIndex = i;
-
-                //Grab clicked Note obj
-                Note clickedNote = newActionNotes.get(i);
-
-                Log.d(TAG, "Clicked Note: " + clickedNote.getNote());
-
-                //Show dialog to prompt user to Delete or Edit the Note
-                //PARAMS: clickedNoteIndex
-                createNoteLongClickDialog(clickedNoteIndex);
-                //Respond to User input
-                return true;
-            }
-        });
-*/
-
-        if (hoursEntered == -1){
-            textView_hours.setText("-");
-        } else {
-            textView_hours.setText(String.valueOf(hoursEntered));
+        notesAddedText.setText(newActionNotes.size() + " added");
+        if (newActionNotes.size() > 0 && notesAddedText.getVisibility() == View.INVISIBLE){
+            notesAddedText.setVisibility(View.VISIBLE);
         }
 
         createHoursEntryDialog();
-        //createNoteEntryDialog(); //REMOVED since the click handler has been moved below, instead of inside the function.
-            //This allows the function to also be called when editing an existing note.
-
 
         button_addNote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,16 +172,9 @@ public class AddActionFragment extends Fragment {
             }
         });
 
+
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        notesAddedText.setText(newActionNotes.size()+" added");
-        if (newActionNotes.size() > 0 && notesAddedText.getVisibility() == View.INVISIBLE){
-            notesAddedText.setVisibility(View.VISIBLE);
-        }
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -244,35 +182,6 @@ public class AddActionFragment extends Fragment {
         outState.putSerializable("Action", mActionToEdit);
         super.onSaveInstanceState(outState);
     }
-
-    //Creates dialog for editing/deleting notes if none exists. Otherwise, uses previously built.
-    //PARAMS: clickedNoteIndex: index of clicked Note within newActionNotes
-    private void createNoteLongClickDialog(final int clickedNoteIndex){
-        if(editOrDeleteDialog == null){
-            Log.d(TAG, "Creating new dialog");
-            editOrDeleteDialog = new AlertDialog.Builder(mActivity);
-            editOrDeleteDialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    //Remove the note and update list
-                    newActionNotes.remove(clickedNoteIndex);
-                    notesAdapter.notifyDataSetChanged();
-                    Toast.makeText(mContext, "Note Deleted", Toast.LENGTH_SHORT).show();
-                }
-            });
-            editOrDeleteDialog.setNegativeButton("Edit", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    createNoteEntryDialog(newActionNotes.get(clickedNoteIndex));
-                    Toast.makeText(mContext, "Note Edit", Toast.LENGTH_SHORT).show();
-                }
-            });
-            editOrDeleteDialog.show();
-        }else{
-            editOrDeleteDialog.show();
-        }
-    }
-
 
     private void createHoursEntryDialog(){
         Button setHoursButton = (Button)getActivity().findViewById(R.id.button_setHours);
@@ -283,20 +192,24 @@ public class AddActionFragment extends Fragment {
                 enterHoursAlert.setTitle("Enter hours:");
                 final EditText input = new EditText(getActivity());
                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
-                input.setFilters(new InputFilter[]{ new InputFilterMinMax(HOURS_MIN, HOURS_MAX)});
+                input.setFilters(new InputFilter[]{ new InputFilterMinMax(HOURS_MIN, HOURS_MAX), new InputFilter.LengthFilter(1)});
                 input.setWidth(50);
                 enterHoursAlert.setView(input);
 
                 enterHoursAlert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        textView_hours.setText(input.getText());
-                        hoursEntered = Integer.valueOf(input.getText().toString());
+                        if (input.getText() != null && !input.getText().toString().equals("")) {
+                            Log.d(TAG, "input = "+ input.getText().toString());
+                            textView_hours.setText(input.getText());
+                            hoursEntered = Integer.valueOf(input.getText().toString());
+                        }
                     }
                 });
                 enterHoursAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {}
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
                 });
 
                 AlertDialog alert = enterHoursAlert.create();
@@ -423,6 +336,13 @@ public class AddActionFragment extends Fragment {
     private void createConfirmDialog(){
         final AlertDialog.Builder confirmAddActionDialog = new AlertDialog.Builder(mActivity);
 
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_confirm, null);
+        confirmAddActionDialog.setView(dialogView);
+
+        Button confirmButton = (Button)dialogView.findViewById(R.id.dialogConfirm_buttonConfirm);
+        Button cancelButton = (Button)dialogView.findViewById(R.id.dialogConfirm_buttonCancel);
+
         if (editMode){
             confirmAddActionDialog.setTitle("Save action changes");
 
@@ -482,7 +402,7 @@ public class AddActionFragment extends Fragment {
        // }// else newStatus stays null
 
         //ACTION
-        String actionTaken = spinner_ActionTaken.getSelectedItem().toString();
+        String actionTaken = spinner_actionTaken.getSelectedItem().toString();
 
         //NOTE  -- handled in notes dialog. new notes added to newActionNotes arrayList
 
@@ -505,11 +425,11 @@ public class AddActionFragment extends Fragment {
         String newStatus = null;
 
         //ACTION
-        String actionTaken = spinner_ActionTaken.getSelectedItem().toString();
+        String actionTaken = spinner_actionTaken.getSelectedItem().toString();
 
-        if (spinner_ActionTaken.getSelectedItemPosition() == 0){
-            mActivity.findViewById(R.id.action_layout).setBackgroundColor(getResources().getColor(R.color.confirm_red));
-            ((TextView)mActivity.findViewById(R.id.action_label)).setTextColor(Color.WHITE);
+        if (spinner_actionTaken.getSelectedItemPosition() == 0){
+            layout_action.setBackgroundColor(getResources().getColor(R.color.confirm_red));
+            label_action.setTextColor(Color.WHITE);
             return false;
         }
 

@@ -44,7 +44,7 @@ public class DetailContactFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
+        Log.d(TAG, "DetailContact mActivity: " + mWorkOrder);
         ((TextView) mActivity.findViewById(R.id.contact_nameTextView)).setText(mWorkOrder.getContactName());
         ((TextView) mActivity.findViewById(R.id.contact_departmentTextView)).setText(mWorkOrder.getDepartment());
 

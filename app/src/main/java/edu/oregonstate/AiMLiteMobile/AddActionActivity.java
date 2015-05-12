@@ -19,12 +19,6 @@ public class AddActionActivity extends Activity{
     private Action mAction;
     private boolean editMode = false; //False = add new action from scratch //True = edit existing action
 
-    public WorkOrder getWorkOrder() {
-        return mWorkOrder;
-    }
-
-    public Action getAction(){ return mAction; }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +45,6 @@ public class AddActionActivity extends Activity{
         setContentView(getLayoutResId());
         FragmentManager fm = getFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
-
         if (fragment == null) {
             fragment = createFragment();
             fm.beginTransaction()
@@ -68,13 +61,14 @@ public class AddActionActivity extends Activity{
         //Send which mode we're in to the fragment
         bundle.putBoolean("editMode", editMode);
         newFragment.setArguments(bundle);
-
-        //Retains the fragment for orientation change
-        //newFragment.setRetainInstance(true);
-
         return newFragment;
     }
 
+    public WorkOrder getWorkOrder() {
+        return mWorkOrder;
+    }
+
+    public Action getAction(){ return mAction; }
 
     protected int getLayoutResId() {
         return R.layout.activity_fragment;

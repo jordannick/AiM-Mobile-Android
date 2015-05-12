@@ -50,7 +50,6 @@ public class Note implements Serializable {
         isNew = true;
     }
 
-
     public boolean isNew(){
         return isNew;
     }

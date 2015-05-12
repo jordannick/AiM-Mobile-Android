@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +31,7 @@ import java.util.List;
 public class DetailActivity extends FragmentActivity implements DetailMainFragment.Callbacks, DetailNotesFragment.Callbacks {
     private static final String TAG = "DetailActivity";
 
-    public WorkOrder mWorkOrder;
+    public static WorkOrder mWorkOrder;
     private ActionBar actionBar;
     private View v;
 
@@ -51,7 +52,7 @@ public class DetailActivity extends FragmentActivity implements DetailMainFragme
         v = this.findViewById(R.id.detail_activity_layout);
 
         mWorkOrder = (WorkOrder)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
-
+        Log.d(TAG, "DetailActivity mWorkOrder: " + mWorkOrder);
 
         final List<DetailPagerItem> mTabs = new ArrayList<>();
         mTabs.add(new DetailPagerItem("Overview", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailMainFragment()));
@@ -111,13 +112,13 @@ public class DetailActivity extends FragmentActivity implements DetailMainFragme
         Tab1.setTabListener(new TabListener(fragmentTab1));
         actionBar.addTab(Tab1); */
 
-
+/*
         if(savedInstanceState!=null){
             //Restore the tab the user was last at
             int currentTab = savedInstanceState.getInt("CurrentDetailsTab");
             actionBar.selectTab(actionBar.getTabAt(currentTab));
         }
-
+*/
 
     }
 
