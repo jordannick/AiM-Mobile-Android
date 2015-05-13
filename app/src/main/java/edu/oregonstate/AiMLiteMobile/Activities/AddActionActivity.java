@@ -86,4 +86,9 @@ public class AddActionActivity extends Activity{
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.no_action, R.anim.slide_out_bottom);
+    }
 }

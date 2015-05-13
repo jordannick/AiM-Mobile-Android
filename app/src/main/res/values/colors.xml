@@ -96,6 +96,10 @@
     <color name="actionAdd_sectionTitles">#F57C00</color>
 
 
+    <!--Action Card-->
+    <color name="actionCard_workOrderNum">#00796B</color>
+
+
 </resources>
 
 

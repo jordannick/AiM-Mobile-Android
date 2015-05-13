@@ -367,8 +367,11 @@ public class AddActionFragment extends Fragment {
                     sCurrentUser.addAction(newAction);
                     alert.dismiss();
                     Intent intent = new Intent(getActivity(), ActionQueueListActivity.class);
+
+                    getActivity().finish();
+                    getActivity().overridePendingTransition(R.anim.no_action, R.anim.slide_out_top);
                     startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out_top);
+
                 }
             });
         }
@@ -454,4 +457,6 @@ public class AddActionFragment extends Fragment {
         }
         return false;
     }
+
+
 }

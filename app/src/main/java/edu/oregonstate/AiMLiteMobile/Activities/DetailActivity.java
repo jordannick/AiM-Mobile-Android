@@ -136,6 +136,12 @@ public class DetailActivity extends FragmentActivity implements DetailNotesFragm
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
     public WorkOrder getWorkOrder() {
         return mWorkOrder;
     }

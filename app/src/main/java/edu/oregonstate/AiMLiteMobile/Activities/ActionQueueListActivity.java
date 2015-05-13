@@ -97,6 +97,12 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
     public void onTaskSuccess(){
         Log.d(TAG, "SUCCESS QUEUE LIST");
     }
