@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -12,14 +13,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
 
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.Action;
@@ -34,7 +32,6 @@ public class NetworkHandler {
 
     private static NetworkHandler sNetworkHandler;
     private static CurrentUser sCurrentUser;
-    private static Context sContext;
 
     public NetworkHandler(Context c){
         sCurrentUser = CurrentUser.get(c);
@@ -43,50 +40,30 @@ public class NetworkHandler {
     public static NetworkHandler get(Context c){
         if(sNetworkHandler == null){
             sNetworkHandler = new NetworkHandler(c);
-            sContext = c;
         }
         return sNetworkHandler;
     }
 
-    private class ConnectionResponse {
-        int statusCode;
-        String redirectUrl;
-    }
+    //POSTs the token to URL. If accepted, builds response string.
+    public ResponsePair downloadUrl(String inputUrl, boolean isArray, ResponsePair responsePair) throws IOException {
 
-    //GET request on api-test.facilities.oregonstate.edu will go through two redirects. Cookie for session is given on first request.
-    public ResponsePair downloadUrl(String inputUrl, boolean isArray, ResponsePair responsePair, HttpURLConnection connection) throws IOException {
+        URL url = new URL(inputUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         try {
-            URL url = new URL(inputUrl);        Log.d(TAG, "Attempting POST from: " + url);
-            connection = (HttpURLConnection) url.openConnection();
-            //GET and Timeout
-            //connection.setRequestMethod("POST"); connection.setReadTimeout(10000); connection.setConnectTimeout(15000);
+            Log.d(TAG, "Attempting download from: " + url);
 
-           // String encodedParams = URLEncoder.encode("token="+sCurrentUser.getToken(), "UTF-8");
-            String encodedParams = "token="+sCurrentUser.getToken();
+            String params = "token="+sCurrentUser.getToken();
             connection.setRequestMethod("POST"); connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            connection.setRequestProperty("Content-Language", "en-US"); connection.setRequestProperty("Content-Length", "" + Integer.toString(encodedParams.getBytes().length));
+            connection.setRequestProperty("Content-Language", "en-US"); connection.setRequestProperty("Content-Length", "" + Integer.toString(params.getBytes().length));
             connection.setUseCaches(false);  connection.setDoInput(true);  connection.setDoOutput(true);
             connection.setReadTimeout(10000); connection.setConnectTimeout(15000);
 
-            /*
-            //Cookies just used through redirects?
-            if (sCurrentUser.getCookies() == null) {
-                String cookies = connection.getHeaderField("Set-Cookie");
-                //Log.d(TAG, "The cookie is: " + cookies);
-                sCurrentUser.setCookies(cookies);
-            }else {
-                connection.setRequestProperty("Cookie", sCurrentUser.getCookies());
-            }
-*/
-            Log.d(TAG, "encodedParams = "+encodedParams);
-            //Send Request
+            //Send the token param
             DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
-            wr.writeBytes(encodedParams);
+            wr.writeBytes(params);
             wr.flush();
             wr.close();
-
-
 
             //Ready to connect
             int statusCode = connection.getResponseCode();
@@ -103,11 +80,6 @@ public class NetworkHandler {
                     }
                     bufferedReader.close();
                     responsePair = convertResponseString(isArray, stringBuilder.toString(), responsePair);
-                    break;
-                case HttpURLConnection.HTTP_MOVED_TEMP:     // 302 Moved Temporarily OR 302 Found
-                    Log.d(TAG, "Redirect URL. Location: " + connection.getHeaderField("Location"));
-                    //Redirect detected, try again with supplied location to redirect to. Keep same connection.
-                    downloadUrl(connection.getHeaderField("Location"), isArray, responsePair, connection);
                     break;
                 case HttpURLConnection.HTTP_UNAUTHORIZED:   // 401
                     responsePair.setStatus(ResponsePair.Status.AUTH_FAIL);
@@ -262,7 +234,7 @@ public class NetworkHandler {
         String timeStampString = String.valueOf(System.currentTimeMillis());
 
         //Encode and create parameter String
-        String[] stringArgs = {"username", userName, "workOrderPhaseId", workOrderPhaseIdString, "actionTaken", actionTaken, "timeStamp",  timeStampString};
+        String[] stringArgs = {"username", userName, "workOrderPhaseId", workOrderPhaseIdString, "actionTaken", actionTaken, "timeStamp",  timeStampString, "token", sCurrentUser.getToken()};
 
         return buildEncodedString(stringArgs, encoding);
     }
@@ -319,6 +291,7 @@ public class NetworkHandler {
 
 
     public ResponsePair postToURL(URL url, String encodedParams){
+
         try {
             Log.d(TAG, "------------------------------------Starting POST to URL: " + url.toString());
             //Open connection
@@ -330,11 +303,12 @@ public class NetworkHandler {
             c.setUseCaches(false);  c.setDoInput(true);  c.setDoOutput(true);
 
             //Send Request
-            DataOutputStream wr = null;
-            wr = new DataOutputStream(c.getOutputStream());
+            DataOutputStream wr = new DataOutputStream(c.getOutputStream());
             wr.writeBytes(encodedParams);
             wr.flush();
             wr.close();
+
+            Log.d(TAG, "status code is = " + c.getResponseCode() + " ; encodedParams = "+encodedParams);
 
             //Get Response
             InputStream is = c.getInputStream();
@@ -350,9 +324,12 @@ public class NetworkHandler {
             //Build and return responsePair
             responsePair.setReturnedString(response.toString());
             responsePair.setStatusInt(c.getResponseCode());
+
             return  responsePair;
         }catch (Exception e){
-            Log.e(TAG, "Exception e: " + e);
+            Log.e(TAG, "postToURL Exception e: " + e + " ; " + e.getMessage());
+            e.printStackTrace();
+
         }
         return null;
     }
@@ -395,7 +372,7 @@ public class NetworkHandler {
                 }
             }
         }catch (Exception e){
-            Log.e(TAG, "Exception e: " + e);
+            Log.e(TAG, "buildEncodedString Exception e: " + e);
         }
         Log.d(TAG, "------------------------------------Encoded string: " + returnString);
         return returnString;
