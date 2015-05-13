@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -61,12 +62,12 @@ public class AddActionFragment extends Fragment {
     private static LinearLayout layout_action;
     private static TextView label_action;
     private static Spinner spinner_actionTaken;
-    private static TextView actionCustomText;
     private static TextView textView_hours;
     private static int hoursEntered = -1;
     private static Spinner spinner_updateStatus;
 
     private static Button button_addNote;
+    private static ImageButton button_clearHours;
     private static TextView notesAddedText;
     private static TextView notesExistingText;
     private static ListView notesListView;
@@ -122,9 +123,17 @@ public class AddActionFragment extends Fragment {
         layout_action = (LinearLayout) mActivity.findViewById(R.id.action_layout);
         label_action = ((TextView)mActivity.findViewById(R.id.action_label));
         spinner_actionTaken = (Spinner)mActivity.findViewById(R.id.spinner_actionTaken);
-        textView_hours = (TextView)mActivity.findViewById(R.id.hoursText);
+        textView_hours = (TextView)mActivity.findViewById(R.id.hoursTextView);
         spinner_updateStatus = (Spinner)mActivity.findViewById(R.id.spinner_updateStatus);
         button_addNote = (Button)mActivity.findViewById(R.id.button_addNote);
+        button_clearHours = (ImageButton)mActivity.findViewById(R.id.actionAdd_button_clearHours);
+
+        button_clearHours.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateHoursTextView(null);
+            }
+        });
 
         workOrderIdText.setText(mWorkOrder.getProposalPhase());
         workOrderLocationText.setText(mWorkOrder.getBuilding());
@@ -143,6 +152,9 @@ public class AddActionFragment extends Fragment {
 
             if (hoursEntered != -1){
                 textView_hours.setText(String.valueOf(hoursEntered));
+                                /*textView_hours.setTypeface(Typeface.DEFAULT_BOLD);*/
+                textView_hours.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
+                textView_hours.setTextSize(34);
             }
         } else {
             defaultStatus = mWorkOrder.getStatus(); //Sets the status spinner to the current status of the work order
@@ -154,11 +166,11 @@ public class AddActionFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //Restore the colors in case view was changed to red requirement indication
                 layout_action.setBackgroundResource(0);
-                label_action.setTextColor(getResources().getColor(R.color.actionAdd_sectionTitles));
+                label_action.setTextColor(getResources().getColor(R.color.addAction_sectionTitles));
                 //When "Custom" is selected, start dialog
-                if (position == 1) {
-                    actionCustomText = (TextView) view;
-                    createCustomActionEntryDialog();
+
+                if (position == 5) {
+                    createCustomActionEntryDialog((TextView)view);
                 }
             }
             @Override
@@ -189,6 +201,10 @@ public class AddActionFragment extends Fragment {
         });
     }
 
+    private void setVisibilityClearHoursButton(int visible){
+        button_clearHours.setVisibility(visible);
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putSerializable("WorkOrder", mWorkOrder);
@@ -197,15 +213,17 @@ public class AddActionFragment extends Fragment {
     }
 
     private void createHoursEntryDialog(){
-        Button setHoursButton = (Button)getActivity().findViewById(R.id.button_setHours);
-        setHoursButton.setOnClickListener(new View.OnClickListener() {
+        /*Button setHoursButton = (Button)getActivity().findViewById(R.id.button_setHours);*/
+        textView_hours.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final AlertDialog.Builder enterHoursAlert = new AlertDialog.Builder(mActivity);
                 enterHoursAlert.setTitle("Enter hours:");
                 final EditText input = new EditText(getActivity());
+
                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
-                input.setFilters(new InputFilter[]{ new InputFilterMinMax(HOURS_MIN, HOURS_MAX), new InputFilter.LengthFilter(1)});
+                input.setPadding(8, 8, 8, 8);
+                input.setFilters(new InputFilter[]{new InputFilterMinMax(HOURS_MIN, HOURS_MAX), new InputFilter.LengthFilter(1)});
                 input.setWidth(50);
                 enterHoursAlert.setView(input);
 
@@ -213,9 +231,14 @@ public class AddActionFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (input.getText() != null && !input.getText().toString().equals("")) {
-                            Log.d(TAG, "input = "+ input.getText().toString());
-                            textView_hours.setText(input.getText());
                             hoursEntered = Integer.valueOf(input.getText().toString());
+                            if (hoursEntered == 0) {
+                                updateHoursTextView(null);
+                            } else {
+                                updateHoursTextView(input.getText().toString());
+                            }
+                        } else {
+                            updateHoursTextView(null);
                         }
                     }
                 });
@@ -231,21 +254,37 @@ public class AddActionFragment extends Fragment {
             }
         });
 
-        Button clearHoursButton = (Button)getActivity().findViewById(R.id.button_clearHours);
+    /*    Button clearHoursButton = (Button)getActivity().findViewById(R.id.button_clearHours);
         clearHoursButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 textView_hours.setText("-");
                 hoursEntered = -1;
             }
-        });
+        });*/
+}
+
+    private void updateHoursTextView(String newTime){
+        if(newTime != null){
+            textView_hours.setText(newTime);
+            textView_hours.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
+            textView_hours.setTextSize(34);
+            setVisibilityClearHoursButton(View.VISIBLE);
+        }else{
+            textView_hours.setText("Press\nto\nRecord");
+            textView_hours.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
+            textView_hours.setTextSize(16);
+            setVisibilityClearHoursButton(View.GONE);
+        }
+
     }
 
-    private void createCustomActionEntryDialog(){
+    private void createCustomActionEntryDialog(TextView textView){
         final AlertDialog.Builder enterActionAlert = new AlertDialog.Builder(mActivity);
         enterActionAlert.setTitle("Enter action:");
         //TODO populate if editing
         final EditText input = new EditText(getActivity());
+        final TextView actionCustomText = textView;
         input.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         input.setHorizontallyScrolling(false);
         input.setLines(6);
@@ -412,7 +451,7 @@ public class AddActionFragment extends Fragment {
         String actionTaken = spinner_actionTaken.getSelectedItem().toString();
 
         if (spinner_actionTaken.getSelectedItemPosition() == 0){
-            layout_action.setBackgroundColor(getResources().getColor(R.color.confirm_red));
+            layout_action.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
             label_action.setTextColor(Color.WHITE);
             return false; //Failure, an action taken is required!
         }

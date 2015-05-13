@@ -1,128 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="white">#FFFFFF</color>
+    <!--WorkOrder PRIORITY Colors-->
+    <color name="emergency_red_old">#F44336</color>
     <color name="emergency_red">#af292e</color>
-    <color name="timeSensitive_yellow">#eac863</color>
-    <color name="urgent_orange">#c34500</color>
-    <color name="routine_green">#4e7300</color>
-    <color name="scheduled_blue">#385e86</color>
-
-    <color name="login_blue">#2980B9</color>
-    <color name="login_background">#f5f2ed</color>
-    <color name="work_order_day_grey">#373737</color>
-    <color name="work_order_background_white">#ffffff</color>
-
-
-    <color name="action_add_grey_text">#646464</color> <!-- #f0f0d8-->
-    <color name="no_notes_text">#8E8E8E</color> <!-- #f0f0d8-->
+    <color name="timeSensitive_yellow">#FFEB3B</color>
+    <color name="timeSensitive_yellow_old">#eac863</color>
+    <color name="urgent_orange">#FF5722</color>
+    <color name="urgent_orange_old">#c34500</color>
+    <color name="routine_green">#388E3C</color>
+    <color name="routine_green_old">#4e7300</color>
+    <color name="scheduled_blue">#5C6BC0</color>
+    <color name="scheduled_blue_old">#385e86</color>
 
 
-    <color name="synced_green">#CFEDCB</color> <!-- Used in ActionQueue to show a SYNCED Action    Lighter: E7F6E5  Darker: CFEDCB C3E9BE-->
-    <color name="unsynced_red">#F0A5A3</color> <!-- Used in ActionQueue to show an UNSYNCED Action    Lighter: F4BCBA F7D2D1 Darker: EC8F8C  E87874-->
-
+    <!--LoginView-->
+    <color name="loginView_loginButton_text">#2980B9</color>
+    <color name="loginView_background">#f5f2ed</color>
 
 
     <!-- Material Theme -->
     <color name="theme_primary">#E65100</color>
     <color name="theme_secondary">#EF6C00</color>
-    <color name="theme_accent">#C5CAE9</color>
-
-    <color name="soothing_background">#C5CAE9</color> <!-- #f0f0d8-->
-    <color name="soothing_background_pressed">#B3B8D4</color> <!-- #f0f0d8-->
+    <color name="theme_accent">#C5CAE9</color> <!--CURRENTLY UNUSED-->
 
 
-    <!-- OLD SOOTHING COLOR
-    <color name="soothing_background">#f5f1e5</color> &lt;!&ndash; #f0f0d8&ndash;&gt;
-    <color name="soothing_background_pressed">#DDD9CE</color> &lt;!&ndash; #f0f0d8&ndash;&gt;-->
-
-    <!--<color name="tab_color">#FFFFFF</color>-->
+    <!--ActionBar-->
     <color name="tab_color">#FFD740</color>
+    <color name="actionMenu_text">#FFFFFF</color>
 
 
-    <color name="overviewCard_workOrderNum">#00796B</color>
-    <!--<color name="overviewCard_workOrderNum">#9E9E9E</color>-->
-    <color name="cardView_background">#E0E0E0</color>
-    <!--<color name="cardView_background">#FFF9F0</color>-->
-    <color name="overall_card_background">#FFFFFF</color>
+    <!--CardView-->
+    <color name="cardView_layoutBackground">#E0E0E0</color>
+    <color name="cardView_cardBackground">#FFFFFF</color>
+
 
     <!-- Contact Page   -->
-    <color name="contact_bg">#FFFFFF</color>
-    <color name="contact_title_bg">#00796B</color>
-    <color name="contact_title_font">#FFFFFF</color>
-    <color name="contact_divider">#E0E0E0</color>
-
+    <color name="contactView_background">#FFFFFF</color>
+    <color name="contactView_titleBackground">#00796B</color>
+    <color name="contactView_title">#FFFFFF</color>
+    <color name="contactView_divider">#E0E0E0</color>
 
 
     <!--Note Page-->
-    <color name="note_divider">#BDBDBD</color>
-    <color name="note_author_text">#00796B</color>
-    <!--<color name="note_author_text">#455A64</color>-->
-
+    <color name="noteView_divider">#BDBDBD</color>
+    <color name="noteView_author">#00796B</color>
 
 
     <!--Detail Overview-->
-    <color name="details_overview_divider">#00796B</color>
-    <!--<color name="details_overview_divider">#757575</color>-->
-    <color name="details_text">#FFFFFF</color>
-    <color name="details_text_title">#FFFFFF</color>
-    <color name="details_card_background">#00796B</color>
-
-
-
-
-    <!--<color name="details_card_background">#57717E</color>-->
-
-
-    <color name="add_green">#00796B</color>
-    <!--<color name="add_green">#4CAF50</color>-->
-    <color name="confirm_red">#F44336</color>
-
-
-    <!--GREAT MATERIAL COLORS
-
-     57717E  - Semi-Dark blue for Details page
-
-    -->
-
-    <!--SlidingTabLayout-->
-    <color name="sliding_tab_layout_selected_title">#FFFFFF</color>
-    <color name="sliding_tab_layout_unselected_title">#A6FFFFFF</color>
-
+    <color name="detailsView_details_text">#FFFFFF</color>
+    <color name="detailsView_details_title">#FFFFFF</color>
+    <color name="detailsView_details_cardBackground">#00796B</color>
 
 
     <!--Action Add-->
-    <color name="action_add_spinner_action_background">@null</color>
-    <color name="action_add_spinner_status_background">@null</color>
-    <color name="actionAdd_sectionTitles">#F57C00</color>
+    <color name="addAction_sectionTitles">#F57C00</color>
+    <color name="addAction_hoursEntryBg">#BBDEFB</color>
 
 
-    <!--Action Card-->
-    <color name="actionCard_workOrderNum">#00796B</color>
+    <!--ActionQueue Card-->
+    <color name="actionQueue_workOrder">#00796B</color>
 
+
+    <!--General Use-->
+    <color name="sectionTitle">#00796B</color>
+    <color name="sectionTitle_underline">#B300796B</color>
+        <!--SlidingTabLayout-->
+        <color name="sliding_tab_layout_selected_title">#FFFFFF</color>
+        <color name="sliding_tab_layout_unselected_title">#A6FFFFFF</color>
 
 </resources>
 
 
-    <!-- HEX TRANSPARENCY VALUES
-            100% — FF
-            95% — F2
-            90% — E6
-            85% — D9
-            80% — CC
-            75% — BF
-            70% — B3
-            65% — A6
-            60% — 99
-            55% — 8C
-            50% — 80
-            45% — 73
-            40% — 66
-            35% — 59
-            30% — 4D
-            25% — 40
-            20% — 33
-            15% — 26
-            10% — 1A
-            5% — 0D
-            0% — 00
-            -->
+          <!--HEX TRANSPARENCY VALUES
+            100% — FF       45% — 73
+            95% — F2        40% — 66
+            90% — E6        35% — 59
+            85% — D9        30% — 4D
+            80% — CC        25% — 40
+            75% — BF        20% — 33
+            70% — B3        15% — 26
+            65% — A6        10% — 1A
+            60% — 99        5% — 0D
+            55% — 8C        0% — 00
+            50% — 80  -->

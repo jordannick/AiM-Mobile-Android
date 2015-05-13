@@ -7,6 +7,8 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Fragments.AddActionFragment;
@@ -57,6 +59,13 @@ public class AddActionActivity extends Activity{
                     .add(R.id.fragmentContainer, fragment)
                     .commit();
         }
+
+/*
+        Spinner spinner = (Spinner)findViewById(R.id.spinner_updateStatus);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.statusItems, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);*/
 
     }
 

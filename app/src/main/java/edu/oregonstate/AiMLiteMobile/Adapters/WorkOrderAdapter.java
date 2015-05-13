@@ -85,20 +85,22 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
 
         ((TextView)convertView.findViewById(R.id.row_monthDay)).setText(wo.getDateElements()[1]);
 
-        ((TextView)convertView.findViewById(R.id.row_year)).setText(wo.getDateElements()[2]);
+        /*((TextView)convertView.findViewById(R.id.row_year)).setText(wo.getDateElements()[2]);*/
 
-        ((TextView)convertView.findViewById(R.id.row_daysAgo)).setText(wo.getDateElements()[3]);
+        ((TextView)convertView.findViewById(R.id.actionRow_valueAgo)).setText(wo.getDateElements()[3]);
+        ((TextView)convertView.findViewById(R.id.actionRow_stringAgo)).setText(wo.getDateElements()[4]);
 
         //((TextView) convertView.findViewById(R.id.row_priorityCodeSection)).setText(wo.getPriorityLetter());
 
         //Log.d("TAG123", ""+(wo.getPriorityColor()));
         //((TextView)convertView.findViewById(R.id.row_priorityCodeSection)).setBackgroundResource(wo.getPriorityColor());
 
-        convertView.findViewById(R.id.row_priorityStrip).setBackgroundResource(wo.getPriorityColor());
+        //convertView.findViewById(R.id.row_priorityStrip).setBackgroundResource(wo.getPriorityColor());
+        convertView.findViewById(R.id.row_proposal).setBackgroundResource(wo.getPriorityColor());
 
         ((TextView)convertView.findViewById(R.id.row_description)).setText(wo.getDescription());
 
-        //Temp Random
+/*        //Temp Random
         Random random = new Random();
         int i = random.nextInt();
         if(i % 5 == -1){
@@ -107,7 +109,7 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
             ((TextView)convertView.findViewById(R.id.row_newIndicator)).setText("");
 
         //TODO: New Indicator
-        //((TextView)convertView.findViewById(R.id.row_newIndicator))
+        //((TextView)convertView.findViewById(R.id.row_newIndicator))*/
 
         return convertView;
     }

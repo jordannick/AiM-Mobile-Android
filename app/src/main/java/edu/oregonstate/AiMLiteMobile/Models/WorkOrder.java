@@ -40,7 +40,7 @@ public class WorkOrder implements Serializable {
     String mMinCraftCode;
     String mBuilding;
     String mProposalPhase;
-    String[] mDateElements = new String[4]; //[0] DayOfWeek  [1] MonthDay  [2] Year  [3] DaysAgo
+    String[] mDateElements = new String[5]; //[0] DayOfWeek  [1] MonthDay  [2] Year  [3] ValueDaysAgo [4] StringDaysAgo
 
     public ArrayList<Note> getNotes() {
         if (mNotes == null) {
@@ -102,20 +102,32 @@ public class WorkOrder implements Serializable {
 
             long interval = (currentDate.getTime() - date.getTime()) / millisInSecond;
             if (interval < secondsInHour) {
-                if (interval < 60)
+                if (interval < 60) {
                     mDateElements[3] = "1 min ago";
-                else
-                    mDateElements[3] = String.format("%.0f mins ago", (interval / 60.0));
+                    mDateElements[4] = "1 min ago";
+                }
+                else {
+                    mDateElements[3] = String.format("%.0f", (interval / 60.0));
+                    mDateElements[4] = "mins ago";
+                }
             } else if (interval < secondsInDay) {
-                if (interval < secondsInHour * 2)
-                    mDateElements[3] = "1 hour ago";
-                else
-                    mDateElements[3] = String.format("%.0f hours ago", interval / secondsInHour);
+                if (interval < secondsInHour * 2) {
+                    mDateElements[3] = "1";
+                    mDateElements[4] = "hour ago";
+                }
+                else {
+                    mDateElements[3] = String.format("%.0f", interval / secondsInHour);
+                    mDateElements[4] = "hours ago";
+                }
             } else {
-                if (interval < secondsInDay * 2)
-                    mDateElements[3] = "1 day ago";
-                else
-                    mDateElements[3] = String.format("%.0f days ago", interval / secondsInDay);
+                if (interval < secondsInDay * 2) {
+                    mDateElements[3] = "1";
+                    mDateElements[4] = "day ago";
+                }
+                else {
+                    mDateElements[3] = String.format("%.0f", interval / secondsInDay);
+                    mDateElements[4] = "days ago";
+                }
             }
         } catch (Exception e) {
             Log.d(TAG, "Error: Parsing Date");

@@ -25,12 +25,12 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:orientation="vertical"
-        android:background="@color/contact_title_bg">
+        android:background="@color/contactView_titleBackground">
 
         <!--Contact Name -->
         <TextView
             android:id="@+id/contact_nameTextView"
-            android:textColor="@color/contact_title_font"
+            android:textColor="@color/contactView_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Paul Marrow"
@@ -46,7 +46,7 @@
         <!--Requestor Name -->
         <TextView
             android:id="@+id/contact_departmentTextView"
-            android:textColor="@color/contact_title_font"
+            android:textColor="@color/contactView_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="YIA - General Operations"
@@ -60,7 +60,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/contact_bg">
+        android:background="@color/contactView_background">
 
         <!-- Left Icon Area -->
         <LinearLayout
@@ -145,7 +145,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="24dp"
-                android:background="@color/contact_divider" />
+                android:background="@color/contactView_divider" />
 
             <TextView
                 android:id="@+id/contact_emailAddress"

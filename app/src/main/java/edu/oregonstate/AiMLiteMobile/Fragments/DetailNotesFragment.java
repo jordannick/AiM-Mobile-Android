@@ -49,7 +49,8 @@ public class DetailNotesFragment extends ListFragment {
         Log.d(TAG, "DetailNotes mWorkOrder: " + mWorkOrder + ", mActivity: " + mActivity);
 
         NoteAdapter adapter = new NoteAdapter(mActivity, mWorkOrder.getNotes());
-
+        getListView().setSelector(android.R.color.transparent);
         setListAdapter(adapter);
+
     }
 }
