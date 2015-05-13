@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
@@ -10,95 +10,134 @@
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="0dp"
         card_view:cardPreventCornerOverlap="true"
         >
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@color/overall_card_background"
-            android:id="@+id/action_layout">
+        <LinearLayout
+            android:id="@+id/action_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/overall_card_background">
 
-
-
-            <TextView
-                android:id="@+id/action_work_order_id"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="WORK ORDER ID"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:textColor="#555555"
-                android:textSize="16sp"
-                android:padding="6dp"
-                />
+                android:orientation="horizontal"
+                android:layout_margin="8dp">
 
+                <TextView
+                    android:id="@+id/action_work_order_id"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="654321-001"
+                    android:textStyle="bold"
+                    android:textColor="@color/actionCard_workOrderNum"
+                    android:textSize="14sp"
+                    />
+                <TextView
+                    android:id="@+id/action_taken"
+                    android:layout_weight="2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/primary_text_light"
+                    android:text="Team Bonding"
+                    android:textSize="18sp"
+                    android:gravity="center"/>
 
-            <TextView
-                android:id="@+id/action_taken"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/action_timeSince"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Wed 18 2015"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/tertiary_text_light"
+                    android:gravity="center"
+                    android:padding="6dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:textColor="#555555"
-                android:text="ACTION TAKEN"
-                android:padding="6dp"
-                />
-
-            <TextView
-                android:id="@+id/action_work_order_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="LOCATION"
-                android:layout_toRightOf="@+id/action_work_order_id"
-                android:textColor="#555555"
-                android:textSize="16sp"
-                android:padding="6dp"
-                />
-
-            <TextView
-                android:id="@+id/action_newStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#555555"
-                android:text="STATUS"
-                android:layout_toRightOf="@+id/action_taken"
-                android:layout_alignParentBottom="true"
-                android:padding="6dp"
-                />
-
-            <TextView
-                android:id="@+id/action_timeSince"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#555555"
-                android:text="TIMESTAMP"
-                android:layout_below="@+id/action_work_order_id"
-                android:padding="6dp"/>
-
-            <TextView
-                android:id="@+id/hours_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#555555"
-                android:text="HOURS:"
-                android:layout_alignParentRight="true"
-                android:padding="6dp"/>
-            <TextView
-                android:id="@+id/action_hours"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#555555"
-                android:text="0"
-                android:layout_below="@+id/hours_text"
-                android:layout_alignParentRight="true"
-                android:padding="6dp"/>
+                android:orientation="horizontal"
+                android:layout_margin="8dp">
 
 
-        </RelativeLayout>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/action_hours"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#555555"
+                        android:text="3"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:paddingRight="2dp"/>
 
+                    <TextView
+                        android:id="@+id/hours_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#555555"
+                        android:text="h"
+                        android:textSize="14sp"
+                        android:paddingTop="6dp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/action_oldStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/tertiary_text_light"
+                        android:textSize="12sp"
+                        android:text="Work In Progress"
+                        />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_arrow_down_grey"/>
+                    <TextView
+                        android:id="@+id/action_newStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/secondary_text_light"
+                        android:text="Work Complete"
+                        />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="0 Notes"
+                    android:gravity="center"
+                    android:textColor="@android:color/tertiary_text_light"
+                    />
+
+
+            </LinearLayout>
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>
 
