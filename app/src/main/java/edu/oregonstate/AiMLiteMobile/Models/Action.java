@@ -9,13 +9,10 @@ import java.util.Date;
  */
 public class Action implements Serializable {
     private static final String TAG = "Action";
-
     public static final String EDIT_ACTION_EXTRA = "edu.oregonstate.AiMLiteMobile.Models.Action";
 
     private WorkOrder mWorkOrder;
-
     private String actionTakenString;
-
     private String updatedStatus;
     private int hours;
     private ArrayList<Note> notes;
@@ -38,17 +35,9 @@ public class Action implements Serializable {
         NO_ACTION, MATERIAL_REQUEST, TEAM_BONDING, CRITICAL_ACTION, PREVENTIVE_MAINTENANCE, CUSTOM
     }
 
-
     private boolean synced;
     private ActionTaken actionTaken;
-
-
-
-
     private TimeType timeType;
-
-    public static String action_MaterialRequest = "Material Request";
-    public static String status_WorkComplete = "Work Complete";
 
     public boolean isSynced() {
         return synced;

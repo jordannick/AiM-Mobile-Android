@@ -36,7 +36,6 @@ public class NetworkHandler {
     private static CurrentUser sCurrentUser;
     private static Context sContext;
 
-
     public NetworkHandler(Context c){
         sCurrentUser = CurrentUser.get(c);
     }
@@ -49,23 +48,19 @@ public class NetworkHandler {
         return sNetworkHandler;
     }
 
-
     private class ConnectionResponse {
         int statusCode;
         String redirectUrl;
     }
 
-
     //GET request on api-test.facilities.oregonstate.edu will go through two redirects. Cookie for session is given on first request.
     public ResponsePair downloadUrl(String inputUrl, boolean isArray, ResponsePair responsePair, HttpURLConnection connection) throws IOException {
 
         try {
-            URL url = new URL(inputUrl);
-            Log.d(TAG, "Attempting GET from: " + url);
+            URL url = new URL(inputUrl);        Log.d(TAG, "Attempting GET from: " + url);
             connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setReadTimeout(10000);
-            connection.setConnectTimeout(15000);
+            //GET and Timeout
+            connection.setRequestMethod("GET"); connection.setReadTimeout(10000); connection.setConnectTimeout(15000);
 
             //Cookies just used through redirects?
             if (sCurrentUser.getCookies() == null) {
@@ -82,7 +77,6 @@ public class NetworkHandler {
 
             switch (statusCode){
                 case HttpURLConnection.HTTP_OK:             // 200 OK
-
                     //Read the data response line by line, turn it into a string
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                     StringBuilder stringBuilder = new StringBuilder();
@@ -92,21 +86,18 @@ public class NetworkHandler {
                     }
                     bufferedReader.close();
                     responsePair = convertResponseString(isArray, stringBuilder.toString(), responsePair);
-
+                    break;
                 case HttpURLConnection.HTTP_MOVED_TEMP:     // 302 Moved Temporarily OR 302 Found
                     Log.d(TAG, "Redirect URL. Location: " + connection.getHeaderField("Location"));
                     //Redirect detected, try again with supplied location to redirect to. Keep same connection.
                     downloadUrl(connection.getHeaderField("Location"), isArray, responsePair, connection);
-
+                    break;
                 case HttpURLConnection.HTTP_UNAUTHORIZED:   // 401
-
                     responsePair.setStatus(ResponsePair.Status.AUTH_FAIL);
-
-                default:                                    // Any other status code
-
+                    break;
+                default: // Any other status code
                     responsePair.setStatus(ResponsePair.Status.NET_FAIL);
             }
-
             return responsePair;
         } catch (ConnectException e){
             responsePair.setStatus(ResponsePair.Status.NET_FAIL);
@@ -121,7 +112,7 @@ public class NetworkHandler {
     public void postUnsyncedActions() {
         ResponsePair responsePair;
         ArrayList<Action> unsyncedActions = sCurrentUser.getUnsyncedActions();
-
+        //TODO: how are actions "synced"
         for (int i = 0; i < unsyncedActions.size(); i++) {
             Action unsyncedAction = unsyncedActions.get(i);
             Log.d(TAG, " ------------ Syncing... ------------ ");
@@ -142,16 +133,7 @@ public class NetworkHandler {
     //      Calls postToURL() for each necessary POST.
     //      Returns the result of checkResponsePairs() which returns FAIL if any POST fails, or SUCCESS if they all pass
     public ResponsePair postAction(Action action){
-        // %% DEBUG %%
-        ResponsePair dummyResponsePair = new ResponsePair(ResponsePair.Status.NONE, null);
-        // %% DEBUG %%
-
         ResponsePair returnResponsePair = new ResponsePair(ResponsePair.Status.NONE, null);
-
-        /*
-            NOTES
-
-         */
 
         //Build URL
         ArrayList<ResponsePair> responsePairs = new ArrayList<>();
@@ -214,8 +196,6 @@ public class NetworkHandler {
             }
 
             returnResponsePair = checkResponsePairs(responsePairs);
-
-
         } catch (Exception e){
             Log.e(TAG, "Exception e: " + e);
             returnResponsePair.setStatus(ResponsePair.Status.FAIL);
@@ -355,55 +335,6 @@ public class NetworkHandler {
             Log.e(TAG, "Exception e: " + e);
         }
         return null;
-    }
-
-
-    private ConnectionResponse createConnection(URL url, String params){
-        HttpURLConnection connection = null;
-        try {
-            String encodedString = URLEncoder.encode(params, "UTF-8");
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setInstanceFollowRedirects(false);
-            connection.setReadTimeout(10000 /* milliseconds */);
-            connection.setConnectTimeout(15000 /* milliseconds */);
-            connection.setDoOutput(true);
-            connection.setRequestProperty("Cookie", sCurrentUser.getCookies());
-
-            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-            writer.write(encodedString);
-            writer.flush();
-
-            ConnectionResponse connectionResponse = new ConnectionResponse();
-            int status = connection.getResponseCode();
-            connectionResponse.redirectUrl = connection.getHeaderField("Location");
-            connectionResponse.statusCode = status;
-
-            Log.d(TAG, "secrets: "+connection.getResponseMessage());
-
-
-            return connectionResponse;
-        } catch (IOException e){
-            Log.e(TAG, "IOException : " + e);
-        }
-        finally { //Clean up
-            connection.disconnect();
-        }
-        return null;
-    }
-
-    private static String getPostParamString(Hashtable<String, String> params) {
-        if(params.size() == 0)
-            return "";
-
-        StringBuffer buf = new StringBuffer();
-        Enumeration<String> keys = params.keys();
-        while(keys.hasMoreElements()) {
-            buf.append(buf.length() == 0 ? "" : "&");
-            String key = keys.nextElement();
-            buf.append(key).append("=").append(params.get(key));
-        }
-        return buf.toString();
     }
 
     private ResponsePair convertResponseString(boolean isArray, String responseString, ResponsePair responsePair){

@@ -27,16 +27,16 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
     private static final String TAG = "TaskGetWorkOrders";
 
     private static NetworkHandler sNetworkHandler;
-    private OnTaskCompleted listener;
-    private boolean forceRefresh;
-    private ArrayList<WorkOrder> mWorkOrders;
-    private JSONArray json;
     private static CurrentUser sCurrentUser;
     private Context mContext;
+    private ArrayList<WorkOrder> mWorkOrders;
+
     private Date retrievedDate;
+    private boolean forceRefresh;
 
 
-
+    //Callbacks
+    private OnTaskCompleted listener;
     public interface OnTaskCompleted{
         void onTaskSuccess();
         void onNetworkFail();
@@ -45,7 +45,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
 
     public TaskGetWorkOrders(OnTaskCompleted l, CurrentUser currentUser, Context context, boolean forceRefresh) {
         listener = l;
-        this.sCurrentUser = currentUser;
+        sCurrentUser = currentUser;
         this.mContext = context;
         this.forceRefresh = forceRefresh;
         this.mWorkOrders = new ArrayList<WorkOrder>();
@@ -84,6 +84,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
 
     protected ResponsePair doInBackground(final String... args) {
         ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
+        JSONArray json;
 
         // %% DEBUG %%
         if (true) {
@@ -109,6 +110,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
 
             mWorkOrders.add(wo);
 
+
             WorkOrder wo2 = new WorkOrder();
             wo2.setBeginDate("1/1/15");
             wo2.setEndDate("1/2/15");
@@ -125,6 +127,10 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
             wo2.setProposalPhase("654321-001");
             wo2.setSection("Daily");
             mWorkOrders.add(wo2);
+            mWorkOrders.add(wo);
+            mWorkOrders.add(wo2);
+            mWorkOrders.add(wo);
+            mWorkOrders.add(wo2);
 
             sCurrentUser.setWorkOrders(mWorkOrders);
             return responsePair;
@@ -133,30 +139,19 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
 
         //Network available
         if (sNetworkHandler.isNetworkOnline(mContext)) {
-
             sCurrentUser.setLastUpdated(new Date(System.currentTimeMillis()).toString());
-
-            Log.i(TAG, "Network is available");
-
             boolean needRefresh = isRefreshNeeded();
-            Log.i(TAG, "Need normal refresh? " + needRefresh);
-            Log.i(TAG, "Force refresh? " + forceRefresh);
+            Log.i(TAG, "forceRefresh: " + forceRefresh + ", normalRefresh: "+ needRefresh);
             if (needRefresh || forceRefresh) {
-
-
-
                 try {
                     responsePair = sNetworkHandler.downloadUrl(sCurrentUser.getURLGetAll(), true, responsePair, null);
                 } catch (IOException e){
                     Log.e(TAG, e.toString()); //TODO: why is this giving malformedURL exception?
                 }
-
-
                 if (responsePair.getStatus() != ResponsePair.Status.SUCCESS) {
                     Log.e(TAG, "Connection error!");
                     return responsePair;
                 }
-
                 json = responsePair.getJarray();
             }
             else{
@@ -172,7 +167,6 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
                     return responsePair;
                 }
             }
-
         }
 
         //No network, try getting the stored data
@@ -266,7 +260,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
 
     //Gets the last updated time from url, compares with stored time.
     private boolean isRefreshNeeded(){
-        String lastUpdated = "";
+        String lastUpdated;
         Date storedDate;
 
         //Get last_updated from stored prefs
@@ -276,8 +270,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
             //No stored time, need refresh
             return true;
         }
-        storedDate = new Date(storedTime);
-        Log.i(TAG, "Stored last_updated: " + storedDate);
+        storedDate = new Date(storedTime); Log.i(TAG, "Stored last_updated: " + storedDate);
 
         //Retrieve last_updated from updateUrl for user
 
@@ -306,8 +299,6 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
             Log.i(TAG, "Online date NOT newer than stored date");
             return false;
         }
-
-
     }
 
 
@@ -323,8 +314,6 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
         }
         return convertedDate;
     }
-
-
 }
 
 

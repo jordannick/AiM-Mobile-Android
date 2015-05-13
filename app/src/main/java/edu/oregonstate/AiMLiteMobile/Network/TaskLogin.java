@@ -13,20 +13,17 @@ import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Helpers.ResponsePair;
 
 public class TaskLogin extends AsyncTask<Action, Void, ResponsePair> {
-
     private static final String TAG = "TaskPostAction";
 
     private static NetworkHandler sNetworkHandler;
-    private OnLoginCompleted listener;
-
     private Context mContext;
     private static CurrentUser sCurrentUser;
+
     private String url;
 
-
+    private OnLoginCompleted listener;
     public interface OnLoginCompleted {
         void onLoginSuccess();
-
         void onLoginFail();
     }
 
@@ -40,7 +37,6 @@ public class TaskLogin extends AsyncTask<Action, Void, ResponsePair> {
 
     @Override
     protected void onPostExecute(final ResponsePair responsePair) {
-
         switch (responsePair.getStatus()) {
             case SUCCESS:
                 Log.i(TAG, "Task Success");
@@ -70,44 +66,28 @@ public class TaskLogin extends AsyncTask<Action, Void, ResponsePair> {
 
     protected ResponsePair doInBackground(final Action... args) {
         ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
-        //Network available
-        if (sNetworkHandler.isNetworkOnline(mContext)) {
-            Log.d(TAG, "Network Available");
-            URL postLoginUrl = null;
-            String encodingCharSet = "UTF-8";
-            String encodedParams = sNetworkHandler.buildEncodedString(new String[]{"password", "aaaa"}, encodingCharSet);
-            // String params = "&password=password";
-            // String encodedParams = "";
+        try{
+            if (sNetworkHandler.isNetworkOnline(mContext)) {
+                //Perform request
+                URL postLoginUrl = new URL(url);
+                //TODO: use actual password
+                String encodedParams = sNetworkHandler.buildEncodedString(new String[]{"password", "aaaa"}, "UTF-8");
+                responsePair = sNetworkHandler.postToURL(postLoginUrl, encodedParams); //Log.d(TAG, "Login - Response code: " + responsePair.getStatusInt() + " ; Contents: " + responsePair.getReturnedString());
 
-            try {
-                //encodedParams =  URLEncoder.encode(params, encodingCharSet);
-                postLoginUrl = new URL(url);
-            } catch (Exception e) {
-                Log.e(TAG, e.toString());
-            }
-            responsePair = sNetworkHandler.postToURL(postLoginUrl, encodedParams);
-            Log.d(TAG, "Login - Response code: " + responsePair.getStatusInt() + " ; Contents: " + responsePair.getReturnedString());
-
-/*
-            if (responsePair.getStatus() != ResponsePair.Status.SUCCESS) {
-                return responsePair;
-            }*/
-            if ((responsePair.getStatusInt() == 200) && responsePair.getReturnedString() != null) {
-                responsePair.setStatus(ResponsePair.Status.SUCCESS);
-                try {
-                    JSONObject tokenObject = new JSONObject(responsePair.getReturnedString());
-                    String tokenString = tokenObject.getString("token");
-                    Log.d(TAG, "Obtained token: "+tokenString);
+                //Check is response is OK, and string is returned
+                if ((responsePair.getStatusInt() == 200) && responsePair.getReturnedString() != null) {
+                    responsePair.setStatus(ResponsePair.Status.SUCCESS);
+                    //Convert response to JSON and get the value of 'token'
+                    String tokenString = new JSONObject(responsePair.getReturnedString()).getString("token"); //Log.d(TAG, "Obtained token: "+ tokenString);
                     sCurrentUser.setToken(tokenString);
-                } catch (Exception e){
-                    Log.e(TAG, "Failed to generate JSON token object");
+                } else {
+                    responsePair.setStatus(ResponsePair.Status.FAIL);
                 }
             } else {
-                responsePair.setStatus(ResponsePair.Status.FAIL);
+                responsePair.setStatus(ResponsePair.Status.NO_DATA);
             }
-
-        } else {
-            responsePair.setStatus(ResponsePair.Status.NO_DATA);
+        }catch (Exception e){
+            Log.e(TAG, "Exception! e: " + e);
         }
         return responsePair;
     }

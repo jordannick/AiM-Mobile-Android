@@ -14,9 +14,7 @@ import edu.oregonstate.AiMLiteMobile.R;
  * Created by jordan_n on 8/13/2014.
  */
 public class WorkOrder implements Serializable {
-
     private static final String TAG = "WorkOrder";
-
     public static final String WORK_ORDER_EXTRA = "edu.oregonstate.AiMLiteMobile.Models.WorkOrder";
 
     String mDescription;
@@ -27,7 +25,6 @@ public class WorkOrder implements Serializable {
     String mStatus;
     String mSection;
     int mPriorityColor;
-
 
     ArrayList<Note> mNotes;
 
@@ -45,6 +42,88 @@ public class WorkOrder implements Serializable {
     String mProposalPhase;
     String[] mDateElements = new String[4]; //[0] DayOfWeek  [1] MonthDay  [2] Year  [3] DaysAgo
 
+    public ArrayList<Note> getNotes() {
+        if (mNotes == null) {
+            mNotes = new ArrayList<Note>();
+
+            //%% DEBUG %%
+            int day = 86400000;
+            mNotes.add(new Note("Single line example text", "WILLIAMSONT", new Date(System.currentTimeMillis() - (int) (day * .3))));
+            mNotes.add(new Note("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis() - (int) (day * 3.4))));
+            mNotes.add(new Note("This is an example description. I ate oatmeal this morning. With some coffee, and a wrap. It was quite good. I'm gonna continue writing, because I need to fill more space. How is your day going? That's great.", "MCGILLD", new Date(System.currentTimeMillis() - (int) (day * 10.8))));
+            //%% DEBUG %%
+        }
+        return mNotes;
+    }
+
+    public void setPriority(String priority) {
+        mPriority = priority;
+        mPriorityLetter = priority.substring(0, 1);
+        switch (priority.charAt(0)) {
+            case 'U':
+                mPriorityColor = R.color.urgent_orange;
+                break;
+            case 'E':
+                mPriorityColor = R.color.emergency_red;
+                break;
+            case 'T':
+                mPriorityColor = R.color.timeSensitive_yellow;
+                break;
+            case 'R':
+                mPriorityColor = R.color.routine_green;
+                break;
+            case 'S':
+                mPriorityColor = R.color.scheduled_blue;
+                break;
+            default:
+                Log.d(TAG, "Too bad...");
+                break;
+        }
+    }
+
+    public void setDateElements(String dateElements) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+        try {
+            Date date = format.parse(dateElements);
+            mDateCreated = date.toString();
+
+            format = new SimpleDateFormat("EE", Locale.US);
+            mDateElements[0] = format.format(date);
+            format = new SimpleDateFormat("MM/dd", Locale.US);
+            mDateElements[1] = format.format(date);
+            format = new SimpleDateFormat("yyyy", Locale.US);
+            mDateElements[2] = format.format(date);
+
+            Date currentDate = new Date();
+
+            float secondsInHour = 60 * 60;
+            float secondsInDay = 60 * 60 * 24;
+            long millisInSecond = 1000;
+
+            long interval = (currentDate.getTime() - date.getTime()) / millisInSecond;
+            if (interval < secondsInHour) {
+                if (interval < 60)
+                    mDateElements[3] = "1 min ago";
+                else
+                    mDateElements[3] = String.format("%.0f mins ago", (interval / 60.0));
+            } else if (interval < secondsInDay) {
+                if (interval < secondsInHour * 2)
+                    mDateElements[3] = "1 hour ago";
+                else
+                    mDateElements[3] = String.format("%.0f hours ago", interval / secondsInHour);
+            } else {
+                if (interval < secondsInDay * 2)
+                    mDateElements[3] = "1 day ago";
+                else
+                    mDateElements[3] = String.format("%.0f days ago", interval / secondsInDay);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error: Parsing Date");
+            e.printStackTrace();
+        }
+    }
+
+    //TODO: remove? Is this needed? Can't we just use toUpper. Leaving in for now, cuz scared
     //Utility Functions
     private String capitalizeStr(String input) {
         StringBuilder sb = new StringBuilder();
@@ -59,22 +138,58 @@ public class WorkOrder implements Serializable {
         }
         return sb.toString();
     }
+    public int getPriorityColor() {
+        return mPriorityColor;
+        //return R.color.red;
+    }
 
-    public ArrayList<Note> getNotes() {
-        if (mNotes == null) {
-            mNotes = new ArrayList<Note>();
-            int day = 86400000;
+    public String getCategory() {
+        return mCategory;
+    }
 
-            mNotes.add(new Note("Single line example text", "WILLIAMSONT", new Date(System.currentTimeMillis() - (int) (day * .3))));
+    public void setCategory(String category) {
+        mCategory = category.toUpperCase();
+    }
 
+    public String getPriorityLetter() {
+        return mPriorityLetter;
+    }
 
-            mNotes.add(new Note("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis() - (int) (day * 3.4))));
+    public void setPriorityLetter(String priorityLetter) {
+        mPriorityLetter = priorityLetter;
+    }
 
+    public String getCraftCode() {
+        return mCraftCode;
+    }
 
-            mNotes.add(new Note("This is an example description. I ate oatmeal this morning. With some coffee, and a wrap. It was quite good. I'm gonna continue writing, because I need to fill more space. How is your day going? That's great.", "MCGILLD", new Date(System.currentTimeMillis() - (int) (day * 10.8))));
+    public void setCraftCode(String craftCode) {
+        mMinCraftCode = craftCode.toUpperCase();
+        mCraftCode = craftCode;
+    }
 
-        }
-        return mNotes;
+    public String getBuilding() {
+        return mBuilding;
+    }
+
+    public void setBuilding(String building) {
+        mBuilding = building.toUpperCase();
+    }
+
+    public String getProposalPhase() {
+        return mProposalPhase;
+    }
+
+    public void setProposalPhase(String proposalPhase) {
+        mProposalPhase = proposalPhase;
+    }
+
+    public String getDateCreated() {
+        return mDateCreated;
+    }
+
+    public String[] getDateElements() {
+        return mDateElements;
     }
 
     public String getStatus() {
@@ -152,139 +267,5 @@ public class WorkOrder implements Serializable {
     public void setSection(String mSection) {
         this.mSection = mSection;
     }
-
-    public void setPriority(String priority) {
-        mPriority = priority;
-        mPriorityLetter = priority.substring(0, 1);
-
-
-        //mPriorityColor = new Color(1, 1,1);
-
-        switch (priority.charAt(0)) {
-            case 'U':
-                mPriorityColor = R.color.urgent_orange;
-                break;
-            case 'E':
-                mPriorityColor = R.color.emergency_red;
-                break;
-            case 'T':
-                mPriorityColor = R.color.timeSensitive_yellow;
-                break;
-            case 'R':
-                mPriorityColor = R.color.routine_green;
-                break;
-            case 'S':
-                mPriorityColor = R.color.scheduled_blue;
-                break;
-            default:
-                Log.d("TAG1", "Too bad...");
-                break;
-        }
-    }
-
-    public int getPriorityColor() {
-        return mPriorityColor;
-        //return R.color.red;
-    }
-
-    public String getCategory() {
-        return mCategory;
-    }
-
-    public void setCategory(String category) {
-        mCategory = capitalizeStr(category);
-    }
-
-    public String getPriorityLetter() {
-        return mPriorityLetter;
-    }
-
-    public void setPriorityLetter(String priorityLetter) {
-        mPriorityLetter = priorityLetter;
-    }
-
-    public String getCraftCode() {
-        return mCraftCode;
-    }
-
-    public void setCraftCode(String craftCode) {
-        mMinCraftCode = capitalizeStr(craftCode);
-        mCraftCode = craftCode;
-    }
-
-    public String getBuilding() {
-        return mBuilding;
-    }
-
-    public void setBuilding(String building) {
-        mBuilding = capitalizeStr(building);
-    }
-
-    public String getProposalPhase() {
-        return mProposalPhase;
-    }
-
-    public void setProposalPhase(String proposalPhase) {
-        mProposalPhase = proposalPhase;
-    }
-
-    public String getDateCreated() {
-        return mDateCreated;
-    }
-
-    public String[] getDateElements() {
-        return mDateElements;
-    }
-
-    public void setDateElements(String dateElements) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-        try {
-            Date date = format.parse(dateElements);
-            mDateCreated = date.toString();
-
-            format = new SimpleDateFormat("EE", Locale.US);
-            mDateElements[0] = format.format(date);
-            format = new SimpleDateFormat("MM/dd", Locale.US);
-            mDateElements[1] = format.format(date);
-            format = new SimpleDateFormat("yyyy", Locale.US);
-            mDateElements[2] = format.format(date);
-
-            Date currentDate = new Date();
-
-            float secondsInHour = 60 * 60;
-            float secondsInDay = 60 * 60 * 24;
-            long millisInSecond = 1000;
-
-            long interval = (currentDate.getTime() - date.getTime()) / millisInSecond;
-            if (interval < secondsInHour) {
-                if (interval < 60)
-                    mDateElements[3] = "1 min ago";
-                else
-                    mDateElements[3] = String.format("%.0f mins ago", (interval / 60.0));
-            } else if (interval < secondsInDay) {
-                if (interval < secondsInHour * 2)
-                    mDateElements[3] = "1 hour ago";
-                else
-                    mDateElements[3] = String.format("%.0f hours ago", interval / secondsInHour);
-            } else {
-                if (interval < secondsInDay * 2)
-                    mDateElements[3] = "1 day ago";
-                else
-                    mDateElements[3] = String.format("%.0f days ago", interval / secondsInDay);
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error: Parsing Date");
-            e.printStackTrace();
-        }
-    }
-
-    public int getNewNotesCount(){
-        int count = 0;
-        for (Note note : mNotes){
-            if (note.isNew()) count++;
-        }
-        return count;
-    }
-
 
 }

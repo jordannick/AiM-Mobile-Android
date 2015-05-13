@@ -39,7 +39,6 @@ public class CurrentUser {
 
     public ArrayList<Action> getUnsyncedActions(){
         ArrayList<Action> unsyncedActions = new ArrayList<>();
-
         for (int i = 0; i < mActions.size(); i++) {
             if(!mActions.get(i).isSynced()){
                 unsyncedActions.add(mActions.get(i));

@@ -4,25 +4,21 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.apache.http.NameValuePair;
-
-import java.util.List;
-
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Helpers.ResponsePair;
 
 
 public class TaskPostAction extends AsyncTask<Action, Void, ResponsePair> {
-
     private static final String TAG = "TaskPostAction";
 
-    private static NetworkHandler sNetworkHandler;
-    private OnTaskCompleted listener;
-    private List<NameValuePair> nameValuePairs;
+
     private Context mContext;
     private static CurrentUser sCurrentUser;
+    private static NetworkHandler sNetworkHandler;
 
+    //Callback
+    private OnTaskCompleted listener;
     public interface OnTaskCompleted{
         void onTaskSuccess();
         void onNetworkFail();
@@ -68,12 +64,11 @@ public class TaskPostAction extends AsyncTask<Action, Void, ResponsePair> {
 
     protected ResponsePair doInBackground(final Action... args) {
         ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
-        //Network available
         if (sNetworkHandler.isNetworkOnline(mContext)) {
             Log.d(TAG, "Network Available");
 
             //Post newly made Action
-            //responsePair = sNetworkHandler.postUnsyncedActions();
+            //TODO: currently doesn't use ResponsePair. Does multiple POSTs for all unsyncedActions
             sNetworkHandler.postUnsyncedActions();
 
             if (responsePair.getStatus() != ResponsePair.Status.SUCCESS) {
@@ -82,7 +77,6 @@ public class TaskPostAction extends AsyncTask<Action, Void, ResponsePair> {
         }
         return responsePair;
     }
-
 }
 
 

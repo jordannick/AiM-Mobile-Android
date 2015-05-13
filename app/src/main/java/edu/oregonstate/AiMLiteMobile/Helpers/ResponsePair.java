@@ -16,11 +16,8 @@ public class ResponsePair {
     }
 
     private int statusInt;
-
     public JSONArray jarray;
-
     public String returnedString;
-
     public Status status;
 
     public ResponsePair(final Status status, final JSONArray jArray) {
