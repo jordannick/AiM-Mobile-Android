@@ -88,9 +88,9 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
                 finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 break;
-/*            case R.id.action_sync:
+           case R.id.action_sync:
                 syncActions();
-                break;*/
+                break;
         }
 
         return super.onOptionsItemSelected(item);

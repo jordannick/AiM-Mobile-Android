@@ -86,57 +86,6 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
         ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
         JSONArray json;
 
-        // %% DEBUG %%
-        if (true) {
-            sCurrentUser.setLastUpdated(new Date(System.currentTimeMillis()).toString());
-            responsePair.setStatus(ResponsePair.Status.SUCCESS);
-
-            WorkOrder wo = new WorkOrder();
-            wo.setBeginDate("1/1/15");
-            wo.setEndDate("1/2/15");
-            wo.setCraftCode("abcdef");
-            wo.setShop("The Shop");
-            wo.setBuilding("Oak Creek");
-            wo.setDescription("Need to fix things and stuff. Need to fix things and stuff. Need to fix things and stuff. Need to fix things and stuff.");
-            wo.setCategory("Plumbing");
-            wo.setPriority("Routine");
-            wo.setDateElements("1/1/15");
-            wo.setStatus("Assigned");
-            wo.setContactName("Nick Jordan");
-            wo.setDepartment("The Department");
-            wo.setProposalPhase("123456-001");
-            wo.setSection("Daily");
-
-
-            mWorkOrders.add(wo);
-
-
-            WorkOrder wo2 = new WorkOrder();
-            wo2.setBeginDate("1/1/15");
-            wo2.setEndDate("1/2/15");
-            wo2.setCraftCode("abcdef");
-            wo2.setShop("The Shop");
-            wo2.setBuilding("Oak Creek");
-            wo2.setDescription("Need to fix things and stuff. Round 2.");
-            wo2.setCategory("Plumbing");
-            wo2.setPriority("Routine");
-            wo2.setDateElements("1/1/15");
-            wo2.setStatus("Assigned");
-            wo2.setContactName("Nick Jordan");
-            wo2.setDepartment("The Department");
-            wo2.setProposalPhase("654321-001");
-            wo2.setSection("Daily");
-            mWorkOrders.add(wo2);
-            mWorkOrders.add(wo);
-            mWorkOrders.add(wo2);
-            mWorkOrders.add(wo);
-            mWorkOrders.add(wo2);
-
-            sCurrentUser.setWorkOrders(mWorkOrders);
-            return responsePair;
-        }
-        // %% END DEBUG %%
-
         //Network available
         if (sNetworkHandler.isNetworkOnline(mContext)) {
             sCurrentUser.setLastUpdated(new Date(System.currentTimeMillis()).toString());

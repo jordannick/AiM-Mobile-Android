@@ -57,11 +57,18 @@ public class NetworkHandler {
     public ResponsePair downloadUrl(String inputUrl, boolean isArray, ResponsePair responsePair, HttpURLConnection connection) throws IOException {
 
         try {
-            URL url = new URL(inputUrl);        Log.d(TAG, "Attempting GET from: " + url);
+            URL url = new URL(inputUrl);        Log.d(TAG, "Attempting POST from: " + url);
             connection = (HttpURLConnection) url.openConnection();
             //GET and Timeout
-            connection.setRequestMethod("GET"); connection.setReadTimeout(10000); connection.setConnectTimeout(15000);
+            //connection.setRequestMethod("POST"); connection.setReadTimeout(10000); connection.setConnectTimeout(15000);
 
+           // String encodedParams = URLEncoder.encode("token="+sCurrentUser.getToken(), "UTF-8");
+            String encodedParams = "token="+sCurrentUser.getToken();
+            connection.setRequestMethod("POST"); connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            connection.setRequestProperty("Content-Language", "en-US"); connection.setRequestProperty("Content-Length", "" + Integer.toString(encodedParams.getBytes().length));
+            connection.setUseCaches(false);  connection.setDoInput(true);  connection.setDoOutput(true);
+
+            /*
             //Cookies just used through redirects?
             if (sCurrentUser.getCookies() == null) {
                 String cookies = connection.getHeaderField("Set-Cookie");
@@ -70,6 +77,15 @@ public class NetworkHandler {
             }else {
                 connection.setRequestProperty("Cookie", sCurrentUser.getCookies());
             }
+*/
+            Log.d(TAG, "encodedParams = "+encodedParams);
+            //Send Request
+            DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+            wr.writeBytes(encodedParams);
+            wr.flush();
+            wr.close();
+
+
 
             //Ready to connect
             int statusCode = connection.getResponseCode();
@@ -93,6 +109,9 @@ public class NetworkHandler {
                     downloadUrl(connection.getHeaderField("Location"), isArray, responsePair, connection);
                     break;
                 case HttpURLConnection.HTTP_UNAUTHORIZED:   // 401
+                    responsePair.setStatus(ResponsePair.Status.AUTH_FAIL);
+                    break;
+                case HttpURLConnection.HTTP_FORBIDDEN:   // 403
                     responsePair.setStatus(ResponsePair.Status.AUTH_FAIL);
                     break;
                 default: // Any other status code
