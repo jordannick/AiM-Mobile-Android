@@ -32,6 +32,7 @@ import com.nispok.snackbar.SnackbarManager;
 import java.util.ArrayList;
 import java.util.Date;
 
+import edu.oregonstate.AiMLiteMobile.Activities.LoginActivity;
 import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Activities.ActionQueueListActivity;
 import edu.oregonstate.AiMLiteMobile.Activities.AddActionActivity;
@@ -275,7 +276,7 @@ public class AddActionFragment extends Fragment {
 
 
     //PARAMS: toBeEditedText: set if 'editing an existing note'
-    private void createNoteEntryDialog(final Note toBeEditedNote) {
+    public void createNoteEntryDialog(final Note toBeEditedNote) {
         final AlertDialog.Builder enterNoteAlert = new AlertDialog.Builder(mActivity);
         enterNoteAlert.setTitle("Enter note:");
 
@@ -339,7 +340,7 @@ public class AddActionFragment extends Fragment {
     }
 
 
-    private void createConfirmDialog(){
+    public void createConfirmDialog(){
         final AlertDialog.Builder confirmAddActionDialog = new AlertDialog.Builder(mActivity);
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -386,7 +387,7 @@ public class AddActionFragment extends Fragment {
     }
 
 
-    private void saveEdits(){
+    public void saveEdits(){
         String actionTaken = spinner_actionTaken.getSelectedItem().toString();
         String newStatus = spinner_updateStatus.getSelectedItem().toString();
 
@@ -402,7 +403,7 @@ public class AddActionFragment extends Fragment {
 
     /* Get all values from form. Create Action object.
     Returns error or success depending on required fields. */
-    private boolean validateAction(){
+    public boolean validateAction(){
         int hours = -1; //-1 signifies no hours entered
         String selectedStatus = spinner_updateStatus.getSelectedItem().toString();
         String currentStatus = mWorkOrder.getStatus();
@@ -435,28 +436,5 @@ public class AddActionFragment extends Fragment {
         newAction.setTimeType(Action.TimeType.REG_NB); //%% DEBUG %% Default time type
         return true;
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.action_queue:
-
-                //TODO: finish form validation - i.e. red X for action required
-                if (editMode){
-                    saveEdits();
-                    createConfirmDialog();
-                } else {
-                    if (validateAction()) createConfirmDialog();
-                }
-
-                return true;
-            case android.R.id.home:
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.no_action, R.anim.slide_out_bottom);
-                return false;
-        }
-        return false;
-    }
-
 
 }

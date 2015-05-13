@@ -118,6 +118,7 @@ public class DetailActivity extends FragmentActivity implements DetailNotesFragm
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()){
             case R.id.action_new:
                 //Create and start the AddAction activity, sending the work order object
@@ -129,6 +130,11 @@ public class DetailActivity extends FragmentActivity implements DetailNotesFragm
             case android.R.id.home:
                 finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                break;
+            case R.id.log_out:
+                Intent intent = new Intent(this,LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
         }
 

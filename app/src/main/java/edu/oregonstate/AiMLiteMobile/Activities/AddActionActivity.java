@@ -7,6 +7,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Fragments.AddActionFragment;
@@ -17,13 +18,14 @@ import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 /**
  * Created by sellersk on 2/17/2015.
  */
-public class AddActionActivity extends Activity{
+public class AddActionActivity extends SingleFragmentActivity{
     private static final String TAG = "AddActionActivity";
 
     private static CurrentUser sCurrentUser;
     private WorkOrder mWorkOrder;
     private Action mAction;
     private boolean editMode = false; //False = add new action from scratch //True = edit existing action
+    private AddActionFragment mFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,19 +49,9 @@ public class AddActionActivity extends Activity{
         ActionBar mActionBar = getActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
-
-        setContentView(getLayoutResId());
-        FragmentManager fm = getFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
-        if (fragment == null) {
-            fragment = createFragment();
-            fm.beginTransaction()
-                    .add(R.id.fragmentContainer, fragment)
-                    .commit();
-        }
-
     }
 
+    @Override
     protected Fragment createFragment() {
         Fragment newFragment = new AddActionFragment();
         Bundle bundle = new Bundle();
@@ -67,6 +59,7 @@ public class AddActionActivity extends Activity{
         //Send which mode we're in to the fragment
         bundle.putBoolean("editMode", editMode);
         newFragment.setArguments(bundle);
+        mFragment = (AddActionFragment) newFragment;
         return newFragment;
     }
 
@@ -76,8 +69,10 @@ public class AddActionActivity extends Activity{
 
     public Action getAction(){ return mAction; }
 
-    protected int getLayoutResId() {
-        return R.layout.activity_fragment;
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.no_action, R.anim.slide_out_bottom);
     }
 
     @Override
@@ -87,8 +82,29 @@ public class AddActionActivity extends Activity{
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.no_action, R.anim.slide_out_bottom);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_queue:
+
+                //TODO: finish form validation - i.e. red X for action required
+                if (editMode){
+                    mFragment.saveEdits();
+                    mFragment.createConfirmDialog();
+                } else {
+                    if (mFragment.validateAction()) mFragment.createConfirmDialog();
+                }
+
+                return true;
+            case android.R.id.home:
+                finish();
+                overridePendingTransition(R.anim.no_action, R.anim.slide_out_bottom);
+                return false;
+            case R.id.log_out:
+                Intent intent = new Intent(this,LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+        }
+        return false;
     }
 }

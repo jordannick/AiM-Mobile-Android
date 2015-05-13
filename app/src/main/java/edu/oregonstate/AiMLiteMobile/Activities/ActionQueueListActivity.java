@@ -15,7 +15,6 @@ import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.R;
 import edu.oregonstate.AiMLiteMobile.Network.TaskPostAction;
 
-
 /**
  * Created by sellersk on 2/19/2015.
  */
@@ -43,17 +42,6 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
         return new ActionQueueListFragment();
     }
 
-    @Override
-    protected int getLayoutResId() {
-        return R.layout.activity_fragment;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_action_queue, menu);
-        return true;
-    }
-
     //Open edit action form for clicked action, with position of action in queue
     public void onActionSelected(int actionPosition){
         Intent i = new Intent(this, AddActionActivity.class);
@@ -63,6 +51,7 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
 
     //Start the HTTP POSTs to submit actions from queue.
     //Remove from queue upon successful POST
+    //TODO put in real url
     public void syncActions(){
         final TaskPostAction task = new TaskPostAction(this, "testurl",getApplicationContext());
 
@@ -80,6 +69,11 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
         }, 1000);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_action_queue, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -91,10 +85,14 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
            case R.id.action_sync:
                 syncActions();
                 break;
+            case R.id.log_out:
+                Intent intent = new Intent(this,LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
         }
 
         return super.onOptionsItemSelected(item);
-
     }
 
     @Override

@@ -7,5 +7,22 @@
         android:title="Submit"
     />
     <!--android:icon="@drawable/action_confirm_white"-->
+    <item android:id="@+id/action_settings"
+
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="My Daily Summary"/>
+
+    <item android:id="@+id/action_settings2"
+
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Settings"/>
+
+    <item android:id="@+id/log_out"
+
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Log Out"/>
 
 </menu>

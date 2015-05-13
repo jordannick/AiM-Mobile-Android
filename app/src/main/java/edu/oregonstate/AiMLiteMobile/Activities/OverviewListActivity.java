@@ -129,15 +129,24 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_queue){
-            Intent i = new Intent(this, ActionQueueListActivity.class);
-            startActivity(i);
-            overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
-        }
+        switch(item.getItemId()){
+            case  R.id.action_queue:
+                Intent i = new Intent(this, ActionQueueListActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
+                break;
        /* else if (id == R.id.action_settings) {
             return true;
         }*/
+            case R.id.log_out:
+                Intent intent = new Intent(this,LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+
+            default:
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
