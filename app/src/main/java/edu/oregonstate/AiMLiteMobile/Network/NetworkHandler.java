@@ -67,6 +67,7 @@ public class NetworkHandler {
             connection.setRequestMethod("POST"); connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             connection.setRequestProperty("Content-Language", "en-US"); connection.setRequestProperty("Content-Length", "" + Integer.toString(encodedParams.getBytes().length));
             connection.setUseCaches(false);  connection.setDoInput(true);  connection.setDoOutput(true);
+            connection.setReadTimeout(10000); connection.setConnectTimeout(15000);
 
             /*
             //Cookies just used through redirects?
