@@ -93,9 +93,9 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
             Log.i(TAG, "forceRefresh: " + forceRefresh + ", normalRefresh: "+ needRefresh);
             if (needRefresh || forceRefresh) {
                 try {
-                    responsePair = sNetworkHandler.downloadUrl(sCurrentUser.getURLGetAll(), true, responsePair, null);
+                    responsePair = sNetworkHandler.downloadUrl(sCurrentUser.getURLGetAll(), true, responsePair);
                 } catch (IOException e){
-                    Log.e(TAG, e.toString()); //TODO: why is this giving malformedURL exception?
+                    Log.e(TAG, e.toString());
                 }
                 if (responsePair.getStatus() != ResponsePair.Status.SUCCESS) {
                     Log.e(TAG, "Connection error!");
@@ -225,9 +225,9 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
 
         ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
         try {
-            responsePair = sNetworkHandler.downloadUrl(sCurrentUser.getURLGetLastUpdated(), false, responsePair, null);
+            responsePair = sNetworkHandler.downloadUrl(sCurrentUser.getURLGetLastUpdated(), false, responsePair);
         } catch (IOException e) {
-            Log.e(TAG, e.toString()); //TODO: why is this giving malformedURL exception?
+            Log.e(TAG, e.toString());
         }
 
         if (responsePair.getStatus() == ResponsePair.Status.SUCCESS){
