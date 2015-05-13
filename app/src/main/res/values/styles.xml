@@ -8,7 +8,7 @@
 
         <item name="android:spinnerDropDownItemStyle">@style/mySpinnerItemStyle</item>
 
-        <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:actionMenuTextColor">@color/actionMenu_text</item>
 <!--        <item name="android:actionBarTabTextStyle">@style/TabTextStyle</item>
         <item name="android:actionMenuTextColor">@color/actionbar_text</item>-->
 

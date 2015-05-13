@@ -6,6 +6,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
     android:paddingTop="4dp"
+
     >
 
 <android.support.v7.widget.CardView
@@ -13,15 +14,75 @@ xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+
     card_view:cardCornerRadius="0dp"
     card_view:cardPreventCornerOverlap="true"
     >
 
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="109dp"
-        android:layout_margin="6dp"
-                    >
+                    android:layout_margin="6dp"
+        >
 
+        <LinearLayout
+            android:id="@+id/actionRow_topHalfLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/row_proposal"
+                android:layout_width="wrap_content"
+                android:layout_height="33dp"
+                android:text="136732-001"
+                android:gravity="center"
+                android:textColor="#fff"
+                android:background="#385e86"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="0dp"/>
+            <LinearLayout
+                android:id="@+id/actionRow_dateLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="end"
+                >
+                <TextView
+                    android:id="@+id/row_dayOfWeek"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fri"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/tertiary_text_light"
+                    android:textSize="16sp"
+                    android:paddingRight="8dp"
+                    />
+
+                <TextView
+                    android:id="@+id/row_monthDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6/27/14"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/tertiary_text_light"
+                    android:textSize="16sp"
+                    android:paddingRight="4dp"/>
+                <!--            <TextView
+                                android:id="@+id/row_year"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="2014"
+                                android:textSize="10sp"
+                                android:layout_gravity="center"
+                                android:textColor="@color/overviewCard_workOrderNum"
+                                android:padding="2dp"/>-->
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--android:textColor="@color/overviewCard_workOrderNum"-->
 
 
         <LinearLayout
@@ -29,87 +90,46 @@ xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
+            android:layout_below="@id/actionRow_topHalfLayout"
             android:orientation="vertical"
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
             android:paddingTop="2dp">
 
-            <TextView
-                android:id="@+id/row_dayOfWeek"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Fri"
-                android:textStyle="bold"
-                android:textColor="@color/overviewCard_workOrderNum"
-                android:textSize="22sp"
-                android:padding="2dp"
-                />
 
-            <TextView
-                android:id="@+id/row_monthDay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="6/27"
-                android:textStyle="bold"
-                android:textColor="@color/overviewCard_workOrderNum"
-                android:textSize="18sp"
-                android:padding="2dp" />
-            <TextView
-                android:id="@+id/row_year"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="2014"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/overviewCard_workOrderNum"
-                android:padding="2dp"/>
 
-            <View
-                android:id="@+id/row_priorityStrip"
-                android:layout_width="40dp"
-                android:layout_height="20dp"
-                android:layout_gravity="bottom|center_horizontal"
-                android:background="#FFFF00"
-                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/actionRow_valueAgo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/tertiary_text_light"
+                    android:textSize="18sp"
+                    android:layout_toLeftOf="@id/row_dateSection"
+                    android:gravity="center_vertical"/>
+                <TextView
+                    android:id="@+id/actionRow_stringAgo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="hours ago"
+                    android:textColor="@android:color/tertiary_text_light"
+                    android:textSize="10sp"/>
+
+            </LinearLayout>
         </LinearLayout>
-
-
-
-        <TextView
-            android:id="@+id/row_newIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="33dp"
-            android:layout_toLeftOf="@id/row_dateSection"
-            android:gravity="center_vertical"
-            android:textColor="#008000"
-            android:paddingLeft="6dp"
-            android:paddingRight="6dp"
-            android:paddingTop="8dp"
-            />
-
-        <TextView
-            android:id="@+id/row_proposal"
-            android:layout_width="wrap_content"
-            android:layout_height="33dp"
-            android:text="136732-001"
-            android:layout_alignParentTop="true"
-            android:textColor="@color/overviewCard_workOrderNum"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:gravity="center_vertical"
-            android:paddingLeft="6dp"
-            android:paddingRight="6dp"
-            android:paddingBottom="0dp"/>
-
         <TextView
             android:id="@+id/row_description"
             android:layout_width="fill_parent"
             android:layout_height="76dp"
-            android:layout_below="@id/row_proposal"
+            android:layout_below="@id/actionRow_topHalfLayout"
             android:layout_toLeftOf="@id/row_dateSection"
             android:text="LANDSCAPE COMPOSTING SHED FOR THE MULTI-ANIMAL TEACHING FACILITY - PLANS REVIEW"
             android:textStyle="bold"
@@ -120,23 +140,11 @@ xmlns:android="http://schemas.android.com/apk/res/android"
             android:paddingRight="6dp"
             android:paddingTop="0dp"
             android:paddingBottom="4dp"
-            android:textColor="#555555"/>
+            android:textColor="@android:color/secondary_text_light"/>
 
 
 
-        <TextView
-            android:id="@+id/row_daysAgo"
-            android:layout_width="wrap_content"
-            android:layout_height="33dp"
-            android:text="4 hours ago"
-            android:textStyle="bold"
-            android:textColor="@color/overviewCard_workOrderNum"
-            android:textSize="14sp"
-            android:layout_toLeftOf="@id/row_dateSection"
-            android:gravity="center_vertical"
-            android:paddingRight="6dp"
-            android:paddingLeft="6dp"
-            android:paddingBottom="0dp"/>
+
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

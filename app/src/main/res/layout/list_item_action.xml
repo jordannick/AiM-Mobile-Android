@@ -20,7 +20,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/overall_card_background">
+            android:background="@color/cardView_cardBackground">
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:text="654321-001"
                     android:textStyle="bold"
-                    android:textColor="@color/actionCard_workOrderNum"
+                    android:textColor="@color/actionQueue_workOrder"
                     android:textSize="14sp"
                     />
                 <TextView

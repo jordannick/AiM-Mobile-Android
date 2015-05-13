@@ -9,11 +9,11 @@
 
     <string-array name="actionTakenItems">
         <item>No Action</item>
-        <item>Custom</item>
         <item>Material Request</item>
         <item>Team Bonding</item>
         <item>Critical Action</item>
         <item>Preventive Maintenance</item>
+        <item>Custom</item>
     </string-array>
 
 </resources>

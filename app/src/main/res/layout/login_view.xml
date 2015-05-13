@@ -4,7 +4,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#f2f8f7">
+              android:background="@color/loginView_background">
 
 
 
@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
-        android:textColor="@color/login_blue"
+        android:textColor="@color/loginView_loginButton_text"
         android:id="@+id/login_button"
         android:layout_gravity="center_horizontal"
         android:paddingLeft="96dp"

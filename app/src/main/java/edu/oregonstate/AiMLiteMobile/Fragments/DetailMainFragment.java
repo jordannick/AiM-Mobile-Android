@@ -64,6 +64,8 @@ public class DetailMainFragment extends Fragment{
         ((TextView)v.findViewById(R.id.shopTextView)).setText(mWorkOrder.getShop());
         ((TextView)v.findViewById(R.id.dateCreatedTextView)).setText(mWorkOrder.getDateCreated());
         ((TextView)v.findViewById(R.id.statusTextView)).setText(mWorkOrder.getStatus());
+        ((TextView)v.findViewById(R.id.priorityTextView)).setText(mWorkOrder.getPriority());
+        ((TextView)v.findViewById(R.id.priorityTextView)).setBackgroundResource(mWorkOrder.getPriorityColor());
 
         mWorkOrder.getBeginDate();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
