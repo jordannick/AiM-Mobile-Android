@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
@@ -63,6 +64,7 @@ public class ActionQueueListFragment extends ListFragment{
         super.onResume();
         if(mActionQueueAdapter != null) mActionQueueAdapter.notifyDataSetChanged();
         updateTotalHoursText();
+        updateSyncCountsText();
 
 
         Log.d(TAG, "adapter count: " + mActionQueueAdapter.getCount() + " ; actionCount: " + actionCount);
@@ -74,14 +76,21 @@ public class ActionQueueListFragment extends ListFragment{
 
     //Refresh the hours every time fragment comes into focus
     private void updateTotalHoursText(){
-       /* TextView hoursText = (TextView)mActivity.findViewById(R.id.hoursTotal_textView);
 
+        TextView totalHoursTextView = (TextView)mActivity.findViewById(R.id.total_hours);
         int totalHours = 0;
-        for (Action action : sCurrentUser.getActions()){
-            totalHours += action.getHours();
-        }
 
-        if (hoursText!=null) hoursText.setText(String.valueOf(totalHours));*/
+        for (Action action : sCurrentUser.getActions()){
+            if (action.getHours() > 0){
+                totalHours += action.getHours();
+            }
+        }
+        if (totalHoursTextView != null) totalHoursTextView.setText(String.valueOf(totalHours));
+    }
+
+    private void updateSyncCountsText(){
+        TextView unsyncedCountTextView = (TextView)mActivity.findViewById(R.id.unsynced_count);
+        unsyncedCountTextView.setText(String.valueOf(sCurrentUser.getActions().size()));
     }
 
     @Override
