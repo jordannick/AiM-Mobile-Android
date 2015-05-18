@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -15,6 +16,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -75,11 +77,13 @@ public class AddActionFragment extends Fragment {
     private static NoteAdapter notesAdapter;
     private static ArrayList<Note> newActionNotes;
 
+    private OrientationEventListener orientationListener;
+
     private int HOURS_MIN = 0;
     private int HOURS_MAX = 8;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
@@ -89,15 +93,17 @@ public class AddActionFragment extends Fragment {
 
         Bundle bundle = getArguments();
         editMode = bundle.getBoolean("editMode");
-
+        Log.d(TAG, "FRAG editMode = "+editMode);
         /* Determine which mode we're in:
         Edit = modify specific action item living in the action list
         Add = Get work order reference to later add action to */
         if (editMode){
             mActionToEdit = ((AddActionActivity) mActivity).getAction();
             if (mActionToEdit != null) mWorkOrder = mActionToEdit.getWorkOrder();
+            Log.d(TAG, "frag has extra EditAction");
         } else {
             mWorkOrder = ((AddActionActivity) mActivity).getWorkOrder();
+            Log.d(TAG, "frag has extra WorkOrder");
         }
 
         // Save the reference for rotation changes
@@ -106,6 +112,28 @@ public class AddActionFragment extends Fragment {
             mWorkOrder = (WorkOrder) savedInstanceState.getSerializable("WorkOrder");
             mActionToEdit = (Action) savedInstanceState.getSerializable("Action");
         }
+
+        /*orientationListener = new OrientationEventListener(mContext, SensorManager.SENSOR_DELAY_UI) {
+            @Override
+            public void onOrientationChanged(int orientation) {
+                if (savedInstanceState != null){
+                    mWorkOrder = (WorkOrder) savedInstanceState.getSerializable("WorkOrder");
+                    mActionToEdit = (Action) savedInstanceState.getSerializable("Action");
+                }
+            }
+        };*/
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //orientationListener.enable();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //orientationListener.disable();
     }
 
     @Override
@@ -135,7 +163,7 @@ public class AddActionFragment extends Fragment {
                 updateHoursTextView(null);
             }
         });
-
+        Log.d(TAG, "debug: "+workOrderIdText+" ; "+mWorkOrder+" ; ");
         workOrderIdText.setText(mWorkOrder.getProposalPhase());
         workOrderLocationText.setText(mWorkOrder.getBuilding());
         workOrderDescriptionText.setText(mWorkOrder.getDescription());

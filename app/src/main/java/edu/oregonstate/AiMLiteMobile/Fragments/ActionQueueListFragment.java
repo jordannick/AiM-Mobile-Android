@@ -116,7 +116,9 @@ public class ActionQueueListFragment extends ListFragment{
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         //Pass position for retrieving action from it later
-        mCallbacks.onActionSelected(position);
+        //mCallbacks.onActionSelected(position);
+        mCallbacks.onActionSelected(sCurrentUser.getActions().size() - position - 1);
+        Log.d(TAG, "clicked action position: "+(sCurrentUser.getActions().size() - position));
     }
 
 }

@@ -33,4 +33,6 @@ public abstract class SingleFragmentActivity extends Activity {
                     .commit();
         }
     }
+
+
 }

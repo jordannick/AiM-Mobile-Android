@@ -1,6 +1,5 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,18 +7,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTabHost;
 
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
-import edu.oregonstate.AiMLiteMobile.Fragments.DetailMainFragment;
 import edu.oregonstate.AiMLiteMobile.Fragments.OverviewListFragment;
 import edu.oregonstate.AiMLiteMobile.Helpers.OverviewPagerItem;
 import edu.oregonstate.AiMLiteMobile.R;

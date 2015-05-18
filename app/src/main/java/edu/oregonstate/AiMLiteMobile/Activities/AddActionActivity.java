@@ -4,8 +4,10 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.OrientationEventListener;
 
 import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Fragments.AddActionFragment;
@@ -27,7 +29,7 @@ public class AddActionActivity extends SingleFragmentActivity{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
 
         sCurrentUser = CurrentUser.get(getApplicationContext());
         Intent intent = getIntent();
@@ -35,11 +37,13 @@ public class AddActionActivity extends SingleFragmentActivity{
         if(intent.hasExtra(WorkOrder.WORK_ORDER_EXTRA)){ //Add mode
             mWorkOrder = (WorkOrder) intent.getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
             setTitle(R.string.add_action_activity_title);
+            Log.d(TAG, "has extra WorkOrder");
         } else if (intent.hasExtra(Action.EDIT_ACTION_EXTRA)){ //Edit mode
             editMode = true;
             int actionPosition = intent.getIntExtra(Action.EDIT_ACTION_EXTRA, 0);
             mAction = sCurrentUser.getAction(actionPosition);
             setTitle(R.string.edit_action_activity_title);
+            Log.d(TAG, "has extra EditAction");
         } else { //Neither mode, get out of here!
             finish();
         }
@@ -47,7 +51,11 @@ public class AddActionActivity extends SingleFragmentActivity{
         ActionBar mActionBar = getActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
+
+        super.onCreate(savedInstanceState);
     }
+
+
 
     @Override
     protected Fragment createFragment() {
@@ -57,6 +65,7 @@ public class AddActionActivity extends SingleFragmentActivity{
         //Send which mode we're in to the fragment
         bundle.putBoolean("editMode", editMode);
         newFragment.setArguments(bundle);
+        Log.d(TAG, "ACTIVITY editMode = " + editMode);
         mFragment = (AddActionFragment) newFragment;
         return newFragment;
     }

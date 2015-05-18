@@ -46,6 +46,7 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
     public void onActionSelected(int actionPosition){
         Intent i = new Intent(this, AddActionActivity.class);
         i.putExtra(Action.EDIT_ACTION_EXTRA, actionPosition);
+        Log.d(TAG, "put edit action extra");
         startActivity(i);
     }
 

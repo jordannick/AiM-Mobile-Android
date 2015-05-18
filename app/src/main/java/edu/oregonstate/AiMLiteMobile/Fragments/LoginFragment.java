@@ -25,7 +25,6 @@ import edu.oregonstate.AiMLiteMobile.R;
 import edu.oregonstate.AiMLiteMobile.Network.TaskGetWorkOrders;
 import edu.oregonstate.AiMLiteMobile.Network.TaskLogin;
 
-
 /**
  * Created by jordan_n on 8/15/2014.
  */
