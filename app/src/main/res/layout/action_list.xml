@@ -11,6 +11,58 @@
         android:layout_height="wrap_content"
         android:gravity="left"
         android:paddingLeft="8dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            >
+            <TextView
+                android:id="@+id/synced_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:paddingRight="4dp"
+                android:textColor="@color/routine_green"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Synced"
+                android:paddingRight="8dp"
+                android:textColor="@color/routine_green"/>
+
+            <TextView
+                android:id="@+id/unsynced_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"
+                android:paddingRight="4dp"
+                android:textColor="@color/emergency_red"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unsynced"
+                android:textColor="@color/emergency_red"/>
+        </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/hours_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#555555"
+            android:text="h"
+            android:textSize="14sp"
+            android:paddingTop="8dp"
+            android:paddingRight="8dp"
+            android:textStyle="bold"
+            android:gravity="bottom"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
+
         <TextView
             android:id="@+id/total_hours"
             android:layout_width="wrap_content"
@@ -19,53 +71,20 @@
             android:text="0"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:paddingRight="2dp"/>
+            android:paddingRight="2dp"
+            android:layout_toLeftOf="@id/hours_text"/>
 
         <TextView
-            android:id="@+id/hours_text"
-            android:layout_toRightOf="@id/total_hours"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/total_hours"
             android:textColor="#555555"
-            android:text="h Total"
+            android:text="Total:"
             android:textSize="14sp"
             android:paddingTop="8dp"
+            android:paddingRight="8dp"
             android:textStyle="bold"
             android:gravity="bottom"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:paddingTop="6dp">
-            <TextView
-                android:id="@+id/synced_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:paddingRight="4dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Synced"
-                android:paddingRight="8dp"/>
-
-            <TextView
-                android:id="@+id/unsynced_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4"
-                android:paddingRight="4dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Unsynced"
-                android:paddingRight="8dp"/>
-        </LinearLayout>
-
 
     </RelativeLayout>
 

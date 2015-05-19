@@ -110,9 +110,11 @@
                         android:text="Work In Progress"
                         />
                     <ImageView
+                        android:id="@+id/action_changed_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/icon_arrow_down_grey"/>
+                        android:src="@drawable/icon_arrow_down_grey"
+                        />
                     <TextView
                         android:id="@+id/action_newStatus"
                         android:layout_width="wrap_content"
@@ -126,6 +128,7 @@
 
 
                 <TextView
+                    android:id="@+id/action_notes_count"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

@@ -76,6 +76,7 @@ public class AddActionFragment extends Fragment {
     private static ListView notesListView;
     private static NoteAdapter notesAdapter;
     private static ArrayList<Note> newActionNotes;
+    private String customActionText;
 
     private OrientationEventListener orientationListener;
 
@@ -200,6 +201,7 @@ public class AddActionFragment extends Fragment {
 
                 if (position == 5) {
                     createCustomActionEntryDialog((TextView)view);
+
                 }
             }
             @Override
@@ -326,6 +328,8 @@ public class AddActionFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 actionCustomText.setText(input.getText());
+                customActionText = actionCustomText.getText().toString();
+                //Log.d(TAG, "actionTaken is: " + actionCustomText.getText());
             }
         });
 
@@ -478,11 +482,14 @@ public class AddActionFragment extends Fragment {
 
         //ACTION
         String actionTaken = spinner_actionTaken.getSelectedItem().toString();
+        Log.d(TAG, "actionTaken is: "+actionTaken);
 
         if (spinner_actionTaken.getSelectedItemPosition() == 0){
             layout_action.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
             label_action.setTextColor(Color.WHITE);
             return false; //Failure, an action taken is required!
+        } else if (spinner_actionTaken.getSelectedItemPosition() == 5){
+            actionTaken = customActionText;
         }
 
         //STATUS

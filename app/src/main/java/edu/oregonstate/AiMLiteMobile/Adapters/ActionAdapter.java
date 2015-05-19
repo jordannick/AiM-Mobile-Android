@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -36,10 +37,10 @@ public class ActionAdapter extends ArrayAdapter<Action> {
         /*%% DEBUG %%*/
         if(mActions.size() < 3) {
             WorkOrder workOrder = CurrentUser.get(mContext).getWorkOrders().get(0);
-            Action newAction = new Action(workOrder, "Team Bonding", "WORK COMPLETE", 4, new ArrayList<Note>());
+            Action newAction = new Action(workOrder, "Fixed some pipes under the sink.", "WORK COMPLETE", 4, new ArrayList<Note>());
             mActions.add(newAction);
             mActions.add(newAction);
-            mActions.add(newAction);
+            //mActions.add(newAction);
         }
         /*## END DEBUG %%*/
     }
@@ -48,7 +49,7 @@ public class ActionAdapter extends ArrayAdapter<Action> {
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_item_action, parent, false);
+            convertView = inflater.inflate(R.layout.list_item_action_test, parent, false);
         }
 
         Action action = mActions.get(position);
@@ -65,12 +66,22 @@ public class ActionAdapter extends ArrayAdapter<Action> {
 
         ((TextView) convertView.findViewById(R.id.action_taken)).setText(action.getActionTakenString());
 
-        ((TextView) convertView.findViewById(R.id.action_newStatus)).setText(action.getUpdatedStatus());
+        if (action.getUpdatedStatus() != null && action.getUpdatedStatus() != action.getWorkOrder().getStatus()){
+            ((TextView) convertView.findViewById(R.id.action_oldStatus)).setText(action.getWorkOrder().getStatus());
+            ((TextView) convertView.findViewById(R.id.action_newStatus)).setText(action.getUpdatedStatus());
+        } else {
+            convertView.findViewById(R.id.action_oldStatus).setVisibility(View.GONE);
+            convertView.findViewById(R.id.action_changed_arrow).setVisibility(View.GONE);
+            ((TextView) convertView.findViewById(R.id.action_newStatus)).setText(action.getWorkOrder().getStatus());
+        }
+
 
         ((TextView) convertView.findViewById(R.id.action_timeSince)).setText(prettyPrintDate(action.getDateStamp()));
 
 
         ((TextView) convertView.findViewById(R.id.action_hours)).setText(String.valueOf(action.getHours()));
+
+        ((TextView) convertView.findViewById(R.id.action_notes_count)).setText(String.valueOf(action.getNotes().size() + " Notes"));
 
         return convertView;
     }

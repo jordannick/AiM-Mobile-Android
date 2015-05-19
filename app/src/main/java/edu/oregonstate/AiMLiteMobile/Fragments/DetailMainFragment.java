@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 
@@ -66,6 +67,17 @@ public class DetailMainFragment extends Fragment{
         ((TextView)v.findViewById(R.id.statusTextView)).setText(mWorkOrder.getStatus());
         ((TextView)v.findViewById(R.id.priorityTextView)).setText(mWorkOrder.getPriority());
         ((TextView)v.findViewById(R.id.priorityTextView)).setBackgroundResource(mWorkOrder.getPriorityColor());
+
+        ((CompoundButton)v.findViewById(R.id.sectionSwitch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    mWorkOrder.setSection("Backlog");
+                } else {
+                    mWorkOrder.setSection("Daily");
+                }
+            }
+        });
 
         mWorkOrder.getBeginDate();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
