@@ -144,7 +144,7 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
         String URLLogin = sCurrentUser.getURLLogin();
         Log.i(TAG, "Logging in as: " + mUsername);
         mLoadCircle.setVisibility(View.VISIBLE);
-        SnackbarManager.show(Snackbar.with(getActivity()).text("Logging in as: " + mUsername +"...").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
+        SnackbarManager.show(Snackbar.with(getActivity()).text("Logging in as: " + mUsername).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
         TaskLogin loginTask = new TaskLogin(callback, URLLogin, getActivity());
         loginTask.execute();
     }

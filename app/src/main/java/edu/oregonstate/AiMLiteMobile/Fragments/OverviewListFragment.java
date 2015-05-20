@@ -14,6 +14,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.view.ViewCompat;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
+
+import edu.oregonstate.AiMLiteMobile.Activities.DetailActivity;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Network.TaskGetWorkOrders;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
@@ -156,6 +158,10 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
 
     public void onAuthenticateFail() {
 
+    }
+
+    public void onSectionChanged(){
+        updateUI();
     }
 
 }

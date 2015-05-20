@@ -3,7 +3,7 @@
     <!--WorkOrder PRIORITY Colors-->
     <color name="emergency_red_old">#F44336</color>
     <color name="emergency_red">#af292e</color>
-    <color name="timeSensitive_yellow">#FFEB3B</color>
+    <color name="timeSensitive_yellow">#CDDC39</color>
     <color name="timeSensitive_yellow_old">#eac863</color>
     <color name="urgent_orange">#FF5722</color>
     <color name="urgent_orange_old">#c34500</color>

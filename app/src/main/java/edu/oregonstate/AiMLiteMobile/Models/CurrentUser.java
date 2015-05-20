@@ -31,8 +31,6 @@ public class CurrentUser {
     private String urlAPIVersion = "1.0";
     private String urlObject = "WorkOrder";
 
-    private String mCookies;
-
     private String lastUpdated = "Never";
 
     private String mToken;
@@ -148,15 +146,6 @@ public class CurrentUser {
 
     public void addAction(Action action) {
         mActions.add(0, action);
-    }
-
-
-    public String getCookies() {
-        return mCookies;
-    }
-
-    public void setCookies(String mCookies) {
-        this.mCookies = mCookies;
     }
 
     public String getLastUpdated() {

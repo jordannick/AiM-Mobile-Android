@@ -25,7 +25,7 @@ public class AddActionActivity extends SingleFragmentActivity{
     private WorkOrder mWorkOrder;
     private Action mAction;
     private boolean editMode = false; //False = add new action from scratch //True = edit existing action
-    private AddActionFragment mFragment;
+    private static AddActionFragment mFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,6 +103,8 @@ public class AddActionActivity extends SingleFragmentActivity{
 
                 return true;
             case android.R.id.home:
+                //TODO need to clear variables for when fragment is reused
+                mFragment.clear();
                 finish();
                 //overridePendingTransition(R.anim.no_action, R.anim.slide_out_bottom);
                 return false;

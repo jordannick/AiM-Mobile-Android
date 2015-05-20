@@ -12,6 +12,9 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,6 +38,13 @@ public class DetailMainFragment extends Fragment{
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
     }
 
     @Override
@@ -69,13 +79,18 @@ public class DetailMainFragment extends Fragment{
         ((TextView)v.findViewById(R.id.priorityTextView)).setText(mWorkOrder.getPriority());
         ((TextView)v.findViewById(R.id.priorityTextView)).setBackgroundResource(mWorkOrder.getPriorityColor());
 
+        //TODO - I think the below changing the INSTANCE of the work order, rather than work order object displayed in overview list
+        if (mWorkOrder.getSection().equals("Backlog"))((CompoundButton)v.findViewById(R.id.sectionSwitch)).setChecked(true);
         ((CompoundButton)v.findViewById(R.id.sectionSwitch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     mWorkOrder.setSection("Backlog");
+                    //SnackbarManager.show(Snackbar.with(getActivity()).text("Moved to backlog").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
+
                 } else {
                     mWorkOrder.setSection("Daily");
+                    //SnackbarManager.show(Snackbar.with(getActivity()).text("Moved to daily").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
                 }
             }
         });
@@ -113,10 +128,7 @@ public class DetailMainFragment extends Fragment{
         ((TextView)v.findViewById(R.id.estTextView)).setText(estText);
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
+
 
 
 }

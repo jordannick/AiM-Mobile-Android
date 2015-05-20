@@ -99,24 +99,26 @@ public class AddActionFragment extends Fragment {
         Bundle bundle = getArguments();
         editMode = bundle.getBoolean("editMode");
         Log.d(TAG, "FRAG editMode = "+editMode);
-        /* Determine which mode we're in:
-        Edit = modify specific action item living in the action list
-        Add = Get work order reference to later add action to */
-        if (editMode){
-            mActionToEdit = ((AddActionActivity) mActivity).getAction();
-            if (mActionToEdit != null) mWorkOrder = mActionToEdit.getWorkOrder();
-            Log.d(TAG, "frag has extra EditAction");
-        } else {
-            mWorkOrder = ((AddActionActivity) mActivity).getWorkOrder();
-            Log.d(TAG, "frag has extra WorkOrder");
-        }
 
         // Save the reference for rotation changes
         //TODO: Don't want to save for non-rotations, i.e. reusing fragment later
         if (savedInstanceState != null){
             mWorkOrder = (WorkOrder) savedInstanceState.getSerializable("WorkOrder");
             mActionToEdit = (Action) savedInstanceState.getSerializable("Action");
+        } else {
+            /* Determine which mode we're in:
+            Edit = modify specific action item living in the action list
+            Add = Get work order reference to later add action to */
+            if (editMode) {
+                mActionToEdit = ((AddActionActivity) mActivity).getAction();
+                if (mActionToEdit != null) mWorkOrder = mActionToEdit.getWorkOrder();
+                Log.d(TAG, "frag has extra EditAction");
+            } else {
+                mWorkOrder = ((AddActionActivity) mActivity).getWorkOrder();
+                Log.d(TAG, "frag has extra WorkOrder");
+            }
         }
+
 
         /*orientationListener = new OrientationEventListener(mContext, SensorManager.SENSOR_DELAY_UI) {
             @Override
@@ -133,6 +135,7 @@ public class AddActionFragment extends Fragment {
     public void onResume() {
         super.onResume();
         //orientationListener.enable();
+
     }
 
     @Override
@@ -181,6 +184,7 @@ public class AddActionFragment extends Fragment {
             int defaultActionTakenSpinnerPosition = actionTakenAdapter.getPosition(mActionToEdit.getActionTakenString());
             spinner_actionTaken.setSelection(defaultActionTakenSpinnerPosition);
 
+
             defaultStatus = mActionToEdit.getUpdatedStatus(); //Sets the status spinner to the current status of the work order
             newActionNotes = mActionToEdit.getNotes();//Associate new notes with notes list view
             hoursEntered = mActionToEdit.getHours();
@@ -193,7 +197,7 @@ public class AddActionFragment extends Fragment {
             }
         } else {
             defaultStatus = mWorkOrder.getStatus(); //Sets the status spinner to the current status of the work order
-            if (newActionNotes == null) newActionNotes = new ArrayList<Note>();//Associate new notes with notes list view
+            if (newActionNotes == null/*or saveinstancestate null?*/) newActionNotes = new ArrayList<Note>();//Associate new notes with notes list view
         }
 
         spinner_actionTaken.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -386,11 +390,11 @@ public class AddActionFragment extends Fragment {
                 //Check for null input
                 String noteString = input.getText().toString();
                 if (!noteString.equals("")) {
-                    if(toBeEditedNote != null){
+                    if (toBeEditedNote != null) {
                         //Update existing note
                         toBeEditedNote.setNote(noteString);
                         SnackbarManager.show(Snackbar.with(getActivity()).text("Note updated").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
-                    }else{
+                    } else {
                         //Create noteObject and add to notesArray
                         Note newNote = new Note(noteString, sCurrentUser.getUsername(), new Date(System.currentTimeMillis()));
                         newNote.setNew();
@@ -403,7 +407,7 @@ public class AddActionFragment extends Fragment {
                         notesAddedText.setVisibility(View.VISIBLE);
                     }
 
-                    notesAddedText.setText(newActionNotes.size()+" added");
+                    notesAddedText.setText(newActionNotes.size() + " added");
                 }
             }
         });
@@ -475,9 +479,9 @@ public class AddActionFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     sCurrentUser.addAction(newAction);
+                    newActionNotes = null;
                     alert.dismiss();
                     Intent intent = new Intent(getActivity(), ActionQueueListActivity.class);
-
                     getActivity().finish();
                     getActivity().overridePendingTransition(R.anim.no_action, R.anim.slide_out_top);
                     startActivity(intent);
@@ -549,4 +553,7 @@ public class AddActionFragment extends Fragment {
         return true;
     }
 
+    public void clear() {
+        newActionNotes = null;
+    }
 }

@@ -34,6 +34,7 @@ public class DetailActivity extends FragmentActivity implements DetailNotesFragm
     private ActionBar actionBar;
     private View v;
 
+
     //Sliding Tabs
     private ViewPager mViewPager;
     private SlidingTabLayout mSlidingTabLayout;
@@ -46,6 +47,8 @@ public class DetailActivity extends FragmentActivity implements DetailNotesFragm
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.detail_activity);
 
         v = this.findViewById(R.id.detail_activity_layout);
@@ -98,6 +101,8 @@ public class DetailActivity extends FragmentActivity implements DetailNotesFragm
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
+
+
     }
 
 
@@ -125,7 +130,7 @@ public class DetailActivity extends FragmentActivity implements DetailNotesFragm
                 Intent i = new Intent(this, AddActionActivity.class);
                 i.putExtra(WorkOrder.WORK_ORDER_EXTRA, mWorkOrder);
                 startActivity(i);
-                //overridePendingTransition(R.anim.slide_in, R.anim.no_action);
+                overridePendingTransition(R.anim.slide_in, R.anim.no_action);
                 break;
             case android.R.id.home:
                 finish();
@@ -141,6 +146,7 @@ public class DetailActivity extends FragmentActivity implements DetailNotesFragm
         return super.onOptionsItemSelected(item);
 
     }
+
 
     @Override
     public void onBackPressed() {
