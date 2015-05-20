@@ -125,7 +125,7 @@ public class DetailActivity extends FragmentActivity implements DetailNotesFragm
                 Intent i = new Intent(this, AddActionActivity.class);
                 i.putExtra(WorkOrder.WORK_ORDER_EXTRA, mWorkOrder);
                 startActivity(i);
-                overridePendingTransition(R.anim.slide_in, R.anim.no_action);
+                //overridePendingTransition(R.anim.slide_in, R.anim.no_action);
                 break;
             case android.R.id.home:
                 finish();

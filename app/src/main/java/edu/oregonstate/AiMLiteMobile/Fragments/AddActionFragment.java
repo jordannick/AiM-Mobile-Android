@@ -2,6 +2,7 @@ package edu.oregonstate.AiMLiteMobile.Fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,6 +28,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -62,7 +65,7 @@ public class AddActionFragment extends Fragment {
     private static Action mActionToEdit;
     private static Action newAction;
 
-    private static LinearLayout layout_action;
+    private static RelativeLayout layout_action;
     private static TextView label_action;
     private static Spinner spinner_actionTaken;
     private static TextView textView_hours;
@@ -70,6 +73,7 @@ public class AddActionFragment extends Fragment {
     private static Spinner spinner_updateStatus;
 
     private static Button button_addNote;
+    private static Button button_viewNotes;
     private static ImageButton button_clearHours;
     private static TextView notesAddedText;
     private static TextView notesExistingText;
@@ -150,12 +154,13 @@ public class AddActionFragment extends Fragment {
         TextView workOrderLocationText = (TextView)mActivity.findViewById(R.id.workOrderLocationText);
         TextView workOrderDescriptionText = (TextView)mActivity.findViewById(R.id.workOrderDescriptionText);
 
-        layout_action = (LinearLayout) mActivity.findViewById(R.id.action_layout);
+        layout_action = (RelativeLayout) mActivity.findViewById(R.id.action_layout);
         label_action = ((TextView)mActivity.findViewById(R.id.action_label));
         spinner_actionTaken = (Spinner)mActivity.findViewById(R.id.spinner_actionTaken);
         textView_hours = (TextView)mActivity.findViewById(R.id.hoursTextView);
         spinner_updateStatus = (Spinner)mActivity.findViewById(R.id.spinner_updateStatus);
         button_addNote = (Button)mActivity.findViewById(R.id.button_addNote);
+        button_viewNotes = (Button)mActivity.findViewById(R.id.button_viewNotes);
         button_clearHours = (ImageButton)mActivity.findViewById(R.id.actionAdd_button_clearHours);
 
         button_clearHours.setOnClickListener(new View.OnClickListener() {
@@ -195,12 +200,14 @@ public class AddActionFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //Restore the colors in case view was changed to red requirement indication
-                layout_action.setBackgroundResource(0);
-                label_action.setTextColor(getResources().getColor(R.color.addAction_sectionTitles));
+                layout_action.findViewById(R.id.alert_action_required).setVisibility(View.INVISIBLE);
+               /* layout_action.setBackgroundResource(0);
+                label_action.setTextColor(getResources().getColor(R.color.addAction_sectionTitles));*/
                 //When "Custom" is selected, start dialog
 
                 if (position == 5) {
-                    createCustomActionEntryDialog((TextView)view);
+                    Log.d(TAG, "created custom action entry dialog");
+                    createCustomActionEntryDialog((TextView) view);
 
                 }
             }
@@ -230,6 +237,14 @@ public class AddActionFragment extends Fragment {
                 createNoteEntryDialog(null);
             }
         });
+
+        button_viewNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNotesViewPopup();
+            }
+        });
+
     }
 
     private void setVisibilityClearHoursButton(int visible){
@@ -411,6 +426,29 @@ public class AddActionFragment extends Fragment {
     }
 
 
+
+    private void createNotesViewPopup(){
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mActivity);
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View convertView = (View) inflater.inflate(R.layout.popup_notes_list, null);
+        alertDialog.setView(convertView);
+        alertDialog.setTitle("Notes");
+
+        alertDialog.setNegativeButton("Close",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                    }
+                }
+        );
+
+        ListView lv = (ListView) convertView.findViewById(R.id.popupNotes_listView);
+        lv.setAdapter(notesAdapter);
+        alertDialog.show();
+    }
+
+
     public void createConfirmDialog(){
         final AlertDialog.Builder confirmAddActionDialog = new AlertDialog.Builder(mActivity);
 
@@ -485,8 +523,8 @@ public class AddActionFragment extends Fragment {
         Log.d(TAG, "actionTaken is: "+actionTaken);
 
         if (spinner_actionTaken.getSelectedItemPosition() == 0){
-            layout_action.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
-            label_action.setTextColor(Color.WHITE);
+            //layout_action.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
+            layout_action.findViewById(R.id.alert_action_required).setVisibility(View.VISIBLE);
             return false; //Failure, an action taken is required!
         } else if (spinner_actionTaken.getSelectedItemPosition() == 5){
             actionTaken = customActionText;

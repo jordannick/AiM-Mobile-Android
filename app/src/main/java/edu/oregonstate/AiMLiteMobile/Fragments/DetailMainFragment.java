@@ -59,6 +59,7 @@ public class DetailMainFragment extends Fragment{
         getActivity().setTitle("Work Order");
 
         /**/
+        ((TextView)v.findViewById(R.id.idTextView)).setText(mWorkOrder.getProposalPhase());
         ((TextView)v.findViewById(R.id.buildingTextView)).setText(mWorkOrder.getBuilding());
         ((TextView)v.findViewById(R.id.descriptionTextView)).setText(mWorkOrder.getDescription());
         ((TextView)v.findViewById(R.id.workCodeTextView)).setText(mWorkOrder.getCraftCode());

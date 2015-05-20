@@ -143,7 +143,8 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
         sCurrentUser.buildLoginUrl(mUsername);
         String URLLogin = sCurrentUser.getURLLogin();
         Log.i(TAG, "Logging in as: " + mUsername);
-        SnackbarManager.show(Snackbar.with(getActivity()).text("Logging in as: " + mUsername).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
+        mLoadCircle.setVisibility(View.VISIBLE);
+        SnackbarManager.show(Snackbar.with(getActivity()).text("Logging in as: " + mUsername +"...").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
         TaskLogin loginTask = new TaskLogin(callback, URLLogin, getActivity());
         loginTask.execute();
     }
@@ -168,7 +169,8 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
         mAutoLoginCheckbox.setEnabled(false);
         mLoginButton.setEnabled(false);
 
-        mLoadCircle.setVisibility(View.VISIBLE);
+
+        //SnackbarManager.dismiss();
 
         //Attempt the request, try force pulling new list since we're logging in. Callback to success or fail function in this class.
         boolean forceRefresh = true;

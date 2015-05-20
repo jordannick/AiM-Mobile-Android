@@ -147,7 +147,7 @@ public class CurrentUser {
     }
 
     public void addAction(Action action) {
-        mActions.add(action);
+        mActions.add(0, action);
     }
 
 

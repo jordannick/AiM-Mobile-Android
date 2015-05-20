@@ -79,7 +79,7 @@ public class AddActionActivity extends SingleFragmentActivity{
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.no_action, R.anim.slide_out_bottom);
+        //overridePendingTransition(R.anim.no_action, R.anim.slide_out_bottom);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class AddActionActivity extends SingleFragmentActivity{
                 return true;
             case android.R.id.home:
                 finish();
-                overridePendingTransition(R.anim.no_action, R.anim.slide_out_bottom);
+                //overridePendingTransition(R.anim.no_action, R.anim.slide_out_bottom);
                 return false;
             case R.id.log_out:
                 Intent intent = new Intent(this,LoginActivity.class);

@@ -11,13 +11,13 @@
 
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="My Daily Summary"/>
+        android:title="PLACEHOLDER Summary"/>
 
     <item android:id="@+id/action_settings2"
 
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="Settings"/>
+        android:title="PLACEHOLDER Settings"/>
 
     <item android:id="@+id/log_out"
 
