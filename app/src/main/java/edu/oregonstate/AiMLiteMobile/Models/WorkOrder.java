@@ -67,7 +67,7 @@ public class WorkOrder implements Serializable {
                 mPriorityColor = R.color.emergency_red;
                 break;
             case 'T':
-                mPriorityColor = R.color.timeSensitive_yellow;
+                mPriorityColor = R.color.timeSensitive_purple;
                 break;
             case 'R':
                 mPriorityColor = R.color.routine_green;

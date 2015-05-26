@@ -12,6 +12,8 @@
     <color name="scheduled_blue">#5C6BC0</color>
     <color name="scheduled_blue_old">#385e86</color>
 
+    <color name="timeSensitive_purple">#673AB7</color>
+
 
     <!--LoginView-->
     <color name="loginView_loginButton_text">#2980B9</color>

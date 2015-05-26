@@ -93,7 +93,6 @@ public class AddActionActivity extends SingleFragmentActivity{
         switch (item.getItemId()){
             case R.id.action_queue:
 
-                //TODO: finish form validation - i.e. red X for action required
                 if (editMode){
                     mFragment.saveEdits();
                     mFragment.createConfirmDialog();
@@ -109,6 +108,7 @@ public class AddActionActivity extends SingleFragmentActivity{
                 //overridePendingTransition(R.anim.no_action, R.anim.slide_out_bottom);
                 return false;
             case R.id.log_out:
+                sCurrentUser.prepareLogout();
                 Intent intent = new Intent(this,LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

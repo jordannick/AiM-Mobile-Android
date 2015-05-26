@@ -95,4 +95,12 @@
         android:layout_height="wrap_content">
     </ListView>
 
+    <TextView android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No Actions Added"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:textColor="@android:color/tertiary_text_light" />
+
 </RelativeLayout>

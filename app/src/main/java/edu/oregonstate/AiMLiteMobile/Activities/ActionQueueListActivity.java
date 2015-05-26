@@ -87,6 +87,7 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
                 syncActions();
                 break;
             case R.id.log_out:
+                sCurrentUser.prepareLogout();
                 Intent intent = new Intent(this,LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

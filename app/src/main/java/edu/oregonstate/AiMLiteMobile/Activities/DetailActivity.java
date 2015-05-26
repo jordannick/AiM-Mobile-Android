@@ -19,6 +19,7 @@ import edu.oregonstate.AiMLiteMobile.Fragments.DetailContactFragment;
 import edu.oregonstate.AiMLiteMobile.Fragments.DetailMainFragment;
 import edu.oregonstate.AiMLiteMobile.Fragments.DetailNotesFragment;
 import edu.oregonstate.AiMLiteMobile.Helpers.DetailPagerItem;
+import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.R;
 import edu.oregonstate.AiMLiteMobile.Helpers.SlidingTabLayout;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
@@ -30,6 +31,7 @@ import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 public class DetailActivity extends FragmentActivity implements DetailNotesFragment.Callbacks {
     private static final String TAG = "DetailActivity";
 
+    private static CurrentUser sCurrentUser;
     public static WorkOrder mWorkOrder;
     private ActionBar actionBar;
     private View v;
@@ -53,6 +55,7 @@ public class DetailActivity extends FragmentActivity implements DetailNotesFragm
 
         v = this.findViewById(R.id.detail_activity_layout);
 
+        sCurrentUser = CurrentUser.get(getApplicationContext());
         mWorkOrder = (WorkOrder)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
         Log.d(TAG, "DetailActivity mWorkOrder: " + mWorkOrder);
 
@@ -130,13 +133,14 @@ public class DetailActivity extends FragmentActivity implements DetailNotesFragm
                 Intent i = new Intent(this, AddActionActivity.class);
                 i.putExtra(WorkOrder.WORK_ORDER_EXTRA, mWorkOrder);
                 startActivity(i);
-                overridePendingTransition(R.anim.slide_in, R.anim.no_action);
+                //overridePendingTransition(R.anim.slide_in, R.anim.no_action);
                 break;
             case android.R.id.home:
                 finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 break;
             case R.id.log_out:
+                sCurrentUser.prepareLogout();
                 Intent intent = new Intent(this,LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -146,7 +150,6 @@ public class DetailActivity extends FragmentActivity implements DetailNotesFragm
         return super.onOptionsItemSelected(item);
 
     }
-
 
     @Override
     public void onBackPressed() {

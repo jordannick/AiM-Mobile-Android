@@ -46,7 +46,7 @@ public class TaskLogin extends AsyncTask<Action, Void, ResponsePair> {
                 Log.i(TAG, "Auth Fail");
                 listener.onLoginFail();
                 break;
-            case NET_FAIL:
+            case NET_FAIL://TODO indicate no network on login screen
                 Log.i(TAG, "Net Fail");
                 //listener.onNetworkFail();
                 listener.onLoginFail();
@@ -65,6 +65,7 @@ public class TaskLogin extends AsyncTask<Action, Void, ResponsePair> {
     }
 
     protected ResponsePair doInBackground(final Action... args) {
+        Log.d(TAG, "in doinbackground");
         ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
         try{
             if (sNetworkHandler.isNetworkOnline(mContext)) {
@@ -84,7 +85,7 @@ public class TaskLogin extends AsyncTask<Action, Void, ResponsePair> {
                     responsePair.setStatus(ResponsePair.Status.FAIL);
                 }
             } else {
-                responsePair.setStatus(ResponsePair.Status.NO_DATA);
+                responsePair.setStatus(ResponsePair.Status.NET_FAIL);
             }
         }catch (Exception e){
             Log.e(TAG, "Exception! e: " + e);

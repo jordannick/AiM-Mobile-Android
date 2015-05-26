@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -182,8 +183,26 @@ public class AddActionFragment extends Fragment {
         if (editMode){
             ArrayAdapter actionTakenAdapter = (ArrayAdapter) spinner_actionTaken.getAdapter();
             int defaultActionTakenSpinnerPosition = actionTakenAdapter.getPosition(mActionToEdit.getActionTakenString());
-            spinner_actionTaken.setSelection(defaultActionTakenSpinnerPosition);
+            Log.d(TAG, "string is: "+mActionToEdit.getActionTakenString() + " ; position is: " +defaultActionTakenSpinnerPosition);
+            if (defaultActionTakenSpinnerPosition != -1) {
+                spinner_actionTaken.setSelection(defaultActionTakenSpinnerPosition);
+            } else {
+                spinner_actionTaken.setSelection(1);
+               // ((TextView)spinner_actionTaken.findViewById(android.R.id.text1)).setText(mActionToEdit.getActionTakenString());
 
+               /* spinner_actionTaken.getViewTreeObserver().addOnGlobalLayoutListener(
+                        new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                            @Override
+                            public void onGlobalLayout()
+                            {
+                                spinner_actionTaken.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
+                                TextView tv = (TextView) spinner_actionTaken.findViewById(android.R.id.text1);
+                                tv.setText(mActionToEdit.getActionTakenString());
+                            }
+                        });*/
+            }
 
             defaultStatus = mActionToEdit.getUpdatedStatus(); //Sets the status spinner to the current status of the work order
             newActionNotes = mActionToEdit.getNotes();//Associate new notes with notes list view
@@ -209,7 +228,7 @@ public class AddActionFragment extends Fragment {
                 label_action.setTextColor(getResources().getColor(R.color.addAction_sectionTitles));*/
                 //When "Custom" is selected, start dialog
 
-                if (position == 5) {
+                if (position == 1) {
                     Log.d(TAG, "created custom action entry dialog");
                     createCustomActionEntryDialog((TextView) view);
 
@@ -530,7 +549,7 @@ public class AddActionFragment extends Fragment {
             //layout_action.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
             layout_action.findViewById(R.id.alert_action_required).setVisibility(View.VISIBLE);
             return false; //Failure, an action taken is required!
-        } else if (spinner_actionTaken.getSelectedItemPosition() == 5){
+        } else if (spinner_actionTaken.getSelectedItemPosition() == 1){
             actionTaken = customActionText;
         }
 

@@ -35,13 +35,13 @@ public class ActionAdapter extends ArrayAdapter<Action> {
         mActions = actions;
 
         /*%% DEBUG %%*/
-        if(mActions.size() < 3) {
+        /*if(mActions.size() < 3) {
             WorkOrder workOrder = CurrentUser.get(mContext).getWorkOrders().get(0);
             Action newAction = new Action(workOrder, "Fixed some pipes under the sink.", "WORK COMPLETE", 4, new ArrayList<Note>());
             mActions.add(newAction);
             mActions.add(newAction);
             //mActions.add(newAction);
-        }
+        }*/
         /*## END DEBUG %%*/
     }
 
@@ -78,8 +78,11 @@ public class ActionAdapter extends ArrayAdapter<Action> {
 
         ((TextView) convertView.findViewById(R.id.action_timeSince)).setText(prettyPrintDate(action.getDateStamp()));
 
-
-        ((TextView) convertView.findViewById(R.id.action_hours)).setText(String.valueOf(action.getHours()));
+        if (action.getHours() > 0) {
+            ((TextView) convertView.findViewById(R.id.action_hours)).setText(String.valueOf(action.getHours()));
+        } else {
+            ((TextView) convertView.findViewById(R.id.action_hours)).setText("0");
+        }
 
         ((TextView) convertView.findViewById(R.id.action_notes_count)).setText(String.valueOf(action.getNotes().size() + " Notes"));
 

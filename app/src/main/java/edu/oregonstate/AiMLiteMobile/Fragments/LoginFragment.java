@@ -147,6 +147,12 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
         SnackbarManager.show(Snackbar.with(getActivity()).text("Logging in as: " + mUsername).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
         TaskLogin loginTask = new TaskLogin(callback, URLLogin, getActivity());
         loginTask.execute();
+
+        //Disable all fields for now
+        mUsernameField.setEnabled(false);
+        mPasswordField.setEnabled(false);
+        mAutoLoginCheckbox.setEnabled(false);
+        mLoginButton.setEnabled(false);
     }
 
     public void onLoginSuccess(){
@@ -160,14 +166,11 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
         }
 
         Log.d(TAG, "username caps: " + mUsername);
+        Log.d(TAG, "token is: " + sCurrentUser.getToken());
         sCurrentUser.setUsername(mUsername);
         sCurrentUser.buildUrlsWithUsername();
 
-        //Disable all fields for now
-        mUsernameField.setEnabled(false);
-        mPasswordField.setEnabled(false);
-        mAutoLoginCheckbox.setEnabled(false);
-        mLoginButton.setEnabled(false);
+
 
 
         //SnackbarManager.dismiss();
@@ -180,6 +183,13 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
 
     public void onLoginFail(){
         Log.e(TAG, "Login Failed");
+
+        //Re-enable all fields so user can try again
+        mUsernameField.setEnabled(true);
+        mPasswordField.setEnabled(true);
+        mAutoLoginCheckbox.setEnabled(true);
+        mLoginButton.setEnabled(true);
+        mLoadCircle.setVisibility(View.INVISIBLE);
 
         SnackbarManager.show(Snackbar.with(getActivity()).text("Login Failed").actionLabel("DISMISS").actionColor(Color.RED).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE));
     }

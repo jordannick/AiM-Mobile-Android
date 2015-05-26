@@ -17,6 +17,7 @@ import java.util.List;
 
 import edu.oregonstate.AiMLiteMobile.Fragments.OverviewListFragment;
 import edu.oregonstate.AiMLiteMobile.Helpers.OverviewPagerItem;
+import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.R;
 import edu.oregonstate.AiMLiteMobile.Helpers.SlidingTabLayout;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
@@ -25,6 +26,7 @@ import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 public class OverviewListActivity extends FragmentActivity implements OverviewListFragment.Callbacks {
     private static final String TAG = "OverviewListActivity";
 
+    private static CurrentUser sCurrentUser;
     private AlertDialog logoutDialog;
 
     private ViewPager mViewPager;
@@ -36,6 +38,8 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overview_activity);
+
+        sCurrentUser = CurrentUser.get(getApplicationContext());
 
         // Create tab and pager items
         final List<OverviewPagerItem> mTabs = new ArrayList<>();
@@ -134,6 +138,7 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
             return true;
         }*/
             case R.id.log_out:
+                sCurrentUser.prepareLogout();
                 Intent intent = new Intent(this,LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

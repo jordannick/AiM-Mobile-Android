@@ -35,6 +35,11 @@ public class CurrentUser {
 
     private String mToken;
 
+    public void prepareLogout(){
+        sCurrentUser.getPrefsEditor().putBoolean("autologin", false);
+        sCurrentUser.getPrefsEditor().apply();
+    }
+
     public ArrayList<Action> getUnsyncedActions(){
         ArrayList<Action> unsyncedActions = new ArrayList<>();
         for (int i = 0; i < mActions.size(); i++) {
