@@ -94,8 +94,7 @@ public class AddActionActivity extends SingleFragmentActivity{
             case R.id.action_queue:
 
                 if (editMode){
-                    mFragment.saveEdits();
-                    mFragment.createConfirmDialog();
+                    if (mFragment.saveEdits()) mFragment.createConfirmDialog();
                 } else {
                     if (mFragment.validateAction()) mFragment.createConfirmDialog();
                 }

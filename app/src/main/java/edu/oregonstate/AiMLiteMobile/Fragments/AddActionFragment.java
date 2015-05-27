@@ -121,15 +121,6 @@ public class AddActionFragment extends Fragment {
         }
 
 
-        /*orientationListener = new OrientationEventListener(mContext, SensorManager.SENSOR_DELAY_UI) {
-            @Override
-            public void onOrientationChanged(int orientation) {
-                if (savedInstanceState != null){
-                    mWorkOrder = (WorkOrder) savedInstanceState.getSerializable("WorkOrder");
-                    mActionToEdit = (Action) savedInstanceState.getSerializable("Action");
-                }
-            }
-        };*/
     }
 
     @Override
@@ -187,21 +178,8 @@ public class AddActionFragment extends Fragment {
             if (defaultActionTakenSpinnerPosition != -1) {
                 spinner_actionTaken.setSelection(defaultActionTakenSpinnerPosition);
             } else {
+//                spinner_actionTaken.setOnItemClickListener(null);
                 spinner_actionTaken.setSelection(1);
-               // ((TextView)spinner_actionTaken.findViewById(android.R.id.text1)).setText(mActionToEdit.getActionTakenString());
-
-               /* spinner_actionTaken.getViewTreeObserver().addOnGlobalLayoutListener(
-                        new ViewTreeObserver.OnGlobalLayoutListener() {
-
-                            @Override
-                            public void onGlobalLayout()
-                            {
-                                spinner_actionTaken.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-
-                                TextView tv = (TextView) spinner_actionTaken.findViewById(android.R.id.text1);
-                                tv.setText(mActionToEdit.getActionTakenString());
-                            }
-                        });*/
             }
 
             defaultStatus = mActionToEdit.getUpdatedStatus(); //Sets the status spinner to the current status of the work order
@@ -353,7 +331,11 @@ public class AddActionFragment extends Fragment {
         enterActionAlert.setTitle("Enter action:");
         //TODO populate if editing
         final EditText input = new EditText(getActivity());
+
         final TextView actionCustomText = textView;
+        if (editMode) {
+            input.setText(mActionToEdit.getActionTakenString());
+        }
         input.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         input.setHorizontallyScrolling(false);
         input.setLines(6);
@@ -374,7 +356,7 @@ public class AddActionFragment extends Fragment {
         enterActionAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                spinner_actionTaken.setSelection(0);
             }
         });
 
@@ -488,6 +470,22 @@ public class AddActionFragment extends Fragment {
             confirmButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    String actionTaken;
+                    if (customActionText == null || customActionText == "") {
+                        actionTaken = spinner_actionTaken.getSelectedItem().toString();
+                    } else {
+                        actionTaken = customActionText;
+                    }
+
+                    String newStatus = spinner_updateStatus.getSelectedItem().toString();
+
+                    //TODO: don't edit immediately, allow confirm first
+                    mActionToEdit.setActionTakenString(actionTaken);
+                    mActionToEdit.setHours(hoursEntered);
+                    mActionToEdit.setUpdatedStatus(newStatus);
+                    mActionToEdit.setNotes(newActionNotes);
+                    mActionToEdit.setDateStamp(new Date(System.currentTimeMillis()));
+
                     alert.dismiss();
                     getActivity().finish();
 
@@ -519,18 +517,13 @@ public class AddActionFragment extends Fragment {
     }
 
 
-    public void saveEdits(){
-        String actionTaken = spinner_actionTaken.getSelectedItem().toString();
-        String newStatus = spinner_updateStatus.getSelectedItem().toString();
-
-        //NOTE  -- handled in notes dialog. new notes added to newActionNotes arrayList
-
-        //TODO: don't edit immediately, allow confirm first
-        mActionToEdit.setActionTakenString(actionTaken);
-        mActionToEdit.setHours(hoursEntered);
-        mActionToEdit.setUpdatedStatus(newStatus);
-        mActionToEdit.setNotes(newActionNotes);
-        mActionToEdit.setDateStamp(new Date(System.currentTimeMillis()));
+    public boolean saveEdits(){
+        if (spinner_actionTaken.getSelectedItemPosition() == 0){
+            //layout_action.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
+            layout_action.findViewById(R.id.alert_action_required).setVisibility(View.VISIBLE);
+            return false; //Failure, an action taken is required!
+        }
+        return true;
     }
 
     /* Get all values from form. Create Action object.
