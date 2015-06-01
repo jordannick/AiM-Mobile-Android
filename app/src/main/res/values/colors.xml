@@ -70,6 +70,7 @@
         <color name="sliding_tab_layout_selected_title">#FFFFFF</color>
         <color name="sliding_tab_layout_unselected_title">#A6FFFFFF</color>
 
+    <color name="dimOverlay">#4D000000</color>
 </resources>
 
 

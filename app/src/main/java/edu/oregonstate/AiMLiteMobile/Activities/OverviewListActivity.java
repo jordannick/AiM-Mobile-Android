@@ -1,6 +1,7 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
 import android.app.AlertDialog;
+import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,8 +10,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +39,9 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
     private SlidingTabLayout mSlidingTabLayout;
     private OverviewPagerItem dailyPagerItem;
     private OverviewPagerItem backlogPagerItem;
+    private View dimOverlay;
+
+    private final List<OverviewPagerItem> mTabs = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +50,12 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
 
         sCurrentUser = CurrentUser.get(getApplicationContext());
 
+        dimOverlay = findViewById(R.id.dim_overlay);
+
         // Create tab and pager items
-        final List<OverviewPagerItem> mTabs = new ArrayList<>();
-        mTabs.add(new OverviewPagerItem("Daily", 0 ,getResources().getColor(R.color.tab_color), Color.GRAY));
-        mTabs.add(new OverviewPagerItem("Backlog", 0 ,getResources().getColor(R.color.tab_color), Color.GRAY));
+
+        mTabs.add(new OverviewPagerItem("Overview",getResources().getColor(R.color.tab_color), Color.GRAY));
+        mTabs.add(new OverviewPagerItem("Work Orders",getResources().getColor(R.color.tab_color), Color.GRAY));
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -120,6 +131,26 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
         logoutDialog.show();
     }
 
+    public void lockScreen(){
+        Log.d(TAG, "dim overlay appear");
+        dimOverlay.setVisibility(View.VISIBLE);
+
+        Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in_dim);
+        fadeInAnimation.setFillAfter(true);
+
+        dimOverlay.startAnimation(fadeInAnimation);
+    }
+
+    public void unlockScreen(){
+        Log.d(TAG, "dim overlay gone");
+        dimOverlay.setVisibility(View.INVISIBLE);
+
+        Animation fadeOutAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out_dim);
+        fadeOutAnimation.setFillBefore(true);
+
+        dimOverlay.startAnimation(fadeOutAnimation);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_overview_list, menu);
@@ -148,6 +179,12 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void scrollToPosition(int position){
+        mViewPager.setCurrentItem(1, true);
+
+        ((OverviewListFragment)mTabs.get(1).getFragment()).getListView().smoothScrollToPositionFromTop(14, 0, 1000);
     }
 
 }

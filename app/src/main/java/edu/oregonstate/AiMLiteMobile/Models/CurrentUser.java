@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by jordan_n on 8/13/2014.
@@ -108,7 +110,30 @@ public class CurrentUser {
     public void setWorkOrders(ArrayList<WorkOrder> newWorkOrders) {
         //Want to keep same list reference, so just clearing it here and add repopulating
         mWorkOrders.clear();
+        logWorkOrderStatus("PRE", newWorkOrders);
+        Collections.sort(newWorkOrders, new Comparator<WorkOrder>() {
+            @Override
+            public int compare(WorkOrder lhs, WorkOrder rhs) {
+                if (lhs.getSectionNum() == rhs.getSectionNum()) {
+                    return 1;
+                } else if (lhs.getSectionNum() < rhs.getSectionNum()) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            }
+        });
+        logWorkOrderStatus("POST", newWorkOrders);
         mWorkOrders.addAll(newWorkOrders);
+    }
+
+    private void logWorkOrderStatus(String str, ArrayList<WorkOrder> workOrders){
+        Log.d(TAG, "BEGIN " + str);
+        for (int i = 0; i < workOrders.size(); i++) {
+            Log.d(TAG, i + " : sec: " + workOrders.get(i).getSectionNum() + " , " + workOrders.get(i).getBeginDate());
+
+        }
+        Log.d(TAG, "END " + str);
     }
 
     public ArrayList<WorkOrder> getWorkOrders(){

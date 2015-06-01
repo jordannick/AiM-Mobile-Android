@@ -43,6 +43,14 @@ xmlns:android="http://schemas.android.com/apk/res/android"
                 android:paddingLeft="6dp"
                 android:paddingRight="6dp"
                 android:paddingBottom="0dp"/>
+
+            <TextView
+                android:id="@+id/row_section"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="test"
+                android:textSize="20sp"
+                />
             <LinearLayout
                 android:id="@+id/actionRow_dateLayout"
                 android:layout_width="fill_parent"

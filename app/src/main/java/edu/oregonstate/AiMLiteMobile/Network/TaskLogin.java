@@ -25,6 +25,7 @@ public class TaskLogin extends AsyncTask<Action, Void, ResponsePair> {
     public interface OnLoginCompleted {
         void onLoginSuccess();
         void onLoginFail();
+        void onNetworkFail();
     }
 
     public TaskLogin(OnLoginCompleted listener, String url, Context context) {
@@ -46,18 +47,17 @@ public class TaskLogin extends AsyncTask<Action, Void, ResponsePair> {
                 Log.i(TAG, "Auth Fail");
                 listener.onLoginFail();
                 break;
-            case NET_FAIL://TODO indicate no network on login screen
+            case NET_FAIL:
                 Log.i(TAG, "Net Fail");
-                //listener.onNetworkFail();
-                listener.onLoginFail();
+                listener.onNetworkFail();
                 break;
             case JSON_FAIL:
                 Log.i(TAG, "JSON Fail");
-                listener.onLoginFail();
+                listener.onNetworkFail();
                 break;
             case NO_DATA:
                 Log.i(TAG, "No data");
-                listener.onLoginFail();
+                listener.onNetworkFail();
                 break;
             default:
                 break;

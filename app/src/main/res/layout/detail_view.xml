@@ -119,13 +119,14 @@
         <Switch
             android:id="@+id/sectionSwitch"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="64dp"
             android:textOn="Backlog"
             android:textOff="Daily"
             android:layout_gravity="center"
             android:gravity="center"
             android:textAlignment="center"
             android:thumbTextPadding="64dp"
+
             />
 
         <TextView

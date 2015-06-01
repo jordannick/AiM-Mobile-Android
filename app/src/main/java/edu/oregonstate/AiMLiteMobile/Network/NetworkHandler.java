@@ -104,7 +104,7 @@ public class NetworkHandler {
     public void postUnsyncedActions() {
         ResponsePair responsePair;
         ArrayList<Action> unsyncedActions = sCurrentUser.getUnsyncedActions();
-        //TODO: how are actions "synced"
+
         for (int i = 0; i < unsyncedActions.size(); i++) {
             Action unsyncedAction = unsyncedActions.get(i);
             Log.d(TAG, " ------------ Syncing... ------------ ");

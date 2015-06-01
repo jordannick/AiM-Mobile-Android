@@ -151,7 +151,7 @@
                 android:id="@+id/contact_emailAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="paul.marrow@google.com"
+                android:text="test.email@gmail.com"
                 android:textSize="16sp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="24dp"

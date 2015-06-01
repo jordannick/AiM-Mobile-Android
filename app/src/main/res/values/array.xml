@@ -8,12 +8,11 @@
     </string-array>
 
     <string-array name="actionTakenItems">
-        <item>No Action</item>
-        <item>Custom</item>
-        <item>Material Request</item>
-        <item>Team Bonding</item>
-        <item>Critical Action</item>
-        <item>Preventive Maintenance</item>
+        <item>No action</item>
+        <item>Material request</item>
+        <item>Waiting on parts</item>
+        <item>Did an action</item>
+        <item>Preventive maintenance</item>
     </string-array>
 
 </resources>

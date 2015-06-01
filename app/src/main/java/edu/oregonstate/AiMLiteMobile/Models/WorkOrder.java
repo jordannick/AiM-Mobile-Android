@@ -24,6 +24,7 @@ public class WorkOrder implements Serializable {
     String mDateCreated;
     String mStatus;
     String mSection;
+    int mSectionNum;
     int mPriorityColor;
 
     ArrayList<Note> mNotes;
@@ -276,8 +277,32 @@ public class WorkOrder implements Serializable {
         return mSection;
     }
 
+    public int getSectionNum() {
+        return mSectionNum;
+    }
+
+    public void setSectionNum(int mSectionNum) {
+        this.mSectionNum = mSectionNum;
+    }
+
     public void setSection(String mSection) {
         this.mSection = mSection;
+        int num = -1;
+        switch (mSection){
+            case "Daily":
+                num = 0;
+                break;
+            case "Backlog":
+                num = 1;
+                break;
+            case "Admin":
+                num = 2;
+                break;
+            case "Recently Completed":
+                num = 3;
+                break;
+        }
+        setSectionNum(num);
     }
 
 }

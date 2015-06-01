@@ -102,7 +102,7 @@ public class AddActionFragment extends Fragment {
         Log.d(TAG, "FRAG editMode = "+editMode);
 
         // Save the reference for rotation changes
-        //TODO: Don't want to save for non-rotations, i.e. reusing fragment later
+
         if (savedInstanceState != null){
             mWorkOrder = (WorkOrder) savedInstanceState.getSerializable("WorkOrder");
             mActionToEdit = (Action) savedInstanceState.getSerializable("Action");
@@ -206,11 +206,11 @@ public class AddActionFragment extends Fragment {
                 label_action.setTextColor(getResources().getColor(R.color.addAction_sectionTitles));*/
                 //When "Custom" is selected, start dialog
 
-                if (position == 1) {
+                /*if (position == 1) {
                     Log.d(TAG, "created custom action entry dialog");
                     createCustomActionEntryDialog((TextView) view);
 
-                }
+                }*/
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -269,9 +269,9 @@ public class AddActionFragment extends Fragment {
                 final EditText input = new EditText(getActivity());
 
                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
-                input.setPadding(8, 8, 8, 8);
+                input.setPadding(8, 16, 8, 16);
                 input.setFilters(new InputFilter[]{new InputFilterMinMax(HOURS_MIN, HOURS_MAX), new InputFilter.LengthFilter(1)});
-                input.setWidth(50);
+                input.setGravity(Gravity.CENTER);
                 enterHoursAlert.setView(input);
 
                 enterHoursAlert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -298,6 +298,8 @@ public class AddActionFragment extends Fragment {
                 AlertDialog alert = enterHoursAlert.create();
                 alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                 alert.show();
+
+                alert.getWindow().setLayout(500, 500);
             }
         });
 
@@ -329,7 +331,7 @@ public class AddActionFragment extends Fragment {
     private void createCustomActionEntryDialog(TextView textView){
         final AlertDialog.Builder enterActionAlert = new AlertDialog.Builder(mActivity);
         enterActionAlert.setTitle("Enter action:");
-        //TODO populate if editing
+
         final EditText input = new EditText(getActivity());
 
         final TextView actionCustomText = textView;
@@ -465,21 +467,19 @@ public class AddActionFragment extends Fragment {
         Button cancelButton = (Button)dialogView.findViewById(R.id.dialogConfirm_buttonCancel);
         final AlertDialog alert = confirmAddActionDialog.create();
 
-        //TODO: edit mode should only save edits if it reached this point
         if (editMode){
             confirmButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String actionTaken;
+                   /* String actionTaken;
                     if (customActionText == null || customActionText == "") {
                         actionTaken = spinner_actionTaken.getSelectedItem().toString();
                     } else {
                         actionTaken = customActionText;
-                    }
-
+                    }*/
+                    String actionTaken = spinner_actionTaken.getSelectedItem().toString();
                     String newStatus = spinner_updateStatus.getSelectedItem().toString();
 
-                    //TODO: don't edit immediately, allow confirm first
                     mActionToEdit.setActionTakenString(actionTaken);
                     mActionToEdit.setHours(hoursEntered);
                     mActionToEdit.setUpdatedStatus(newStatus);
@@ -542,9 +542,9 @@ public class AddActionFragment extends Fragment {
             //layout_action.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
             layout_action.findViewById(R.id.alert_action_required).setVisibility(View.VISIBLE);
             return false; //Failure, an action taken is required!
-        } else if (spinner_actionTaken.getSelectedItemPosition() == 1){
+        } /*else if (spinner_actionTaken.getSelectedItemPosition() == 1){
             actionTaken = customActionText;
-        }
+        }*/
 
         //STATUS
         if(!selectedStatus.equals(currentStatus)){

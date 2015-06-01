@@ -15,8 +15,9 @@ import android.support.v4.view.ViewCompat;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
-import edu.oregonstate.AiMLiteMobile.Activities.DetailActivity;
+import edu.oregonstate.AiMLiteMobile.Activities.OverviewListActivity;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
+import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
 import edu.oregonstate.AiMLiteMobile.Network.TaskGetWorkOrders;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Adapters.WorkOrderAdapter;
@@ -53,6 +54,7 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
             @Override
             public void onRefresh() {
                 updateWorkOrderList();
+                ((OverviewListActivity)getActivity()).lockScreen();
             }
         });
 
@@ -108,13 +110,13 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
     public void onActivityCreated(Bundle savedInstanceState) {
         getActivity().setTitle("Work Order List");
         sCurrentUser = CurrentUser.get(getActivity().getApplicationContext());
-        Bundle bundle = this.getArguments();
 
+        /*Bundle bundle = this.getArguments();
         //Retrieve section from bundle, filter this fragment instance to display either Daily or Backlog
         final String sectionFilter = bundle.getString("sectionFilter");
-        final WorkOrderAdapter adapter = new WorkOrderAdapter(getActivity(), sCurrentUser.getWorkOrders());
-        adapter.getFilter().filter(sectionFilter);
+        adapter.getFilter().filter(sectionFilter);*/
 
+        final WorkOrderAdapter adapter = new WorkOrderAdapter(getActivity(), sCurrentUser.getWorkOrders());
         setListAdapter(adapter);
         getListView().setDividerHeight(0);
 
@@ -136,8 +138,11 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        WorkOrder wo = ((WorkOrderAdapter)getListAdapter()).getItem(position);
-        mCallbacks.onWorkOrderSelected(wo);
+        WorkOrderListItem item = ((WorkOrderAdapter)getListAdapter()).getItem(position);
+        if (item.getType() == WorkOrderListItem.Type.ITEM) {
+            mCallbacks.onWorkOrderSelected(item.getWorkOrder());
+        }
+
     }
 
     //Callback methods
@@ -145,6 +150,7 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
         if (mSwipeRefreshLayout.isRefreshing()){
             mSwipeRefreshLayout.setRefreshing(false);
         }
+        ((OverviewListActivity)getActivity()).unlockScreen();
         updateUI();
         SnackbarManager.show(Snackbar.with(getActivity()).text("Updated " + sCurrentUser.getLastUpdated()).duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
     }
@@ -153,6 +159,7 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
         if (mSwipeRefreshLayout.isRefreshing()){
             mSwipeRefreshLayout.setRefreshing(false);
         }
+        ((OverviewListActivity)getActivity()).unlockScreen();
         SnackbarManager.show(Snackbar.with(getActivity()).text("Network Access Failed").actionLabel("DISMISS").actionColor(Color.RED).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE));
     }
 

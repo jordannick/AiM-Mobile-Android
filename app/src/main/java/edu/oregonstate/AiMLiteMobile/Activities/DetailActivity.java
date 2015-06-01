@@ -62,7 +62,7 @@ public class DetailActivity extends FragmentActivity implements DetailNotesFragm
         final List<DetailPagerItem> mTabs = new ArrayList<>();
         mTabs.add(new DetailPagerItem("Overview", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailMainFragment()));
         mTabs.add(new DetailPagerItem("Notes", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailNotesFragment()));
-        mTabs.add(new DetailPagerItem("Contact", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailContactFragment()));
+        mTabs.add(new DetailPagerItem("Requestor", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailContactFragment()));
 
         //Set ViewPager Adapter
         mViewPager = (ViewPager) findViewById(R.id.viewpager);

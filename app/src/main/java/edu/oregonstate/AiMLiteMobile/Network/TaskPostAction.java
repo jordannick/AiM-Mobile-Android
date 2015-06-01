@@ -25,7 +25,7 @@ public class TaskPostAction extends AsyncTask<Action, Void, ResponsePair> {
         void onAuthenticateFail();
     }
 
-    public TaskPostAction(OnTaskCompleted listener, String url, Context context) {
+    public TaskPostAction(OnTaskCompleted listener, Context context) {
         this.listener = listener;
         this.mContext = context;
         this.sCurrentUser = CurrentUser.get(context);

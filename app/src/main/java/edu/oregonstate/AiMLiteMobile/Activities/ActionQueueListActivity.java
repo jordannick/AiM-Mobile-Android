@@ -52,9 +52,8 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
 
     //Start the HTTP POSTs to submit actions from queue.
     //Remove from queue upon successful POST
-    //TODO put in real url
     public void syncActions(){
-        final TaskPostAction task = new TaskPostAction(this, "testurl",getApplicationContext());
+        final TaskPostAction task = new TaskPostAction(this, getApplicationContext());
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

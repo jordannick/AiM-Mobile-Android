@@ -9,11 +9,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
@@ -71,11 +73,11 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
                 break;
             case JSON_FAIL:
                 Log.i(TAG, "JSON Fail");
-                // listener.onNetworkFail();//TODO: custom json failure handler
+                listener.onNetworkFail();//TODO: custom json failure handler
                 break;
             case NO_DATA:
                 Log.i(TAG, "No data");
-                //  listener.onNetworkFail();//TODO: no network no data, should tell user to get network access
+                listener.onNetworkFail();//TODO: no network no data, should tell user to get network access
                 break;
             default:
                 break;
@@ -174,14 +176,22 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
                     wo.setDepartment(mJsonObj.getString("department"));
                     wo.setProposalPhase(String.format("%s-%s", mJsonObj.getString("proposal"), mJsonObj.getString("sort_code")));
 
+                    Random rand = new Random();
+                    if(rand.nextInt(100)%2 == 0){
+                        wo.setSection("Daily");
+                    }else if(rand.nextInt(100)%2 == 0){
+                        wo.setSection("Backlog");
+                    }else{
+                        wo.setSection("Admin");
+                    }
 
-                    // %%%% TEST BLOCK - marks first 5 as daily
+/*                    // %%%% TEST BLOCK - marks first 5 as daily
                     if (i < 5){
                         wo.setSection("Daily");
                     } else {
                         wo.setSection("Backlog");
                     }
-                    // %%%%
+                    // %%%%*/
 
                     mWorkOrders.add(wo);
                 }
@@ -201,11 +211,13 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
         sCurrentUser.getPrefsEditor().putLong("last_updated", retrievedDate.getTime());
         sCurrentUser.getPrefsEditor().apply();
 
+
         //Save the work orders array into current user
         sCurrentUser.setWorkOrders(mWorkOrders);
 
         return responsePair;
     }
+
 
     //Gets the last updated time from url, compares with stored time.
     private boolean isRefreshNeeded(){

@@ -11,6 +11,14 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs {
+        release {
+            storeFile file("C:\\Users\\sellersk\\Documents\\AimLite Release\\keystores\\keystore.release.jks")
+            storePassword "OakCreek116"
+            keyAlias "AimLiteKey"
+            keyPassword "OakCreek116"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false // new version

@@ -3,6 +3,7 @@ package edu.oregonstate.AiMLiteMobile.Helpers;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import edu.oregonstate.AiMLiteMobile.Fragments.OverviewFragment;
 import edu.oregonstate.AiMLiteMobile.Fragments.OverviewListFragment;
 
 /**
@@ -15,14 +16,19 @@ public class OverviewPagerItem {
     private final int mDividerColor;
     private final Fragment mFragment;
 
-    public OverviewPagerItem(CharSequence title, int sectionCount, int indicatorColor, int dividerColor) {
-        mTitle = title;// + " - " +String.valueOf(sectionCount);
+    public OverviewPagerItem(CharSequence title, int indicatorColor, int dividerColor) {
+        if(title == "Overview"){
+            mFragment = new OverviewFragment();
+        }else{
+            mFragment = new OverviewListFragment();
+        }
+        mTitle = title;
         mIndicatorColor = indicatorColor;
         mDividerColor = dividerColor;
-        mFragment = new OverviewListFragment();
+/*        mFragment = new OverviewListFragment();
         Bundle bundle = new Bundle();
         bundle.putString("sectionFilter", title.toString());
-        mFragment.setArguments(bundle);
+        mFragment.setArguments(bundle);*/
     }
 
     public CharSequence getTitle() {

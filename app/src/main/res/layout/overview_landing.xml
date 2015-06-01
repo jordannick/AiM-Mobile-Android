@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <Button
+            android:id="@+id/button_scrollToDaily"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Daily"
+            android:height="128dp"
+            android:width="128dp"
+            android:layout_margin="8dp"/>
+        <Button
+            android:id="@+id/button_scrollToBacklog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Backlog"
+            android:height="128dp"
+            android:width="128dp"
+            android:layout_margin="8dp"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <Button
+            android:id="@+id/button_scrollToAdmin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin"
+            android:height="128dp"
+            android:width="128dp"
+            android:layout_margin="8dp"/>
+        <Button
+            android:id="@+id/button_scrollToCompleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recently Completed"
+            android:height="128dp"
+            android:width="128dp"
+            android:layout_margin="8dp"/>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:text="Notices"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:text="Time Log"
+        android:layout_gravity="center"/>
+
+</LinearLayout>

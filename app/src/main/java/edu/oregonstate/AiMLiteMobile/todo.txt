@@ -1,35 +1,22 @@
-Add "Network Failure error" notification to display on failed login..       KIND OF
+Add "Network Failure error" notification to display on failed login..
+    -Disallow bad username
 
 
-Add onclick shade effect to list items
+Implement backlog/daily switch
 
 
-Add two tabs to main list... Backlog and Daily Assignments                  DONE
+Fix enter hours dialog
 
 
-Add ability to switch work order between backlog and daily -- back and forth toggle thing
+"No notes" text on View notes in NewActionForm
 
 
-
-Show workOrderID on details page in another spot than just the title        DONE
-
-
-Implement edit action ability from action queue list                        DONE
+On edit action from ActionQueueList, change title to "Edit Action"
 
 
-Handle add action fragment differently for adding new action and
-    just rotating screen on add action window.
-    i.e. clear all variables on new action, but keep variables on rotate
+screen rotate on newActionForm needs to display 'hours cancel' X
 
 
-If you already have status change in an action for a specific work order,
-    don't allow another status change in a new action -- maybe not a big deal
-
-
-Figure out final authorization format, i.e. send username+password
-
-
-Implement http POST calls for add/update methods
 
 
 
