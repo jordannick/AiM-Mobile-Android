@@ -56,35 +56,35 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
 
         int i = 0;
 
-        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Daily", null));
+        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Daily", "&#xf0f4;", null));
         sectionDailyIndex = i;
 
         while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 0){
-            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, mWorkOrders.get(i)));
+            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, null, mWorkOrders.get(i)));
             i++;
         }
 
-        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Backlog", null));
+        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Backlog", "&#xf16c;", null));
         sectionBacklogIndex = i;
 
         while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 1){
-            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, mWorkOrders.get(i)));
+            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, null, mWorkOrders.get(i)));
             i++;
         }
 
-        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Admin", null));
+        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Admin", "&#xf01e;", null));
         sectionAdminIndex = i;
 
         while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 2){
-            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, mWorkOrders.get(i)));
+            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, null, mWorkOrders.get(i)));
             i++;
         }
 
-        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Recently Completed", null));
+        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Recently Completed", "&#xf046;", null));
         sectionCompletedIndex = i;
 
         while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 3){
-            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, mWorkOrders.get(i)));
+            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, null, mWorkOrders.get(i)));
             i++;
         }
 
@@ -130,6 +130,7 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
                 convertView = inflator.inflate(R.layout.list_item_section, parent, false);
             }
             ((TextView)convertView.findViewById(R.id.listItem_section)).setText(item.getSectionTitle());
+            ((TextView)convertView.findViewById(R.id.listItem_section_icon)).setText(item.getSectionIcon());
 
         } else {
             WorkOrder wo = item.getWorkOrder();

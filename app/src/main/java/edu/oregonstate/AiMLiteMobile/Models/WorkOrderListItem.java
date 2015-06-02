@@ -7,8 +7,9 @@ public class WorkOrderListItem {
 
     public static int numTypes = 2;
 
-    public WorkOrderListItem(Type type, String sectionTitle, WorkOrder workOrder) {
+    public WorkOrderListItem(Type type, String sectionTitle, String sectionIcon, WorkOrder workOrder) {
         this.type = type;
+        this.sectionIcon = sectionIcon;
         this.sectionTitle = sectionTitle;
         this.workOrder = workOrder;
     }
@@ -19,6 +20,7 @@ public class WorkOrderListItem {
     }
 
     private String sectionTitle;
+    private String sectionIcon;
     private WorkOrder workOrder;
 
     public Type getType() {
@@ -43,5 +45,13 @@ public class WorkOrderListItem {
 
     public void setWorkOrder(WorkOrder workOrder) {
         this.workOrder = workOrder;
+    }
+
+    public String getSectionIcon() {
+        return sectionIcon;
+    }
+
+    public void setSectionIcon(String sectionIcon) {
+        this.sectionIcon = sectionIcon;
     }
 }
