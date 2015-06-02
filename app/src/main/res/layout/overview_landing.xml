@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="fill_parent">
 
     <LinearLayout
@@ -8,22 +10,94 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center">
-        <Button
-            android:id="@+id/button_scrollToDaily"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Daily"
-            android:height="128dp"
-            android:width="128dp"
-            android:layout_margin="8dp"/>
-        <Button
-            android:id="@+id/button_scrollToBacklog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Backlog"
-            android:height="128dp"
-            android:width="128dp"
-            android:layout_margin="8dp"/>
+        <android.support.v7.widget.CardView
+            android:layout_width="136dp"
+            android:layout_height="136dp"
+            android:layout_margin="8dp"
+            app:cardBackgroundColor="#4CAF50">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                >
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/overviewLanding_daily_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="icon"
+                        android:textSize="18dp"
+                        android:textColor="@android:color/white"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Daily"
+                        android:textSize="16dp"
+                        android:padding="8dp"
+                        android:textColor="@android:color/white"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4"
+                    android:textSize="22dp"
+                    android:padding="8dp"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"/>
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="136dp"
+            android:layout_height="136dp"
+            android:layout_margin="8dp"
+            app:cardBackgroundColor="#009688">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                >
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/overviewLanding_backlog_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="icon"
+                        android:textSize="18dp"
+                        android:textColor="@android:color/white"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Backlog"
+                        android:textSize="16dp"
+                        android:padding="8dp"
+                        android:textColor="@android:color/white"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="22"
+                    android:textSize="22dp"
+                    android:padding="8dp"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"/>
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 
 
@@ -32,34 +106,156 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center">
-        <Button
-            android:id="@+id/button_scrollToAdmin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Admin"
-            android:height="128dp"
-            android:width="128dp"
-            android:layout_margin="8dp"/>
-        <Button
-            android:id="@+id/button_scrollToCompleted"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Recently Completed"
-            android:height="128dp"
-            android:width="128dp"
-            android:layout_margin="8dp"/>
+        <android.support.v7.widget.CardView
+            android:layout_width="136dp"
+            android:layout_height="136dp"
+            android:layout_margin="8dp"
+            app:cardBackgroundColor="#039BE5">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                >
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/overviewLanding_admin_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="icon"
+                        android:textSize="18dp"
+                        android:textColor="@android:color/white"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Admin"
+                        android:textSize="16dp"
+                        android:padding="8dp"
+                        android:textColor="@android:color/white"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="7"
+                    android:textSize="22dp"
+                    android:padding="8dp"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"/>
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="136dp"
+            android:layout_height="136dp"
+            android:layout_margin="8dp"
+            app:cardBackgroundColor="#3F51B5">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                >
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/overviewLanding_recentlyCompleted_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="icon"
+                        android:textSize="18dp"
+                        android:textColor="@android:color/white"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Completed"
+                        android:textSize="16dp"
+                        android:padding="8dp"
+                        android:textColor="@android:color/white"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="22dp"
+                    android:padding="8dp"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"/>
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 
-    <Button
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:text="Notices"
-        android:layout_gravity="center"/>
 
-    <Button
-        android:layout_width="256dp"
+    <android.support.v7.widget.CardView
+        android:layout_width="288dp"
         android:layout_height="wrap_content"
-        android:text="Time Log"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        app:cardBackgroundColor="#607D8B"
+        android:layout_margin="8dp">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/overviewLanding_notices_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="icon"
+                android:textSize="18dp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notices (3)"
+                android:textSize="22dp"
+                android:padding="8dp"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="288dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:cardBackgroundColor="#607D8B"
+        android:layout_margin="8dp">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/overviewLanding_timeLog_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="icon"
+                android:textSize="18dp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time Log"
+                android:textSize="22dp"
+                android:padding="8dp"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>
