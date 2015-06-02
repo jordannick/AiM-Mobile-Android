@@ -65,7 +65,8 @@ public class CurrentUser {
             autologin: bool
             username: string
             password: string
-            jsondata: string
+            work_order_data: string
+            notice_data: string
     */
     public SharedPreferences getPrefs() {
         if (prefs == null) {
@@ -110,7 +111,7 @@ public class CurrentUser {
     public void setWorkOrders(ArrayList<WorkOrder> newWorkOrders) {
         //Want to keep same list reference, so just clearing it here and add repopulating
         mWorkOrders.clear();
-        logWorkOrderStatus("PRE", newWorkOrders);
+        //logWorkOrderStatus("PRE", newWorkOrders);
         Collections.sort(newWorkOrders, new Comparator<WorkOrder>() {
             @Override
             public int compare(WorkOrder lhs, WorkOrder rhs) {
@@ -123,7 +124,7 @@ public class CurrentUser {
                 }
             }
         });
-        logWorkOrderStatus("POST", newWorkOrders);
+        //logWorkOrderStatus("POST", newWorkOrders);
         mWorkOrders.addAll(newWorkOrders);
     }
 

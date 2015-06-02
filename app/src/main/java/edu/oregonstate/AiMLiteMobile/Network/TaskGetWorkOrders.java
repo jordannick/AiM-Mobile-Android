@@ -96,6 +96,10 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
             if (needRefresh || forceRefresh) {
                 try {
                     responsePair = sNetworkHandler.downloadUrl(sCurrentUser.getURLGetAll(), true, responsePair);
+                    ResponsePair testNoticeResponsePair = new ResponsePair(ResponsePair.Status.NONE, null);
+                    testNoticeResponsePair = sNetworkHandler.downloadUrl(sCurrentUser.getURLGetNotices(), true, testNoticeResponsePair);
+                    Log.d(TAG, "testNoticeResponse: " +testNoticeResponsePair.getStatus() + " ; "+testNoticeResponsePair.getJarray());
+
                 } catch (IOException e){
                     Log.e(TAG, e.toString());
                 }
@@ -109,7 +113,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
                 //Have network but don't need refresh. Assume data exists locally. Is this even needed? Maybe from login?
                 try {
                     Log.i(TAG, "Retrieving stored data");
-                    json = new JSONArray(sCurrentUser.getPrefs().getString("jsondata", "[]"));
+                    json = new JSONArray(sCurrentUser.getPrefs().getString("work_order_data", "[]"));
                     responsePair.setStatus(ResponsePair.Status.SUCCESS);
                 }
                 catch (JSONException e){
@@ -121,11 +125,11 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
         }
 
         //No network, try getting the stored data
-        else if (sCurrentUser.getPrefs().contains("jsondata")) {
+        else if (sCurrentUser.getPrefs().contains("work_order_data")) {
 
             try {
                 Log.i(TAG, "Trying to get stored data");
-                json = new JSONArray(sCurrentUser.getPrefs().getString("jsondata", "[]"));
+                json = new JSONArray(sCurrentUser.getPrefs().getString("work_order_data", "[]"));
                 responsePair.setStatus(ResponsePair.Status.SUCCESS);
             }
             catch (JSONException e){
@@ -149,7 +153,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
             3) no network, and stored data exists
 
         Flow of first time run to get data:
-            There is network, refresh needed, fills data, saves local jsondata in prefs
+            There is network, refresh needed, fills data, saves local work_order_data in prefs
         */
 
         if (json == null) {
@@ -204,7 +208,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
 
         //Save the raw json array for offline use
         String jsonStr = json.toString();
-        sCurrentUser.getPrefsEditor().putString("jsondata", jsonStr);
+        sCurrentUser.getPrefsEditor().putString("work_order_data", jsonStr);
 
         //Save time in last updated
         Log.i(TAG, "Saving new last_updated: " + retrievedDate);

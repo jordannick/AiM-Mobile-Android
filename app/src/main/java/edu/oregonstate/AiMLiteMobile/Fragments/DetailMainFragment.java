@@ -80,7 +80,7 @@ public class DetailMainFragment extends Fragment{
         ((TextView)v.findViewById(R.id.priorityTextView)).setBackgroundResource(mWorkOrder.getPriorityColor());
 
         //TODO - I think the below changing the INSTANCE of the work order, rather than work order object displayed in overview list
-        if (mWorkOrder.getSection().equals("Backlog"))((CompoundButton)v.findViewById(R.id.sectionSwitch)).setChecked(true);
+        /*if (mWorkOrder.getSection().equals("Backlog"))((CompoundButton)v.findViewById(R.id.sectionSwitch)).setChecked(true);
         ((CompoundButton)v.findViewById(R.id.sectionSwitch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -93,7 +93,7 @@ public class DetailMainFragment extends Fragment{
                     //SnackbarManager.show(Snackbar.with(getActivity()).text("Moved to daily").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
                 }
             }
-        });
+        });*/
 
         mWorkOrder.getBeginDate();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);

@@ -116,7 +116,7 @@
 
         </LinearLayout>
 
-        <Switch
+      <!--  <Switch
             android:id="@+id/sectionSwitch"
             android:layout_width="fill_parent"
             android:layout_height="64dp"
@@ -127,7 +127,7 @@
             android:textAlignment="center"
             android:thumbTextPadding="64dp"
 
-            />
+            />-->
 
         <TextView
             android:layout_width="wrap_content"
