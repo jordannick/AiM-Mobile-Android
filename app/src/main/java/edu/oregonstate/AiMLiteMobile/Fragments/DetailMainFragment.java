@@ -57,7 +57,7 @@ public class DetailMainFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.detail_view, parent, false);
+        View v = inflater.inflate(R.layout.detail_view_test, parent, false);
         this.v = v;
         return v;
     }
@@ -69,8 +69,8 @@ public class DetailMainFragment extends Fragment{
         getActivity().setTitle("Work Order");
 
         /**/
-        ((TextView)v.findViewById(R.id.idTextView)).setText(mWorkOrder.getProposalPhase());
-        ((TextView)v.findViewById(R.id.buildingTextView)).setText(mWorkOrder.getBuilding());
+//        ((TextView)v.findViewById(R.id.idTextView)).setText(mWorkOrder.getProposalPhase());
+        ((TextView)v.findViewById(R.id.workOrderLocationText)).setText(mWorkOrder.getBuilding());
         ((TextView)v.findViewById(R.id.descriptionTextView)).setText(mWorkOrder.getDescription());
         ((TextView)v.findViewById(R.id.workCodeTextView)).setText(mWorkOrder.getCraftCode());
         ((TextView)v.findViewById(R.id.shopTextView)).setText(mWorkOrder.getShop());
@@ -80,7 +80,7 @@ public class DetailMainFragment extends Fragment{
         ((TextView)v.findViewById(R.id.priorityTextView)).setBackgroundResource(mWorkOrder.getPriorityColor());
 
         //TODO - I think the below changing the INSTANCE of the work order, rather than work order object displayed in overview list
-        if (mWorkOrder.getSection().equals("Backlog"))((CompoundButton)v.findViewById(R.id.sectionSwitch)).setChecked(true);
+        /*if (mWorkOrder.getSection().equals("Backlog"))((CompoundButton)v.findViewById(R.id.sectionSwitch)).setChecked(true);
         ((CompoundButton)v.findViewById(R.id.sectionSwitch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -93,7 +93,7 @@ public class DetailMainFragment extends Fragment{
                     //SnackbarManager.show(Snackbar.with(getActivity()).text("Moved to daily").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
                 }
             }
-        });
+        });*/
 
         mWorkOrder.getBeginDate();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
@@ -125,7 +125,7 @@ public class DetailMainFragment extends Fragment{
             Log.e(TAG, "Calendar formatting error: " + e);
         }
 
-        ((TextView)v.findViewById(R.id.estTextView)).setText(estText);
+       // ((TextView)v.findViewById(R.id.estTextView)).setText(estText);
     }
 
 

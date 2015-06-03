@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -59,6 +60,7 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
         int i = 0;
 
         listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Daily", R.string.icon_daily, null));
+
         sectionDailyIndex = i;
 
         while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 0){
@@ -67,6 +69,7 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
         }
 
         listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Backlog", R.string.icon_backlog, null));
+
         sectionBacklogIndex = i;
 
         while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 1){
@@ -75,6 +78,7 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
         }
 
         listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Admin", R.string.icon_admin, null));
+
         sectionAdminIndex = i;
 
         while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 2){
@@ -83,6 +87,7 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
         }
 
         listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Recently Completed", R.string.icon_recentlyCompleted, null));
+
         sectionCompletedIndex = i;
 
         while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 3){
@@ -132,6 +137,7 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
                 convertView = inflator.inflate(R.layout.list_item_section, parent, false);
             }
             ((TextView)convertView.findViewById(R.id.listItem_section)).setText(item.getSectionTitle());
+
             Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/FontAwesome.otf");
             ((TextView)convertView.findViewById(R.id.listItem_section_icon)).setTypeface(tf);
             ((TextView)convertView.findViewById(R.id.listItem_section_icon)).setText(item.getSectionIcon());
@@ -143,14 +149,24 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
             }
             ((TextView)convertView.findViewById(R.id.row_proposal)).setText(wo.getProposalPhase());
             //%% DEBUG %%
-            ((TextView)convertView.findViewById(R.id.row_section)).setText(wo.getSection());
+            //((TextView)convertView.findViewById(R.id.row_section)).setText(wo.getSection());
             //%% END DEBUG %%
-            ((TextView)convertView.findViewById(R.id.row_dayOfWeek)).setText(wo.getDateElements()[0]);
-            ((TextView)convertView.findViewById(R.id.row_monthDay)).setText(wo.getDateElements()[1]);
+            //((TextView)convertView.findViewById(R.id.row_dayOfWeek)).setText(wo.getDateElements()[0]);
+           // ((TextView)convertView.findViewById(R.id.row_monthDay)).setText(wo.getDateElements()[1]);
             ((TextView)convertView.findViewById(R.id.actionRow_valueAgo)).setText(wo.getDateElements()[3]);
             ((TextView)convertView.findViewById(R.id.actionRow_stringAgo)).setText(wo.getDateElements()[4]);
             convertView.findViewById(R.id.row_proposal).setBackgroundResource(wo.getPriorityColor());
             ((TextView)convertView.findViewById(R.id.row_description)).setText(wo.getDescription());
+
+
+            ((ImageView)convertView.findViewById(R.id.imageView_urgent)).setVisibility(View.GONE);
+            ((ImageView)convertView.findViewById(R.id.imageView_timeSensitive)).setVisibility(View.GONE);
+            Log.d(TAG, "priority = "+wo.getPriority());
+            if (wo.getPriority().equals("URGENT")){
+                ((ImageView)convertView.findViewById(R.id.imageView_urgent)).setVisibility(View.VISIBLE);
+            } else if (wo.getPriority().equals("TIME SENSITIVE")){
+                ((ImageView)convertView.findViewById(R.id.imageView_timeSensitive)).setVisibility(View.VISIBLE);
+            }
         }
 
         return convertView;

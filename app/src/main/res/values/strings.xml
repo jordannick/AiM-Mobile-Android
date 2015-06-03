@@ -25,6 +25,9 @@
     <string name="icon_notices">&#xf0f3;</string>
     <string name="icon_timeLog">&#xf017;</string>
 
+    <string name="icon_moveToDaily">&#xf0aa;</string>
+    <string name="icon_moveToBacklog">&#xf0ab;</string>
+    <string name="icon_user">&#xf007;</string>
 
 
     <!--Add Action Fragment-->

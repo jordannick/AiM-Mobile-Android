@@ -44,75 +44,31 @@ xmlns:android="http://schemas.android.com/apk/res/android"
                 android:paddingRight="6dp"
                 android:paddingBottom="0dp"/>
 
-            <TextView
+            <ImageView
+                android:id="@+id/imageView_urgent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/urgent"
+                android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/imageView_timeSensitive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/time_sensitive"
+                android:visibility="gone"/>
+           <!-- <TextView
                 android:id="@+id/row_section"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="test"
                 android:textSize="20sp"
-                />
+                />-->
             <LinearLayout
                 android:id="@+id/actionRow_dateLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:gravity="end"
                 >
-                <TextView
-                    android:id="@+id/row_dayOfWeek"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Fri"
-                    android:layout_gravity="center"
-                    android:textColor="@android:color/tertiary_text_light"
-                    android:textSize="16sp"
-                    android:paddingRight="8dp"
-                    />
-
-                <TextView
-                    android:id="@+id/row_monthDay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="6/27/14"
-                    android:layout_gravity="center"
-                    android:textColor="@android:color/tertiary_text_light"
-                    android:textSize="16sp"
-                    android:paddingRight="4dp"/>
-                <!--            <TextView
-                                android:id="@+id/row_year"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="2014"
-                                android:textSize="10sp"
-                                android:layout_gravity="center"
-                                android:textColor="@color/overviewCard_workOrderNum"
-                                android:padding="2dp"/>-->
-            </LinearLayout>
-        </LinearLayout>
-
-        <!--android:textColor="@color/overviewCard_workOrderNum"-->
-
-
-        <LinearLayout
-            android:id="@+id/row_dateSection"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/actionRow_topHalfLayout"
-            android:orientation="vertical"
-            android:paddingLeft="6dp"
-            android:paddingRight="6dp"
-            android:paddingTop="2dp">
-
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-
                 <TextView
                     android:id="@+id/actionRow_valueAgo"
                     android:layout_width="wrap_content"
@@ -121,7 +77,6 @@ xmlns:android="http://schemas.android.com/apk/res/android"
                     android:textStyle="bold"
                     android:textColor="@android:color/tertiary_text_light"
                     android:textSize="18sp"
-                    android:layout_toLeftOf="@id/row_dateSection"
                     android:gravity="center_vertical"/>
                 <TextView
                     android:id="@+id/actionRow_stringAgo"
@@ -133,12 +88,14 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
             </LinearLayout>
         </LinearLayout>
+
+
+
         <TextView
             android:id="@+id/row_description"
             android:layout_width="fill_parent"
             android:layout_height="76dp"
             android:layout_below="@id/actionRow_topHalfLayout"
-            android:layout_toLeftOf="@id/row_dateSection"
             android:text="LANDSCAPE COMPOSTING SHED FOR THE MULTI-ANIMAL TEACHING FACILITY - PLANS REVIEW"
             android:textSize="16sp"
             android:gravity="center_vertical"

@@ -21,6 +21,7 @@ import android.view.animation.AnimationUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.oregonstate.AiMLiteMobile.Adapters.WorkOrderAdapter;
 import edu.oregonstate.AiMLiteMobile.Fragments.OverviewListFragment;
 import edu.oregonstate.AiMLiteMobile.Helpers.OverviewPagerItem;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
@@ -48,7 +49,10 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overview_activity);
 
+
         sCurrentUser = CurrentUser.get(getApplicationContext());
+        getActionBar().setTitle("AiM Lite Mobile");
+
 
         dimOverlay = findViewById(R.id.dim_overlay);
 
@@ -76,7 +80,7 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
         });
 
         mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
-        mSlidingTabLayout.setBackgroundResource(R.color.theme_primary);
+        mSlidingTabLayout.setBackgroundResource(R.color.theme_secondary);
         mSlidingTabLayout.setDistributeEvenly(true);
         mSlidingTabLayout.setViewPager(mViewPager);
 
@@ -157,13 +161,17 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
         return true;
     }
 
+    public void beginActionQueueAcitivity(){
+        Intent i = new Intent(this, ActionQueueListActivity.class);
+        startActivity(i);
+        overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case  R.id.action_queue:
-                Intent i = new Intent(this, ActionQueueListActivity.class);
-                startActivity(i);
-                overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
+                beginActionQueueAcitivity();
                 break;
        /* else if (id == R.id.action_settings) {
             return true;
@@ -181,10 +189,37 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
         return super.onOptionsItemSelected(item);
     }
 
-    public void scrollToPosition(int position){
-        mViewPager.setCurrentItem(1, true);
+    public int getDailyCount(){
+        OverviewListFragment listFragment = (OverviewListFragment) mTabs.get(1).getFragment();
+        return ((WorkOrderAdapter)listFragment.getListAdapter()).sectionBacklogIndex - 1;
+    }
 
-        ((OverviewListFragment)mTabs.get(1).getFragment()).getListView().smoothScrollToPositionFromTop(14, 0, 1000);
+
+    public int getBacklogCount(){
+        OverviewListFragment listFragment = (OverviewListFragment) mTabs.get(1).getFragment();
+        return ((WorkOrderAdapter)listFragment.getListAdapter()).sectionAdminIndex - getDailyCount() - 1; // lol at this
+    }
+
+    public void scrollToSection(String section){
+        mViewPager.setCurrentItem(1, true); //switch tabs
+        OverviewListFragment listFragment = (OverviewListFragment) mTabs.get(1).getFragment();
+
+        switch (section){
+            case "Daily":
+                listFragment.getListView().smoothScrollToPositionFromTop(((WorkOrderAdapter)listFragment.getListAdapter()).sectionDailyIndex, 0, 400); //scroll to position
+                break;
+            case "Backlog":
+                listFragment.getListView().smoothScrollToPositionFromTop(((WorkOrderAdapter)listFragment.getListAdapter()).sectionBacklogIndex, 0, 400); //scroll to position
+                break;
+            case "Admin":
+                listFragment.getListView().smoothScrollToPositionFromTop(((WorkOrderAdapter)listFragment.getListAdapter()).sectionAdminIndex, 0, 400); //scroll to position
+                break;
+            case "Completed":
+                listFragment.getListView().smoothScrollToPositionFromTop(((WorkOrderAdapter)listFragment.getListAdapter()).sectionCompletedIndex, 0, 400); //scroll to position
+                break;
+        }
+        //((OverviewListFragment)mTabs.get(1).getFragment()).getListView().smoothScrollToPositionFromTop(position, 0, 700); //scroll to position
+
     }
 
 }
