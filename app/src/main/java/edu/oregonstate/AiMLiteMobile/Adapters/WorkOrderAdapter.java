@@ -1,6 +1,7 @@
 package edu.oregonstate.AiMLiteMobile.Adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeSet;
 
+import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
 import edu.oregonstate.AiMLiteMobile.R;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
@@ -56,35 +58,35 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
 
         int i = 0;
 
-        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Daily", "&#xf0f4;", null));
+        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Daily", R.string.icon_daily, null));
         sectionDailyIndex = i;
 
         while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 0){
-            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, null, mWorkOrders.get(i)));
+            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, mWorkOrders.get(i)));
             i++;
         }
 
-        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Backlog", "&#xf16c;", null));
+        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Backlog", R.string.icon_backlog, null));
         sectionBacklogIndex = i;
 
         while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 1){
-            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, null, mWorkOrders.get(i)));
+            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, mWorkOrders.get(i)));
             i++;
         }
 
-        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Admin", "&#xf01e;", null));
+        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Admin", R.string.icon_admin, null));
         sectionAdminIndex = i;
 
         while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 2){
-            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, null, mWorkOrders.get(i)));
+            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, mWorkOrders.get(i)));
             i++;
         }
 
-        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Recently Completed", "&#xf046;", null));
+        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Recently Completed", R.string.icon_recentlyCompleted, null));
         sectionCompletedIndex = i;
 
         while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 3){
-            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, null, mWorkOrders.get(i)));
+            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, mWorkOrders.get(i)));
             i++;
         }
 
@@ -130,6 +132,8 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
                 convertView = inflator.inflate(R.layout.list_item_section, parent, false);
             }
             ((TextView)convertView.findViewById(R.id.listItem_section)).setText(item.getSectionTitle());
+            Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/FontAwesome.otf");
+            ((TextView)convertView.findViewById(R.id.listItem_section_icon)).setTypeface(tf);
             ((TextView)convertView.findViewById(R.id.listItem_section_icon)).setText(item.getSectionIcon());
 
         } else {

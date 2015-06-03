@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,17 @@ public class OverviewFragment extends Fragment {
         iconRecentlyCompleted.setText(getString(R.string.icon_recentlyCompleted));
         iconNotices.setText(getString(R.string.icon_notices));
         iconTimeLog.setText(getString(R.string.icon_timeLog));
+
+
+        CardView cardDaily = (CardView)v.findViewById(R.id.overviewLanding_daily_card);
+        CardView cardBacklog = (CardView)v.findViewById(R.id.overviewLanding_backlog_card);
+        CardView cardAdmin = (CardView)v.findViewById(R.id.overviewLanding_admin_card);
+        CardView cardRecentlyCompleted = (CardView)v.findViewById(R.id.overviewLanding_recentlyCompleted_card);
+        CardView cardNotices = (CardView)v.findViewById(R.id.overviewLanding_notices_card);
+
+
+
+
 
 /*        v.findViewById(R.id.button_scrollToDaily).setOnClickListener(new View.OnClickListener() {
             @Override
