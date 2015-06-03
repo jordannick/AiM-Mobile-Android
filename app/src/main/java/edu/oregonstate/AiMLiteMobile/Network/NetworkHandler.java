@@ -58,8 +58,8 @@ public class NetworkHandler {
             connection.setRequestMethod("POST"); connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             connection.setRequestProperty("Content-Language", "en-US"); connection.setRequestProperty("Content-Length", "" + Integer.toString(params.getBytes().length));
             connection.setUseCaches(false);  connection.setDoInput(true);  connection.setDoOutput(true);
-            connection.setReadTimeout(10000);
-            connection.setConnectTimeout(15000);
+            //connection.setReadTimeout(10000);
+            //connection.setConnectTimeout(15000);
 
             //Send the token param
             DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
@@ -303,8 +303,8 @@ public class NetworkHandler {
             c.setRequestMethod("POST"); c.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             c.setRequestProperty("Content-Language", "en-US"); c.setRequestProperty("Content-Length", "" + Integer.toString(encodedParams.getBytes().length));
             c.setUseCaches(false);  c.setDoInput(true);  c.setDoOutput(true);
-            c.setReadTimeout(10000);
-            c.setConnectTimeout(15000);
+            //c.setReadTimeout(10000);
+           // c.setConnectTimeout(15000);
 
             //Send Request
             DataOutputStream wr = new DataOutputStream(c.getOutputStream());

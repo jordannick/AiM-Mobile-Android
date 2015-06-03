@@ -54,7 +54,7 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
             @Override
             public void onRefresh() {
                 updateWorkOrderList();
-                ((OverviewListActivity)getActivity()).lockScreen();
+                //((OverviewListActivity)getActivity()).lockScreen();
             }
         });
 
@@ -138,11 +138,13 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        WorkOrderListItem item = ((WorkOrderAdapter)getListAdapter()).getItem(position);
+        WorkOrderAdapter adapter = (WorkOrderAdapter)getListAdapter();
+        WorkOrderListItem item = adapter.getItem(position);
         if (item.getType() == WorkOrderListItem.Type.ITEM) {
             mCallbacks.onWorkOrderSelected(item.getWorkOrder());
+        } else {
+            //toggle expand?
         }
-
     }
 
     //Callback methods
@@ -150,7 +152,7 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
         if (mSwipeRefreshLayout.isRefreshing()){
             mSwipeRefreshLayout.setRefreshing(false);
         }
-        ((OverviewListActivity)getActivity()).unlockScreen();
+        //((OverviewListActivity)getActivity()).unlockScreen();
         updateUI();
         SnackbarManager.show(Snackbar.with(getActivity()).text("Updated " + sCurrentUser.getLastUpdated()).duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
     }
@@ -159,7 +161,7 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
         if (mSwipeRefreshLayout.isRefreshing()){
             mSwipeRefreshLayout.setRefreshing(false);
         }
-        ((OverviewListActivity)getActivity()).unlockScreen();
+       // ((OverviewListActivity)getActivity()).unlockScreen();
         SnackbarManager.show(Snackbar.with(getActivity()).text("Network Access Failed").actionLabel("DISMISS").actionColor(Color.RED).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE));
     }
 

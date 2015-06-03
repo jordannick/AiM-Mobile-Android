@@ -22,11 +22,12 @@
     <style name="MyActionBar"
         parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse"
         >
-        <!--parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse"-->
-<!--        <item name="android:titleTextStyle">@style/TitleTextStyle</item>-->
+
         <item name="android:background">@color/theme_secondary</item>
         <item name="android:displayOptions">showTitle</item>
         <item name="android:titleTextStyle">@style/MyTitleTextStyle</item>
+
+
 
 <!--        <item name="android:backgroundStacked">@drawable/actionbar_background</item>
         <item name="android:backgroundSplit">@drawable/actionbar_background</item>-->

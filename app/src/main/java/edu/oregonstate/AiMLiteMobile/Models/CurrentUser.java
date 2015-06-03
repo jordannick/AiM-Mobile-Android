@@ -116,7 +116,7 @@ public class CurrentUser {
             @Override
             public int compare(WorkOrder lhs, WorkOrder rhs) {
                 if (lhs.getSectionNum() == rhs.getSectionNum()) {
-                    return 1;
+                    return 0;
                 } else if (lhs.getSectionNum() < rhs.getSectionNum()) {
                     return -1;
                 } else {

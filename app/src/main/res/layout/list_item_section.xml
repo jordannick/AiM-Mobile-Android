@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:text="Section"
             android:textSize="26sp"
+            android:padding="8dp"
             android:textColor="@android:color/tertiary_text_light"/>
     </LinearLayout>
     <View
