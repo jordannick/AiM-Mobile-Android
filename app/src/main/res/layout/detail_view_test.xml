@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <RelativeLayout android:layout_width="match_parent" android:id="@+id/relativeLayout1" android:layout_height="wrap_content">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
@@ -7,79 +14,160 @@
         android:layout_width="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="DESCRIPTION"
-            android:layout_gravity="center"
-            android:textStyle="bold"
-            android:textColor="@color/sectionTitle"
-            android:textSize="20sp"/>
-
-        <!-- android:textColor="@android:color/tertiary_text_light"
-
-         android:background="@color/details_overview_divider"
-         -->
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="6dp"
-            android:background="@color/sectionTitle_underline"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="4dp"/>
         <LinearLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:paddingBottom="2dp"
-            android:paddingTop="4dp">
+            android:padding="2dp">
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/card_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 card_view:cardCornerRadius="0dp"
                 card_view:cardPreventCornerOverlap="true">
-
-                <TextView
-                    android:id="@+id/descriptionTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/primary_text_light"
-                    android:text="QCP300 QF13 LANDSCAPE - SHOPS SUPPORT - CAMPUS WAY BETWEEN 30TH AND 35TH STREETS SIDEWALK LIGHT POLE INSTALLATION"
-                    android:paddingRight="8dp"
-                    android:textSize="20sp"
-                    android:padding="16dp"/>
-
+                <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="4dp">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/urgent"/>
+                    <TextView
+                        android:id="@+id/descriptionTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/primary_text_light"
+                        android:text="QCP300 QF13 LANDSCAPE - SHOPS SUPPORT - CAMPUS WAY BETWEEN 30TH AND 35TH STREETS SIDEWALK LIGHT POLE INSTALLATION"
+                        android:padding="8dp"
+                        android:textSize="18sp"/>
+                </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="DETAILS"
-            android:layout_gravity="center"
-            android:textStyle="bold"
-            android:textColor="@color/sectionTitle"
-            android:textSize="20sp"/>
+            android:padding="2dp">
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardCornerRadius="0dp"
+                card_view:cardPreventCornerOverlap="true">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+                    <TextView
+                        android:id="@+id/dateCreatedTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Requested: Dec 2, 2014 2:27pm by MORGAN ADAIR (ASC - ANIMAL &amp; RANGELAND SCIENCES)"
+                        android:padding="8dp"
+                        android:textSize="16dp"/>
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp">
+
+                <android.support.v7.widget.CardView
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/card_view0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    card_view:cardCornerRadius="0dp"
+                    card_view:cardPreventCornerOverlap="true">
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:background="@color/cardView_cardBackground">
+                        <RelativeLayout
+                            android:id="@+id/layout_note_header"
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/note_name_textView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Paul Marrow"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/noteView_author"
+                                android:paddingLeft="12dp"
+                                android:paddingTop="8dp"/>
+
+                            <TextView
+                                android:id="@+id/note_date_textView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="4/13/15  9:47 AM"
+                                android:textSize="16sp"
+                                android:textColor="@android:color/tertiary_text_light"
+                                android:gravity="center_vertical"
+                                android:layout_toLeftOf="@id/note_name_textView"
+                                android:layout_alignParentRight="true"
+                                android:paddingRight="12dp"
+                                android:paddingTop="18dp"/>
+                        </RelativeLayout>
+
+                        <View
+                            android:id="@+id/layout_note_divider"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/noteView_divider"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginRight="12dp"
+                            android:layout_below="@id/layout_note_header"/>
+
+                        <TextView
+                            android:id="@+id/note_note_textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:text="TREE DAMAGE CLEANUP OF OAK PINE HEMLOCK AND ARBUTUS"
+                            android:textColor="@android:color/secondary_text_light"
+                            android:textSize="18sp"
+                            android:padding="8dp"
+                            android:layout_below="@id/layout_note_divider"/>
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="View 5 more records"
+                            android:textColor="@color/loginView_loginButton_text"
+                            android:layout_below="@id/note_note_textView"
+                            android:layout_alignParentRight="true"
+                            />
+
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+
+
 
 
         <View
             android:layout_width="fill_parent"
-            android:layout_height="6dp"
-            android:background="@color/sectionTitle_underline"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="4dp"/>
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+        </View>
+
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:paddingBottom="2dp"
-            android:paddingTop="2dp">
+            android:padding="2dp">
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,7 +176,8 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:background="@color/detailsView_details_cardBackground">
+                    android:background="@color/detailsView_details_cardBackground"
+                    android:padding="4dp">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -103,7 +192,7 @@
                     <TextView
                         android:id="@+id/workOrderLocationText"
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:text="RICHARDSON HALL Room #0388"
                         android:textColor="@color/detailsView_details_text"
@@ -117,10 +206,7 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:paddingBottom="2dp"
-            android:paddingTop="2dp">
+            android:padding="2dp">
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,7 +215,8 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:background="@color/detailsView_details_cardBackground">
+                    android:background="@color/detailsView_details_cardBackground"
+                    android:padding="4dp">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -144,7 +231,7 @@
                     <TextView
                         android:id="@+id/priorityTextView"
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:text="URGENT"
                         android:textColor="@color/detailsView_details_text"
@@ -160,19 +247,18 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:paddingBottom="2dp"
-            android:paddingTop="2dp">
+            android:padding="2dp">
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 card_view:cardCornerRadius="0dp"
                 card_view:cardPreventCornerOverlap="true">
                 <LinearLayout
+                    android:id="@+id/layout_status"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:background="@color/detailsView_details_cardBackground">
+                    android:background="@color/detailsView_details_cardBackground"
+                    android:padding="4dp">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -187,7 +273,7 @@
                     <TextView
                         android:id="@+id/statusTextView"
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:text="WORK IN PROGRESS"
                         android:textColor="@color/detailsView_details_text"
@@ -201,10 +287,7 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:paddingBottom="2dp"
-            android:paddingTop="2dp">
+            android:padding="2dp">
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -213,7 +296,47 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:background="@color/detailsView_details_cardBackground">
+                    android:background="@color/detailsView_details_cardBackground"
+                    android:padding="4dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="ASSIGNED"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
+                        android:textColor="@color/detailsView_details_title"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/detailsView_details_cardBackground"/>
+
+                    <TextView
+                        android:id="@+id/assignedTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:text="MICHAEL BAMBERGER, DAVID HORN, LANCE JONES"
+                        android:textColor="@color/detailsView_details_text"
+                        android:gravity="center"
+                        android:layout_weight="3"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp">
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardCornerRadius="0dp"
+                card_view:cardPreventCornerOverlap="true">
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@color/detailsView_details_cardBackground"
+                    android:padding="4dp">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -227,9 +350,9 @@
                         android:id="@+id/fundingTextView"
                         android:layout_width="0dp"
                         android:layout_weight="3"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:textSize="15sp"
-                        android:text="ZARWFH (BILLABLE)"
+                        android:text="QRS011 (BILLABLE)"
                         android:textColor="@color/detailsView_details_text"
                         android:gravity="center"/>
                 </LinearLayout>
@@ -239,10 +362,7 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:paddingBottom="2dp"
-            android:paddingTop="2dp">
+            android:padding="2dp">
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -251,11 +371,12 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:background="@color/detailsView_details_cardBackground">
+                    android:background="@color/detailsView_details_cardBackground"
+                    android:padding="4dp">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="WORK CODE"
+                        android:text="CATEGORY"
                         android:textStyle="bold"
                         android:textSize="11sp"
                         android:textColor="@color/detailsView_details_title"
@@ -265,7 +386,7 @@
                         android:id="@+id/workCodeTextView"
                         android:layout_width="0dp"
                         android:layout_weight="3"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:text="PD1075_SOFT COSTS"
                         android:textColor="@color/detailsView_details_text"
@@ -277,10 +398,8 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:paddingBottom="2dp"
-            android:paddingTop="2dp">
+            android:padding="2dp"
+            android:layout_marginBottom="64dp">
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -289,7 +408,8 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:background="@color/detailsView_details_cardBackground">
+                    android:background="@color/detailsView_details_cardBackground"
+                    android:padding="4dp">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -303,49 +423,9 @@
                         android:id="@+id/shopTextView"
                         android:layout_width="0dp"
                         android:layout_weight="3"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:text="LANDSCAPING"
-                        android:textColor="@color/detailsView_details_text"
-                        android:gravity="center"/>
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:paddingBottom="2dp"
-            android:paddingTop="2dp">
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardCornerRadius="0dp"
-                card_view:cardPreventCornerOverlap="true">
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:background="@color/detailsView_details_cardBackground">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="CREATED"
-                        android:textStyle="bold"
-                        android:textSize="11sp"
-                        android:textColor="@color/detailsView_details_title"
-                        android:layout_weight="1"
-                        android:gravity="center"/>
-                    <TextView
-                        android:id="@+id/dateCreatedTextView"
-                        android:layout_width="0dp"
-                        android:layout_weight="3"
-                        android:layout_height="40dp"
-                        android:textSize="15sp"
-                        android:text="10/04/14 8:24 AM"
                         android:textColor="@color/detailsView_details_text"
                         android:gravity="center"/>
                 </LinearLayout>
@@ -357,4 +437,15 @@
     </LinearLayout>
 </ScrollView>
 
+        <Button
+            android:layout_height="wrap_content"
+            android:text="TIME ENTRY"
+            android:drawableLeft="@drawable/action_add_white"
+            android:layout_width="match_parent"
+            android:id="@+id/button_addAction"
+            android:layout_alignParentBottom="true"
+            android:background="#388E3C"
+            android:textColor="#FFFFFF"/>
 
+    </RelativeLayout>
+</LinearLayout>

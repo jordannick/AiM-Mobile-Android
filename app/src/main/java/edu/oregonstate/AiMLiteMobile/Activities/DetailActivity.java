@@ -1,6 +1,9 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
 import android.app.ActionBar;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +18,8 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.oregonstate.AiMLiteMobile.Fragments.ActionQueueListFragment;
+import edu.oregonstate.AiMLiteMobile.Fragments.AddActionDialogFragment;
 import edu.oregonstate.AiMLiteMobile.Fragments.DetailContactFragment;
 import edu.oregonstate.AiMLiteMobile.Fragments.DetailMainFragment;
 import edu.oregonstate.AiMLiteMobile.Fragments.DetailNotesFragment;
@@ -28,7 +33,7 @@ import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 /**
  * Created by jordan_n on 8/13/2014.
  */
-public class DetailActivity extends FragmentActivity implements DetailNotesFragment.Callbacks {
+public class DetailActivity extends SingleFragmentActivity implements DetailNotesFragment.Callbacks {
     private static final String TAG = "DetailActivity";
 
     private static CurrentUser sCurrentUser;
@@ -45,13 +50,17 @@ public class DetailActivity extends FragmentActivity implements DetailNotesFragm
     public void onWorkOrderUpdated() {
 
     }
+    @Override
+    protected Fragment createFragment() {
+        return new DetailMainFragment();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
 
-        setContentView(R.layout.detail_activity);
+        //setContentView(R.layout.detail_activity);
 
         v = this.findViewById(R.id.detail_activity_layout);
 
@@ -60,12 +69,12 @@ public class DetailActivity extends FragmentActivity implements DetailNotesFragm
         Log.d(TAG, "DetailActivity mWorkOrder: " + mWorkOrder);
 
         final List<DetailPagerItem> mTabs = new ArrayList<>();
-        mTabs.add(new DetailPagerItem("Overview", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailMainFragment()));
-        mTabs.add(new DetailPagerItem("Notes", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailNotesFragment()));
-        mTabs.add(new DetailPagerItem("Requestor", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailContactFragment()));
+       // mTabs.add(new DetailPagerItem("Overview", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailMainFragment()));
+       // mTabs.add(new DetailPagerItem("Notes", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailNotesFragment()));
+        //mTabs.add(new DetailPagerItem("Requestor", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailContactFragment()));
 
         //Set ViewPager Adapter
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+       /* mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public android.support.v4.app.Fragment getItem(int position) {
@@ -99,14 +108,16 @@ public class DetailActivity extends FragmentActivity implements DetailNotesFragm
             public int getIndicatorColor(int position) {
                 return mTabs.get(position).getIndicatorColor();
             }
-        });
+        });*/
 
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
 
+
     }
+
 
 
     @Override

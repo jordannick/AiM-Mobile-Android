@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_action_add"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:focusableInTouchMode="true">
+
+
+        <LinearLayout
+            android:id="@+id/layout_entry"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="STATUS"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/addAction_sectionTitles"
+                        android:paddingTop="4dp"
+                        android:paddingLeft="12dp"/>
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spinner_updateStatus"
+                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                        android:entries="@array/statusItems"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginLeft="48dp"
+                        android:layout_marginRight="24dp"
+                        android:prompt="@string/add_action_spinner_status_prompt"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="HOURS SPENT"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/addAction_sectionTitles"
+                        android:paddingTop="4dp"
+                        android:paddingLeft="12dp"/>
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <!--<EditText
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="48dp"
+                        android:layout_marginRight="24dp"/>-->
+
+                    <Button
+                        android:id="@+id/button_minusHours"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="48dp"
+                        android:text="\u2212"
+                        android:textSize="32dp"
+                        android:textColor="@android:color/holo_blue_dark"
+                        style="?android:borderlessButtonStyle"/>
+
+                    <Button
+                        android:id="@+id/button_addHours"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="24dp"
+                        android:layout_alignParentRight="true"
+                        android:textSize="32dp"
+                        android:text="\u002B"
+                        android:textColor="@android:color/holo_blue_dark"
+                        style="?android:borderlessButtonStyle"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:textSize="32dp"
+                        android:layout_toLeftOf="@id/button_addHours"
+                        android:layout_toRightOf="@id/button_minusHours"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"/>
+
+
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ACTION TAKEN"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/addAction_sectionTitles"
+                        android:paddingTop="4dp"
+                        android:paddingLeft="12dp"/>
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spinner_updateStatus2"
+                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                        android:entries="@array/actionTakenItems"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginLeft="48dp"
+                        android:layout_marginRight="24dp"
+                        android:prompt="@string/add_action_spinner_status_prompt"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="NEW NOTE"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/addAction_sectionTitles"
+                        android:paddingTop="4dp"
+                        android:paddingLeft="12dp"/>
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editText_note"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="48dp"
+                        android:layout_marginRight="24dp"
+                        />
+
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/layout_entry"
+            android:padding="8dp">
+            <Button
+                android:id="@+id/dialogConfirm_buttonCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CANCEL"
+                android:textSize="16sp"
+                android:layout_margin="4dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:textColor="@android:color/holo_blue_dark"/>
+
+            <Button
+                android:id="@+id/dialogConfirm_buttonConfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CONFIRM"
+                android:layout_margin="4dp"
+                android:textSize="16sp"
+                style="?android:attr/borderlessButtonStyle"
+                android:textColor="@android:color/holo_blue_dark"
+                android:paddingLeft="4dp"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</ScrollView>

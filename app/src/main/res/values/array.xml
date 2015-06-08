@@ -9,10 +9,10 @@
 
     <string-array name="actionTakenItems">
         <item>No action</item>
-        <item>Material request</item>
-        <item>Waiting on parts</item>
-        <item>Did an action</item>
-        <item>Preventive maintenance</item>
+        <item>Researching Issue</item>
+        <item>Waiting for Parts</item>
+        <item>Waiting for Department Response</item>
+        <item>Waiting for another Shop</item>
     </string-array>
 
 </resources>
