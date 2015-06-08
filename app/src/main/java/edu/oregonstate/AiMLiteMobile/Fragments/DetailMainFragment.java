@@ -3,6 +3,8 @@ package edu.oregonstate.AiMLiteMobile.Fragments;
 import android.app.Activity;
 import android.app.Fragment;
 
+import android.graphics.Typeface;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,15 +81,39 @@ public class DetailMainFragment extends Fragment{
         /**/
 //        ((TextView)v.findViewById(R.id.idTextView)).setText(mWorkOrder.getProposalPhase());
         ((TextView)v.findViewById(R.id.workOrderLocationText)).setText(mWorkOrder.getBuilding());
-        ((TextView)v.findViewById(R.id.descriptionTextView)).setText(mWorkOrder.getDescription());
+        ((TextView)v.findViewById(R.id.descriptionTextView_detail)).setText(mWorkOrder.getDescription());
         ((TextView)v.findViewById(R.id.workCodeTextView)).setText(mWorkOrder.getCraftCode());
         ((TextView)v.findViewById(R.id.shopTextView)).setText(mWorkOrder.getShop());
 //        ((TextView)v.findViewById(R.id.dateCreatedTextView)).setText(mWorkOrder.getDateCreated());
         ((TextView)v.findViewById(R.id.statusTextView)).setText(mWorkOrder.getStatus());
         ((TextView)v.findViewById(R.id.priorityTextView)).setText(mWorkOrder.getPriority());
 
-        ImageView statusImageView = new ImageView(getActivity().getApplicationContext());
 
+        //TODO get perfect font
+        Typeface GUDEA = Typeface.createFromAsset(mActivity.getApplicationContext().getAssets(), "fonts/Gudea-Regular.otf");
+        Typeface GUDEABOLD = Typeface.createFromAsset(mActivity.getApplicationContext().getAssets(), "fonts/Gudea-Bold.otf");
+        ((TextView)v.findViewById(R.id.descriptionTextView_detail)).setTypeface(GUDEA);
+        ((TextView)v.findViewById(R.id.row_proposal_detail)).setTypeface(GUDEABOLD);
+
+
+        ImageView priorityImageView = (ImageView)v.findViewById(R.id.imageView_priorityIconDetail);
+        switch (mWorkOrder.getPriority()){
+            case "TIME SENSITIVE":
+                priorityImageView.setImageResource(R.drawable.priority_time_sensitive);
+                break;
+            case "URGENT":
+                priorityImageView.setImageResource(R.drawable.priority_urgent);
+                break;
+            case "EMERGENCY":
+                priorityImageView.setImageResource(R.drawable.priority_emergency);
+                break;
+            default:
+                priorityImageView.setVisibility(View.GONE);
+        }
+
+
+
+        ImageView statusImageView = (ImageView)v.findViewById(R.id.imageView_statusIcon);
         switch (mWorkOrder.getStatus()){
             case "ASSIGNED":
                 statusImageView.setImageResource(R.drawable.status_assigned);
@@ -98,9 +124,11 @@ public class DetailMainFragment extends Fragment{
             case "WORK COMPLETE":
                 statusImageView.setImageResource(R.drawable.status_work_complete);
                 break;
+            case "ON HOLD":
+                statusImageView.setImageResource(R.drawable.status_on_hold);
+                break;
         }
-
-        ((LinearLayout)v.findViewById(R.id.layout_status)).addView(statusImageView);
+       // ((LinearLayout)v.findViewById(R.id.layout_status)).addView(statusImageView);
 
         //((TextView)v.findViewById(R.id.priorityTextView)).setBackgroundResource(mWorkOrder.getPriorityColor());
 
