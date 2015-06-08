@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 import edu.oregonstate.AiMLiteMobile.R;
 
@@ -16,6 +17,8 @@ import edu.oregonstate.AiMLiteMobile.R;
 public class WorkOrder implements Serializable {
     private static final String TAG = "WorkOrder";
     public static final String WORK_ORDER_EXTRA = "edu.oregonstate.AiMLiteMobile.Models.WorkOrder";
+
+    public final UUID uuid = java.util.UUID.randomUUID();
 
     String mDescription;
     String mBeginDate;

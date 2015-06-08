@@ -4,16 +4,19 @@ import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nispok.snackbar.Snackbar;
@@ -83,7 +86,15 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
             mUsernameField.setText(BYPASS_USER_NAME);
             mPasswordField.setText("abc");
         }
+
+        TextView userIcon = (TextView)v.findViewById(R.id.login_username_icon);
+        TextView passwordIcon = (TextView)v.findViewById(R.id.login_password_icon);
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/FontAwesome.otf");
+        userIcon.setTypeface(tf); userIcon.setText(R.string.icon_user);
+        passwordIcon.setTypeface(tf); passwordIcon.setText(R.string.icon_password);
         //%%%
+
+        //getActivity().getWindow().addFlags(WindowManager.LayoutParams.);
 
         loginHandler();
 

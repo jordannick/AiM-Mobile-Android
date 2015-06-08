@@ -16,8 +16,11 @@
 
 
     <!--LoginView-->
-    <color name="loginView_loginButton_text">#2980B9</color>
+    <color name="loginView_loginButton_text">#FFFFFF</color>
+    <color name="loginView_loginButton_background">#99EF6C00</color>
     <color name="loginView_background">#f5f2ed</color>
+    <color name="loginView_fieldText">#212121</color>
+    <color name="loginView_hintFieldText">#212121</color>
 
 
     <!-- Material Theme -->
@@ -59,8 +62,12 @@
     <color name="addAction_hoursEntryBg">#BBDEFB</color>
 
 
-    <!--ActionQueue Card-->
+    <!--ActionQueue-->
     <color name="actionQueue_workOrder">#00796B</color>
+    <color name="actionQueue_recentlyViewedBackground">#FFFFFF</color>
+    <color name="actionQueue_recentlyViewedText">#424242</color>
+    <color name="actionQueue_recentlyViewedTitleBackground">#424242</color>
+    <color name="actionQueue_recentlyViewedTitleText">#FFFFFF</color>
 
 
     <!--General Use-->

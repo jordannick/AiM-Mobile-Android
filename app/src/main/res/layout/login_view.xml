@@ -4,39 +4,91 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/loginView_background">
+              android:background="@drawable/login_background">
 
 
-
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="Username"
-        android:ems="10"
-        android:id="@+id/login_username"
-        android:layout_margin="32dp"
-        />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="Password"
-        android:ems="10"
-        android:id="@+id/login_password"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="12dp"
+        android:orientation="horizontal"
+        android:background="@drawable/login_shade_background"
+        android:gravity="center">
 
-        />
+        <TextView
+            android:id="@+id/login_username_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TEST"
+            android:textSize="20dp"
+            android:textColor="@color/loginView_fieldText"
+            android:layout_marginLeft="12dp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Username"
+            android:ems="10"
+            android:textColor="@color/loginView_fieldText"
+            android:textColorHint="@color/loginView_hintFieldText"
+            android:id="@+id/login_username"
+            android:padding="12dp"
+            android:background="@null"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:orientation="horizontal"
+        android:background="@drawable/login_shade_background"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/login_password_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TEST"
+            android:textSize="20dp"
+            android:textColor="@color/loginView_fieldText"
+            android:layout_marginLeft="12dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="Password"
+            android:ems="10"
+            android:textColor="@color/loginView_fieldText"
+            android:textColorHint="@color/loginView_hintFieldText"
+            android:background="@null"
+            android:id="@+id/login_password"
+            android:padding="12dp"
+            />
+    </LinearLayout>
+
+
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Remember me"
+        android:text="Remember Me"
+        android:textSize="14dp"
         android:id="@+id/auto_login"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="32dp"
+        android:textColor="@color/loginView_hintFieldText"
+        android:background="@drawable/login_shade_background"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="16dp"
+        android:drawablePadding="30dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         />
 
 
@@ -45,12 +97,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
+        android:textSize="18dp"
         android:textColor="@color/loginView_loginButton_text"
+        android:background="@drawable/login_button_background"
         android:id="@+id/login_button"
+        android:textStyle="bold"
         android:layout_gravity="center_horizontal"
-        android:paddingLeft="96dp"
-        android:paddingRight="96dp"
+        android:paddingLeft="64dp"
+        android:paddingRight="64dp"
         android:layout_margin="32dp"
+
         />
 
     <ProgressBar

@@ -1,3 +1,16 @@
+_______________________________________________
+Recently Viewed
+
+-In DetailMainFragment, upon load. Add workOrder to recentlyViewed
+
+-CurrentUser, upon addition of new viewed workOrder
+
+
+_______________________________________________
+
+
+
+
 Add "Network Failure error" notification to display on failed login..
     -Disallow bad username
 
@@ -15,6 +28,8 @@ On edit action from ActionQueueList, change title to "Edit Action"
 
 
 screen rotate on newActionForm needs to display 'hours cancel' X
+
+
 
 
 

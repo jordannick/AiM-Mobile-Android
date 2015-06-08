@@ -22,6 +22,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import edu.oregonstate.AiMLiteMobile.Activities.DetailActivity;
+import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.R;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 
@@ -52,6 +53,11 @@ public class DetailMainFragment extends Fragment{
         super.onCreate(savedInstanceState);
         mActivity = getActivity();
         mWorkOrder = ((DetailActivity)mActivity).getWorkOrder();
+
+        //Add current workOrder to recentlyViewed in CurrentUser
+        CurrentUser currentUser = CurrentUser.get(getActivity().getApplicationContext());
+        currentUser.addRecentlyViewedWorkOrder(mWorkOrder);
+
     }
 
     @Override
@@ -65,7 +71,6 @@ public class DetailMainFragment extends Fragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         getActivity().setTitle("Work Order");
 
         /**/

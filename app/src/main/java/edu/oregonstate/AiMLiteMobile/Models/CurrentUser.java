@@ -29,6 +29,10 @@ public class CurrentUser {
     public String URLGetNotices;
     public String URLLogin;
 
+    //Recently viewed workOrders to display in timeLog
+    private ArrayList<WorkOrder> recentlyViewedWorkOrders = new ArrayList<>();
+    public final int recentlyViewedMax = 5;
+
     private String urlBase = "http://api-test.facilities.oregonstate.edu";
     private String urlAPIVersion = "1.0";
     private String urlObject = "WorkOrder";
@@ -193,5 +197,76 @@ public class CurrentUser {
 
     public void setToken(String mToken) {
         this.mToken = mToken;
+    }
+
+
+    public void addRecentlyViewedWorkOrder(WorkOrder workOrder){
+        //Add workOrder to top of arrayList, removing oldest if newSize > 5
+
+/*
+        if(recentlyViewedWorkOrders.size() > 0){
+            if (recentlyViewedWorkOrders.get(0).getProposalPhase().equals(workOrder.getProposalPhase())) {
+                Log.d(TAG, "Strings equal" +recentlyViewedWorkOrders.get(0).getProposalPhase() + " == " + workOrder.getProposalPhase());
+            }else{
+                Log.d(TAG, "Strings NOT equal" + recentlyViewedWorkOrders.get(0).getProposalPhase() + " != " + workOrder.getProposalPhase());
+            }
+        }*/
+/*
+        String test1 = "Hello";
+        String test2 = "Hello";*/
+
+//        if(test1.equals(test2)){
+//            Log.d(TAG, "Strings equal");
+//        }else{
+//            Log.d(TAG, "Strings NOT equal");
+//        }
+//
+//        if(test1.equals("Hello")){
+//            Log.d(TAG, "Strings equal");
+//        }else{
+//            Log.d(TAG, "Strings equal");
+//        }
+
+
+
+        int index = findIndexWorkOrder(recentlyViewedWorkOrders, workOrder);
+        if (index == -1) {
+            int curSize = recentlyViewedWorkOrders.size();
+            int newSize = curSize + 1;
+            if(newSize > recentlyViewedMax){
+                //Remove oldest workOrder in arrayList
+                recentlyViewedWorkOrders.remove(curSize-1);
+            }
+            //Add new workOrder to beginning of arrayList
+            recentlyViewedWorkOrders.add(0, workOrder);
+
+            //Debug messages
+            Log.d(TAG, "workOrder: " + workOrder.getProposalPhase() + " added. New size: " + recentlyViewedWorkOrders.size());
+            for (int i = 0; i < recentlyViewedWorkOrders.size(); i++) {
+                Log.d(TAG, "-- " + i + " : " + recentlyViewedWorkOrders.get(i));
+            }
+        }else{
+            //WorkOrder already exists, move to front.
+            Log.d(TAG, "PRE size : " + recentlyViewedWorkOrders.size());
+            recentlyViewedWorkOrders.remove(index);
+            Log.d(TAG, "POST size : " + recentlyViewedWorkOrders.size());
+            recentlyViewedWorkOrders.add(0, workOrder);
+        }
+    }
+
+    private int findIndexWorkOrder(ArrayList<WorkOrder> arrayList, WorkOrder workOrder){
+        for (int i = 0; i < arrayList.size(); i++) {
+            Log.d(TAG, "comparing " + arrayList.get(i).getProposalPhase() + " with " + workOrder.getProposalPhase());
+            if (arrayList.get(i).getProposalPhase().equals(workOrder.getProposalPhase())) {
+                Log.d(TAG, "compare true");
+                return i;
+            }
+        }
+        Log.d(TAG, "compare false");
+        return -1;
+    }
+
+    public ArrayList<WorkOrder> getRecentlyViewedWorkOrders(){
+        return  recentlyViewedWorkOrders;
     }
 }

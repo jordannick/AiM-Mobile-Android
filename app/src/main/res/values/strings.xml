@@ -28,6 +28,12 @@
     <string name="icon_moveToDaily">&#xf0aa;</string>
     <string name="icon_moveToBacklog">&#xf0ab;</string>
     <string name="icon_user">&#xf007;</string>
+    <string name="icon_password">&#xf023;</string>
+
+
+    <string name="icon_recentBarExpand">&#xf077;</string>
+    <string name="icon_recentBarCollapse">&#xf078;</string>
+
 
 
     <!--Add Action Fragment-->
