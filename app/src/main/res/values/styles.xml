@@ -49,4 +49,14 @@
 
     </style>
 
+    <style name="actionQueue_recentTitle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/actionQueue_recentlyViewedText</item>
+
+    </style>
+    <style name="actionQueue_recentDescription">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/actionQueue_recentlyViewedText</item>
+    </style>
+
 </resources>

@@ -1,8 +1,10 @@
 package edu.oregonstate.AiMLiteMobile.Fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,13 +21,12 @@ import android.widget.TextView;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Adapters.ActionAdapter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
+import edu.oregonstate.AiMLiteMobile.Models.Note;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.R;
 
@@ -38,9 +39,12 @@ public class ActionQueueListFragment extends ListFragment{
     private Activity mActivity;
     private Context mContext;
     private static CurrentUser sCurrentUser;
+    private ArrayList<Action> actions;
     private ActionAdapter mActionQueueAdapter;
     private Callbacks mCallbacks;
     private static int actionCount = 0;
+
+    private RelativeLayout recentlyViewedBarLayout;
 
     private View v;
 
@@ -62,7 +66,7 @@ public class ActionQueueListFragment extends ListFragment{
         mContext = mActivity.getApplicationContext();
         sCurrentUser = CurrentUser.get(mContext);
 
-        ArrayList<Action> actions = sCurrentUser.getActions();
+        actions = sCurrentUser.getActions();
 
         mActionQueueAdapter = new ActionAdapter(mContext, actions);
 
@@ -79,6 +83,7 @@ public class ActionQueueListFragment extends ListFragment{
 
         Log.d(TAG, "adapter count: " + mActionQueueAdapter.getCount() + " ; actionCount: " + actionCount);
         if (mActionQueueAdapter.getCount() > actionCount) {
+            //TODO: reimplement Snackbar
             SnackbarManager.show(Snackbar.with(getActivity()).text("Action Added").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
         }
         actionCount = mActionQueueAdapter.getCount();
@@ -108,75 +113,59 @@ public class ActionQueueListFragment extends ListFragment{
         super.onCreateView(inflater, container, savedInstanceState);
         v = inflater.inflate(R.layout.action_list, container, false);
 
-        LinearLayout recentlyViewedBarLayout = (LinearLayout)v.findViewById(R.id.actionList_recentlyViewedBarLayout);
+        recentlyViewedBarLayout = (RelativeLayout)v.findViewById(R.id.actionList_recentlyViewedBarLayout);
 
 
         CurrentUser currentUser = CurrentUser.get(getActivity());
-        ArrayList<WorkOrder> recentWorkOrders  = currentUser.getRecentlyViewedWorkOrders();
-        TextView[] numTextViews = new TextView[5];
-        numTextViews[0] = (TextView)v.findViewById(R.id.actionList_recentWorkOrderNum0);
-        numTextViews[1] = (TextView)v.findViewById(R.id.actionList_recentWorkOrderNum1);
-        numTextViews[2] = (TextView)v.findViewById(R.id.actionList_recentWorkOrderNum2);
-        numTextViews[3] = (TextView)v.findViewById(R.id.actionList_recentWorkOrderNum3);
-        numTextViews[4] = (TextView)v.findViewById(R.id.actionList_recentWorkOrderNum4);
-        TextView[] descTextViews = new TextView[5];
-        descTextViews[0] = (TextView)v.findViewById(R.id.actionList_recentDescription0);
-        descTextViews[1] = (TextView)v.findViewById(R.id.actionList_recentDescription1);
-        descTextViews[2] = (TextView)v.findViewById(R.id.actionList_recentDescription2);
-        descTextViews[3] = (TextView)v.findViewById(R.id.actionList_recentDescription3);
-        descTextViews[4] = (TextView)v.findViewById(R.id.actionList_recentDescription4);
-        LinearLayout[] linearLayouts = new LinearLayout[5];
-        linearLayouts[0] = (LinearLayout)v.findViewById(R.id.actionList_recentLayout0);
-        linearLayouts[1] = (LinearLayout)v.findViewById(R.id.actionList_recentLayout1);
-        linearLayouts[2] = (LinearLayout)v.findViewById(R.id.actionList_recentLayout2);
-        linearLayouts[3] = (LinearLayout)v.findViewById(R.id.actionList_recentLayout3);
-        linearLayouts[4] = (LinearLayout)v.findViewById(R.id.actionList_recentLayout4);
+        final ArrayList<WorkOrder> recentWorkOrders  = currentUser.getRecentlyViewedWorkOrders();
 
-
-        TextView recentBarL = (TextView)v.findViewById(R.id.actionList_recentBarIconL);
+        //TextView recentBarL = (TextView)v.findViewById(R.id.actionList_recentBarIconL);
         TextView recentBarR = (TextView)v.findViewById(R.id.actionList_recentBarIconR);
+        TextView recentBarR2 = (TextView)v.findViewById(R.id.actionList_recentBarIconR2);
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/FontAwesome.otf");
-        recentBarL.setTypeface(tf); recentBarR.setTypeface(tf);
-        recentBarL.setText(R.string.icon_recentBarExpand); recentBarR.setText(R.string.icon_recentBarExpand);
+        //recentBarL.setTypeface(tf);
+        recentBarR.setTypeface(tf);
+        recentBarR2.setTypeface(tf);
+        //recentBarL.setText(R.string.icon_recentBarExpand);
+        recentBarR.setText(R.string.icon_recentBarExpand);
+        recentBarR2.setText(R.string.icon_recentBarCollapse);
+
+        final LinearLayout recentlyViewedLayout = (LinearLayout)v.findViewById(R.id.actionList_recentlyViewedLayout);
+        recentlyViewedLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleRecentlyViewed(false);
+            }
+        });
 
         int i;
         for (i = 0; i < recentWorkOrders.size(); i++) {
             WorkOrder workOrder = recentWorkOrders.get(i);
-            numTextViews[i].setText(workOrder.getProposalPhase());
-            descTextViews[i].setText(workOrder.getDescription());
+            recentlyViewedLayout.addView(createRecentRowView(workOrder));
         }
-        for (; i < currentUser.recentlyViewedMax; i++) {
-            numTextViews[i].setText("---");
-            //numTextViews[i].setVisibility(View.GONE);
-            descTextViews[i].setText("---");
-            //descTextViews[i].setVisibility(View.GONE);
-            //linearLayouts[i].setVisibility(View.GONE);
-        }
-        
+
 
         RelativeLayout relativeLayout = (RelativeLayout)v.findViewById(R.id.actionList_relativeLayout);
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "LAYOUT ON CLICK");
-                hideRecentlyViewed();
+                toggleRecentlyViewed(true);
             }
         });
 
-        final LinearLayout recentlyViewedLayout = (LinearLayout)v.findViewById(R.id.actionList_recentlyViewedLayout);
-        recentlyViewedLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        final Animation slideInFromBottom = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in);
 
         recentlyViewedBarLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                recentlyViewedLayout.setVisibility(View.VISIBLE);
-                recentlyViewedLayout.startAnimation(slideInFromBottom);
+                if(recentWorkOrders.size() > 0) {
+                    toggleRecentlyViewed(false);
+                    recentlyViewedLayout.setVisibility(View.VISIBLE);
+                }else{
+                    //Show snackbar alert of "no recents"
+                    SnackbarManager.show(Snackbar.with(getActivity()).text("No Recently Viewed").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
+
+                }
             }
         });
 
@@ -186,12 +175,62 @@ public class ActionQueueListFragment extends ListFragment{
 
     }
 
-    private void hideRecentlyViewed(){
+    private View createRecentRowView(final WorkOrder workOrder){
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View rowView = (View)inflater.inflate(R.layout.time_log_recent_item, null);
+        TextView workOrderNum = (TextView)rowView.findViewById(R.id.timeLog_recentWorkOrderNum);
+        TextView description = (TextView)rowView.findViewById(R.id.timeLog_recentDescription);
+
+        workOrderNum.setText(workOrder.getProposalPhase());
+        description.setText(workOrder.getDescription());
+
+        rowView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createTimeEntryDialog(workOrder);
+            }
+        });
+
+        return rowView;
+    }
+
+    private void createTimeEntryDialog(WorkOrder workOrder){
+        final WorkOrder wo = workOrder;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Test test testaroo.");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                actions.add(new Action(wo, "Deed is done!", "ALL FUCKED UP", 4, new ArrayList<Note>()));
+                mActionQueueAdapter.notifyDataSetInvalidated();
+                toggleRecentlyViewed(true);
+            }
+        });
+
+        builder.create().show();
+
+
+
+
+    }
+
+    private int getPx(int dimensionDp) {
+        float density = getResources().getDisplayMetrics().density;
+        return (int) (dimensionDp * density + 0.5f);
+    }
+
+    private void toggleRecentlyViewed(boolean onlyHide){
+        Animation slideUp = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in);
+        Animation slideDown = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_bottom);
         LinearLayout layout = (LinearLayout)v.findViewById(R.id.actionList_recentlyViewedLayout);
         if(layout.getVisibility() == View.VISIBLE){
             layout.setVisibility(View.GONE);
-            Animation slideDown = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_bottom);
             layout.startAnimation(slideDown);
+            recentlyViewedBarLayout.startAnimation(slideUp);
+        }else if(!onlyHide){
+            layout.setVisibility(View.VISIBLE);
+            layout.startAnimation(slideUp);
+            recentlyViewedBarLayout.startAnimation(slideDown);
         }
 
     }
@@ -223,7 +262,7 @@ public class ActionQueueListFragment extends ListFragment{
         //Pass position for retrieving action from it later
         //mCallbacks.onActionSelected(position);
         mCallbacks.onActionSelected(position);
-        hideRecentlyViewed();
+        toggleRecentlyViewed(false);
         Log.d(TAG, "clicked action position: "+position);
     }
 

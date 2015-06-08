@@ -25,7 +25,7 @@
 
     <!-- Material Theme -->
     <color name="theme_primary">#E65100</color>
-    <color name="theme_secondary">#EF6C00</color>
+    <color name="theme_secondary">#EF6C00</color><!--D0640C-->
     <color name="theme_accent">#C5CAE9</color> <!--CURRENTLY UNUSED-->
 
 
@@ -35,8 +35,12 @@
 
 
     <!--CardView-->
-    <color name="cardView_layoutBackground">#E0E0E0</color>
-    <color name="cardView_cardBackground">#FFFFFF</color>
+    <color name="cardView_layoutBackground">#e4e4e4</color>
+    <color name="cardView_cardBackground">#ffffff</color>
+    <color name="cardView_cardText">#000000</color>
+
+    <color name="workOrderList_sectionHeader">#EF6C00</color>
+    <color name="workOrderList_sectionHeaderDivider">#EF6C00</color>
 
 
     <!-- Contact Page   -->
@@ -65,8 +69,9 @@
     <!--ActionQueue-->
     <color name="actionQueue_workOrder">#00796B</color>
     <color name="actionQueue_recentlyViewedBackground">#FFFFFF</color>
-    <color name="actionQueue_recentlyViewedText">#424242</color>
-    <color name="actionQueue_recentlyViewedTitleBackground">#424242</color>
+    <color name="actionQueue_recentlyViewedText">#212121</color>
+    <color name="actionQueue_recentlyViewedTitleHideBackground">#424242</color>
+    <color name="actionQueue_recentlyViewedTitleShowBackground">#3F51B5</color>
     <color name="actionQueue_recentlyViewedTitleText">#FFFFFF</color>
 
 

@@ -10,7 +10,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="left"
-        android:paddingLeft="8dp">
+        android:padding="8dp"
+        android:background="#BDBDBD">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -23,13 +24,15 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:paddingRight="4dp"
+                android:textSize="20dp"
                 android:textColor="@color/routine_green"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Synced"
+                android:text="synced"
                 android:paddingRight="8dp"
+                android:textSize="16dp"
                 android:textColor="@color/routine_green"/>
 
             <TextView
@@ -38,12 +41,14 @@
                 android:layout_height="wrap_content"
                 android:text="4"
                 android:paddingRight="4dp"
+                android:textSize="20dp"
                 android:textColor="@color/emergency_red"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Unsynced"
+                android:text="unsynced"
+                android:textSize="16dp"
                 android:textColor="@color/emergency_red"/>
         </LinearLayout>
 
@@ -55,13 +60,14 @@
             android:layout_height="wrap_content"
             android:textColor="#555555"
             android:text="h"
-            android:textSize="14sp"
-            android:paddingTop="8dp"
+            android:textSize="18sp"
             android:paddingRight="8dp"
+            android:paddingLeft="12dp"
+            android:layout_centerVertical="true"
             android:textStyle="bold"
-            android:gravity="bottom"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"/>
+
 
         <TextView
             android:id="@+id/total_hours"
@@ -69,22 +75,23 @@
             android:layout_height="wrap_content"
             android:textColor="#555555"
             android:text="0"
-            android:textSize="24sp"
+            android:layout_centerVertical="true"
+            android:textSize="32sp"
             android:textStyle="bold"
-            android:paddingRight="2dp"
             android:layout_toLeftOf="@id/hours_text"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/total_hours"
             android:textColor="#555555"
             android:text="Total:"
-            android:textSize="14sp"
-            android:paddingTop="8dp"
-            android:paddingRight="8dp"
-            android:textStyle="bold"
-            android:gravity="bottom"/>
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:paddingRight="12dp"
+            android:textStyle="bold"/>
+
+
+
 
     </RelativeLayout>
 
@@ -103,45 +110,34 @@
         android:textSize="20dp"
         android:textColor="@android:color/tertiary_text_light" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/actionList_recentlyViewedBarLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/actionQueue_recentlyViewedTitleBackground"
-        android:gravity="center"
+        android:background="@color/actionQueue_recentlyViewedTitleHideBackground"
         android:orientation="horizontal">
-
-
         <TextView
-            android:id="@+id/actionList_recentBarIconL"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/actionQueue_recentlyViewedTitleText"
-            />
-        <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Recently Viewed"
-            android:layout_weight="2"
-            android:textSize="22dp"
-            android:textStyle="bold"
-            android:gravity="center"
+            android:textSize="18dp"
+            android:layout_centerInParent="true"
             android:textColor="@color/actionQueue_recentlyViewedTitleText"
-            android:padding="8dp"/>
+            android:padding="12dp"/>
 
         <TextView
             android:id="@+id/actionList_recentBarIconR"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/actionQueue_recentlyViewedTitleText"
-            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:text="TEST"
+            android:layout_marginRight="12dp"
+            android:layout_centerVertical="true"
             />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
     <LinearLayout
@@ -153,143 +149,35 @@
         android:background="@color/actionQueue_recentlyViewedBackground"
         android:visibility="gone">
 
-        <TextView
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:text="Choose to Add Time"
-            android:textSize="22dp"
-            android:textStyle="bold"
-            android:textColor="@color/actionQueue_recentlyViewedTitleText"
-            android:background="@color/actionQueue_recentlyViewedTitleBackground"
-            android:padding="8dp"
-            android:gravity="center"/>
-        <LinearLayout
-            android:id="@+id/actionList_recentLayout0"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:gravity="center">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/actionQueue_recentlyViewedTitleShowBackground"
+            >
             <TextView
-                android:id="@+id/actionList_recentWorkOrderNum0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="19463-001"
+                android:text="Choose to Add Time"
+                android:textSize="18dp"
                 android:textStyle="bold"
-                android:paddingLeft="4dp"
-                android:paddingRight="8dp"/>
+                android:textColor="@color/actionQueue_recentlyViewedTitleText"
+                android:layout_centerInParent="true"
+                android:padding="12dp"
+                />
 
             <TextView
-                android:id="@+id/actionList_recentDescription0"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="QFS138 - CAMPUS WIDE - IRRIGATION MANUAL WATERING - ANNUAL RECURRING"
-                android:textSize="14dp"
-                android:lines="2"
-                android:paddingRight="4dp"
-                android:textColor="@color/actionQueue_recentlyViewedText"
-                android:gravity="center"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/actionList_recentLayout1"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:gravity="center">
-            <TextView
-                android:id="@+id/actionList_recentWorkOrderNum1"
+                android:id="@+id/actionList_recentBarIconR2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="19463-001"
-                android:textStyle="bold"
-                android:paddingLeft="4dp"
-                android:paddingRight="8dp"/>
-
-            <TextView
-                android:id="@+id/actionList_recentDescription1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="QFS138 - CAMPUS WIDE - IRRIGATION MANUAL WATERING - ANNUAL RECURRING"
-                android:textSize="14dp"
-                android:lines="2"
-                android:paddingRight="4dp"
-                android:textColor="@color/actionQueue_recentlyViewedText"
-                android:gravity="center"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/actionList_recentLayout2"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:gravity="center">
-            <TextView
-                android:id="@+id/actionList_recentWorkOrderNum2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="19463-001"
-                android:textStyle="bold"
-                android:paddingLeft="4dp"
-                android:paddingRight="8dp"/>
-
-            <TextView
-                android:id="@+id/actionList_recentDescription2"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="QFS138 - CAMPUS WIDE - IRRIGATION MANUAL WATERING - ANNUAL RECURRING"
-                android:textSize="14dp"
-                android:lines="2"
-                android:paddingRight="4dp"
-                android:textColor="@color/actionQueue_recentlyViewedText"
-                android:gravity="center"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/actionList_recentLayout3"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:gravity="center">
-            <TextView
-                android:id="@+id/actionList_recentWorkOrderNum3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="19463-001"
-                android:textStyle="bold"
-                android:paddingLeft="4dp"
-                android:paddingRight="8dp"/>
-
-            <TextView
-                android:id="@+id/actionList_recentDescription3"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="QFS138 - CAMPUS WIDE - IRRIGATION MANUAL WATERING - ANNUAL RECURRING"
-                android:textSize="14dp"
-                android:lines="2"
-                android:paddingRight="4dp"
-                android:textColor="@color/actionQueue_recentlyViewedText"
-                android:gravity="center"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/actionList_recentLayout4"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:gravity="center">
-            <TextView
-                android:id="@+id/actionList_recentWorkOrderNum4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="19463-001"
-                android:textStyle="bold"
-                android:paddingLeft="4dp"
-                android:paddingRight="8dp"/>
-
-            <TextView
-                android:id="@+id/actionList_recentDescription4"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="QFS138 - CAMPUS WIDE - IRRIGATION MANUAL WATERING - ANNUAL RECURRING"
-                android:textSize="14dp"
-                android:lines="2"
-                android:paddingRight="4dp"
-                android:textColor="@color/actionQueue_recentlyViewedText"
-                android:gravity="center"/>
-        </LinearLayout>
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:textColor="@color/actionQueue_recentlyViewedTitleText"
+                android:gravity="center"
+                android:text="TEST"
+                />
+        </RelativeLayout>
 
     </LinearLayout>
 

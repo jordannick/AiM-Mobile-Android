@@ -13,20 +13,21 @@
             android:layout_height="wrap_content"
             android:text="ICON"
             android:textSize="26sp"
-            android:textColor="@android:color/tertiary_text_light"/>
+            android:textColor="@color/workOrderList_sectionHeader"/>
         <TextView
             android:id="@+id/listItem_section"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Section"
+            android:textStyle="bold"
             android:textSize="26sp"
             android:padding="8dp"
-            android:textColor="@android:color/tertiary_text_light"/>
+            android:textColor="@color/workOrderList_sectionHeader"/>
     </LinearLayout>
     <View
         android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@color/noteView_divider"
+        android:layout_height="4dp"
+        android:background="@color/workOrderList_sectionHeaderDivider"
         />
 
 </LinearLayout>
