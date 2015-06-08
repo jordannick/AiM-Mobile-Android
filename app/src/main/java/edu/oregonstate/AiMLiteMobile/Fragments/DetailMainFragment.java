@@ -1,14 +1,17 @@
 package edu.oregonstate.AiMLiteMobile.Fragments;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -74,10 +77,27 @@ public class DetailMainFragment extends Fragment{
         ((TextView)v.findViewById(R.id.descriptionTextView)).setText(mWorkOrder.getDescription());
         ((TextView)v.findViewById(R.id.workCodeTextView)).setText(mWorkOrder.getCraftCode());
         ((TextView)v.findViewById(R.id.shopTextView)).setText(mWorkOrder.getShop());
-        ((TextView)v.findViewById(R.id.dateCreatedTextView)).setText(mWorkOrder.getDateCreated());
+//        ((TextView)v.findViewById(R.id.dateCreatedTextView)).setText(mWorkOrder.getDateCreated());
         ((TextView)v.findViewById(R.id.statusTextView)).setText(mWorkOrder.getStatus());
         ((TextView)v.findViewById(R.id.priorityTextView)).setText(mWorkOrder.getPriority());
-        ((TextView)v.findViewById(R.id.priorityTextView)).setBackgroundResource(mWorkOrder.getPriorityColor());
+
+        ImageView statusImageView = new ImageView(getActivity().getApplicationContext());
+
+        switch (mWorkOrder.getStatus()){
+            case "ASSIGNED":
+                statusImageView.setImageResource(R.drawable.status_assigned);
+                break;
+            case "WORK IN PROGRESS":
+                statusImageView.setImageResource(R.drawable.status_work_in_progress);
+                break;
+            case "WORK COMPLETE":
+                statusImageView.setImageResource(R.drawable.status_work_complete);
+                break;
+        }
+
+        ((LinearLayout)v.findViewById(R.id.layout_status)).addView(statusImageView);
+
+        //((TextView)v.findViewById(R.id.priorityTextView)).setBackgroundResource(mWorkOrder.getPriorityColor());
 
         //TODO - I think the below changing the INSTANCE of the work order, rather than work order object displayed in overview list
         /*if (mWorkOrder.getSection().equals("Backlog"))((CompoundButton)v.findViewById(R.id.sectionSwitch)).setChecked(true);
@@ -126,6 +146,18 @@ public class DetailMainFragment extends Fragment{
         }
 
        // ((TextView)v.findViewById(R.id.estTextView)).setText(estText);
+
+
+        v.findViewById(R.id.button_addAction).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddActionDialogFragment actionFragment = new AddActionDialogFragment();
+                actionFragment.show(getFragmentManager(), "Diag");
+            }
+        });
+
+
+
     }
 
 

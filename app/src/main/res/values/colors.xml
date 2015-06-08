@@ -51,7 +51,7 @@
     <!--Detail Overview-->
     <color name="detailsView_details_text">#FFFFFF</color>
     <color name="detailsView_details_title">#FFFFFF</color>
-    <color name="detailsView_details_cardBackground">#00796B</color>
+    <color name="detailsView_details_cardBackground">#607D8B</color><!--#00796B-->
 
 
     <!--Action Add-->
