@@ -138,8 +138,10 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
             }
             ((TextView)convertView.findViewById(R.id.listItem_section)).setText(item.getSectionTitle());
 
-            Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/FontAwesome.otf");
-            ((TextView)convertView.findViewById(R.id.listItem_section_icon)).setTypeface(tf);
+            Typeface FONTAWESOME = Typeface.createFromAsset(context.getAssets(), "fonts/FontAwesome.otf");
+
+            ((TextView)convertView.findViewById(R.id.listItem_section_icon)).setTypeface(FONTAWESOME);
+
             ((TextView)convertView.findViewById(R.id.listItem_section_icon)).setText(item.getSectionIcon());
 
         } else {
@@ -147,6 +149,13 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
             if (convertView == null) {
                 convertView = inflator.inflate(R.layout.list_item_workorder, parent, false);
             }
+
+            //TODO get perfect font
+            Typeface GUDEA = Typeface.createFromAsset(context.getAssets(), "fonts/Gudea-Regular.otf");
+            Typeface GUDEABOLD = Typeface.createFromAsset(context.getAssets(), "fonts/Gudea-Bold.otf");
+            ((TextView)convertView.findViewById(R.id.row_proposal)).setTypeface(GUDEABOLD);
+            ((TextView)convertView.findViewById(R.id.row_description)).setTypeface(GUDEA);
+
             ((TextView)convertView.findViewById(R.id.row_proposal)).setText(wo.getProposalPhase());
             //%% DEBUG %%
             //((TextView)convertView.findViewById(R.id.row_section)).setText(wo.getSection());
@@ -155,18 +164,32 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
            // ((TextView)convertView.findViewById(R.id.row_monthDay)).setText(wo.getDateElements()[1]);
             ((TextView)convertView.findViewById(R.id.actionRow_valueAgo)).setText(wo.getDateElements()[3]);
             ((TextView)convertView.findViewById(R.id.actionRow_stringAgo)).setText(wo.getDateElements()[4]);
-            convertView.findViewById(R.id.row_proposal).setBackgroundResource(wo.getPriorityColor());
+            //convertView.findViewById(R.id.row_proposal).setBackgroundResource(wo.getPriorityColor());
             ((TextView)convertView.findViewById(R.id.row_description)).setText(wo.getDescription());
 
+            ImageView priorityImageView = (ImageView)convertView.findViewById(R.id.imageView_priorityIconOverview);
+            switch (wo.getPriority()){
+                case "TIME SENSITIVE":
+                    priorityImageView.setImageResource(R.drawable.priority_time_sensitive);
+                    break;
+                case "URGENT":
+                    priorityImageView.setImageResource(R.drawable.priority_urgent);
+                    break;
+                case "EMERGENCY":
+                    priorityImageView.setImageResource(R.drawable.priority_emergency);
+                    break;
+                case "ROUTINE":
+                    priorityImageView.setImageResource(R.drawable.priority_none);
+                    break;
+                case "SCHEDULED":
+                    priorityImageView.setImageResource(R.drawable.priority_none);
+                    break;
 
-            ((ImageView)convertView.findViewById(R.id.imageView_urgent)).setVisibility(View.GONE);
-            ((ImageView)convertView.findViewById(R.id.imageView_timeSensitive)).setVisibility(View.GONE);
-            Log.d(TAG, "priority = "+wo.getPriority());
-            if (wo.getPriority().equals("URGENT")){
-                ((ImageView)convertView.findViewById(R.id.imageView_urgent)).setVisibility(View.VISIBLE);
-            } else if (wo.getPriority().equals("TIME SENSITIVE")){
-                ((ImageView)convertView.findViewById(R.id.imageView_timeSensitive)).setVisibility(View.VISIBLE);
+                    //priorityImageView.setImageResource(0);
+                    //priorityImageView.setVisibility(View.GONE);
             }
+
+
         }
 
         return convertView;

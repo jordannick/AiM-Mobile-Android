@@ -13,11 +13,13 @@
             android:id="@+id/layout_entry"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="12dp">
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="0dp"
@@ -27,7 +29,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="STATUS"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
                         android:textColor="@color/addAction_sectionTitles"
                         android:paddingTop="4dp"
@@ -55,7 +57,8 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="4dp">
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="0dp"
@@ -65,7 +68,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="HOURS SPENT"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
                         android:textColor="@color/addAction_sectionTitles"
                         android:paddingTop="4dp"
@@ -105,7 +108,7 @@
                         android:textColor="@android:color/holo_blue_dark"
                         style="?android:borderlessButtonStyle"/>
 
-                    <TextView
+                   <!-- <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="5"
@@ -113,7 +116,18 @@
                         android:layout_toLeftOf="@id/button_addHours"
                         android:layout_toRightOf="@id/button_minusHours"
                         android:layout_centerVertical="true"
-                        android:gravity="center"/>
+                        android:gravity="center"/>-->
+
+                    <EditText
+                        android:id="@+id/hoursEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_toLeftOf="@id/button_addHours"
+                        android:layout_toRightOf="@id/button_minusHours"
+                        android:gravity="center"
+                        android:textSize="16dp"
+                        android:layout_margin="16dp"
+                        />
 
 
                 </RelativeLayout>
@@ -121,7 +135,8 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="4dp">
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="0dp"
@@ -131,7 +146,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ACTION TAKEN"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
                         android:textColor="@color/addAction_sectionTitles"
                         android:paddingTop="4dp"
@@ -159,7 +174,8 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="4dp">
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="0dp"
@@ -168,8 +184,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="NEW NOTE"
-                        android:textSize="16sp"
+                        android:text="NOTES"
+                        android:textSize="14sp"
                         android:textStyle="bold"
                         android:textColor="@color/addAction_sectionTitles"
                         android:paddingTop="4dp"
