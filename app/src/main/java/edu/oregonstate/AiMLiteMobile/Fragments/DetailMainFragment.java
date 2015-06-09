@@ -80,13 +80,14 @@ public class DetailMainFragment extends Fragment{
 
         /**/
 //        ((TextView)v.findViewById(R.id.idTextView)).setText(mWorkOrder.getProposalPhase());
-        ((TextView)v.findViewById(R.id.workOrderLocationText)).setText(mWorkOrder.getBuilding());
+        ((TextView)v.findViewById(R.id.detailView_textLocation)).setText(mWorkOrder.getBuilding());
         ((TextView)v.findViewById(R.id.descriptionTextView_detail)).setText(mWorkOrder.getDescription());
-        ((TextView)v.findViewById(R.id.workCodeTextView)).setText(mWorkOrder.getCraftCode());
-        ((TextView)v.findViewById(R.id.shopTextView)).setText(mWorkOrder.getShop());
+        ((TextView)v.findViewById(R.id.detailView_textFunding)).setText(mWorkOrder.getCraftCode());
+        ((TextView)v.findViewById(R.id.detailView_textShop)).setText(mWorkOrder.getShop());
 //        ((TextView)v.findViewById(R.id.dateCreatedTextView)).setText(mWorkOrder.getDateCreated());
-        ((TextView)v.findViewById(R.id.statusTextView)).setText(mWorkOrder.getStatus());
-        ((TextView)v.findViewById(R.id.priorityTextView)).setText(mWorkOrder.getPriority());
+        ((TextView)v.findViewById(R.id.detailView_textStatus)).setText(mWorkOrder.getStatus());
+        ((TextView)v.findViewById(R.id.detailView_textPriority)).setText(mWorkOrder.getPriority());
+
 
 
         //TODO get perfect font
@@ -113,8 +114,9 @@ public class DetailMainFragment extends Fragment{
 
 
 
-        ImageView statusImageView = (ImageView)v.findViewById(R.id.imageView_statusIcon);
-        switch (mWorkOrder.getStatus()){
+        // TODO: re put in
+        // ImageView statusImageView = (ImageView)v.findViewById(R.id.imageView_statusIcon);
+/*        switch (mWorkOrder.getStatus()){
             case "ASSIGNED":
                 statusImageView.setImageResource(R.drawable.status_assigned);
                 break;
@@ -127,7 +129,11 @@ public class DetailMainFragment extends Fragment{
             case "ON HOLD":
                 statusImageView.setImageResource(R.drawable.status_on_hold);
                 break;
-        }
+        }*/
+        // end to do
+
+        // ------------------------------------------------------------------------------------
+
        // ((LinearLayout)v.findViewById(R.id.layout_status)).addView(statusImageView);
 
         //((TextView)v.findViewById(R.id.priorityTextView)).setBackgroundResource(mWorkOrder.getPriorityColor());
