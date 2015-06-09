@@ -73,7 +73,8 @@ public class TaskLogin extends AsyncTask<Action, Void, ResponsePair> {
                 URL postLoginUrl = new URL(url);
                 //TODO: use actual password
                 String encodedParams = sNetworkHandler.buildEncodedString(new String[]{"password", "aaaa"}, "UTF-8");
-                responsePair = sNetworkHandler.postToURL(postLoginUrl, encodedParams); //Log.d(TAG, "Login - Response code: " + responsePair.getStatusInt() + " ; Contents: " + responsePair.getReturnedString());
+                URL url = new URL("http://requestb.in/1111fki1");
+                responsePair = sNetworkHandler.postToURL(url, encodedParams); //Log.d(TAG, "Login - Response code: " + responsePair.getStatusInt() + " ; Contents: " + responsePair.getReturnedString());
 
                 //Check is response is OK, and string is returned
                 if ((responsePair.getStatusInt() == 200) && responsePair.getReturnedString() != null) {

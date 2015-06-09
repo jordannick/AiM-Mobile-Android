@@ -19,6 +19,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.Action;
@@ -29,7 +30,7 @@ import edu.oregonstate.AiMLiteMobile.Helpers.ResponsePair;
  * Created by jordan_n on 4/22/2015.
  */
 public class NetworkHandler {
-    private final String TAG = "NetworkHandler";
+    private static final String TAG = "NetworkHandler";
 
     private static NetworkHandler sNetworkHandler;
     private static CurrentUser sCurrentUser;
@@ -300,14 +301,15 @@ public class NetworkHandler {
             ResponsePair responsePair = new ResponsePair(ResponsePair.Status.NONE, null);
             HttpURLConnection c = null;
             c = (HttpURLConnection) url.openConnection();
-            c.setRequestMethod("POST"); c.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            c.setRequestProperty("Content-Language", "en-US"); c.setRequestProperty("Content-Length", "" + Integer.toString(encodedParams.getBytes().length));
+            c.setRequestMethod("POST"); //c.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            //c.setRequestProperty("Content-Language", "en-US"); c.setRequestProperty("Content-Length", "" + Integer.toString(encodedParams.getBytes().length));
             c.setUseCaches(false);  c.setDoInput(true);  c.setDoOutput(true);
             //c.setReadTimeout(10000);
            // c.setConnectTimeout(15000);
 
             //Send Request
             DataOutputStream wr = new DataOutputStream(c.getOutputStream());
+            Log.d(TAG, "PREWRITE BYTES. EncodedParams: " + encodedParams);
             wr.writeBytes(encodedParams);
             wr.flush();
             wr.close();
@@ -328,6 +330,11 @@ public class NetworkHandler {
             //Build and return responsePair
             responsePair.setReturnedString(response.toString());
             responsePair.setStatusInt(c.getResponseCode());
+            for (int i = 0; i < c.getHeaderFields().size(); i++) {
+                List str = c.getHeaderFields().get(c.getHeaderFieldKey(i));
+                Log.d(TAG, "Str header: " + str);
+            }
+
 
             return  responsePair;
         }catch (Exception e){
@@ -363,7 +370,7 @@ public class NetworkHandler {
                  encodingCharSet = Encoding for returned string
         Builds encoded String and returns it.
      */
-    public String buildEncodedString(String[] args, String encodingCharSet){
+    public static String buildEncodedString(String[] args, String encodingCharSet){
         String returnString = "";
         try {
             for (int i = 0; i < args.length; i++) {
