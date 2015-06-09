@@ -17,8 +17,8 @@ import edu.oregonstate.AiMLiteMobile.R;
 /**
  * Created by SellersK on 6/1/2015.
  */
-public class OverviewFragment extends Fragment {
-    private static final String TAG = "OverviewFragment";
+public class OverviewLandingFragment extends Fragment {
+    private static final String TAG = "OverviewLandingFragment";
     private static CurrentUser sCurrentUser;
 
     @Override

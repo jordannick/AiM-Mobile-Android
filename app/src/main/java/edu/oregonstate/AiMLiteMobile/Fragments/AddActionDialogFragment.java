@@ -1,9 +1,7 @@
 package edu.oregonstate.AiMLiteMobile.Fragments;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,31 +17,56 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 import edu.oregonstate.AiMLiteMobile.Activities.ActionQueueListActivity;
 import edu.oregonstate.AiMLiteMobile.Helpers.InputFilterMinMax;
+import edu.oregonstate.AiMLiteMobile.Models.Action;
+import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
+import edu.oregonstate.AiMLiteMobile.Models.Note;
+import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.R;
 
 public class AddActionDialogFragment extends DialogFragment {
     private static final String TAG = "AddActionDialogFragment";
 
+    private static CurrentUser sCurrentUser;
+    private WorkOrder workOrder;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        workOrder = (WorkOrder) getArguments().getSerializable("WorkOrder");
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
+
         View v = inflater.inflate(R.layout.dialog_action_add, container, false);
+
+        sCurrentUser = CurrentUser.get(getActivity().getApplicationContext());
 
         final Dialog actionDialog = getDialog();
         final ScrollView dialogScrollView = ((ScrollView)(v.findViewById(R.id.layout_action_add)));
-        EditText noteEditText =  ((EditText)(v.findViewById(R.id.editText_note)));
-        TextView hoursEditText = (TextView)v.findViewById(R.id.hoursEditText);
 
-        hoursEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-        //hoursEditText.setPadding(8, 16, 8, 16);
-        hoursEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 24), new InputFilter.LengthFilter(1)});
-        hoursEditText.setGravity(Gravity.CENTER);
+        final Spinner statusSpinner =  (Spinner)v.findViewById(R.id.spinner_updateStatus);
+        final Spinner actionSpinner = (Spinner)v.findViewById(R.id.spinner_actionTaken);
+        final EditText noteEditText =  ((EditText)(v.findViewById(R.id.editText_note)));
+        final TextView hoursEditText = (TextView)v.findViewById(R.id.hoursEditText);
 
         actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         actionDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+        hoursEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        hoursEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 24), new InputFilter.LengthFilter(1)});
+        hoursEditText.setGravity(Gravity.CENTER);
 
         //Scroll to bottom when dialog shifts on New Note press
         dialogScrollView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -67,8 +90,6 @@ public class AddActionDialogFragment extends DialogFragment {
             public void afterTextChanged(Editable s) {}
         });
 
-
-
         //Cancel button dismisses the view and hides keyboard
         v.findViewById(R.id.dialogConfirm_buttonCancel).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,21 +104,22 @@ public class AddActionDialogFragment extends DialogFragment {
         v.findViewById(R.id.dialogConfirm_buttonConfirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                actionDialog.dismiss();
 
                 //Confirm button starts ActionQueue activity, passing it the new action
                 if (getActivity().getLocalClassName().equals("Activities.DetailActivity")) {
-                    Intent intent = new Intent(getActivity(), ActionQueueListActivity.class);
-                    getActivity().finish();
-                    //TODO pass new action
-                    startActivity(intent);
+                    if (actionSpinner.getSelectedItemPosition() != 0) { // Make sure an action is selected
+                        sCurrentUser.addAction(createAction(actionSpinner.getSelectedItem().toString(), statusSpinner.getSelectedItem().toString(), hoursEditText.getText().toString(), noteEditText.getText().toString()));
+                        Intent intent = new Intent(getActivity(), ActionQueueListActivity.class);
+                        getActivity().finish();
+                        startActivity(intent);
+                    } else {
+                        SnackbarManager.show(Snackbar.with(getActivity()).text("Action required to submit").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
+                    }
                 }
-
                 //Confirm button saves the edits to action
                 else if (getActivity().getLocalClassName().equals("Activities.ActionQueueListActivity")) {
                     //Just save action in queue list
                 }
-
                 else {
                     Log.e(TAG, "Using dialog in unsupported activity");
                 }
@@ -107,8 +129,22 @@ public class AddActionDialogFragment extends DialogFragment {
         return v;
     }
 
+    private Action createAction(String actionTaken, String status, String hours, String noteString){
+        int hoursInt = 0;
+        ArrayList<Note> notes = new ArrayList<>();
 
+        if (!hours.isEmpty()){
+            hoursInt = Integer.parseInt(hours);
+        }
+        if (!noteString.isEmpty()){
+            Note note = new Note(noteString, sCurrentUser.getUsername(), new Date(System.currentTimeMillis()));
+            notes.add(note);
+        }
 
+        Action newAction = new Action(workOrder, actionTaken, status, hoursInt, notes);
+        newAction.setTimeType(Action.TimeType.REG_NB); //%% DEBUG %% Default time type
 
+        return newAction;
+    }
 
 }

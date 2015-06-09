@@ -43,6 +43,7 @@ public class WorkOrder implements Serializable {
 
     String mMinCraftCode;
     String mBuilding;
+    String mLocationCode;
     String mProposalPhase;
     String[] mDateElements = new String[5]; //[0] DayOfWeek  [1] MonthDay  [2] Year  [3] ValueDaysAgo [4] StringDaysAgo
 
@@ -59,6 +60,7 @@ public class WorkOrder implements Serializable {
         }
         return mNotes;
     }
+
 
     public void setPriority(String priority) {
         mPriority = priority;
@@ -86,7 +88,7 @@ public class WorkOrder implements Serializable {
     }
 
     public void setDateElements(String dateElements) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
         try {
             Date date = format.parse(dateElements);
             mDateCreated = date.toString();
@@ -157,6 +159,14 @@ public class WorkOrder implements Serializable {
     public int getPriorityColor() {
         return mPriorityColor;
         //return R.color.red;
+    }
+
+    public String getLocationCode() {
+        return mLocationCode;
+    }
+
+    public void setLocationCode(String mLocationCode) {
+        this.mLocationCode = mLocationCode;
     }
 
     public String getCategory() {

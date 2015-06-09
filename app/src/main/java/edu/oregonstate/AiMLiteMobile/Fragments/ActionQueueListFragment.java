@@ -201,7 +201,7 @@ public class ActionQueueListFragment extends ListFragment{
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                actions.add(new Action(wo, "Deed is done!", "ALL FUCKED UP", 4, new ArrayList<Note>()));
+                //actions.add(new Action(wo, "Deed is done!", "ALL FUCKED UP", 4, new ArrayList<Note>()));
                 mActionQueueAdapter.notifyDataSetInvalidated();
                 toggleRecentlyViewed(true);
             }

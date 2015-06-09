@@ -1,9 +1,8 @@
 package edu.oregonstate.AiMLiteMobile.Helpers;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import edu.oregonstate.AiMLiteMobile.Fragments.OverviewFragment;
+import edu.oregonstate.AiMLiteMobile.Fragments.OverviewLandingFragment;
 import edu.oregonstate.AiMLiteMobile.Fragments.OverviewListFragment;
 
 /**
@@ -18,7 +17,7 @@ public class OverviewPagerItem {
 
     public OverviewPagerItem(CharSequence title, int indicatorColor, int dividerColor) {
         if(title == "Overview"){
-            mFragment = new OverviewFragment();
+            mFragment = new OverviewLandingFragment();
         }else{
             mFragment = new OverviewListFragment();
         }

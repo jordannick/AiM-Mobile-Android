@@ -1,14 +1,9 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
 import android.app.ActionBar;
-import android.app.DialogFragment;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
@@ -18,9 +13,6 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.oregonstate.AiMLiteMobile.Fragments.ActionQueueListFragment;
-import edu.oregonstate.AiMLiteMobile.Fragments.AddActionDialogFragment;
-import edu.oregonstate.AiMLiteMobile.Fragments.DetailContactFragment;
 import edu.oregonstate.AiMLiteMobile.Fragments.DetailMainFragment;
 import edu.oregonstate.AiMLiteMobile.Fragments.DetailNotesFragment;
 import edu.oregonstate.AiMLiteMobile.Helpers.DetailPagerItem;
@@ -38,8 +30,8 @@ public class DetailActivity extends SingleFragmentActivity implements DetailNote
 
     private static CurrentUser sCurrentUser;
     public static WorkOrder mWorkOrder;
-    private ActionBar actionBar;
-    private View v;
+    //private ActionBar actionBar;
+    //private View v;
 
 
     //Sliding Tabs
@@ -62,7 +54,7 @@ public class DetailActivity extends SingleFragmentActivity implements DetailNote
 
         //setContentView(R.layout.detail_activity);
 
-        v = this.findViewById(R.id.detail_activity_layout);
+        //v = this.findViewById(R.id.detail_activity_layout);
 
         sCurrentUser = CurrentUser.get(getApplicationContext());
         mWorkOrder = (WorkOrder)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
@@ -139,13 +131,6 @@ public class DetailActivity extends SingleFragmentActivity implements DetailNote
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()){
-            case R.id.action_new:
-                //Create and start the AddAction activity, sending the work order object
-                Intent i = new Intent(this, AddActionActivity.class);
-                i.putExtra(WorkOrder.WORK_ORDER_EXTRA, mWorkOrder);
-                startActivity(i);
-                //overridePendingTransition(R.anim.slide_in, R.anim.no_action);
-                break;
             case android.R.id.home:
                 finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);

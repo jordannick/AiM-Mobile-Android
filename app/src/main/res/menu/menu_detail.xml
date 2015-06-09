@@ -2,11 +2,6 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".DetailActivity" >
 
-    <item android:id="@+id/action_new"
-
-          android:orderInCategory="100"
-          android:showAsAction="always"
-          android:title="@string/add_action_activity_title"/>
 
     <!--
         android:icon="@drawable/action_add_white"-->

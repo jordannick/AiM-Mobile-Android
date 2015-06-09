@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -15,9 +13,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import edu.oregonstate.AiMLiteMobile.Models.Action;
-import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
-import edu.oregonstate.AiMLiteMobile.Models.Note;
-import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.R;
 
 /**
@@ -49,7 +44,7 @@ public class ActionAdapter extends ArrayAdapter<Action> {
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_item_action_test, parent, false);
+            convertView = inflater.inflate(R.layout.list_item_action, parent, false);
         }
 
         Action action = mActions.get(position);

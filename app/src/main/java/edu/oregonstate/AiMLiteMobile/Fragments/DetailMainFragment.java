@@ -4,21 +4,14 @@ import android.app.Activity;
 import android.app.Fragment;
 
 import android.graphics.Typeface;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
-import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.SnackbarManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,18 +35,6 @@ public class DetailMainFragment extends Fragment{
     private View v;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = getActivity();
@@ -68,7 +49,7 @@ public class DetailMainFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.detail_view_test, parent, false);
+        View v = inflater.inflate(R.layout.detail_view, parent, false);
         this.v = v;
         return v;
     }
@@ -78,15 +59,28 @@ public class DetailMainFragment extends Fragment{
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle("Work Order");
 
-        /**/
-//        ((TextView)v.findViewById(R.id.idTextView)).setText(mWorkOrder.getProposalPhase());
-        ((TextView)v.findViewById(R.id.workOrderLocationText)).setText(mWorkOrder.getBuilding());
+        ((TextView)v.findViewById(R.id.row_proposal_detail)).setText(mWorkOrder.getProposalPhase());
         ((TextView)v.findViewById(R.id.descriptionTextView_detail)).setText(mWorkOrder.getDescription());
-        ((TextView)v.findViewById(R.id.workCodeTextView)).setText(mWorkOrder.getCraftCode());
-        ((TextView)v.findViewById(R.id.shopTextView)).setText(mWorkOrder.getShop());
-//        ((TextView)v.findViewById(R.id.dateCreatedTextView)).setText(mWorkOrder.getDateCreated());
-        ((TextView)v.findViewById(R.id.statusTextView)).setText(mWorkOrder.getStatus());
+        ((TextView)v.findViewById(R.id.dateCreatedTextView)).setText("Requested: " + mWorkOrder.getDateCreated() + " by " + mWorkOrder.getContactName() + " (" + mWorkOrder.getDepartment() + ")");
+
+        ((TextView)v.findViewById(R.id.actionRow_valueAgo)).setText(mWorkOrder.getDateElements()[3]);
+        ((TextView)v.findViewById(R.id.actionRow_stringAgo)).setText(mWorkOrder.getDateElements()[4]);
+
+        if (!mWorkOrder.getLocationCode().isEmpty()) {
+            ((TextView) v.findViewById(R.id.workOrderLocationText)).setText(mWorkOrder.getBuilding() + "; Room # " + mWorkOrder.getLocationCode());
+        } else {
+            ((TextView) v.findViewById(R.id.workOrderLocationText)).setText(mWorkOrder.getBuilding());
+        }
         ((TextView)v.findViewById(R.id.priorityTextView)).setText(mWorkOrder.getPriority());
+        ((TextView)v.findViewById(R.id.statusTextView)).setText(mWorkOrder.getStatus());
+
+        //TODO proper Assigned, Funding?
+        ((TextView)v.findViewById(R.id.assignedTextView)).setText("");
+
+        ((TextView)v.findViewById(R.id.fundingTextView)).setText(mWorkOrder.getCraftCode());
+
+        ((TextView) v.findViewById(R.id.workCodeTextView)).setText(mWorkOrder.getCategory());
+        ((TextView)v.findViewById(R.id.shopTextView)).setText(mWorkOrder.getShop());
 
 
         //TODO get perfect font
@@ -94,7 +88,7 @@ public class DetailMainFragment extends Fragment{
         Typeface GUDEABOLD = Typeface.createFromAsset(mActivity.getApplicationContext().getAssets(), "fonts/Gudea-Bold.otf");
         ((TextView)v.findViewById(R.id.descriptionTextView_detail)).setTypeface(GUDEA);
         ((TextView)v.findViewById(R.id.row_proposal_detail)).setTypeface(GUDEABOLD);
-
+        ((TextView)v.findViewById(R.id.dateCreatedTextView)).setTypeface(GUDEA);
 
         ImageView priorityImageView = (ImageView)v.findViewById(R.id.imageView_priorityIconDetail);
         switch (mWorkOrder.getPriority()){
@@ -112,7 +106,6 @@ public class DetailMainFragment extends Fragment{
         }
 
 
-
         ImageView statusImageView = (ImageView)v.findViewById(R.id.imageView_statusIcon);
         switch (mWorkOrder.getStatus()){
             case "ASSIGNED":
@@ -128,27 +121,23 @@ public class DetailMainFragment extends Fragment{
                 statusImageView.setImageResource(R.drawable.status_on_hold);
                 break;
         }
-       // ((LinearLayout)v.findViewById(R.id.layout_status)).addView(statusImageView);
 
-        //((TextView)v.findViewById(R.id.priorityTextView)).setBackgroundResource(mWorkOrder.getPriorityColor());
 
-        //TODO - I think the below changing the INSTANCE of the work order, rather than work order object displayed in overview list
-        /*if (mWorkOrder.getSection().equals("Backlog"))((CompoundButton)v.findViewById(R.id.sectionSwitch)).setChecked(true);
-        ((CompoundButton)v.findViewById(R.id.sectionSwitch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        v.findViewById(R.id.button_addAction).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    mWorkOrder.setSection("Backlog");
-                    //SnackbarManager.show(Snackbar.with(getActivity()).text("Moved to backlog").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
+            public void onClick(View v) {
+                AddActionDialogFragment actionFragment = new AddActionDialogFragment();
 
-                } else {
-                    mWorkOrder.setSection("Daily");
-                    //SnackbarManager.show(Snackbar.with(getActivity()).text("Moved to daily").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
-                }
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("WorkOrder", mWorkOrder);
+                actionFragment.setArguments(bundle);
+
+                actionFragment.show(getFragmentManager(), "Diag");
             }
-        });*/
+        });
 
-        mWorkOrder.getBeginDate();
+
+       /* mWorkOrder.getBeginDate();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
         SimpleDateFormat minimalDate = new SimpleDateFormat("MM/dd", Locale.US);
         SimpleDateFormat minimalDateYear = new SimpleDateFormat("MM/dd/yy", Locale.US);
@@ -176,24 +165,11 @@ public class DetailMainFragment extends Fragment{
 
         }catch (Exception e){
             Log.e(TAG, "Calendar formatting error: " + e);
-        }
+        }*/
 
        // ((TextView)v.findViewById(R.id.estTextView)).setText(estText);
 
 
-        v.findViewById(R.id.button_addAction).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddActionDialogFragment actionFragment = new AddActionDialogFragment();
-                actionFragment.show(getFragmentManager(), "Diag");
-            }
-        });
-
-
-
     }
-
-
-
 
 }

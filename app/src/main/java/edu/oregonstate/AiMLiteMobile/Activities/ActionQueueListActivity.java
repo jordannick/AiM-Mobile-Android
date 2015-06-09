@@ -44,10 +44,7 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
 
     //Open edit action form for clicked action, with position of action in queue
     public void onActionSelected(int actionPosition){
-        Intent i = new Intent(this, AddActionActivity.class);
-        i.putExtra(Action.EDIT_ACTION_EXTRA, actionPosition);
-        Log.d(TAG, "put edit action extra");
-        startActivity(i);
+        //TODO open edit action dialog fragment
     }
 
     //Start the HTTP POSTs to submit actions from queue.

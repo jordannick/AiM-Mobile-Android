@@ -171,6 +171,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
                     wo.setCraftCode(mJsonObj.getString("craft_code"));
                     wo.setShop(mJsonObj.getString("shop"));
                     wo.setBuilding(mJsonObj.getString("building"));
+                    wo.setLocationCode(mJsonObj.getString("location_code"));
                     wo.setDescription(mJsonObj.getString("description"));
                     wo.setCategory(mJsonObj.getString("category"));
                     wo.setPriority(mJsonObj.getString("pri_code"));

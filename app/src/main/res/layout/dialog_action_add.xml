@@ -160,7 +160,7 @@
                     android:orientation="horizontal">
 
                     <Spinner
-                        android:id="@+id/spinner_updateStatus2"
+                        android:id="@+id/spinner_actionTaken"
                         android:layout_height="wrap_content"
                         android:layout_width="fill_parent"
                         android:entries="@array/actionTakenItems"

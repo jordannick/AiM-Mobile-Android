@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">AiMLite Mobile</string>
+    <string name="app_name">AiM Lite Mobile</string>
     <string name="login_title">Login</string>
     <string name="list_title">Work Orders</string>
     <string name="detail_id">Phase ID:</string>
