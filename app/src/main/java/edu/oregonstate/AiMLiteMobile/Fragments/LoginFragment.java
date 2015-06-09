@@ -23,10 +23,15 @@ import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
 import edu.oregonstate.AiMLiteMobile.Activities.OverviewListActivity;
+import edu.oregonstate.AiMLiteMobile.AimApi;
+import edu.oregonstate.AiMLiteMobile.CustomConverter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.R;
 import edu.oregonstate.AiMLiteMobile.Network.TaskGetWorkOrders;
 import edu.oregonstate.AiMLiteMobile.Network.TaskLogin;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by jordan_n on 8/15/2014.
@@ -156,8 +161,47 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
         Log.i(TAG, "Logging in as: " + mUsername);
         mLoadCircle.setVisibility(View.VISIBLE);
         SnackbarManager.show(Snackbar.with(getActivity()).text("Logging in as: " + mUsername).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
-        TaskLogin loginTask = new TaskLogin(callback, URLLogin, getActivity());
-        loginTask.execute();
+
+
+
+
+
+        //-----------------------------------------------------------------------------
+        final CurrentUser user = CurrentUser.get(getActivity());
+        user.buildLoginUrl("crosst");
+        String baseUrl = CurrentUser.get(getActivity()).getURLLogin();
+        Log.d(TAG, "LOGIN Using baseUrl: " + baseUrl);
+        //baseUrl = "http://api-test.facilities.oregonstate.edu/1.0";
+        CustomConverter customConverter = new CustomConverter();
+
+        //baseUrl = "http://requestb.in";
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(baseUrl)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setConverter(new CustomConverter())
+                .build();
+
+        AimApi userApi = restAdapter.create(AimApi.class);
+
+        userApi.login("abc", new retrofit.Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                Log.d(TAG, "Success! String " + s + ", Response " + response.getBody());
+                user.setToken(s);
+                onLoginSuccess();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(TAG, "Error " + error);
+            }
+        });
+
+
+        //----------------------------------------------------------------
+
+//        TaskLogin loginTask = new TaskLogin(callback, URLLogin, getActivity());
+//        loginTask.execute();
 
         //Disable all fields for now
         mUsernameField.setEnabled(false);
@@ -253,6 +297,9 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
         Toast toast = Toast.makeText(getActivity().getApplicationContext(), text, duration);
         toast.show();
     }
+
+
+
 
 }
 

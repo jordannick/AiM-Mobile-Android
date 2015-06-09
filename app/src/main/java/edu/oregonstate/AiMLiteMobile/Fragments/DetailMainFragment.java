@@ -49,7 +49,7 @@ public class DetailMainFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.detail_view, parent, false);
+        View v = inflater.inflate(R.layout.detail_view_test, parent, false);
         this.v = v;
         return v;
     }
@@ -60,27 +60,17 @@ public class DetailMainFragment extends Fragment{
         getActivity().setTitle("Work Order");
 
         ((TextView)v.findViewById(R.id.row_proposal_detail)).setText(mWorkOrder.getProposalPhase());
-        ((TextView)v.findViewById(R.id.descriptionTextView_detail)).setText(mWorkOrder.getDescription());
-        ((TextView)v.findViewById(R.id.dateCreatedTextView)).setText("Requested: " + mWorkOrder.getDateCreated() + " by " + mWorkOrder.getContactName() + " (" + mWorkOrder.getDepartment() + ")");
-
         ((TextView)v.findViewById(R.id.actionRow_valueAgo)).setText(mWorkOrder.getDateElements()[3]);
         ((TextView)v.findViewById(R.id.actionRow_stringAgo)).setText(mWorkOrder.getDateElements()[4]);
 
-        if (!mWorkOrder.getLocationCode().isEmpty()) {
-            ((TextView) v.findViewById(R.id.workOrderLocationText)).setText(mWorkOrder.getBuilding() + "; Room # " + mWorkOrder.getLocationCode());
-        } else {
-            ((TextView) v.findViewById(R.id.workOrderLocationText)).setText(mWorkOrder.getBuilding());
-        }
-        ((TextView)v.findViewById(R.id.priorityTextView)).setText(mWorkOrder.getPriority());
-        ((TextView)v.findViewById(R.id.statusTextView)).setText(mWorkOrder.getStatus());
 
-        //TODO proper Assigned, Funding?
-        ((TextView)v.findViewById(R.id.assignedTextView)).setText("");
-
-        ((TextView)v.findViewById(R.id.fundingTextView)).setText(mWorkOrder.getCraftCode());
-
-        ((TextView) v.findViewById(R.id.workCodeTextView)).setText(mWorkOrder.getCategory());
-        ((TextView)v.findViewById(R.id.shopTextView)).setText(mWorkOrder.getShop());
+        ((TextView)v.findViewById(R.id.detailView_textLocation)).setText(mWorkOrder.getBuilding() + "; Room # " + mWorkOrder.getLocationCode());
+        ((TextView)v.findViewById(R.id.descriptionTextView_detail)).setText(mWorkOrder.getDescription());
+        ((TextView)v.findViewById(R.id.detailView_textFunding)).setText(mWorkOrder.getCraftCode());
+        ((TextView)v.findViewById(R.id.detailView_textShop)).setText(mWorkOrder.getShop());
+         ((TextView)v.findViewById(R.id.dateCreatedTextView)).setText("Requested: " + mWorkOrder.getDateCreated() + " by " + mWorkOrder.getContactName() + " (" + mWorkOrder.getDepartment() + ")");
+        ((TextView)v.findViewById(R.id.detailView_textStatus)).setText(mWorkOrder.getStatus());
+        ((TextView)v.findViewById(R.id.detailView_textPriority)).setText(mWorkOrder.getPriority());
 
 
         //TODO get perfect font
@@ -108,6 +98,7 @@ public class DetailMainFragment extends Fragment{
 
         ImageView statusImageView = (ImageView)v.findViewById(R.id.imageView_statusIcon);
         switch (mWorkOrder.getStatus()){
+
             case "ASSIGNED":
                 statusImageView.setImageResource(R.drawable.status_assigned);
                 break;
@@ -120,6 +111,7 @@ public class DetailMainFragment extends Fragment{
             case "ON HOLD":
                 statusImageView.setImageResource(R.drawable.status_on_hold);
                 break;
+
         }
 
 

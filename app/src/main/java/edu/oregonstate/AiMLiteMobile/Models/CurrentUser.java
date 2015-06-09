@@ -164,6 +164,7 @@ public class CurrentUser {
     }
 
     public String getURLLogin(){
+        Log.d(TAG, "returning loginURL: " + URLLogin);
         return URLLogin;
     }
 
