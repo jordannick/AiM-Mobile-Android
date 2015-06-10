@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="4dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginTop="8dp"
+    card_view:cardPreventCornerOverlap="true"
+    card_view:cardBackgroundColor="#FFCC80"
+    card_view:cardElevation="5dp">
+    <RelativeLayout
+        android:id="@+id/total_hours_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:padding="8dp"
+        android:background="#FFCC80">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            >
+            <TextView
+                android:id="@+id/synced_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:paddingRight="4dp"
+                android:textSize="20dp"
+                android:textColor="@color/routine_green"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="synced"
+                android:paddingRight="8dp"
+                android:textSize="16dp"
+                android:textColor="@color/routine_green"/>
+
+            <TextView
+                android:id="@+id/unsynced_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"
+                android:paddingRight="4dp"
+                android:textSize="20dp"
+                android:textColor="@color/emergency_red"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="unsynced"
+                android:textSize="16dp"
+                android:textColor="@color/emergency_red"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/hours_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#555555"
+            android:text="h"
+            android:textSize="18sp"
+            android:paddingRight="8dp"
+            android:paddingLeft="12dp"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
+
+
+        <TextView
+            android:id="@+id/total_hours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#555555"
+            android:text="0"
+            android:layout_centerVertical="true"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:layout_toLeftOf="@id/hours_text"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/total_hours"
+            android:textColor="#555555"
+            android:text="Total:"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:paddingRight="12dp"
+            android:textStyle="bold"/>
+
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

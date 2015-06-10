@@ -60,7 +60,7 @@ public class DetailMainFragment extends Fragment{
         getActivity().setTitle("Work Order");
 
         ((TextView)v.findViewById(R.id.row_proposal_detail)).setText(mWorkOrder.getProposalPhase());
-        ((TextView)v.findViewById(R.id.actionRow_valueAgo)).setText(mWorkOrder.getDateElements()[3]);
+        //((TextView)v.findViewById(R.id.actionRow_valueAgo)).setText(mWorkOrder.getDateElements()[3]);
         ((TextView)v.findViewById(R.id.actionRow_stringAgo)).setText(mWorkOrder.getDateElements()[4]);
 
 

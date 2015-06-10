@@ -161,7 +161,7 @@ public class TaskGetWorkOrders extends AsyncTask<String, Void, ResponsePair> {
             //return false;
         }
 
-
+        Log.d(TAG, "JSONArray Length OLD_CODE : " + json.length());
         for (int i = 0; i < json.length(); i++) {
                 try {
                     JSONObject mJsonObj = json.getJSONObject(i);

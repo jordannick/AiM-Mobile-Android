@@ -72,7 +72,8 @@
     <color name="actionQueue_recentlyViewedText">#212121</color>
     <color name="actionQueue_recentlyViewedTitleHideBackground">#424242</color>
     <color name="actionQueue_recentlyViewedTitleShowBackground">#3F51B5</color>
-    <color name="actionQueue_recentlyViewedTitleText">#FFFFFF</color>
+    <color name="actionQueue_recentlyViewedTitleText">#ffffff</color>
+    <color name="actionQueue_recentlyViewedTitleIcons">#BDBDBD</color>
 
 
     <!--General Use-->

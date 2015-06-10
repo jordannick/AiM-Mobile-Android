@@ -7,6 +7,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 /**
  * Created by jordan_n on 8/13/2014.
@@ -15,7 +16,9 @@ import java.util.Comparator;
 public class CurrentUser {
     private static final String TAG = "CurrentUser";
 
-    private String mUsername;
+    private static String mUsername;
+    private String mPassword;
+    private static Date lastUpdatedDate;
     private SharedPreferences prefs;
     private SharedPreferences.Editor prefsEditor;
     private ArrayList<WorkOrder> mWorkOrders;
@@ -24,22 +27,22 @@ public class CurrentUser {
     private static CurrentUser sCurrentUser;
     private static Context sAppContext;
 
-    public String URLGetAll;
-    public String URLGetLastUpdated;
-    public String URLGetNotices;
-    public String URLLogin;
+    public static String URLGetAll;
+    public static String URLGetLastUpdated;
+    public static String URLGetNotices;
+    public static String URLLogin;
 
     //Recently viewed workOrders to display in timeLog
     private ArrayList<WorkOrder> recentlyViewedWorkOrders = new ArrayList<>();
     public final int recentlyViewedMax = 5;
 
-    private String urlBase = "http://api-test.facilities.oregonstate.edu";
-    private String urlAPIVersion = "1.0";
-    private String urlObject = "WorkOrder";
+    private static String urlBase = "http://api-test.facilities.oregonstate.edu";
+    private static String urlAPIVersion = "1.0";
+    private static String urlObject = "WorkOrder";
 
     private String lastUpdated = "Never";
 
-    private String mToken;
+    private static String mToken;
 
     public void prepareLogout(){
         sCurrentUser.getPrefsEditor().putBoolean("autologin", false);
@@ -145,18 +148,30 @@ public class CurrentUser {
         return mWorkOrders;
     }
 
-    public String getUsername() {
+    public static String getUsername() {
         return mUsername;
     }
 
-    public void setUsername(String username) {
+    public static void setUsername(String username) {
         mUsername = username;
+        buildUrlsWithUsername();
     }
 
-    public void buildUrlsWithUsername(){
+    public String getPassword() {
+        return mPassword;
+    }
+
+    public void setPassword(String mPassword) {
+        this.mPassword = mPassword;
+    }
+
+    public static void buildUrlsWithUsername(){
         URLGetAll = urlBase + '/' + urlAPIVersion + '/' + urlObject + "/getAll/" + mUsername;
         URLGetNotices = urlBase + '/' + urlAPIVersion + '/' + urlObject + "/getNotices/" + mUsername;
         URLGetLastUpdated =  urlBase + '/' + urlAPIVersion + '/' + urlObject + "/getLastUpdated/" + mUsername;
+        URLLogin = urlBase + '/' + urlAPIVersion + "/User/login" + '/' + mUsername;
+
+        Log.d(TAG, "URLS:::\n" + URLGetAll +"\n"+URLGetNotices+"\n"+URLGetLastUpdated+"\n"+URLLogin);
     }
 
     public void buildLoginUrl(String username){
@@ -192,12 +207,12 @@ public class CurrentUser {
         this.lastUpdated = lastUpdated;
     }
 
-    public String getToken() {
+    public static String getToken() {
         return mToken;
     }
 
-    public void setToken(String mToken) {
-        this.mToken = mToken;
+    public static void setToken(String newToken) {
+        mToken = newToken;
     }
 
 
@@ -269,5 +284,14 @@ public class CurrentUser {
 
     public ArrayList<WorkOrder> getRecentlyViewedWorkOrders(){
         return  recentlyViewedWorkOrders;
+    }
+
+
+    public static Date getLastUpdatedDate() {
+        return lastUpdatedDate;
+    }
+
+    public static void setLastUpdatedDate(Date lastUpdatedDate) {
+        CurrentUser.lastUpdatedDate = lastUpdatedDate;
     }
 }

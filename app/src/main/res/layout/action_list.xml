@@ -5,99 +5,13 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:background="@color/cardView_layoutBackground">
-    <RelativeLayout
-        android:id="@+id/total_hours_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:padding="8dp"
-        android:background="#BDBDBD">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="6dp"
-            >
-            <TextView
-                android:id="@+id/synced_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:paddingRight="4dp"
-                android:textSize="20dp"
-                android:textColor="@color/routine_green"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="synced"
-                android:paddingRight="8dp"
-                android:textSize="16dp"
-                android:textColor="@color/routine_green"/>
-
-            <TextView
-                android:id="@+id/unsynced_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4"
-                android:paddingRight="4dp"
-                android:textSize="20dp"
-                android:textColor="@color/emergency_red"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="unsynced"
-                android:textSize="16dp"
-                android:textColor="@color/emergency_red"/>
-        </LinearLayout>
-
-
-
-        <TextView
-            android:id="@+id/hours_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#555555"
-            android:text="h"
-            android:textSize="18sp"
-            android:paddingRight="8dp"
-            android:paddingLeft="12dp"
-            android:layout_centerVertical="true"
-            android:textStyle="bold"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"/>
-
-
-        <TextView
-            android:id="@+id/total_hours"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#555555"
-            android:text="0"
-            android:layout_centerVertical="true"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:layout_toLeftOf="@id/hours_text"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/total_hours"
-            android:textColor="#555555"
-            android:text="Total:"
-            android:textSize="18sp"
-            android:layout_centerVertical="true"
-            android:paddingRight="12dp"
-            android:textStyle="bold"/>
-
-
-
-
-    </RelativeLayout>
+    <include layout="@layout/action_list_title_bar"
+        android:id="@+id/titleBar_include"/>
 
     <ListView
         android:id="@android:id/list"
-        android:layout_below="@id/total_hours_layout"
+        android:layout_below="@id/titleBar_include"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
     </ListView>
@@ -109,6 +23,8 @@
         android:gravity="center"
         android:textSize="20dp"
         android:textColor="@android:color/tertiary_text_light" />
+
+
 
     <RelativeLayout
         android:id="@+id/actionList_recentlyViewedBarLayout"
@@ -130,10 +46,21 @@
             android:id="@+id/actionList_recentBarIconR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/actionQueue_recentlyViewedTitleText"
+            android:textColor="@color/actionQueue_recentlyViewedTitleIcons"
             android:layout_alignParentRight="true"
             android:text="TEST"
             android:layout_marginRight="12dp"
+            android:layout_centerVertical="true"
+            />
+
+        <TextView
+            android:id="@+id/actionList_recentBarIconL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/actionQueue_recentlyViewedTitleIcons"
+            android:layout_alignParentLeft="true"
+            android:text="TEST"
+            android:layout_marginLeft="12dp"
             android:layout_centerVertical="true"
             />
 
@@ -173,7 +100,18 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
-                android:textColor="@color/actionQueue_recentlyViewedTitleText"
+                android:textColor="@color/actionQueue_recentlyViewedTitleIcons"
+                android:gravity="center"
+                android:text="TEST"
+                />
+            <TextView
+                android:id="@+id/actionList_recentBarIconL2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:textColor="@color/actionQueue_recentlyViewedTitleIcons"
                 android:gravity="center"
                 android:text="TEST"
                 />

@@ -1,69 +1,63 @@
 package edu.oregonstate.AiMLiteMobile.Fragments;
 
-import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import edu.oregonstate.AiMLiteMobile.Activities.OverviewListActivity;
-import edu.oregonstate.AiMLiteMobile.AimApi;
-import edu.oregonstate.AiMLiteMobile.CustomConverter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
+import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
+import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.R;
-import edu.oregonstate.AiMLiteMobile.Network.TaskGetWorkOrders;
-import edu.oregonstate.AiMLiteMobile.Network.TaskLogin;
-import retrofit.RestAdapter;
+import edu.oregonstate.AiMLiteMobile.ResponseLogin;
+import edu.oregonstate.AiMLiteMobile.ResponseWorkOrders;
+import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
  * Created by jordan_n on 8/15/2014.
  */
-public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskCompleted, TaskLogin.OnLoginCompleted {
+public class LoginFragment extends Fragment {
 
     private static final String TAG = "LoginFragment";
 
-    // %% DEBUG %%
-    private static final boolean BYPASS_LOGIN_SCREEN = false;
-    private static final String BYPASS_USER_NAME = "crosst";
-    // %% DEBUG %%
-
+    //Layout variables
     private EditText mUsernameField;
     private EditText mPasswordField;
     private Button mLoginButton;
     private CheckBox mAutoLoginCheckbox;
     private ProgressBar mLoadCircle;
+    private TextView userIcon;
+    private TextView passwordIcon;
 
     private static CurrentUser sCurrentUser;
 
+    //Login values
     private String mUsername;
     private String mPassword;
-
-    private TaskLogin.OnLoginCompleted callback;
-
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        callback = this;
 
         //Create an instance of the user class (singleton)
         sCurrentUser = CurrentUser.get(getActivity().getApplicationContext());
@@ -87,129 +81,69 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
         mLoadCircle = (ProgressBar)v.findViewById(R.id.load_circle);
         mLoadCircle.setVisibility(View.INVISIBLE);
 
-        if(BYPASS_LOGIN_SCREEN){
-            mUsernameField.setText(BYPASS_USER_NAME);
-            mPasswordField.setText("abc");
-        }
-
-        TextView userIcon = (TextView)v.findViewById(R.id.login_username_icon);
-        TextView passwordIcon = (TextView)v.findViewById(R.id.login_password_icon);
+        userIcon = (TextView)v.findViewById(R.id.login_username_icon);
+        passwordIcon = (TextView)v.findViewById(R.id.login_password_icon);
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/FontAwesome.otf");
         userIcon.setTypeface(tf); userIcon.setText(R.string.icon_user);
         passwordIcon.setTypeface(tf); passwordIcon.setText(R.string.icon_password);
-        //%%%
-
-        //getActivity().getWindow().addFlags(WindowManager.LayoutParams.);
 
         loginHandler();
 
         return v;
     }
 
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
     private void loginHandler(){
-
         //Check if autologin should occur
         if (sCurrentUser.getPrefs().getBoolean("autologin", false)){
-
             //Retrieve saved info
             mUsername = sCurrentUser.getPrefs().getString("username", "");
             mPassword = sCurrentUser.getPrefs().getString("password", "");
-
-            attemptLogin();
+            if(mUsername != "" && mPassword != "") {
+                attemptLogin();
+            }
         }
-
         //TODO: 3/10/15: Handle password authentication/matching to username
         //TODO: 3/19/15: Think about clearing stored JSON/prefs if it's tied to a different user.
-        //Autologin did not occur, enter info manually
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //Check for empty fields
-                if (mUsernameField.getText().toString().matches(""))
+                if (mUsernameField.getText().toString().matches("")) {
                     mUsernameField.setError("Username required");
-                if (mPasswordField.getText().toString().matches(""))
+                }
+                if (mPasswordField.getText().toString().matches("")) {
                     mPasswordField.setError("Password required");
-
+                }
                 //If both fields are not empty
                 if (!mUsernameField.getText().toString().matches("") && !mPasswordField.getText().toString().matches("")) {
                     mUsername = mUsernameField.getText().toString();
-
-                    //Check if this user has been previously stored
-                    if (sCurrentUser.getPrefs().contains(mUsername)) {
-                        mPassword = sCurrentUser.getPrefs().getString(mUsername, null);
-                    }
-
+                    mPassword = mPasswordField.getText().toString();
                     attemptLogin();
-
-
                 }
             }
         });
-        if(BYPASS_LOGIN_SCREEN) mLoginButton.callOnClick();
     }
 
     private void attemptLogin(){
-
-        // %% DEBUG %%
         sCurrentUser.setUsername(mUsername);
-        // %% END DEBUG %%
-
-        sCurrentUser.buildLoginUrl(mUsername);
-        String URLLogin = sCurrentUser.getURLLogin();
-        Log.i(TAG, "Logging in as: " + mUsername);
-        mLoadCircle.setVisibility(View.VISIBLE);
+        sCurrentUser.setPassword(mPassword);
+        setEnableFormFields(false);
         SnackbarManager.show(Snackbar.with(getActivity()).text("Logging in as: " + mUsername).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
 
-
-
-
-
-        //-----------------------------------------------------------------------------
-        final CurrentUser user = CurrentUser.get(getActivity());
-        user.buildLoginUrl("crosst");
-        String baseUrl = CurrentUser.get(getActivity()).getURLLogin();
-        Log.d(TAG, "LOGIN Using baseUrl: " + baseUrl);
-        //baseUrl = "http://api-test.facilities.oregonstate.edu/1.0";
-        CustomConverter customConverter = new CustomConverter();
-
-        //baseUrl = "http://requestb.in";
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(baseUrl)
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setConverter(new CustomConverter())
-                .build();
-
-        AimApi userApi = restAdapter.create(AimApi.class);
-
-        userApi.login("abc", new retrofit.Callback<String>() {
+        ApiManager.getService().loginUser(mUsername, mPassword, new Callback<ResponseLogin>() {
             @Override
-            public void success(String s, Response response) {
-                Log.d(TAG, "Success! String " + s + ", Response " + response.getBody());
-                user.setToken(s);
+            public void success(ResponseLogin responseLogin, Response response) {
+                Log.d(TAG, "API MANAGER: loginUser :: OK :: Token :" + responseLogin.getToken());
+                CurrentUser.setToken(responseLogin.getToken());
                 onLoginSuccess();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d(TAG, "Error " + error);
+                Log.d(TAG, "API MANAGER: loginUser :: ERROR :: " + error);
             }
         });
-
-
-        //----------------------------------------------------------------
-
-//        TaskLogin loginTask = new TaskLogin(callback, URLLogin, getActivity());
-//        loginTask.execute();
-
-        //Disable all fields for now
-        mUsernameField.setEnabled(false);
-        mPasswordField.setEnabled(false);
-        mAutoLoginCheckbox.setEnabled(false);
-        mLoginButton.setEnabled(false);
     }
-
     public void onLoginSuccess(){
         Log.d(TAG, "Login Success");
         //Save user info for future autologins
@@ -220,87 +154,64 @@ public class LoginFragment extends Fragment implements TaskGetWorkOrders.OnTaskC
             sCurrentUser.getPrefsEditor().apply();
         }
 
-        Log.d(TAG, "username caps: " + mUsername);
-        Log.d(TAG, "token is: " + sCurrentUser.getToken());
-        sCurrentUser.setUsername(mUsername);
-        sCurrentUser.buildUrlsWithUsername();
+        ApiManager.getService().getWorkOrders(CurrentUser.getUsername(), CurrentUser.getToken(), new Callback<ResponseWorkOrders>() {
+            @Override
+            public void success(ResponseWorkOrders responseWorkOrders, Response response) {
+                ArrayList<WorkOrder> workOrders = responseWorkOrders.getWorkOrders();
+                String logStr = "API MANAGER: getWorkOrders :: OK :: Size :" + workOrders.size();
+                for (int i = 0; i < workOrders.size(); i++) {
+                    WorkOrder workOrder = workOrders.get(i);
+                    logStr += "\nWO #" + workOrder.getProposalPhase() + " " + workOrder.getDescription();
+                }
+                Log.d(TAG, logStr);
 
+                //Save raw JSON for offline use
+                sCurrentUser.getPrefsEditor().putString("work_order_data", responseWorkOrders.getRawJson());
 
+                //Save new lastUpdated
+                Date retrievedDate = new Date(System.currentTimeMillis());
+                Log.i(TAG, "Saving new last_updated: " + retrievedDate.toString());
+                sCurrentUser.getPrefsEditor().putLong("last_updated", retrievedDate.getTime());
+                sCurrentUser.getPrefsEditor().apply();
 
+                //Save the workOrders
+                sCurrentUser.setWorkOrders(workOrders);
 
-        //SnackbarManager.dismiss();
+                setEnableFormFields(true);
+                startActivity(new Intent(getActivity(), OverviewListActivity.class));
+            }
 
-        //Attempt the request, try force pulling new list since we're logging in. Callback to success or fail function in this class.
-        boolean forceRefresh = true;
-        TaskGetWorkOrders getWorkOrdersTask = new TaskGetWorkOrders(this, sCurrentUser, getActivity(), forceRefresh);
-        getWorkOrdersTask.execute();
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(TAG, "API MANAGER: getWorkOrders :: ERROR :: " + error);
+            }
+        });
     }
 
-    public void onLoginFail(){
-        Log.e(TAG, "Login Failed");
+    /* Sets the enable property of known input elements.
+       @param enable (required) boolean for new enable
+    */
+    private void setEnableFormFields(boolean enable){
+        mUsernameField.setEnabled(enable);
+        mPasswordField.setEnabled(enable);
+        mAutoLoginCheckbox.setEnabled(enable);
+        mLoginButton.setEnabled(enable);
 
-        //Re-enable all fields so user can try again
-        mUsernameField.setEnabled(true);
-        mPasswordField.setEnabled(true);
-        mAutoLoginCheckbox.setEnabled(true);
-        mLoginButton.setEnabled(true);
-        mLoadCircle.setVisibility(View.INVISIBLE);
-
-        SnackbarManager.show(Snackbar.with(getActivity()).text("Login Failed").actionLabel("DISMISS").actionColor(Color.RED).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE));
-    }
-
-    public void onTaskSuccess() {
-        Log.d(TAG, "OnTaskSuccess in LoginFragment");
-
-
-        //Re-enable elements, in case user comes back to login screen later
-        mUsernameField.setEnabled(true);
-        mPasswordField.setEnabled(true);
-        mAutoLoginCheckbox.setEnabled(true);
-        mLoginButton.setEnabled(true);
-        mLoadCircle.setVisibility(View.INVISIBLE);
-
-        //Move on to the next activity
-        Intent i = new Intent(getActivity(), OverviewListActivity.class);
-        startActivity(i);
-
-        //Leave the login screen activity running
-    }
-
-
-    public void onNetworkFail(){
-        //Re-enable all fields so user can try again
-        mUsernameField.setEnabled(true);
-        mPasswordField.setEnabled(true);
-        mAutoLoginCheckbox.setEnabled(true);
-        mLoginButton.setEnabled(true);
-
-        mLoadCircle.setVisibility(View.INVISIBLE);
-        SnackbarManager.show(Snackbar.with(getActivity()).text("Network Access Failed").actionLabel("DISMISS").actionColor(Color.RED).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE));
-
-    }
-
-    public void onAuthenticateFail(){
-        //Re-enable all fields so user can try again
-        mUsernameField.setEnabled(true);
-        mPasswordField.setEnabled(true);
-        mAutoLoginCheckbox.setEnabled(true);
-        mLoginButton.setEnabled(true);
-
-        mLoadCircle.setVisibility(View.INVISIBLE);
-
-        //mUsernameField.setError("Password and username didn't match");
-        SnackbarManager.show(Snackbar.with(getActivity()).text("Authentication Failed").actionLabel("DISMISS").actionColor(Color.RED).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE));
-    }
-
-    public void showToast(String text, int duration){
-        Toast toast = Toast.makeText(getActivity().getApplicationContext(), text, duration);
-        toast.show();
+        mLoadCircle.setVisibility(enable ? View.INVISIBLE : View.VISIBLE);
     }
 
 
-
-
+    /* Shows new Snackbar with errorMessage
+      @param errorMessage (required) string to display in snackbar alert.
+    */
+    private void showErrorSnackbar(String errorMessage){
+        Snackbar.SnackbarDuration duration = Snackbar.SnackbarDuration.LENGTH_INDEFINITE;
+        SnackbarManager.show(
+                Snackbar.with(getActivity())
+                        .text(errorMessage).duration(duration)
+                        .actionLabel("DISMISS")
+                        .actionColor(Color.RED));
+    }
 }
 
 

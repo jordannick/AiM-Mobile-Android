@@ -39,12 +39,22 @@ public class AddActionDialogFragment extends DialogFragment {
 
     private static CurrentUser sCurrentUser;
     private WorkOrder workOrder;
+    private String dialogTitle;
+
+
+    public AddActionDialogFragment(){
+        Bundle bundle = getArguments();
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         workOrder = (WorkOrder) getArguments().getSerializable("WorkOrder");
+        dialogTitle = getArguments().getString("Title");
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
@@ -60,6 +70,10 @@ public class AddActionDialogFragment extends DialogFragment {
         final Spinner actionSpinner = (Spinner)v.findViewById(R.id.spinner_actionTaken);
         final EditText noteEditText =  ((EditText)(v.findViewById(R.id.editText_note)));
         final TextView hoursEditText = (TextView)v.findViewById(R.id.hoursEditText);
+
+        TextView title = (TextView)v.findViewById(R.id.dialogNewAction_title);
+        title.setText(dialogTitle);
+
 
         actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         actionDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -105,6 +119,8 @@ public class AddActionDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
+
+
                 //Confirm button starts ActionQueue activity, passing it the new action
                 if (getActivity().getLocalClassName().equals("Activities.DetailActivity")) {
                     if (actionSpinner.getSelectedItemPosition() != 0) { // Make sure an action is selected
@@ -118,7 +134,9 @@ public class AddActionDialogFragment extends DialogFragment {
                 }
                 //Confirm button saves the edits to action
                 else if (getActivity().getLocalClassName().equals("Activities.ActionQueueListActivity")) {
-                    //Just save action in queue list
+                    sCurrentUser.addAction(createAction(actionSpinner.getSelectedItem().toString(), statusSpinner.getSelectedItem().toString(), hoursEditText.getText().toString(), noteEditText.getText().toString()));
+                    ((ActionQueueListFragment)getTargetFragment()).onPostActionDialog();
+                    actionDialog.dismiss();
                 }
                 else {
                     Log.e(TAG, "Using dialog in unsupported activity");
@@ -146,5 +164,7 @@ public class AddActionDialogFragment extends DialogFragment {
 
         return newAction;
     }
+
+
 
 }

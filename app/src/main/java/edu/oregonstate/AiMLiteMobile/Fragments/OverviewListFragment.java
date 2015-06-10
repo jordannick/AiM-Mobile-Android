@@ -15,17 +15,24 @@ import android.support.v4.view.ViewCompat;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
-import edu.oregonstate.AiMLiteMobile.Activities.OverviewListActivity;
+import java.util.ArrayList;
+import java.util.Date;
+
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
+import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.Network.TaskGetWorkOrders;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Adapters.WorkOrderAdapter;
+import edu.oregonstate.AiMLiteMobile.ResponseWorkOrders;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by jordan_n on 8/13/2014.
  */
-public class OverviewListFragment extends ListFragment implements TaskGetWorkOrders.OnTaskCompleted {
+public class OverviewListFragment extends ListFragment {
     private static final String TAG = "OverviewListFragment";
 
     private static CurrentUser sCurrentUser;
@@ -91,7 +98,7 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
     @Override
     public void onResume() {
         super.onResume();
-        updateUI();
+        updateListView();
     }
 
     @Override
@@ -123,19 +130,6 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
         super.onActivityCreated(savedInstanceState);
     }
 
-    private void updateWorkOrderList(){
-        Log.i(TAG, "Requested update work order list");
-
-        CurrentUser currentUser = CurrentUser.get(getActivity().getApplicationContext());
-        TaskGetWorkOrders task = new TaskGetWorkOrders(this, currentUser, getActivity(), true);
-        task.execute();
-    }
-
-    //Refresh the list display to reflect new data
-    public void updateUI() {
-        ((WorkOrderAdapter)getListAdapter()).notifyDataSetChanged();
-    }
-
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         WorkOrderAdapter adapter = (WorkOrderAdapter)getListAdapter();
@@ -147,30 +141,56 @@ public class OverviewListFragment extends ListFragment implements TaskGetWorkOrd
         }
     }
 
-    //Callback methods
-    public void onTaskSuccess() {
+    private void updateWorkOrderList(){
+        Log.i(TAG, "Requested update work order list");
+        ApiManager.getService().getWorkOrders(CurrentUser.getUsername(), CurrentUser.getToken(), new Callback<ResponseWorkOrders>() {
+            @Override
+            public void success(ResponseWorkOrders responseWorkOrders, Response response) {
+                ArrayList<WorkOrder> workOrders = responseWorkOrders.getWorkOrders();
+                String logStr = "API MANAGER: getWorkOrders :: OK :: Size :" + workOrders.size();
+                for (int i = 0; i < workOrders.size(); i++) {
+                    WorkOrder workOrder = workOrders.get(i);
+                    logStr += "\nWO #" + workOrder.getProposalPhase() + " " + workOrder.getDescription();
+                }
+                Log.d(TAG, logStr);
+
+                //Save raw JSON for offline use
+                sCurrentUser.getPrefsEditor().putString("work_order_data", responseWorkOrders.getRawJson());
+
+                //Save new lastUpdated
+                Date retrievedDate = new Date(System.currentTimeMillis());
+                Log.i(TAG, "Saving new last_updated: " + retrievedDate.toString());
+                CurrentUser.setLastUpdatedDate(retrievedDate);
+                sCurrentUser.getPrefsEditor().putLong("last_updated", retrievedDate.getTime());
+                sCurrentUser.getPrefsEditor().apply();
+                SnackbarManager.show(Snackbar.with(getActivity()).text("Updated " + CurrentUser.getLastUpdatedDate().toString()).duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
+
+                //Save the workOrders
+                sCurrentUser.setWorkOrders(workOrders);
+                stopRefreshAnimation();
+                updateListView();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(TAG, "API MANAGER: getWorkOrders :: ERROR :: " + error);
+                stopRefreshAnimation();
+                SnackbarManager.show(Snackbar.with(getActivity()).text("Failed to retrieve work orders").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
+            }
+        });
+    }
+    private void stopRefreshAnimation(){
         if (mSwipeRefreshLayout.isRefreshing()){
             mSwipeRefreshLayout.setRefreshing(false);
         }
-        //((OverviewListActivity)getActivity()).unlockScreen();
-        updateUI();
-        SnackbarManager.show(Snackbar.with(getActivity()).text("Updated " + sCurrentUser.getLastUpdated()).duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
     }
 
-    public void onNetworkFail() {
-        if (mSwipeRefreshLayout.isRefreshing()){
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
-       // ((OverviewListActivity)getActivity()).unlockScreen();
-        SnackbarManager.show(Snackbar.with(getActivity()).text("Network Access Failed").actionLabel("DISMISS").actionColor(Color.RED).duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE));
+    //Refresh the list display to reflect new data
+    public void updateListView() {
+        ((WorkOrderAdapter)getListAdapter()).notifyDataSetChanged();
     }
-
-    public void onAuthenticateFail() {
-
-    }
-
     public void onSectionChanged(){
-        updateUI();
+        updateListView();
     }
 
 }

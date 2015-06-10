@@ -44,6 +44,9 @@ public class ActionQueueListFragment extends ListFragment{
     private Callbacks mCallbacks;
     private static int actionCount = 0;
 
+
+    public static final int TIMELOG_FRAGMENT = 1;
+
     private RelativeLayout recentlyViewedBarLayout;
 
     private View v;
@@ -121,14 +124,16 @@ public class ActionQueueListFragment extends ListFragment{
 
         //TextView recentBarL = (TextView)v.findViewById(R.id.actionList_recentBarIconL);
         TextView recentBarR = (TextView)v.findViewById(R.id.actionList_recentBarIconR);
+        TextView recentBarL = (TextView)v.findViewById(R.id.actionList_recentBarIconL);
         TextView recentBarR2 = (TextView)v.findViewById(R.id.actionList_recentBarIconR2);
+        TextView recentBarL2 = (TextView)v.findViewById(R.id.actionList_recentBarIconL2);
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/FontAwesome.otf");
-        //recentBarL.setTypeface(tf);
-        recentBarR.setTypeface(tf);
-        recentBarR2.setTypeface(tf);
-        //recentBarL.setText(R.string.icon_recentBarExpand);
+        recentBarR.setTypeface(tf); recentBarL.setTypeface(tf);
+        recentBarR2.setTypeface(tf); recentBarL2.setTypeface(tf);
+        recentBarL.setText(R.string.icon_recentBarExpand);
         recentBarR.setText(R.string.icon_recentBarExpand);
         recentBarR2.setText(R.string.icon_recentBarCollapse);
+        recentBarL2.setText(R.string.icon_recentBarCollapse);
 
         final LinearLayout recentlyViewedLayout = (LinearLayout)v.findViewById(R.id.actionList_recentlyViewedLayout);
         recentlyViewedLayout.setOnClickListener(new View.OnClickListener() {
@@ -194,25 +199,18 @@ public class ActionQueueListFragment extends ListFragment{
         return rowView;
     }
 
+
     private void createTimeEntryDialog(WorkOrder workOrder){
-        final WorkOrder wo = workOrder;
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Test test testaroo.");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //actions.add(new Action(wo, "Deed is done!", "ALL FUCKED UP", 4, new ArrayList<Note>()));
-                mActionQueueAdapter.notifyDataSetInvalidated();
-                toggleRecentlyViewed(true);
-            }
-        });
-
-        builder.create().show();
-
-
-
+        AddActionDialogFragment actionFragment = new AddActionDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("WorkOrder", workOrder);
+        bundle.putString("Title", "New From Recent");
+        actionFragment.setArguments(bundle);
+        actionFragment.setTargetFragment(this, TIMELOG_FRAGMENT);
+        actionFragment.show(getFragmentManager(), "Diag");
 
     }
+
 
     private int getPx(int dimensionDp) {
         float density = getResources().getDisplayMetrics().density;
@@ -266,6 +264,10 @@ public class ActionQueueListFragment extends ListFragment{
         Log.d(TAG, "clicked action position: "+position);
     }
 
+    public void onPostActionDialog() {
+        Log.d(TAG, "TADAH CALL BACK");
+        toggleRecentlyViewed(true);
+        mActionQueueAdapter.notifyDataSetInvalidated();
 
-
+    }
 }
