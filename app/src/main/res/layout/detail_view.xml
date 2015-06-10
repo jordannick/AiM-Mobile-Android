@@ -14,10 +14,7 @@
         android:layout_width="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:orientation="vertical">
+
 
 
             <android.support.v7.widget.CardView
@@ -27,9 +24,10 @@
                 android:layout_height="wrap_content"
 
                 card_view:cardCornerRadius="4dp"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="6dp"
-                android:layout_marginBottom="6dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 card_view:cardPreventCornerOverlap="true"
                 >
 
@@ -82,7 +80,7 @@
                             android:gravity="end"
                             >
                             <TextView
-                                android:id="@+id/actionRow_valueAgo"
+                                android:id="@+id/actionRow_valueAgo_detail"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="4"
@@ -149,408 +147,370 @@
                         android:textSize="18sp"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>-->
-        </LinearLayout>
 
-        <LinearLayout android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="2dp">
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardCornerRadius="4dp"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="6dp"
-                android:layout_marginBottom="6dp"
-                card_view:cardPreventCornerOverlap="true">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="4dp">
-                    <TextView
-                        android:id="@+id/dateCreatedTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Requested: Dec 2, 2014 2:27pm by MORGAN ADAIR (ASC - ANIMAL &amp; RANGELAND SCIENCES)"
-                        android:padding="8dp"
-                        android:textSize="16dp"/>
+            android:orientation="horizontal">
 
 
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
-
-
-
-           <!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp">
-
-                <android.support.v7.widget.CardView
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/card_view0"
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    card_view:cardCornerRadius="0dp"
+                    card_view:cardCornerRadius="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
                     card_view:cardPreventCornerOverlap="true">
-
                     <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:background="@color/cardView_cardBackground">
-                        <RelativeLayout
-                            android:id="@+id/layout_note_header"
-                            android:layout_width="match_parent"
-                            android:layout_height="fill_parent"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/note_name_textView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Paul Marrow"
-                                android:textSize="20sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/noteView_author"
-                                android:paddingLeft="12dp"
-                                android:paddingTop="8dp"/>
-
-                            <TextView
-                                android:id="@+id/note_date_textView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="4/13/15  9:47 AM"
-                                android:textSize="16sp"
-                                android:textColor="@android:color/tertiary_text_light"
-                                android:gravity="center_vertical"
-                                android:layout_toLeftOf="@id/note_name_textView"
-                                android:layout_alignParentRight="true"
-                                android:paddingRight="12dp"
-                                android:paddingTop="18dp"/>
-                        </RelativeLayout>
-
-                        <View
-                            android:id="@+id/layout_note_divider"
-                            android:layout_width="fill_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/noteView_divider"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:layout_below="@id/layout_note_header"/>
-
+                        android:id="@+id/layout_moveSection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="4dp">
                         <TextView
-                            android:id="@+id/note_note_textView"
-                            android:layout_width="match_parent"
-                            android:layout_height="fill_parent"
-                            android:text="TREE DAMAGE CLEANUP OF OAK PINE HEMLOCK AND ARBUTUS"
-                            android:textColor="@android:color/secondary_text_light"
-                            android:textSize="18sp"
-                            android:padding="8dp"
-                            android:layout_below="@id/layout_note_divider"/>
-
-                        <Button
+                            android:id="@+id/textView_moveSectionTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="View 5 more records"
-                            android:textColor="@color/loginView_loginButton_text"
-                            android:layout_below="@id/note_note_textView"
-                            android:layout_alignParentRight="true"
+                            android:text="Move to\nBacklog"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center_horizontal"
+                            android:textSize="16sp"
+                            android:padding="4dp"
+                            android:textColor="@android:color/holo_blue_dark"/>
+                        <TextView
+                            android:id="@+id/textView_moveSectionIcon"
+                            android:layout_below="@id/textView_moveSectionTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="38sp"
+                            android:gravity="center"
+                            android:text="test"
+                            android:textAlignment="center"
+                            android:layout_centerHorizontal="true"
                             />
+                        <ProgressBar
+                            android:id="@+id/section_change_circle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/textView_moveSectionTitle"
+                            android:layout_centerHorizontal="true"
+                            android:alpha="0"/>
+
 
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
-            </LinearLayout>-->
+
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    card_view:cardCornerRadius="4dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    card_view:cardPreventCornerOverlap="true">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="4dp"
+                        android:layout_gravity="center_vertical">
+                        <TextView
+                            android:id="@+id/dateCreatedTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Requested: Dec 2, 2014 2:27pm by MORGAN ADAIR (ASC - ANIMAL &amp; RANGELAND SCIENCES)"
+                            android:padding="8dp"
+                            android:textSize="16dp"
+                            />
+
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
 
 
 
+        </LinearLayout>
 
 
-        <View
-            android:layout_width="fill_parent"
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp">
-
-        </View>
-
-
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="2dp">
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardCornerRadius="0dp"
-                card_view:cardPreventCornerOverlap="true">
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-
-                    android:padding="4dp">
+            card_view:cardCornerRadius="4dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            card_view:cardPreventCornerOverlap="true"
+            android:layout_marginBottom="64dp">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="12dp">
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="fill_parent">
                     <TextView
-                        android:layout_width="0dp"
+                        android:id="@+id/detailView_titleLocation"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="LOCATION"
                         android:textStyle="bold"
-                        android:textSize="11sp"
-                        android:layout_weight="1"
-                        android:gravity="center"/>
+                        android:textSize="11dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="8dp"/>
 
                     <TextView
-                        android:id="@+id/workOrderLocationText"
-                        android:layout_width="0dp"
+                        android:id="@+id/detailView_textLocation"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
+                        android:textSize="15dp"
                         android:text="RICHARDSON HALL Room #0388"
-                        android:gravity="center"
-                        android:layout_weight="3"/>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="2dp">
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardCornerRadius="0dp"
-                card_view:cardPreventCornerOverlap="true">
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:padding="4dp">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="PRIORITY"
-                        android:textStyle="bold"
-                        android:textSize="11sp"
-                        android:layout_weight="1"
-                        android:gravity="center"/>
+                        android:layout_below="@id/detailView_titleLocation"
+                        android:layout_alignStart="@id/detailView_titleLocation"
+                        android:layout_alignLeft="@id/detailView_titleLocation"
+                        android:layout_marginLeft="8dp"/>
 
                     <TextView
-                        android:id="@+id/priorityTextView"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:text="URGENT"
-                        android:gravity="center"
-                        android:layout_weight="3"/>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-        </LinearLayout>
-
-
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="2dp">
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardCornerRadius="0dp"
-                card_view:cardPreventCornerOverlap="true">
-                <LinearLayout
-                    android:id="@+id/layout_status"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:padding="4dp">
-                    <TextView
-                        android:layout_width="0dp"
+                        android:id="@+id/detailView_titleStatus"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="STATUS"
                         android:textStyle="bold"
-                        android:textSize="11sp"
-                        android:layout_weight="1"
-                        android:gravity="center"/>
+                        android:textSize="11dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_alignLeft="@id/detailView_titleLocation"
+                        android:layout_below="@id/detailView_textLocation"/>
 
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3">
-
-                        <TextView
-                            android:id="@+id/statusTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="15sp"
-                            android:text="WORK IN PROGRESS"
-                            android:gravity="center"
-                            android:layout_centerInParent="true"
-                            />
-
-                        <ImageView
-                            android:id="@+id/imageView_statusIcon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="4dp"
-                            android:src="@drawable/status_work_in_progress"
-                            android:layout_toRightOf="@id/statusTextView"
-                            />
-
-                    </RelativeLayout>
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="2dp">
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardCornerRadius="0dp"
-                card_view:cardPreventCornerOverlap="true">
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:padding="4dp">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="ASSIGNED"
-                        android:textStyle="bold"
-                        android:textSize="11sp"
-                        android:layout_weight="1"
-                        android:gravity="center"/>
 
                     <TextView
-                        android:id="@+id/assignedTextView"
-                        android:layout_width="0dp"
+                        android:id="@+id/detailView_textStatus"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:text=""
-                        android:gravity="center"
-                        android:layout_weight="3"/>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+                        android:textSize="15dp"
+                        android:text="WORK IN PROGRESS"
+                        android:layout_alignStart="@id/detailView_titleLocation"
+                        android:layout_alignLeft="@id/detailView_titleLocation"
+                        android:layout_marginLeft="8dp"
+                        android:layout_below="@id/detailView_titleStatus"
+                        />
 
-        </LinearLayout>
+                    <ImageView
+                        android:id="@+id/imageView_statusIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="4dp"
+                        android:src="@drawable/status_work_in_progress"
+                        android:layout_toRightOf="@id/detailView_textStatus"
+                        android:layout_below="@id/detailView_titleStatus"
+                        android:scaleX="1.1"
+                        android:scaleY="1.1"
+                        />
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="2dp">
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardCornerRadius="0dp"
-                card_view:cardPreventCornerOverlap="true">
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:padding="4dp">
                     <TextView
-                        android:layout_width="0dp"
+                        android:id="@+id/detailView_titleFunding"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="FUNDING"
                         android:textStyle="bold"
-                        android:textSize="11sp"
-                        android:layout_weight="1"
-                        android:gravity="center"/>
-                    <TextView
-                        android:id="@+id/fundingTextView"
-                        android:layout_width="0dp"
-                        android:layout_weight="3"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:text="QRS011 (BILLABLE)"
-                        android:gravity="center"/>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
+                        android:textSize="11dp"
+                        android:layout_alignStart="@id/detailView_titleLocation"
+                        android:layout_alignLeft="@id/detailView_titleLocation"
+                        android:layout_below="@id/detailView_textStatus"
+                        android:layout_marginTop="12dp"/>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="2dp">
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardCornerRadius="0dp"
-                card_view:cardPreventCornerOverlap="true">
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:padding="4dp">
                     <TextView
-                        android:layout_width="0dp"
+                        android:id="@+id/detailView_textFunding"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:text="QRS011 (BILLABLE)"
+                        android:layout_alignStart="@id/detailView_titleLocation"
+                        android:layout_alignLeft="@id/detailView_titleLocation"
+                        android:layout_marginLeft="8dp"
+                        android:layout_below="@id/detailView_titleFunding"/>
+
+                    <TextView
+                        android:id="@+id/detailView_titleShop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SHOP"
+                        android:textStyle="bold"
+                        android:textSize="11dp"
+                        android:layout_alignStart="@id/detailView_titleLocation"
+                        android:layout_alignLeft="@id/detailView_titleLocation"
+                        android:layout_below="@id/detailView_textFunding"
+                        android:layout_marginTop="12dp"/>
+
+                    <TextView
+                        android:id="@+id/detailView_textShop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:text="LANDSCAPING"
+                        android:layout_below="@id/detailView_titleShop"
+                        android:layout_alignStart="@id/detailView_titleLocation"
+                        android:layout_alignLeft="@id/detailView_titleLocation"
+                        android:layout_marginLeft="8dp"/>
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="fill_parent">
+                    <TextView
+                        android:id="@+id/detailView_titlePriority"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PRIORITY"
+                        android:textStyle="bold"
+                        android:textSize="11dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="8dp"/>
+                    <TextView
+                        android:id="@+id/detailView_textPriority"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:text="URGENT"
+                        android:layout_below="@id/detailView_titlePriority"
+                        android:layout_alignStart="@id/detailView_titlePriority"
+                        android:layout_alignLeft="@id/detailView_titlePriority"
+                        android:layout_marginLeft="8dp"/>
+
+                    <TextView
+                        android:id="@+id/detailView_titleAssigned"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ASSIGNED"
+                        android:textStyle="bold"
+                        android:textSize="11dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_alignLeft="@id/detailView_titlePriority"
+                        android:layout_below="@id/detailView_textPriority"/>
+
+                    <TextView
+                        android:id="@+id/detailView_textAssigned"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:layout_marginLeft="8dp"
+                        android:text="MICHAEL BAMBERGER, DAVID HORN, LANCE JONES"
+                        android:layout_alignLeft="@id/detailView_titlePriority"
+                        android:layout_below="@id/detailView_titleAssigned"/>
+
+                    <TextView
+                        android:id="@+id/detailView_titleCategory"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="CATEGORY"
                         android:textStyle="bold"
-                        android:textSize="11sp"
-                        android:layout_weight="1"
-                        android:gravity="center"/>
+                        android:textSize="11dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_alignLeft="@id/detailView_titlePriority"
+                        android:layout_below="@id/detailView_textAssigned"/>
+
                     <TextView
-                        android:id="@+id/workCodeTextView"
-                        android:layout_width="0dp"
+                        android:id="@+id/detailView_textCategory"
+                        android:layout_width="wrap_content"
                         android:layout_weight="3"
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:text="PD1075_SOFT COSTS"
-                        android:gravity="center"/>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
+                        android:layout_below="@id/detailView_titleCategory"
+                        android:layout_alignStart="@id/detailView_titlePriority"
+                        android:layout_alignLeft="@id/detailView_titlePriority"
+                        android:layout_marginLeft="8dp"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</ScrollView>
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:layout_marginBottom="64dp">
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
+            <RelativeLayout
                 android:layout_height="wrap_content"
-                card_view:cardCornerRadius="0dp"
-                card_view:cardPreventCornerOverlap="true">
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:padding="4dp">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="SHOP"
-                        android:textStyle="bold"
-                        android:textSize="11sp"
-                        android:layout_weight="1"
-                        android:gravity="center"/>
-                    <TextView
-                        android:id="@+id/shopTextView"
-                        android:layout_width="0dp"
-                        android:layout_weight="3"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:text="LANDSCAPING"
-                        android:gravity="center"/>
-                </LinearLayout>
+                android:layout_width="0dp"
+                android:id="@+id/button_viewNotes"
+                android:background="#1E88E5"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp">
 
-            </android.support.v7.widget.CardView>
+                <TextView
+                    android:id="@+id/button_viewNotes_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View Notes"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:paddingLeft="8dp"
+                    android:layout_centerInParent="true"
+                    />
+                <TextView
+                    android:id="@+id/button_viewNotes_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/button_viewNotes_text"
+                    android:text="icon"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:paddingLeft="12dp"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
 
+            <View
+                android:id="@+id/separator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"/>
+
+
+
+            <RelativeLayout
+                android:layout_height="match_parent"
+
+                android:layout_width="0dp"
+                android:id="@+id/button_addAction"
+                android:background="#43A047"
+                android:layout_weight="1"
+                android:layout_marginRight="8dp">
+
+                <TextView
+                    android:id="@+id/button_addAction_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Time"
+                    android:gravity="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:paddingLeft="8dp"
+                    android:layout_centerInParent="true"/>
+                <TextView
+                    android:id="@+id/button_addAction_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/button_addAction_text"
+                    android:text="icon"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:paddingLeft="12dp"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
         </LinearLayout>
-
-    </LinearLayout>
-</ScrollView>
-
-        <Button
-            android:layout_height="wrap_content"
-            android:text="+ TIME ENTRY"
-            android:layout_width="match_parent"
-            android:id="@+id/button_addAction"
-            android:layout_alignParentBottom="true"
-            android:background="#388E3C"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"/>
-
     </RelativeLayout>
 </LinearLayout>

@@ -13,8 +13,13 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardCornerRadius="0dp"
-        card_view:cardPreventCornerOverlap="true">
+
+        card_view:cardCornerRadius="4dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="6dp"
+        card_view:cardPreventCornerOverlap="true"
+        card_view:cardBackgroundColor="@color/cardView_cardBackground">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -62,7 +67,7 @@
                 android:id="@+id/note_note_textView"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:text="This is an example description. I ate oatmeal this morning.With some coffee, and a wrap. It was quite good. I'm gonna continue writing,because I need to fill more space. How is your day going? That's great."
+                android:text="This is an example description. I ate oatmeal this morning. With some coffee, and a wrap. It was quite good."
                 android:textColor="@android:color/secondary_text_light"
                 android:textSize="18sp"
                 android:padding="16dp"/>
