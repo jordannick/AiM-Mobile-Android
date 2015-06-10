@@ -1,25 +1,26 @@
 package edu.oregonstate.AiMLiteMobile.Fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-
 import edu.oregonstate.AiMLiteMobile.Activities.DetailActivity;
+import edu.oregonstate.AiMLiteMobile.Adapters.NoteAdapter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.R;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
@@ -32,6 +33,7 @@ public class DetailMainFragment extends Fragment{
 
     private Activity mActivity;
     private WorkOrder mWorkOrder;
+    private NoteAdapter notesAdapter;
     private View v;
 
     @Override
@@ -49,7 +51,7 @@ public class DetailMainFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.detail_view_test, parent, false);
+        View v = inflater.inflate(R.layout.detail_view, parent, false);
         this.v = v;
         return v;
     }
@@ -59,21 +61,38 @@ public class DetailMainFragment extends Fragment{
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle("Work Order");
 
+
+
         ((TextView)v.findViewById(R.id.row_proposal_detail)).setText(mWorkOrder.getProposalPhase());
-        //((TextView)v.findViewById(R.id.actionRow_valueAgo)).setText(mWorkOrder.getDateElements()[3]);
+
+        ((TextView)v.findViewById(R.id.descriptionTextView_detail)).setText(mWorkOrder.getDescription());
+        ((TextView)v.findViewById(R.id.actionRow_valueAgo_detail)).setText(mWorkOrder.getDateElements()[3]);
         ((TextView)v.findViewById(R.id.actionRow_stringAgo)).setText(mWorkOrder.getDateElements()[4]);
 
+        ((TextView)v.findViewById(R.id.dateCreatedTextView)).setText("Requested: " + mWorkOrder.getDateCreated() + " by " + mWorkOrder.getContactName() + " (" + mWorkOrder.getDepartment() + ")");
 
-        ((TextView)v.findViewById(R.id.detailView_textLocation)).setText(mWorkOrder.getBuilding() + "; Room # " + mWorkOrder.getLocationCode());
-        ((TextView)v.findViewById(R.id.descriptionTextView_detail)).setText(mWorkOrder.getDescription());
-        ((TextView)v.findViewById(R.id.detailView_textFunding)).setText(mWorkOrder.getCraftCode());
-        ((TextView)v.findViewById(R.id.detailView_textShop)).setText(mWorkOrder.getShop());
-         ((TextView)v.findViewById(R.id.dateCreatedTextView)).setText("Requested: " + mWorkOrder.getDateCreated() + " by " + mWorkOrder.getContactName() + " (" + mWorkOrder.getDepartment() + ")");
-        ((TextView)v.findViewById(R.id.detailView_textStatus)).setText(mWorkOrder.getStatus());
+        if (!mWorkOrder.getLocationCode().equals("null")){
+            ((TextView)v.findViewById(R.id.detailView_textLocation)).setText(mWorkOrder.getBuilding() + "; Room # " + mWorkOrder.getLocationCode());
+        } else {
+            ((TextView)v.findViewById(R.id.detailView_textLocation)).setText(mWorkOrder.getBuilding());
+        }
         ((TextView)v.findViewById(R.id.detailView_textPriority)).setText(mWorkOrder.getPriority());
+
+        ((TextView)v.findViewById(R.id.detailView_textStatus)).setText(mWorkOrder.getStatus());
+        ((TextView)v.findViewById(R.id.detailView_textAssigned)).setText("JOHN DOE, DARTH VADER");
+        ((TextView)v.findViewById(R.id.detailView_textFunding)).setText(mWorkOrder.getCraftCode());
+        ((TextView)v.findViewById(R.id.detailView_textCategory)).setText(mWorkOrder.getCategory());
+        ((TextView)v.findViewById(R.id.detailView_textShop)).setText(mWorkOrder.getShop());
+
+
+        notesAdapter = new NoteAdapter(mActivity, mWorkOrder.getNotes());
+
+
+
 
 
         //TODO get perfect font
+        Typeface FONTAWESOME = Typeface.createFromAsset(mActivity.getApplicationContext().getAssets(), "fonts/FontAwesome.otf");
         Typeface GUDEA = Typeface.createFromAsset(mActivity.getApplicationContext().getAssets(), "fonts/Gudea-Regular.otf");
         Typeface GUDEABOLD = Typeface.createFromAsset(mActivity.getApplicationContext().getAssets(), "fonts/Gudea-Bold.otf");
         ((TextView)v.findViewById(R.id.descriptionTextView_detail)).setTypeface(GUDEA);
@@ -114,6 +133,44 @@ public class DetailMainFragment extends Fragment{
 
         }
 
+        ((TextView)v.findViewById(R.id.textView_moveSectionIcon)).setTypeface(FONTAWESOME);
+        ((TextView)v.findViewById(R.id.textView_moveSectionIcon)).setText(getString(R.string.icon_moveToBacklog));
+        final Animation sectionChangeAnim = AnimationUtils.loadAnimation(mActivity.getApplicationContext(), R.anim.fade_out_dim);
+        final Animation sectionChangeLoadAnim = AnimationUtils.loadAnimation(mActivity.getApplicationContext(), R.anim.fade_in_dim);
+
+        v.findViewById(R.id.layout_moveSection).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((TextView) v.findViewById(R.id.textView_moveSectionTitle)).getText().equals("Move to\nBacklog")) {
+                    ((TextView) v.findViewById(R.id.textView_moveSectionIcon)).startAnimation(sectionChangeAnim);
+                    ((TextView) v.findViewById(R.id.textView_moveSectionTitle)).startAnimation(sectionChangeAnim);
+                    //v.findViewById(R.id.section_change_circle).startAnimation(sectionChangeLoadAnim);
+                    ((TextView) v.findViewById(R.id.textView_moveSectionTitle)).setText("Move to\nDaily");
+                    ((TextView) v.findViewById(R.id.textView_moveSectionIcon)).setText(getString(R.string.icon_moveToDaily));
+
+
+                } else if (((TextView) v.findViewById(R.id.textView_moveSectionTitle)).getText().equals("Move to\nDaily")) {
+                    ((TextView) v.findViewById(R.id.textView_moveSectionIcon)).startAnimation(sectionChangeAnim);
+                    ((TextView) v.findViewById(R.id.textView_moveSectionTitle)).startAnimation(sectionChangeAnim);
+                    //v.findViewById(R.id.section_change_circle).startAnimation(sectionChangeLoadAnim);
+                    ((TextView) v.findViewById(R.id.textView_moveSectionTitle)).setText("Move to\nBacklog");
+                    ((TextView) v.findViewById(R.id.textView_moveSectionIcon)).setText(getString(R.string.icon_moveToBacklog));
+
+                }
+            }
+        });
+
+
+        //Set up bottom two buttons
+
+
+        ((TextView)v.findViewById(R.id.button_viewNotes_icon)).setText(getString(R.string.icon_list));
+        ((TextView)v.findViewById(R.id.button_viewNotes_icon)).setTypeface(FONTAWESOME);
+        ((TextView)v.findViewById(R.id.button_addAction_icon)).setText(getString(R.string.icon_timeLog));
+        ((TextView)v.findViewById(R.id.button_addAction_icon)).setTypeface(FONTAWESOME);
+
+        ((TextView) v.findViewById(R.id.button_viewNotes_text)).setText("View Notes (" + notesAdapter.getCount() + ")");
+
 
         v.findViewById(R.id.button_addAction).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +185,13 @@ public class DetailMainFragment extends Fragment{
             }
         });
 
+
+        v.findViewById(R.id.button_viewNotes).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNotesViewPopup();
+            }
+        });
 
        /* mWorkOrder.getBeginDate();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
@@ -162,6 +226,40 @@ public class DetailMainFragment extends Fragment{
        // ((TextView)v.findViewById(R.id.estTextView)).setText(estText);
 
 
+    }
+
+    private void createNotesViewPopup(){
+
+        final AlertDialog alertDialog = new AlertDialog.Builder(mActivity).create();
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View convertView = (View) inflater.inflate(R.layout.popup_notes_list, null);
+
+        ((Button)convertView.findViewById(R.id.dialogNotes_buttonCancel)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.setView(convertView);
+        //alertDialog.setTitle("Notes");
+
+       /* alertDialog.setNegativeButton("Close",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                    }
+                }
+        );*/
+
+
+
+
+
+        ListView lv = (ListView) convertView.findViewById(R.id.popupNotes_listView);
+        //lv.setSelector(android.R.color.transparent);
+        lv.setAdapter(notesAdapter);
+        alertDialog.show();
     }
 
 }

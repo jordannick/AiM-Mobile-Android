@@ -2,18 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".OverviewListActivity" >
 
+    <item android:id="@+id/menu_notification"
+        android:showAsAction="always"
+        android:title="Notifications"
+        android:icon="@drawable/notification"/>
+
     <item android:id="@+id/action_queue"
-          android:orderInCategory="100"
-          android:showAsAction="always"
-          android:title="Time Log"/>
-    <!--android:icon="@drawable/action_queue_white"-->
+        android:showAsAction="always"
+        android:title="Time Log"
+        android:icon="@drawable/time_log"/>
 
+    <item android:id="@+id/force_refresh"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:icon="@drawable/sync_white"
+        android:title="Force Refresh"/>
 
-        <item android:id="@+id/log_out"
-
-              android:orderInCategory="100"
-              android:showAsAction="never"
-              android:title="Log Out"/>
-
-
+    <item android:id="@+id/log_out"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Log Out"/>
 </menu>

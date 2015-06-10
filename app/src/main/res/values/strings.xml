@@ -30,11 +30,10 @@
     <string name="icon_user">&#xf007;</string>
     <string name="icon_password">&#xf023;</string>
 
-
     <string name="icon_recentBarExpand">&#xf077;</string>
     <string name="icon_recentBarCollapse">&#xf078;</string>
 
-
+    <string name="icon_list">&#xf0ca;</string>
 
     <!--Add Action Fragment-->
     <string name="add_action_spinner_action_prompt">Select Action</string>

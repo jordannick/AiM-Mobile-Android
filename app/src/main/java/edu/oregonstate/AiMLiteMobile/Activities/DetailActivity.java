@@ -2,13 +2,21 @@ package edu.oregonstate.AiMLiteMobile.Activities;
 
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.text.Spannable;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,7 +130,24 @@ public class DetailActivity extends SingleFragmentActivity implements DetailNote
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_detail, menu);
+        //Typeface FONTAWESOME = Typeface.createFromAsset(this.getAssets(), "fonts/FontAwesome.otf");
+
+        /*MenuItem itemNotification = menu.findItem(R.id.menu_notification);
+        MenuItem itemTimeLog = menu.findItem(R.id.menu_notification);
+
+        TextView itemNotificationTextView = (TextView) itemNotification.getActionView();
+        TextView itemTimeLogTextView = (TextView) itemTimeLog.getActionView();
+
+        itemNotificationTextView.setTypeface(FONTAWESOME);
+        itemNotificationTextView.setTypeface(FONTAWESOME);
+
+        itemNotificationTextView.setText(getString(R.string.icon_notices));
+        itemTimeLogTextView.setText(getString(R.string.icon_timeLog));
+
+
+*/
         return true;
     }
 

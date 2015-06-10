@@ -5,8 +5,15 @@
 
     <!--
         android:icon="@drawable/action_add_white"-->
+<item android:id="@+id/menu_notification"
+    android:showAsAction="always"
+    android:title="Notifications"
+    android:icon="@drawable/notification"/>
 
-
+    <item android:id="@+id/action_queue"
+        android:showAsAction="always"
+        android:title="Time Log"
+        android:icon="@drawable/time_log"/>
 
     <item android:id="@+id/log_out"
         android:orderInCategory="100"
