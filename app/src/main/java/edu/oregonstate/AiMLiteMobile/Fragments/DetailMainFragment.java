@@ -87,11 +87,6 @@ public class DetailMainFragment extends Fragment{
 
         notesAdapter = new NoteAdapter(mActivity, mWorkOrder.getNotes());
 
-
-
-
-
-        //TODO get perfect font
         Typeface FONTAWESOME = Typeface.createFromAsset(mActivity.getApplicationContext().getAssets(), "fonts/FontAwesome.otf");
         Typeface GUDEA = Typeface.createFromAsset(mActivity.getApplicationContext().getAssets(), "fonts/Gudea-Regular.otf");
         Typeface GUDEABOLD = Typeface.createFromAsset(mActivity.getApplicationContext().getAssets(), "fonts/Gudea-Bold.otf");
@@ -136,7 +131,6 @@ public class DetailMainFragment extends Fragment{
         ((TextView)v.findViewById(R.id.textView_moveSectionIcon)).setTypeface(FONTAWESOME);
         ((TextView)v.findViewById(R.id.textView_moveSectionIcon)).setText(getString(R.string.icon_moveToBacklog));
         final Animation sectionChangeAnim = AnimationUtils.loadAnimation(mActivity.getApplicationContext(), R.anim.fade_out_dim);
-        final Animation sectionChangeLoadAnim = AnimationUtils.loadAnimation(mActivity.getApplicationContext(), R.anim.fade_in_dim);
 
         v.findViewById(R.id.layout_moveSection).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +138,6 @@ public class DetailMainFragment extends Fragment{
                 if (((TextView) v.findViewById(R.id.textView_moveSectionTitle)).getText().equals("Move to\nBacklog")) {
                     ((TextView) v.findViewById(R.id.textView_moveSectionIcon)).startAnimation(sectionChangeAnim);
                     ((TextView) v.findViewById(R.id.textView_moveSectionTitle)).startAnimation(sectionChangeAnim);
-                    //v.findViewById(R.id.section_change_circle).startAnimation(sectionChangeLoadAnim);
                     ((TextView) v.findViewById(R.id.textView_moveSectionTitle)).setText("Move to\nDaily");
                     ((TextView) v.findViewById(R.id.textView_moveSectionIcon)).setText(getString(R.string.icon_moveToDaily));
 
@@ -152,7 +145,6 @@ public class DetailMainFragment extends Fragment{
                 } else if (((TextView) v.findViewById(R.id.textView_moveSectionTitle)).getText().equals("Move to\nDaily")) {
                     ((TextView) v.findViewById(R.id.textView_moveSectionIcon)).startAnimation(sectionChangeAnim);
                     ((TextView) v.findViewById(R.id.textView_moveSectionTitle)).startAnimation(sectionChangeAnim);
-                    //v.findViewById(R.id.section_change_circle).startAnimation(sectionChangeLoadAnim);
                     ((TextView) v.findViewById(R.id.textView_moveSectionTitle)).setText("Move to\nBacklog");
                     ((TextView) v.findViewById(R.id.textView_moveSectionIcon)).setText(getString(R.string.icon_moveToBacklog));
 
@@ -162,25 +154,20 @@ public class DetailMainFragment extends Fragment{
 
 
         //Set up bottom two buttons
-
-
         ((TextView)v.findViewById(R.id.button_viewNotes_icon)).setText(getString(R.string.icon_list));
         ((TextView)v.findViewById(R.id.button_viewNotes_icon)).setTypeface(FONTAWESOME);
         ((TextView)v.findViewById(R.id.button_addAction_icon)).setText(getString(R.string.icon_timeLog));
         ((TextView)v.findViewById(R.id.button_addAction_icon)).setTypeface(FONTAWESOME);
-
         ((TextView) v.findViewById(R.id.button_viewNotes_text)).setText("View Notes (" + notesAdapter.getCount() + ")");
-
 
         v.findViewById(R.id.button_addAction).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Open up entry dialog, passing work order object
                 AddActionDialogFragment actionFragment = new AddActionDialogFragment();
-
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("WorkOrder", mWorkOrder);
                 actionFragment.setArguments(bundle);
-
                 actionFragment.show(getFragmentManager(), "Diag");
             }
         });
@@ -193,48 +180,14 @@ public class DetailMainFragment extends Fragment{
             }
         });
 
-       /* mWorkOrder.getBeginDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
-        SimpleDateFormat minimalDate = new SimpleDateFormat("MM/dd", Locale.US);
-        SimpleDateFormat minimalDateYear = new SimpleDateFormat("MM/dd/yy", Locale.US);
-        String estText = "";
-        try {
-            Calendar beginCal = new GregorianCalendar();
-            Calendar endCal = new GregorianCalendar();
-            Date beginDate = null;
-            Date endDate = null;
-            if (mWorkOrder.getBeginDate() != null){
-                beginDate = sdf.parse(mWorkOrder.getBeginDate());
-            }
-            if (mWorkOrder.getEndDate() != null) {
-                endDate = sdf.parse(mWorkOrder.getEndDate());
-            }
-            beginCal.setTime(beginDate);
-            endCal.setTime(endDate);
-
-            if(beginCal.get(Calendar.YEAR) == endCal.get(Calendar.YEAR)){
-                estText = String.format("%s - %s", minimalDateYear.format(beginDate), minimalDateYear.format(endDate));
-
-            }else{
-                estText = String.format("%s - %s", minimalDate.format(beginDate), minimalDate.format(endDate));
-            }
-
-        }catch (Exception e){
-            Log.e(TAG, "Calendar formatting error: " + e);
-        }*/
-
-       // ((TextView)v.findViewById(R.id.estTextView)).setText(estText);
-
-
     }
 
     private void createNotesViewPopup(){
-
         final AlertDialog alertDialog = new AlertDialog.Builder(mActivity).create();
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View convertView = (View) inflater.inflate(R.layout.popup_notes_list, null);
+        View convertView = inflater.inflate(R.layout.popup_notes_list, null);
 
-        ((Button)convertView.findViewById(R.id.dialogNotes_buttonCancel)).setOnClickListener(new View.OnClickListener() {
+        convertView.findViewById(R.id.dialogNotes_buttonCancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
@@ -242,22 +195,8 @@ public class DetailMainFragment extends Fragment{
         });
 
         alertDialog.setView(convertView);
-        //alertDialog.setTitle("Notes");
-
-       /* alertDialog.setNegativeButton("Close",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.dismiss();
-                    }
-                }
-        );*/
-
-
-
-
-
         ListView lv = (ListView) convertView.findViewById(R.id.popupNotes_listView);
-        //lv.setSelector(android.R.color.transparent);
+        lv.setSelector(android.R.color.transparent);
         lv.setAdapter(notesAdapter);
         alertDialog.show();
     }

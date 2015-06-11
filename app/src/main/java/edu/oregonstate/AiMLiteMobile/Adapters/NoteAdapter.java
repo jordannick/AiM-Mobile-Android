@@ -1,6 +1,7 @@
 package edu.oregonstate.AiMLiteMobile.Adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,15 +42,24 @@ public class NoteAdapter extends ArrayAdapter<Note> {
 
         Note note = mNotes.get(position);
 
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        //SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        SimpleDateFormat format = new SimpleDateFormat("MMM d',' y h:mma", Locale.US);
         String formattedDate = format.format(note.getDate());
+        formattedDate = formattedDate.replace("AM", "am").replace("PM","pm");
 
         //Populate the layout items with the note data
         ((TextView) convertView.findViewById(R.id.note_name_textView)).setText(note.getAuthor());
-
-        ((TextView)convertView.findViewById(R.id.note_date_textView)).setText(formattedDate);
-
+        ((TextView)convertView.findViewById(R.id.note_date_textView)).setText("Added " + formattedDate);
         ((TextView)convertView.findViewById(R.id.note_note_textView)).setText(note.getNote());
+
+        Typeface GUDEA = Typeface.createFromAsset(mContext.getAssets(), "fonts/Gudea-Regular.otf");
+        Typeface GUDEABOLD = Typeface.createFromAsset(mContext.getAssets(), "fonts/Gudea-Bold.otf");
+        Typeface GUDEAITALIC = Typeface.createFromAsset(mContext.getAssets(), "fonts/Gudea-Italic.otf");
+
+
+        ((TextView)convertView.findViewById(R.id.note_name_textView)).setTypeface(GUDEABOLD);
+        ((TextView)convertView.findViewById(R.id.note_date_textView)).setTypeface(GUDEAITALIC);
+        ((TextView)convertView.findViewById(R.id.note_note_textView)).setTypeface(GUDEA);
 
         return convertView;
     }
