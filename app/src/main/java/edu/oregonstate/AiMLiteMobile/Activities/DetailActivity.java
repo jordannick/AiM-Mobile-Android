@@ -23,7 +23,6 @@ import java.util.List;
 
 import edu.oregonstate.AiMLiteMobile.Fragments.DetailMainFragment;
 import edu.oregonstate.AiMLiteMobile.Fragments.DetailNotesFragment;
-import edu.oregonstate.AiMLiteMobile.Helpers.DetailPagerItem;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.R;
 import edu.oregonstate.AiMLiteMobile.Helpers.SlidingTabLayout;
@@ -66,33 +65,7 @@ public class DetailActivity extends SingleFragmentActivity implements DetailNote
 
         sCurrentUser = CurrentUser.get(getApplicationContext());
         mWorkOrder = (WorkOrder)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
-        Log.d(TAG, "DetailActivity mWorkOrder: " + mWorkOrder);
-
-        final List<DetailPagerItem> mTabs = new ArrayList<>();
-       // mTabs.add(new DetailPagerItem("Overview", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailMainFragment()));
-       // mTabs.add(new DetailPagerItem("Notes", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailNotesFragment()));
-        //mTabs.add(new DetailPagerItem("Requestor", getResources().getColor(R.color.tab_color), Color.GRAY, new DetailContactFragment()));
-
-        //Set ViewPager Adapter
-       /* mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
-            @Override
-            public android.support.v4.app.Fragment getItem(int position) {
-                return mTabs.get(position).getFragment();
-            }
-
-            @Override
-            public int getCount() {
-                return mTabs.size();
-            }
-
-            @Override
-            public CharSequence getPageTitle(int position){
-                return mTabs.get(position).getTitle();
-            }
-
-
-        });
+/*        Log.d(TAG, "DetailActivity mWorkOrder: " + mWorkOrder);
 
         mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
         mSlidingTabLayout.setBackgroundResource(R.color.theme_primary);

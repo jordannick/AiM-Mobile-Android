@@ -35,7 +35,14 @@
 
 
         </activity>
+        <activity
+            android:name=".Activities.TestActivity"
+            android:label="@string/detail_activity_title"
+            android:windowSoftInputMode="stateHidden"
+            >
 
+
+        </activity>
         <activity
             android:name=".Activities.ActionQueueListActivity"
             android:label="@string/add_action_activity_title" >
