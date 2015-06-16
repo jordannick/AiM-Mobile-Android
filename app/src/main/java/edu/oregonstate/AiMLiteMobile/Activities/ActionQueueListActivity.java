@@ -18,12 +18,11 @@ import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Fragments.ActionQueueListFragment;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.R;
-import edu.oregonstate.AiMLiteMobile.Network.TaskPostAction;
 
 /**
  * Created by sellersk on 2/19/2015.
  */
-public class ActionQueueListActivity extends SingleFragmentActivity implements ActionQueueListFragment.Callbacks, TaskPostAction.OnTaskCompleted {
+public class ActionQueueListActivity extends SingleFragmentActivity implements ActionQueueListFragment.Callbacks {
     private static final String TAG = "ActionQueueActivity";
     private static CurrentUser sCurrentUser;
 
@@ -55,20 +54,7 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
     //Start the HTTP POSTs to submit actions from queue.
     //Remove from queue upon successful POST
     public void syncActions(){
-        final TaskPostAction task = new TaskPostAction(this, getApplicationContext());
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    task.execute(sCurrentUser.getAction(0));
-                } catch (Exception e) {
-                    Log.e(TAG, "Exception e: " + e);
-                }
-
-            }
-        }, 1000);
+        //TODO: implement retrofit addAction
     }
 
     @Override

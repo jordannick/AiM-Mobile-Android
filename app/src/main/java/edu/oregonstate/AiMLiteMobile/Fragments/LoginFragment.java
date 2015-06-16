@@ -27,9 +27,14 @@ import edu.oregonstate.AiMLiteMobile.Models.Notice;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.R;
-import edu.oregonstate.AiMLiteMobile.ResponseLogin;
-import edu.oregonstate.AiMLiteMobile.ResponseNotices;
-import edu.oregonstate.AiMLiteMobile.ResponseWorkOrders;
+
+import edu.oregonstate.AiMLiteMobile.Network.ResponseLogin;
+import edu.oregonstate.AiMLiteMobile.Network.ResponseNotices;
+import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
+
+import edu.oregonstate.AiMLiteMobile.Network.ResponseLogin;
+import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

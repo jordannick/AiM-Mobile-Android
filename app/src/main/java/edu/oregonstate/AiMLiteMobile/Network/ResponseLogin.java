@@ -1,4 +1,4 @@
-package edu.oregonstate.AiMLiteMobile;
+package edu.oregonstate.AiMLiteMobile.Network;
 
 import retrofit.client.Response;
 

@@ -3,7 +3,6 @@ package edu.oregonstate.AiMLiteMobile.Network;
 import android.util.Log;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -12,14 +11,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
 
 import edu.oregonstate.AiMLiteMobile.Models.Notice;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
-import edu.oregonstate.AiMLiteMobile.ResponseLogin;
-import edu.oregonstate.AiMLiteMobile.ResponseNotices;
-import edu.oregonstate.AiMLiteMobile.ResponseWorkOrders;
+
+import edu.oregonstate.AiMLiteMobile.Network.ResponseLogin;
+import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
+
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.converter.ConversionException;

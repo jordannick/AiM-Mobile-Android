@@ -1,4 +1,4 @@
-package edu.oregonstate.AiMLiteMobile;
+package edu.oregonstate.AiMLiteMobile.Network;
 
 import java.util.ArrayList;
 
