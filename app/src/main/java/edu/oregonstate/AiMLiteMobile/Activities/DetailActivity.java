@@ -87,8 +87,8 @@ public class DetailActivity extends SingleFragmentActivity implements DetailNote
         });*/
 
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+//        getActionBar().setDisplayHomeAsUpEnabled(true);
+ //       getActionBar().setHomeButtonEnabled(true);
 
 
 

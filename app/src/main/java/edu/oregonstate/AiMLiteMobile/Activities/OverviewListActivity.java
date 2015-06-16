@@ -66,7 +66,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class OverviewListActivity extends AppCompatActivity {
+public class OverviewListActivity extends AppCompatActivity implements RecyWorkOrderAdapter.Callbacks {
     private static final String TAG = "OverviewListActivity";
 
     private static CurrentUser sCurrentUser;
@@ -80,6 +80,7 @@ public class OverviewListActivity extends AppCompatActivity {
 
     private OverviewListActivity self;
     private RecyclerView recList;
+    private RecyWorkOrderAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +105,10 @@ public class OverviewListActivity extends AppCompatActivity {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
 
-        RecyWorkOrderAdapter adapter = new RecyWorkOrderAdapter(sCurrentUser.getWorkOrders());
+        adapter = new RecyWorkOrderAdapter(sCurrentUser.getWorkOrders(), this);
+
+
+
         recList.setAdapter(adapter);
 
 
@@ -166,7 +170,8 @@ public class OverviewListActivity extends AppCompatActivity {
 
     // Start an instance of DetailActivity
     public void onWorkOrderSelected(WorkOrder workOrder){
-        Intent i = new Intent(this, TestActivity.class);
+        //Intent i = new Intent(this, TestActivity.class);
+        Intent i = new Intent(this, DetailActivity.class);
         i.putExtra(WorkOrder.WORK_ORDER_EXTRA, workOrder);
         startActivity(i);
         overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);

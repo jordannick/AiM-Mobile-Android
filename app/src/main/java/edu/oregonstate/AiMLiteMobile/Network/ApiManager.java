@@ -76,6 +76,38 @@ public class ApiManager {
         @FormUrlEncoded
         @POST("/WorkOrder/getLastUpdated/{username}")
         void getLastUpdated(@Path("username") String username, @Field("token") String token, Callback<String> callback);
+
+
+
+        // ADD TIME
+        @Headers({"Content-type: application/x-www-form-urlencoded"})
+        @FormUrlEncoded
+        @POST("/WorkOrder/addTime")
+        void addTime(@Field("username") String username, @Field("hours") String hours, @Field("workOrderPhaseId") String workOrderPhaseId, @Field("timeType") String timeType, @Field("timeStamp") String timeStamp, @Field("token") String token, Callback<String> callback);
+
+        // ADD ACTION TAKEN
+        @Headers({"Content-type: application/x-www-form-urlencoded"})
+        @FormUrlEncoded
+        @POST("/WorkOrder/addActionTaken")
+        void addActionTaken(@Field("username") String username, @Field("workOrderPhaseId") String workOrderPhaseId, @Field("actionTaken") String actionTaken, @Field("timeStamp") String timeStamp, @Field("token") String token, Callback<String> callback);
+
+        // ADD NOTE
+        @Headers({"Content-type: application/x-www-form-urlencoded"})
+        @FormUrlEncoded
+        @POST("/WorkOrder/addNote")
+        void addNote(@Field("username") String username, @Field("workOrderPhaseId") String workOrderPhaseId, @Field("note") String note, @Field("timeStamp") String timeStamp, @Field("token") String token, Callback<String> callback);
+
+        // UPDATE STATUS
+        @Headers({"Content-type: application/x-www-form-urlencoded"})
+        @FormUrlEncoded
+        @POST("/WorkOrder/updateStatus")
+        void updateStatus(@Field("username") String username, @Field("workOrderPhaseId") String workOrderPhaseId, @Field("newStatus") String newStatus, @Field("timeStamp") String timeStamp, @Field("token") String token, Callback<String> callback);
+
+        // UPDATE SECTION
+        @Headers({"Content-type: application/x-www-form-urlencoded"})
+        @FormUrlEncoded
+        @POST("/WorkOrder/updateSection")
+        void updateSection(@Field("username") String username, @Field("workOrderPhaseId") String workOrderPhaseId, @Field("value") String value, @Field("timeStamp") String timeStamp, @Field("token") String token, Callback<String> callback);
     }
 
 
