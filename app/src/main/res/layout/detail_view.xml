@@ -189,14 +189,6 @@
                             android:textAlignment="center"
                             android:layout_centerHorizontal="true"
                             />
-                        <ProgressBar
-                            android:id="@+id/section_change_circle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/textView_moveSectionTitle"
-                            android:layout_centerHorizontal="true"
-                            android:alpha="0"/>
-
 
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>

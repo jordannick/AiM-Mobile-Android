@@ -56,9 +56,9 @@ public class WorkOrder implements Serializable {
             mNotes.add(new Note("Single line example text", "WILLIAMSONT", new Date(System.currentTimeMillis() - (int) (day * .3))));
             mNotes.add(new Note("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis() - (int) (day * 3.4))));
             mNotes.add(new Note("This is an example description. I ate oatmeal this morning. With some coffee, and a wrap. It was quite good. I'm gonna continue writing.", "MCGILLD", new Date(System.currentTimeMillis() - (int) (day * 10.8))));
-            mNotes.add(new Note("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis() - (int) (day * 3.4))));
-            mNotes.add(new Note("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis() - (int) (day * 3.4))));
-            mNotes.add(new Note("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis() - (int) (day * 3.4))));
+            //mNotes.add(new Note("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis() - (int) (day * 3.4))));
+            //mNotes.add(new Note("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis() - (int) (day * 3.4))));
+            //mNotes.add(new Note("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis() - (int) (day * 3.4))));
             //%% DEBUG %%
         }
         return mNotes;
@@ -92,9 +92,21 @@ public class WorkOrder implements Serializable {
 
     public void setDateElements(String dateElements) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
+
+        SimpleDateFormat formatClean = new SimpleDateFormat("MMM d',' y h:mma", Locale.US);
+
+        //mDateCreated = formatNew.format(dateElements);
+
         try {
+            Log.d(TAG, "dateElements: "+dateElements);
+
             Date date = format.parse(dateElements);
-            mDateCreated = date.toString();
+            //mDateCreated = date.toString();
+            mDateCreated = formatClean.format(date);
+            mDateCreated = mDateCreated.replace("AM", "am").replace("PM","pm");
+            Log.d(TAG, "mDateCreated: "+mDateCreated);
+
+
 
             format = new SimpleDateFormat("EE", Locale.US);
             mDateElements[0] = format.format(date);
@@ -139,7 +151,7 @@ public class WorkOrder implements Serializable {
                 }
             }
         } catch (Exception e) {
-            Log.d(TAG, "Error: Parsing Date");
+            Log.e(TAG, "Error: Parsing Date - " + e);
             e.printStackTrace();
         }
     }
