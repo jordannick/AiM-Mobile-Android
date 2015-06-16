@@ -40,7 +40,7 @@ public class AddActionDialogFragment extends DialogFragment {
     private static CurrentUser sCurrentUser;
     private WorkOrder workOrder;
     private String dialogTitle;
-
+    private int hoursForText;
 
     public AddActionDialogFragment(){
         Bundle bundle = getArguments();
@@ -50,8 +50,10 @@ public class AddActionDialogFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        hoursForText = 0;
         workOrder = (WorkOrder) getArguments().getSerializable("WorkOrder");
         dialogTitle = getArguments().getString("Title");
+
     }
 
 
@@ -143,6 +145,25 @@ public class AddActionDialogFragment extends DialogFragment {
                 }
             }
         });
+
+
+        v.findViewById(R.id.button_addHours).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hoursForText += 1;
+                hoursEditText.setText(String.valueOf(hoursForText));
+            }
+        });
+
+        v.findViewById(R.id.button_minusHours).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hoursForText -= 1;
+                hoursEditText.setText(String.valueOf(hoursForText));
+            }
+        });
+
+
 
         return v;
     }

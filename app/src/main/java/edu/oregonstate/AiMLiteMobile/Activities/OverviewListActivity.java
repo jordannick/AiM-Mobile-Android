@@ -10,21 +10,31 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import android.support.v4.view.ViewPager;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.TypefaceSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ListView;
+
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
 import edu.oregonstate.AiMLiteMobile.Adapters.WorkOrderAdapter;
 import edu.oregonstate.AiMLiteMobile.Fragments.OverviewListFragment;
 import edu.oregonstate.AiMLiteMobile.Helpers.OverviewPagerItem;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
+import edu.oregonstate.AiMLiteMobile.Models.Notice;
 import edu.oregonstate.AiMLiteMobile.R;
 import edu.oregonstate.AiMLiteMobile.Helpers.SlidingTabLayout;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
@@ -91,6 +101,18 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
             }
         });
 
+        if (sCurrentUser.getNotices().size() > 0) {
+            SnackbarManager.show(Snackbar.with(this).text("You have " + sCurrentUser.getNotices().size() + " new notice").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
+        }
+
+        mViewPager.setCurrentItem(1, true);
+    }
+
+    @Override
+    protected void onResume() {
+        invalidateOptionsMenu();
+        super.onResume();
+
     }
 
     @Override
@@ -98,6 +120,7 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
         super.onStart();
         //TODO 3/12/2015 - check stored last updated time against current time, if longer than some interval, refresh
         // updateWorkOrderList();
+
     }
 
     @Override
@@ -135,43 +158,52 @@ public class OverviewListActivity extends FragmentActivity implements OverviewLi
         logoutDialog.show();
     }
 
-    public void lockScreen(){
-        Log.d(TAG, "dim overlay appear");
-        dimOverlay.setVisibility(View.VISIBLE);
-
-        Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in_dim);
-        fadeInAnimation.setFillAfter(true);
-
-        dimOverlay.startAnimation(fadeInAnimation);
-    }
-
-    public void unlockScreen(){
-        Log.d(TAG, "dim overlay gone");
-        dimOverlay.setVisibility(View.INVISIBLE);
-
-        Animation fadeOutAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out_dim);
-        fadeOutAnimation.setFillBefore(true);
-
-        dimOverlay.startAnimation(fadeOutAnimation);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_overview_list, menu);
         return true;
     }
 
-    public void beginActionQueueAcitivity(){
+    private void createNoticesViewPopup(){
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.popup_notes_list, null);
+
+        convertView.findViewById(R.id.dialogNotes_buttonCancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        NoticeAdapter noticesAdapter = new NoticeAdapter(this, sCurrentUser.getNotices());
+        alertDialog.setView(convertView);
+        ListView lv = (ListView) convertView.findViewById(R.id.popupNotes_listView);
+        lv.setSelector(android.R.color.transparent);
+        lv.setAdapter(noticesAdapter);
+        alertDialog.show();
+    }
+
+    public void beginActionQueueActivity(){
         Intent i = new Intent(this, ActionQueueListActivity.class);
         startActivity(i);
         overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+       // menu.findItem(R.id.menu_notification).setIcon(R.drawable.osu_icon);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
+            case R.id.menu_notification:
+                createNoticesViewPopup();
+                break;
             case  R.id.action_queue:
-                beginActionQueueAcitivity();
+                beginActionQueueActivity();
                 break;
        /* else if (id == R.id.action_settings) {
             return true;

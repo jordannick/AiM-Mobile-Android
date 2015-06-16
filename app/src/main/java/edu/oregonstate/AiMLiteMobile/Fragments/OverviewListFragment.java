@@ -98,6 +98,7 @@ public class OverviewListFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
+
         updateListView();
     }
 

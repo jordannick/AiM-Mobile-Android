@@ -23,10 +23,12 @@ import java.util.Date;
 
 import edu.oregonstate.AiMLiteMobile.Activities.OverviewListActivity;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
+import edu.oregonstate.AiMLiteMobile.Models.Notice;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.R;
 import edu.oregonstate.AiMLiteMobile.ResponseLogin;
+import edu.oregonstate.AiMLiteMobile.ResponseNotices;
 import edu.oregonstate.AiMLiteMobile.ResponseWorkOrders;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -153,6 +155,21 @@ public class LoginFragment extends Fragment {
             sCurrentUser.getPrefsEditor().putBoolean("autologin", true);
             sCurrentUser.getPrefsEditor().apply();
         }
+
+        ApiManager.getService().getNotices(CurrentUser.getUsername(), CurrentUser.getToken(), new Callback<ResponseNotices>() {
+            @Override
+            public void success(ResponseNotices responseNotices, Response response) {
+
+                ArrayList<Notice> notices = responseNotices.getNotices();
+                Log.d(TAG, "Successful getNotices: " + notices);
+                sCurrentUser.setNotices(notices);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
 
         ApiManager.getService().getWorkOrders(CurrentUser.getUsername(), CurrentUser.getToken(), new Callback<ResponseWorkOrders>() {
             @Override

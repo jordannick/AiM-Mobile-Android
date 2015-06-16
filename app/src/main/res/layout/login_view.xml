@@ -109,24 +109,12 @@
 
         />
 
-    <Button
-        android:id="@+id/login_retroTest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="RETRO TEST"
-        android:layout_gravity="center"
-        android:background="@android:color/holo_red_dark"
-        android:textColor="@android:color/white"
-        android:padding="8dp"
-        android:onClick="retroTest"/>
 
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/load_circle"
         android:layout_gravity="center_horizontal"/>
-
-
 
 
 </LinearLayout>

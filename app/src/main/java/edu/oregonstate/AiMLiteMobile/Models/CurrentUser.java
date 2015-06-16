@@ -23,6 +23,7 @@ public class CurrentUser {
     private SharedPreferences.Editor prefsEditor;
     private ArrayList<WorkOrder> mWorkOrders;
     private ArrayList<Action> mActions;
+    private ArrayList<Notice> mNotices;
 
     private static CurrentUser sCurrentUser;
     private static Context sAppContext;
@@ -89,6 +90,7 @@ public class CurrentUser {
     private CurrentUser(Context appContext){
         sAppContext = appContext;
         mWorkOrders = new ArrayList<WorkOrder>();
+        mNotices = new ArrayList<Notice>();
         mActions = new ArrayList<Action>();
     }
 
@@ -293,5 +295,14 @@ public class CurrentUser {
 
     public static void setLastUpdatedDate(Date lastUpdatedDate) {
         CurrentUser.lastUpdatedDate = lastUpdatedDate;
+    }
+
+
+    public ArrayList<Notice> getNotices() {
+        return mNotices;
+    }
+
+    public void setNotices(ArrayList<Notice> mNotices) {
+        this.mNotices = mNotices;
     }
 }

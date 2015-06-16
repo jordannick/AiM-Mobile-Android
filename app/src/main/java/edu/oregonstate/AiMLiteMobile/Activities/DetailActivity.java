@@ -1,6 +1,7 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -16,11 +17,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
 import edu.oregonstate.AiMLiteMobile.Fragments.DetailMainFragment;
 import edu.oregonstate.AiMLiteMobile.Fragments.DetailNotesFragment;
 import edu.oregonstate.AiMLiteMobile.Helpers.DetailPagerItem;
@@ -156,6 +159,12 @@ public class DetailActivity extends SingleFragmentActivity implements DetailNote
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()){
+            case R.id.menu_notification:
+                createNoticesViewPopup();
+                break;
+            case R.id.action_queue:
+                beginActionQueueActivity();
+                break;
             case android.R.id.home:
                 finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -180,5 +189,30 @@ public class DetailActivity extends SingleFragmentActivity implements DetailNote
 
     public WorkOrder getWorkOrder() {
         return mWorkOrder;
+    }
+
+    private void createNoticesViewPopup(){
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.popup_notes_list, null);
+
+        convertView.findViewById(R.id.dialogNotes_buttonCancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        NoticeAdapter noticesAdapter = new NoticeAdapter(this, sCurrentUser.getNotices());
+        alertDialog.setView(convertView);
+        ListView lv = (ListView) convertView.findViewById(R.id.popupNotes_listView);
+        lv.setSelector(android.R.color.transparent);
+        lv.setAdapter(noticesAdapter);
+        alertDialog.show();
+    }
+
+    public void beginActionQueueActivity(){
+        Intent i = new Intent(this, ActionQueueListActivity.class);
+        startActivity(i);
+        overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
     }
 }

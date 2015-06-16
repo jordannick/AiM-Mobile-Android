@@ -1,14 +1,19 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 
+import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
 import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Fragments.ActionQueueListFragment;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
@@ -75,6 +80,9 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.menu_notification:
+                createNoticesViewPopup();
+                break;
             case android.R.id.home:
                 finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -107,5 +115,24 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
 
     public void onNetworkFail() {
         Log.d(TAG, "NET FAIL QUEUE LIST");
+    }
+
+    private void createNoticesViewPopup(){
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.popup_notes_list, null);
+
+        convertView.findViewById(R.id.dialogNotes_buttonCancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        NoticeAdapter noticesAdapter = new NoticeAdapter(this, sCurrentUser.getNotices());
+        alertDialog.setView(convertView);
+        ListView lv = (ListView) convertView.findViewById(R.id.popupNotes_listView);
+        lv.setSelector(android.R.color.transparent);
+        lv.setAdapter(noticesAdapter);
+        alertDialog.show();
     }
 }

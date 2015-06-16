@@ -12,10 +12,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
+import edu.oregonstate.AiMLiteMobile.Models.Notice;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.ResponseLogin;
+import edu.oregonstate.AiMLiteMobile.ResponseNotices;
 import edu.oregonstate.AiMLiteMobile.ResponseWorkOrders;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -67,7 +70,7 @@ public class ApiManager {
         @Headers({"Content-type: application/x-www-form-urlencoded"})
         @FormUrlEncoded
         @POST("/WorkOrder/getNotices/{username}")
-        void getNotices(@Path("username") String username, @Field("token") String token, Callback<String> callback);
+        void getNotices(@Path("username") String username, @Field("token") String token, Callback<ResponseNotices> callback);
 
         // GET LAST UPDATED
         @Headers({"Content-type: application/x-www-form-urlencoded"})
@@ -80,7 +83,7 @@ public class ApiManager {
     private static class CustomConverter implements Converter{
         @Override
         public Object fromBody(TypedInput body, Type type) throws ConversionException {
-            if(type == ResponseLogin.class){
+            if (type == ResponseLogin.class){
                 Log.d(TAG, "CustomConverter TYPE MATCH: " + type.toString());
                 String token = "";
                 try {
@@ -89,7 +92,7 @@ public class ApiManager {
                     e.printStackTrace();
                 }
                 return (new ResponseLogin(token));
-            }else if(type == ResponseWorkOrders.class){
+            } else if(type == ResponseWorkOrders.class){
                 Log.d(TAG, "CustomConverter TYPE MATCH: " + type.toString());
                 ArrayList<WorkOrder> workOrders = new ArrayList<>();
                 JSONArray array = new JSONArray();
@@ -127,6 +130,50 @@ public class ApiManager {
                     e.printStackTrace();
                 }
                 return (new ResponseWorkOrders(workOrders, array.toString()));
+            } else if (type == ResponseNotices.class){
+                ArrayList<Notice> notices = new ArrayList<>();
+               // JSONArray array = new JSONArray();
+                JSONObject obj = new JSONObject();
+                try {
+                    //array = new JSONArray(fromStream(body.in()));
+                    obj = new JSONObject(fromStream(body.in()));
+                    //TODO find out actual notice response
+
+                    JSONObject objNewlyAssigned = (JSONObject)obj.get("newly_assigned");
+                    Log.d(TAG, "obj newly: " + objNewlyAssigned.toString());
+
+
+                    for (int i = 0; i < objNewlyAssigned.names().length();i++){
+                        Log.d(TAG, "obj test: " + objNewlyAssigned.names().getString(i));
+                        String name = objNewlyAssigned.names().getString(i);
+                        JSONObject objNotice = (JSONObject) objNewlyAssigned.get(name);
+                        Log.d(TAG, "obj test2: " + objNotice);
+                        Notice notice = new Notice();
+                        notice.setDescription(objNotice.getString("description"));
+                        notice.setEditClerk(objNotice.getString("edit_clerk"));
+                        //notice.setModified(new Date(objNotice.getString("modified")));
+                        notice.setDateElements(objNotice.getString("modified"));
+                        notice.setId(objNotice.getString("id"));
+                        notice.setType(objNotice.getString("type"));
+                        notices.add(notice);
+                    }
+
+
+                    //for (int i = 0; i < array.length(); i++) {
+                    /*Log.d(TAG, "notice obj: "+ obj.toString());
+                    for (int i = 0; i < 2; i++) {
+                        Notice notice = new Notice();
+                        notice.setText(obj.getString("description"));
+                        //notice.setDate(new Date(System.currentTimeMillis()));
+
+                        notices.add(notice);
+                    }*/
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return (new ResponseNotices(notices, obj.toString()));
             }
 
             //Don't reach
