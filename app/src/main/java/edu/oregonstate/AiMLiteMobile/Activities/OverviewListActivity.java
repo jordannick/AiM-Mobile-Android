@@ -2,75 +2,36 @@ package edu.oregonstate.AiMLiteMobile.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentPagerAdapter;
-
 import android.support.v4.view.ViewPager;
-
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.TypefaceSpan;
-
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-
-import android.widget.ListView;
-
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
 
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
 import edu.oregonstate.AiMLiteMobile.Adapters.WorkOrderAdapter;
 import edu.oregonstate.AiMLiteMobile.Fragments.OverviewListFragment;
 import edu.oregonstate.AiMLiteMobile.Helpers.OverviewPagerItem;
-import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
-
-import edu.oregonstate.AiMLiteMobile.Models.Notice;
-
-import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
-import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
-import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
-
-import edu.oregonstate.AiMLiteMobile.R;
 import edu.oregonstate.AiMLiteMobile.Helpers.SlidingTabLayout;
+import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
-import edu.oregonstate.AiMLiteMobile.RecyWorkOrderAdapter;
-import edu.oregonstate.AiMLiteMobile.TestAdapter;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import edu.oregonstate.AiMLiteMobile.R;
 
 
 public class OverviewListActivity extends Activity {
+
     private static final String TAG = "OverviewListActivity";
 
     private static CurrentUser sCurrentUser;
@@ -83,7 +44,6 @@ public class OverviewListActivity extends Activity {
     private final List<OverviewPagerItem> mTabs = new ArrayList<>();
 
     private OverviewListActivity self;
-
     private ListView listView;
     private WorkOrderAdapter adapter;
 
@@ -103,6 +63,7 @@ public class OverviewListActivity extends Activity {
         adapter = new WorkOrderAdapter(this, sCurrentUser.getWorkOrders());
         listView.setAdapter(adapter);
         listView.setDividerHeight(0);
+
 
 
 /*        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -176,7 +137,8 @@ public class OverviewListActivity extends Activity {
 
     // Start an instance of DetailActivity
     public void onWorkOrderSelected(WorkOrder workOrder){
-        Intent i = new Intent(this, TestActivity.class);
+        //Intent i = new Intent(this, TestActivity.class);
+        Intent i = new Intent(this, DetailActivity.class);
         i.putExtra(WorkOrder.WORK_ORDER_EXTRA, workOrder);
         startActivity(i);
         overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);

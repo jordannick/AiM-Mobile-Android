@@ -31,8 +31,8 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
         super.onCreate(savedInstanceState);
 
         ActionBar mActionBar = getActionBar();
-        mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setHomeButtonEnabled(true);
+//        mActionBar.setDisplayHomeAsUpEnabled(true);
+    //    mActionBar.setHomeButtonEnabled(true);
         setTitle(R.string.action_queue_activity_title);
         sCurrentUser = CurrentUser.get(getApplicationContext());
 

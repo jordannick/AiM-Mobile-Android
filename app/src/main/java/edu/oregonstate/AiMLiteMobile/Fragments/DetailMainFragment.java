@@ -22,6 +22,7 @@ import android.widget.TextView;
 import edu.oregonstate.AiMLiteMobile.Activities.DetailActivity;
 import edu.oregonstate.AiMLiteMobile.Adapters.NoteAdapter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
+import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.R;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 
@@ -60,7 +61,6 @@ public class DetailMainFragment extends Fragment{
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle("Work Order");
-
 
 
         ((TextView)v.findViewById(R.id.row_proposal_detail)).setText(mWorkOrder.getProposalPhase());
@@ -136,10 +136,14 @@ public class DetailMainFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 if (((TextView) v.findViewById(R.id.textView_moveSectionTitle)).getText().equals("Move to\nBacklog")) {
+
+
                     ((TextView) v.findViewById(R.id.textView_moveSectionIcon)).startAnimation(sectionChangeAnim);
                     ((TextView) v.findViewById(R.id.textView_moveSectionTitle)).startAnimation(sectionChangeAnim);
                     ((TextView) v.findViewById(R.id.textView_moveSectionTitle)).setText("Move to\nDaily");
                     ((TextView) v.findViewById(R.id.textView_moveSectionIcon)).setText(getString(R.string.icon_moveToDaily));
+
+
 
 
                 } else if (((TextView) v.findViewById(R.id.textView_moveSectionTitle)).getText().equals("Move to\nDaily")) {
