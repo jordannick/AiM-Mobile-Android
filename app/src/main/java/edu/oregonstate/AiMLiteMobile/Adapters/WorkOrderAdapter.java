@@ -39,6 +39,7 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
     private ArrayList<WorkOrderListItem> listItems;
 
     public int sectionDailyIndex, sectionBacklogIndex, sectionAdminIndex, sectionCompletedIndex;
+    public int sectionDailyIndexPx, sectionBacklogIndexPx, sectionAdminIndexPx, sectionCompletedIndexPx;
 
 
     public WorkOrderAdapter(Context c, ArrayList<WorkOrder> workOrders) {
@@ -62,6 +63,7 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
         listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Daily", R.string.icon_daily, null));
 
         sectionDailyIndex = i;
+        sectionDailyIndexPx = 0;
 
         while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 0){
             listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, mWorkOrders.get(i)));
@@ -135,6 +137,8 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
         if (item.getType() == WorkOrderListItem.Type.SECTION){
             if (convertView == null) {
                 convertView = inflator.inflate(R.layout.list_item_section, parent, false);
+                Log.d(TAG, "Section Height: " + convertView.getMeasuredHeight());
+
             }
             ((TextView)convertView.findViewById(R.id.listItem_section)).setText(item.getSectionTitle());
 
@@ -148,6 +152,7 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
             WorkOrder wo = item.getWorkOrder();
             if (convertView == null) {
                 convertView = inflator.inflate(R.layout.list_item_workorder, parent, false);
+                Log.d(TAG, "Row Height: " + convertView.getHeight());
             }
 
             //TODO get perfect font
@@ -192,6 +197,10 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
 
         }
 
+
+        convertView.measure(0, 0);
+        int width = convertView.getMeasuredWidth();
+        Log.d(TAG, "WIDTH IS : " + width);
         return convertView;
     }
 

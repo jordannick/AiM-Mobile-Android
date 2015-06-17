@@ -15,6 +15,14 @@
     <color name="timeSensitive_purple">#673AB7</color>
 
 
+
+    <!--WorkOrder List-->
+    <color name="section_icon_shortcuts">#FFFFFF</color>
+
+
+
+
+
     <!--LoginView-->
     <color name="loginView_loginButton_text">#FFFFFF</color>
     <color name="loginView_loginButton_background">#99EF6C00</color>

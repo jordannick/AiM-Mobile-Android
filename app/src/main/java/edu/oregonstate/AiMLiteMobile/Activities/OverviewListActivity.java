@@ -1,10 +1,12 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentActivity;
@@ -40,6 +42,8 @@ import android.widget.TextView;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,7 +70,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class OverviewListActivity extends AppCompatActivity {
+public class OverviewListActivity extends Activity {
     private static final String TAG = "OverviewListActivity";
 
     private static CurrentUser sCurrentUser;
@@ -79,7 +83,10 @@ public class OverviewListActivity extends AppCompatActivity {
     private final List<OverviewPagerItem> mTabs = new ArrayList<>();
 
     private OverviewListActivity self;
-    private RecyclerView recList;
+
+    private ListView listView;
+    private WorkOrderAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,20 +99,10 @@ public class OverviewListActivity extends AppCompatActivity {
         //getActionBar().setTitle("AiM Lite Mobile");
 
         //dimOverlay = findViewById(R.id.dim_overlay);
-/*
-        ListView listView = (ListView)findViewById(R.id.overview_activity_listView);
+        listView = (ListView)findViewById(R.id.overview_activity_listView);
         adapter = new WorkOrderAdapter(this, sCurrentUser.getWorkOrders());
         listView.setAdapter(adapter);
-        listView.setDividerHeight(0);*/
-
-        recList = (RecyclerView) findViewById(R.id.recycle_view);
-        recList.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recList.setLayoutManager(llm);
-
-        RecyWorkOrderAdapter adapter = new RecyWorkOrderAdapter(sCurrentUser.getWorkOrders());
-        recList.setAdapter(adapter);
+        listView.setDividerHeight(0);
 
 
 /*        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -118,36 +115,49 @@ public class OverviewListActivity extends AppCompatActivity {
             }
         });*/
 
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinator_layout);
-        LayoutInflater inflater = getLayoutInflater();
-        LinearLayout layoutA = (LinearLayout)findViewById(R.id.section_layout_a);
-        LinearLayout layoutB = (LinearLayout)findViewById(R.id.section_layout_b);
-        View view0 = inflater.inflate(R.layout.section_card, layoutA);
-        View view1 = inflater.inflate(R.layout.section_card, layoutA);
-        View view2 = inflater.inflate(R.layout.section_card, layoutB);
-        View view3 = inflater.inflate(R.layout.section_card, layoutB);
-
-        ((TextView)view1.findViewById(R.id.title)).setText("Backlog");
-        ((TextView)view0.findViewById(R.id.title)).setText("Daily");
-        ((TextView)view3.findViewById(R.id.title)).setText("Completed");
-        ((TextView)view2.findViewById(R.id.title)).setText("Admin");
-
+        setupSectionIcons();
 
         if (sCurrentUser.getNotices().size() > 0) {
             SnackbarManager.show(Snackbar.with(this).text("You have " + sCurrentUser.getNotices().size() + " new notice").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
         }
 
-//        mViewPager.setCurrentItem(1, true);
     }
+
+    private void setupSectionIcons(){
+        TextView tv0 = (TextView)findViewById(R.id.overview_activity_section_icon0);
+        TextView tv1 = (TextView)findViewById(R.id.overview_activity_section_icon1);
+        TextView tv2 = (TextView)findViewById(R.id.overview_activity_section_icon2);
+        TextView tv3 = (TextView)findViewById(R.id.overview_activity_section_icon3);
+        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/FontAwesome.otf");
+        tv0.setTypeface(tf); tv1.setTypeface(tf); tv2.setTypeface(tf); tv3.setTypeface(tf);
+        tv0.setText(R.string.icon_daily); tv1.setText(R.string.icon_backlog); tv2.setText(R.string.icon_admin); tv3.setText(R.string.icon_recentlyCompleted);
+
+        setClickListener(tv0, adapter.sectionDailyIndex);
+        setClickListener(tv1, adapter.sectionBacklogIndex+1);
+        setClickListener(tv2, adapter.sectionAdminIndex+2);
+        setClickListener(tv3, adapter.sectionCompletedIndex+3);
+    }
+
+    private void setClickListener(TextView tv, final int position) {
+
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //listView.smoothScrollToPositionFromTop(adapter.sectionBacklogIndex, 0);
+                listView.setSelection(position);
+
+
+            }
+        });
+    }
+
+
+
 
     @Override
     protected void onResume() {
         invalidateOptionsMenu();
         super.onResume();
-
-
-//        layoutA.addView(view0);layoutA.addView(view1);
-//        layoutB.addView(view2);layoutB.addView(view3);
 
     }
 
@@ -193,6 +203,8 @@ public class OverviewListActivity extends AppCompatActivity {
         }
         logoutDialog.show();
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
