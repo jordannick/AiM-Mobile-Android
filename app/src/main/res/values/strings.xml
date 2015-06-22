@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
+    <!--Activity/Fragment Names-->
+    <string name="fragment_overviewList">Work Order List</string>
+
+
     <string name="app_name">AiM Lite Mobile</string>
     <string name="login_title">Login</string>
     <string name="list_title">Work Orders</string>

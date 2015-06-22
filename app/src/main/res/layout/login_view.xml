@@ -74,24 +74,35 @@
     </LinearLayout>
 
 
-
-    <CheckBox
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Remember Me"
-        android:textSize="14dp"
-        android:id="@+id/auto_login"
-        android:textColor="@color/loginView_hintFieldText"
-        android:background="@drawable/login_shade_background"
+        android:orientation="horizontal"
         android:layout_marginLeft="48dp"
-        android:layout_marginTop="16dp"
-        android:drawablePadding="30dp"
-        android:paddingRight="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        />
-
-
+        android:layout_marginTop="16dp">
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remember Me"
+            android:textSize="14dp"
+            android:id="@+id/auto_login"
+            android:textColor="@color/loginView_hintFieldText"
+            android:background="@drawable/login_shade_background"
+            android:drawablePadding="30dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            />
+            <TextView
+                android:id="@+id/loginView_savedUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:text=""
+                android:textColor="@android:color/white"
+                />
+    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"

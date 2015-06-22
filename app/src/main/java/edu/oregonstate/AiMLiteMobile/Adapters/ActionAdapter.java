@@ -59,7 +59,7 @@ public class ActionAdapter extends ArrayAdapter<Action> {
         //Populate the layout items with the action data
         ((TextView) convertView.findViewById(R.id.action_work_order_id)).setText(action.getWorkOrder().getProposalPhase());
 
-        ((TextView) convertView.findViewById(R.id.action_taken)).setText(action.getActionTakenString());
+        ((TextView) convertView.findViewById(R.id.action_taken)).setText(action.getActionTaken());
 
         if (action.getUpdatedStatus() != null && action.getUpdatedStatus() != action.getWorkOrder().getStatus()){
             ((TextView) convertView.findViewById(R.id.action_oldStatus)).setText(action.getWorkOrder().getStatus());

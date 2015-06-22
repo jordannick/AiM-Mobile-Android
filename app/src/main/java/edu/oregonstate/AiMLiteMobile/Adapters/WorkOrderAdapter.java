@@ -30,7 +30,6 @@ import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
     private static final String TAG = "WorkOrderAdapter";
     private final Context context;
-    private ArrayList<WorkOrder> filteredWorkOrders;
     private ArrayList<WorkOrder> mWorkOrders;
     //private TreeSet<Integer> sectionIndexes;
 
@@ -44,7 +43,6 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
 
     public WorkOrderAdapter(Context c, ArrayList<WorkOrder> workOrders) {
         super(c, 0, workOrders);
-        this.filteredWorkOrders = workOrders;
         this.mWorkOrders = workOrders;
         this.context = c;
 
@@ -54,60 +52,66 @@ public class WorkOrderAdapter extends ArrayAdapter implements Filterable{
         initListItems();
     }
 
+    public void refreshWorkOrders(ArrayList<WorkOrder> workOrders){
+        mWorkOrders = workOrders;
+        initListItems();
+        notifyDataSetChanged();
+    }
+
     private void initListItems(){
 
-        listItems = new ArrayList<WorkOrderListItem>();
+        listItems = new ArrayList<>();
 
-        int i = 0;
+        if (mWorkOrders.size() > 0) {
 
-        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Daily", R.string.icon_daily, null));
+            int i = 0;
 
-        sectionDailyIndex = i;
-        sectionDailyIndexPx = 0;
+            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Daily", R.string.icon_daily, null));
 
-        while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 0){
-            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, mWorkOrders.get(i)));
-            i++;
+            sectionDailyIndex = i;
+            sectionDailyIndexPx = 0;
+
+            while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 0) {
+                listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, mWorkOrders.get(i)));
+                i++;
+            }
+
+            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Backlog", R.string.icon_backlog, null));
+
+            sectionBacklogIndex = i;
+
+            while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 1) {
+                listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, mWorkOrders.get(i)));
+                i++;
+            }
+
+            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Admin", R.string.icon_admin, null));
+
+            sectionAdminIndex = i;
+
+            while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 2) {
+                listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, mWorkOrders.get(i)));
+                i++;
+            }
+
+            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Recently Completed", R.string.icon_recentlyCompleted, null));
+
+            sectionCompletedIndex = i;
+
+            while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 3) {
+                listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, mWorkOrders.get(i)));
+                i++;
+            }
         }
-
-        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Backlog", R.string.icon_backlog, null));
-
-        sectionBacklogIndex = i;
-
-        while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 1){
-            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, mWorkOrders.get(i)));
-            i++;
-        }
-
-        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Admin", R.string.icon_admin, null));
-
-        sectionAdminIndex = i;
-
-        while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 2){
-            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, mWorkOrders.get(i)));
-            i++;
-        }
-
-        listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Recently Completed", R.string.icon_recentlyCompleted, null));
-
-        sectionCompletedIndex = i;
-
-        while (i < mWorkOrders.size() && mWorkOrders.get(i).getSectionNum() == 3){
-            listItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, mWorkOrders.get(i)));
-            i++;
-        }
-
     }
 
     public int getCount()
     {
-        //return filteredWorkOrders.size();
         return listItems.size();
     }
 
     public WorkOrderListItem getItem(int position)
     {
-        //return filteredWorkOrders.get(position);
         return listItems.get(position);
     }
 /*

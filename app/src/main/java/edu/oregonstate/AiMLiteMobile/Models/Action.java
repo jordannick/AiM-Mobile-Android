@@ -12,7 +12,7 @@ public class Action implements Serializable {
     public static final String EDIT_ACTION_EXTRA = "edu.oregonstate.AiMLiteMobile.Models.Action";
 
     private WorkOrder mWorkOrder;
-    private String actionTakenString;
+    private String actionTaken;
     private String updatedStatus;
     private int hours;
     private ArrayList<Note> notes;
@@ -27,16 +27,7 @@ public class Action implements Serializable {
         OTM_NB, REG_NB, RST_NB, RWS_NB
     }
 
-    /* ---------- Variable: ActionTaken ----------
-        Also found in Arrays.xml
-        ANY CHANGES made here must be ALSO CHANGED FOR Arrays.XML
-     */
-    public enum ActionTaken {
-        NO_ACTION, MATERIAL_REQUEST, TEAM_BONDING, CRITICAL_ACTION, PREVENTIVE_MAINTENANCE, CUSTOM
-    }
-
     private boolean synced;
-    private ActionTaken actionTaken;
     private TimeType timeType;
 
     public boolean isSynced() {
@@ -61,14 +52,6 @@ public class Action implements Serializable {
 
     public void setWorkOrder(WorkOrder workOrder) {
         mWorkOrder = workOrder;
-    }
-
-    public String getActionTakenString() {
-        return actionTakenString;
-    }
-
-    public void setActionTakenString(String actionTakenString) {
-        this.actionTakenString = actionTakenString;
     }
 
     public String getUpdatedStatus() {
@@ -104,18 +87,17 @@ public class Action implements Serializable {
     }
 
 
-    public ActionTaken getActionTaken() {
+    public String getActionTaken() {
         return actionTaken;
     }
 
-    public void setActionTaken(ActionTaken actionTaken) {
+    public void setActionTaken(String actionTaken) {
         this.actionTaken = actionTaken;
     }
 
     public Action(WorkOrder workOrder, String actionTakenString, String updatedStatus, int hours, ArrayList<Note> notes) {
         this.mWorkOrder = workOrder;
-        this.actionTakenString = actionTakenString;
-        this.actionTaken = getMatchingEnumForActionTaken(actionTakenString);
+        this.actionTaken = actionTakenString;
         if(updatedStatus != null) { //If not null, the status has been updated.
             this.updatedStatus = updatedStatus;
         }
@@ -126,25 +108,4 @@ public class Action implements Serializable {
     }
 
 
-    /* FUNCTION
-            Applies string to ENUM for ActionTaken
-     */
-    private Action.ActionTaken getMatchingEnumForActionTaken(String actionTaken){
-        switch (actionTaken){
-            case "No Action":
-                return Action.ActionTaken.NO_ACTION;
-            case "Material Request":
-                return Action.ActionTaken.MATERIAL_REQUEST;
-            case "Team Bonding":
-                return Action.ActionTaken.TEAM_BONDING;
-            case "Critical Action":
-                return Action.ActionTaken.CRITICAL_ACTION;
-            case "Preventive Maintenance":
-                return Action.ActionTaken.PREVENTIVE_MAINTENANCE;
-            case "Custom":
-                return Action.ActionTaken.CUSTOM;
-            default:
-                return null;
-        }
-    }
 }

@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.widget.ListView;
 
 import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
-import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Fragments.ActionQueueListFragment;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.R;
@@ -24,21 +22,17 @@ import edu.oregonstate.AiMLiteMobile.R;
  */
 public class ActionQueueListActivity extends SingleFragmentActivity implements ActionQueueListFragment.Callbacks {
     private static final String TAG = "ActionQueueActivity";
-    private static CurrentUser sCurrentUser;
+    private static CurrentUser currentUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActionBar mActionBar = getActionBar();
-//        mActionBar.setDisplayHomeAsUpEnabled(true);
-    //    mActionBar.setHomeButtonEnabled(true);
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
         setTitle(R.string.action_queue_activity_title);
-        sCurrentUser = CurrentUser.get(getApplicationContext());
-
-        if(savedInstanceState!=null){
-            //Restore saved state
-        }
+        currentUser = CurrentUser.get(getApplicationContext());
     }
 
     @Override
@@ -77,10 +71,7 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
                 syncActions();
                 break;
             case R.id.log_out:
-                sCurrentUser.prepareLogout();
-                Intent intent = new Intent(this,LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                currentUser.logoutUser(this);
                 break;
         }
 
@@ -91,16 +82,6 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }
-
-    public void onTaskSuccess(){
-        Log.d(TAG, "SUCCESS QUEUE LIST");
-    }
-
-    public void onAuthenticateFail() {}
-
-    public void onNetworkFail() {
-        Log.d(TAG, "NET FAIL QUEUE LIST");
     }
 
     private void createNoticesViewPopup(){
@@ -114,7 +95,7 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
                 alertDialog.dismiss();
             }
         });
-        NoticeAdapter noticesAdapter = new NoticeAdapter(this, sCurrentUser.getNotices());
+        NoticeAdapter noticesAdapter = new NoticeAdapter(this, currentUser.getNotices());
         alertDialog.setView(convertView);
         ListView lv = (ListView) convertView.findViewById(R.id.popupNotes_listView);
         lv.setSelector(android.R.color.transparent);

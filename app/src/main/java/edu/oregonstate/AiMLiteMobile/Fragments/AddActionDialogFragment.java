@@ -37,15 +37,10 @@ import edu.oregonstate.AiMLiteMobile.R;
 public class AddActionDialogFragment extends DialogFragment {
     private static final String TAG = "AddActionDialogFragment";
 
-    private static CurrentUser sCurrentUser;
+    private static CurrentUser currentUser;
     private WorkOrder workOrder;
     private String dialogTitle;
     private int hoursForText;
-
-    public AddActionDialogFragment(){
-        Bundle bundle = getArguments();
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,21 +48,16 @@ public class AddActionDialogFragment extends DialogFragment {
         hoursForText = 0;
         workOrder = (WorkOrder) getArguments().getSerializable("WorkOrder");
         dialogTitle = getArguments().getString("Title");
-
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
-
         View v = inflater.inflate(R.layout.dialog_action_add, container, false);
 
-        sCurrentUser = CurrentUser.get(getActivity().getApplicationContext());
+        currentUser = CurrentUser.get(getActivity().getApplicationContext());
 
         final Dialog actionDialog = getDialog();
         final ScrollView dialogScrollView = ((ScrollView)(v.findViewById(R.id.layout_action_add)));
-
         final Spinner statusSpinner =  (Spinner)v.findViewById(R.id.spinner_updateStatus);
         final Spinner actionSpinner = (Spinner)v.findViewById(R.id.spinner_actionTaken);
         final EditText noteEditText =  ((EditText)(v.findViewById(R.id.editText_note)));
@@ -75,7 +65,6 @@ public class AddActionDialogFragment extends DialogFragment {
 
         TextView title = (TextView)v.findViewById(R.id.dialogNewAction_title);
         title.setText(dialogTitle);
-
 
         actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         actionDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -120,13 +109,10 @@ public class AddActionDialogFragment extends DialogFragment {
         v.findViewById(R.id.dialogConfirm_buttonConfirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
                 //Confirm button starts ActionQueue activity, passing it the new action
                 if (getActivity().getLocalClassName().equals("Activities.DetailActivity")) {
                     if (actionSpinner.getSelectedItemPosition() != 0) { // Make sure an action is selected
-                        sCurrentUser.addAction(createAction(actionSpinner.getSelectedItem().toString(), statusSpinner.getSelectedItem().toString(), hoursEditText.getText().toString(), noteEditText.getText().toString()));
+                        currentUser.addAction(createAction(actionSpinner.getSelectedItem().toString(), statusSpinner.getSelectedItem().toString(), hoursEditText.getText().toString(), noteEditText.getText().toString()));
                         Intent intent = new Intent(getActivity(), ActionQueueListActivity.class);
                         getActivity().finish();
                         startActivity(intent);
@@ -136,7 +122,7 @@ public class AddActionDialogFragment extends DialogFragment {
                 }
                 //Confirm button saves the edits to action
                 else if (getActivity().getLocalClassName().equals("Activities.ActionQueueListActivity")) {
-                    sCurrentUser.addAction(createAction(actionSpinner.getSelectedItem().toString(), statusSpinner.getSelectedItem().toString(), hoursEditText.getText().toString(), noteEditText.getText().toString()));
+                    currentUser.addAction(createAction(actionSpinner.getSelectedItem().toString(), statusSpinner.getSelectedItem().toString(), hoursEditText.getText().toString(), noteEditText.getText().toString()));
                     ((ActionQueueListFragment)getTargetFragment()).onPostActionDialog();
                     actionDialog.dismiss();
                 }
@@ -145,7 +131,6 @@ public class AddActionDialogFragment extends DialogFragment {
                 }
             }
         });
-
 
         v.findViewById(R.id.button_addHours).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,8 +148,6 @@ public class AddActionDialogFragment extends DialogFragment {
             }
         });
 
-
-
         return v;
     }
 
@@ -176,7 +159,7 @@ public class AddActionDialogFragment extends DialogFragment {
             hoursInt = Integer.parseInt(hours);
         }
         if (!noteString.isEmpty()){
-            Note note = new Note(noteString, sCurrentUser.getUsername(), new Date(System.currentTimeMillis()));
+            Note note = new Note(noteString, currentUser.getUsername(), new Date(System.currentTimeMillis()));
             notes.add(note);
         }
 
@@ -185,7 +168,5 @@ public class AddActionDialogFragment extends DialogFragment {
 
         return newAction;
     }
-
-
 
 }

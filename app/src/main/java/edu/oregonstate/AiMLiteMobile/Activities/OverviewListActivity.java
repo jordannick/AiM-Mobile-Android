@@ -1,16 +1,17 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,55 +19,72 @@ import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
 import edu.oregonstate.AiMLiteMobile.Adapters.WorkOrderAdapter;
-import edu.oregonstate.AiMLiteMobile.Fragments.OverviewListFragment;
-import edu.oregonstate.AiMLiteMobile.Helpers.OverviewPagerItem;
-import edu.oregonstate.AiMLiteMobile.Helpers.SlidingTabLayout;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
+import edu.oregonstate.AiMLiteMobile.Models.Notice;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
+import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
+import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
+import edu.oregonstate.AiMLiteMobile.Network.ResponseNotices;
+import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
 import edu.oregonstate.AiMLiteMobile.R;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 public class OverviewListActivity extends Activity {
-
     private static final String TAG = "OverviewListActivity";
-
-    private static CurrentUser sCurrentUser;
-    private AlertDialog logoutDialog;
-
-    private ViewPager mViewPager;
-    private SlidingTabLayout mSlidingTabLayout;
-    private View dimOverlay;
-
-    private final List<OverviewPagerItem> mTabs = new ArrayList<>();
-
-    private OverviewListActivity self;
+    private static CurrentUser currentUser;
     private ListView listView;
     private WorkOrderAdapter adapter;
-
+    private Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
         setContentView(R.layout.overview_activity);
-        self = this;
-        sCurrentUser = CurrentUser.get(getApplicationContext());
+        currentUser = CurrentUser.get(getApplicationContext());
 
-        //Debug, not avail in AppCompat
-        //getActionBar().setTitle("AiM Lite Mobile");
+        initListView();
+        initSectionIcons();ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
 
-        //dimOverlay = findViewById(R.id.dim_overlay);
+        SnackbarManager.show(Snackbar.with(this).text("Logged in as " + currentUser.getUsername().toUpperCase()).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
+
+        //requestLastUpdated();
+        requestWorkOrders();
+        requestNotices();
+
+    }
+
+    @Override
+    protected void onResume() {
+        invalidateOptionsMenu();
+        super.onResume();
+    }
+
+    @Override
+    public void onBackPressed(){
+        currentUser.logoutUser(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_overview_list, menu);
+        return true;
+    }
+
+    private void initListView() {
         listView = (ListView)findViewById(R.id.overview_activity_listView);
-        adapter = new WorkOrderAdapter(this, sCurrentUser.getWorkOrders());
+        adapter = new WorkOrderAdapter(this, currentUser.getWorkOrders());
         listView.setAdapter(adapter);
         listView.setDividerHeight(0);
-
-
-
-/*        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 WorkOrderListItem item = adapter.getItem(position);
@@ -74,17 +92,10 @@ public class OverviewListActivity extends Activity {
                     onWorkOrderSelected(item.getWorkOrder());
                 }
             }
-        });*/
-
-        setupSectionIcons();
-
-        if (sCurrentUser.getNotices().size() > 0) {
-            SnackbarManager.show(Snackbar.with(this).text("You have " + sCurrentUser.getNotices().size() + " new notice").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
-        }
-
+        });
     }
 
-    private void setupSectionIcons(){
+    private void initSectionIcons(){
         TextView tv0 = (TextView)findViewById(R.id.overview_activity_section_icon0);
         TextView tv1 = (TextView)findViewById(R.id.overview_activity_section_icon1);
         TextView tv2 = (TextView)findViewById(R.id.overview_activity_section_icon2);
@@ -100,39 +111,13 @@ public class OverviewListActivity extends Activity {
     }
 
     private void setClickListener(TextView tv, final int position) {
-
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //listView.smoothScrollToPositionFromTop(adapter.sectionBacklogIndex, 0);
                 listView.setSelection(position);
-
-
             }
         });
-    }
-
-
-
-
-    @Override
-    protected void onResume() {
-        invalidateOptionsMenu();
-        super.onResume();
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //TODO 3/12/2015 - check stored last updated time against current time, if longer than some interval, refresh
-        // updateWorkOrderList();
-
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     // Start an instance of DetailActivity
@@ -143,37 +128,6 @@ public class OverviewListActivity extends Activity {
         startActivity(i);
         overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
     }
-
-    /* Creates a new AlertDialog if one hasn't been already. Then displays it.
-    Prompts the user to confirm Logout or Cancel. */
-    @Override
-    public void onBackPressed(){
-        if(logoutDialog == null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Are you done?");
-            builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // Logout by finishing the Activity
-                    finish();
-                }
-            });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                }
-            });
-            logoutDialog = builder.create();
-        }
-        logoutDialog.show();
-    }
-
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_overview_list, menu);
-        return true;
-    }
-
 
     private void createNoticesViewPopup(){
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -186,7 +140,7 @@ public class OverviewListActivity extends Activity {
                 alertDialog.dismiss();
             }
         });
-        NoticeAdapter noticesAdapter = new NoticeAdapter(this, sCurrentUser.getNotices());
+        NoticeAdapter noticesAdapter = new NoticeAdapter(this, currentUser.getNotices());
         alertDialog.setView(convertView);
         ListView lv = (ListView) convertView.findViewById(R.id.popupNotes_listView);
         lv.setSelector(android.R.color.transparent);
@@ -201,13 +155,6 @@ public class OverviewListActivity extends Activity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-       // menu.findItem(R.id.menu_notification).setIcon(R.drawable.osu_icon);
-
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.menu_notification:
@@ -217,10 +164,7 @@ public class OverviewListActivity extends Activity {
                 beginActionQueueActivity();
                 break;
             case R.id.log_out:
-                sCurrentUser.prepareLogout();
-                Intent intent = new Intent(this,LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                currentUser.logoutUser(this);
                 break;
             case R.id.force_refresh:
                 //updateWorkOrderList();
@@ -231,77 +175,64 @@ public class OverviewListActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-/*    public int getDailyCount(){
-        OverviewListFragment listFragment = (OverviewListFragment) mTabs.get(1).getFragment();
-        return ((WorkOrderAdapter)listFragment.getListAdapter()).sectionBacklogIndex - 1;
-    }*/
+    private void requestLastUpdated(){
 
-
-/*    public int getBacklogCount(){
-        OverviewListFragment listFragment = (OverviewListFragment) mTabs.get(1).getFragment();
-        return ((WorkOrderAdapter)listFragment.getListAdapter()).sectionAdminIndex - getDailyCount() - 1; // lol at this
-    }*/
-
-    public void scrollToSection(String section){
-        mViewPager.setCurrentItem(1, true); //switch tabs
-        OverviewListFragment listFragment = (OverviewListFragment) mTabs.get(1).getFragment();
-
-        switch (section){
-            case "Daily":
-                listFragment.getListView().smoothScrollToPositionFromTop(((WorkOrderAdapter)listFragment.getListAdapter()).sectionDailyIndex, 0, 400); //scroll to position
-                break;
-            case "Backlog":
-                listFragment.getListView().smoothScrollToPositionFromTop(((WorkOrderAdapter)listFragment.getListAdapter()).sectionBacklogIndex, 0, 400); //scroll to position
-                break;
-            case "Admin":
-                listFragment.getListView().smoothScrollToPositionFromTop(((WorkOrderAdapter)listFragment.getListAdapter()).sectionAdminIndex, 0, 400); //scroll to position
-                break;
-            case "Completed":
-                listFragment.getListView().smoothScrollToPositionFromTop(((WorkOrderAdapter)listFragment.getListAdapter()).sectionCompletedIndex, 0, 400); //scroll to position
-                break;
-        }
-        //((OverviewListFragment)mTabs.get(1).getFragment()).getListView().smoothScrollToPositionFromTop(position, 0, 700); //scroll to position
-
-    }
-
-/*
-    private void updateWorkOrderList(){
-        Log.i(TAG, "Requested update work order list");
-        ApiManager.getService().getWorkOrders(CurrentUser.getUsername(), CurrentUser.getToken(), new Callback<ResponseWorkOrders>() {
+        ApiManager.getService().getLastUpdated(currentUser.getUsername(), currentUser.getToken(), new Callback<String>() {
             @Override
-            public void success(ResponseWorkOrders responseWorkOrders, Response response) {
-                ArrayList<WorkOrder> workOrders = responseWorkOrders.getWorkOrders();
-                String logStr = "API MANAGER: getWorkOrders :: OK :: Size :" + workOrders.size();
-                for (int i = 0; i < workOrders.size(); i++) {
-                    WorkOrder workOrder = workOrders.get(i);
-                    logStr += "\nWO #" + workOrder.getProposalPhase() + " " + workOrder.getDescription();
-                }
-                Log.d(TAG, logStr);
-
-                //Save raw JSON for offline use
-                sCurrentUser.getPrefsEditor().putString("work_order_data", responseWorkOrders.getRawJson());
-
-                //Save new lastUpdated
-                Date retrievedDate = new Date(System.currentTimeMillis());
-                Log.i(TAG, "Saving new last_updated: " + retrievedDate.toString());
-                CurrentUser.setLastUpdatedDate(retrievedDate);
-                sCurrentUser.getPrefsEditor().putLong("last_updated", retrievedDate.getTime());
-                sCurrentUser.getPrefsEditor().apply();
-                SnackbarManager.show(Snackbar.with(self).text("Updated " + CurrentUser.getLastUpdatedDate().toString()).duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
-
-                //Save the workOrders
-                sCurrentUser.setWorkOrders(workOrders);
-                //stopRefreshAnimation();
-                adapter.notifyDataSetInvalidated();
+            public void success(String s, Response response) {
+                Log.d(TAG, "requestLastUpdated SUCCESS");
+                //TODO: check retrieved last updated against stored last updated
+                requestWorkOrders();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d(TAG, "API MANAGER: getWorkOrders :: ERROR :: " + error);
-                //stopRefreshAnimation();
-                SnackbarManager.show(Snackbar.with(self).text("Failed to retrieve work orders").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
+                Log.d(TAG, "requestLastUpdated FAIL");
+                SnackbarManager.show(Snackbar.with(activity).text("Failed to retrieve last updated").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
             }
         });
-    }*/
+    }
+
+    private void requestWorkOrders(){
+
+        ApiManager.getService().getWorkOrders(currentUser.getUsername(), currentUser.getToken(), new Callback<ResponseWorkOrders>() {
+            @Override
+            public void success(ResponseWorkOrders responseWorkOrders, Response response) {
+                Log.d(TAG, "requestWorkOrders SUCCESS");
+                ArrayList<WorkOrder> workOrders = responseWorkOrders.getWorkOrders();
+                currentUser.getPreferences().saveWorkOrders(responseWorkOrders.getRawJson());
+                currentUser.setWorkOrders(workOrders);
+                adapter.refreshWorkOrders(currentUser.getWorkOrders());
+                setDimVisibility(View.GONE);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(TAG, "requestWorkOrders FAIL");
+                SnackbarManager.show(Snackbar.with(activity).text("Failed to retrieve work orders").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
+                setDimVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void requestNotices(){
+
+        ApiManager.getService().getNotices(currentUser.getUsername(), currentUser.getToken(), new Callback<ResponseNotices>() {
+            @Override
+            public void success(ResponseNotices responseNotices, Response response) {
+                ArrayList<Notice> notices = responseNotices.getNotices();
+                currentUser.setNotices(notices);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    private void setDimVisibility(int visibility){
+        activity.findViewById(R.id.overviewActivity_dimOverlay).setVisibility(visibility);
+    }
 
 }

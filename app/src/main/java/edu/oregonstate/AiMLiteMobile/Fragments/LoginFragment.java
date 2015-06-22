@@ -26,15 +26,10 @@ import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.Notice;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
-import edu.oregonstate.AiMLiteMobile.R;
-
 import edu.oregonstate.AiMLiteMobile.Network.ResponseLogin;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseNotices;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
-
-import edu.oregonstate.AiMLiteMobile.Network.ResponseLogin;
-import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
-
+import edu.oregonstate.AiMLiteMobile.R;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -51,6 +46,7 @@ public class LoginFragment extends Fragment {
     private EditText mPasswordField;
     private Button mLoginButton;
     private CheckBox mAutoLoginCheckbox;
+    private TextView mSavedUserText;
     private ProgressBar mLoadCircle;
     private TextView userIcon;
     private TextView passwordIcon;
@@ -65,15 +61,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //Create an instance of the user class (singleton)
         sCurrentUser = CurrentUser.get(getActivity().getApplicationContext());
-
-        //Put the autologin preference if it doesn't exist
-        if (!sCurrentUser.getPrefs().contains("autologin")){
-            sCurrentUser.getPrefsEditor().putBoolean("autologin", false);
-            sCurrentUser.getPrefsEditor().apply();
-        }
     }
 
     @Override
@@ -84,6 +72,7 @@ public class LoginFragment extends Fragment {
         mUsernameField = (EditText)v.findViewById(R.id.login_username);
         mPasswordField = (EditText)v.findViewById(R.id.login_password);
         mAutoLoginCheckbox = (CheckBox)v.findViewById(R.id.auto_login);
+        mSavedUserText = (TextView)v.findViewById(R.id.loginView_savedUser);
         mLoginButton = (Button)v.findViewById(R.id.login_button);
         mLoadCircle = (ProgressBar)v.findViewById(R.id.load_circle);
         mLoadCircle.setVisibility(View.INVISIBLE);
@@ -94,118 +83,77 @@ public class LoginFragment extends Fragment {
         userIcon.setTypeface(tf); userIcon.setText(R.string.icon_user);
         passwordIcon.setTypeface(tf); passwordIcon.setText(R.string.icon_password);
 
-        loginHandler();
+        // Prevents autologin after user logout
+        boolean autologin = getActivity().getIntent().getBooleanExtra("autologin", true);
+
+        loginHandler(autologin);
 
         return v;
     }
 
-    private void loginHandler(){
+    private void loginHandler(boolean autologin){
         //Check if autologin should occur
-        if (sCurrentUser.getPrefs().getBoolean("autologin", false)){
-            //Retrieve saved info
-            mUsername = sCurrentUser.getPrefs().getString("username", "");
-            mPassword = sCurrentUser.getPrefs().getString("password", "");
-            if(mUsername != "" && mPassword != "") {
-                attemptLogin();
+        if (sCurrentUser.getPreferences().getAutoLogin()){
+            if (autologin) {
+                mUsername = sCurrentUser.getPreferences().getUsername();
+                mPassword = sCurrentUser.getPreferences().getPassword();
+                if (mUsername != "" && mPassword != "") {
+                    attemptLogin();
+                }
+            } else {
+                mSavedUserText.setText(sCurrentUser.getPreferences().getUsername()+"\ncurrently saved");
             }
         }
+
         //TODO: 3/10/15: Handle password authentication/matching to username
         //TODO: 3/19/15: Think about clearing stored JSON/prefs if it's tied to a different user.
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mUsername = mUsernameField.getText().toString();
+                mPassword = mPasswordField.getText().toString();
                 //Check for empty fields
-                if (mUsernameField.getText().toString().matches("")) {
-                    mUsernameField.setError("Username required");
-                }
-                if (mPasswordField.getText().toString().matches("")) {
-                    mPasswordField.setError("Password required");
-                }
-                //If both fields are not empty
-                if (!mUsernameField.getText().toString().matches("") && !mPasswordField.getText().toString().matches("")) {
-                    mUsername = mUsernameField.getText().toString();
-                    mPassword = mPasswordField.getText().toString();
+                if (!mUsername.matches("") && !mPassword.matches("")) {
+                    //If both fields are not empty
                     attemptLogin();
+                }else{
+                    if (mUsername.matches("")) {
+                        mUsernameField.setError("Username required");
+                    }
+                    if (mPassword.matches("")) {
+                        mPasswordField.setError("Password required");
+                    }
                 }
             }
         });
     }
 
     private void attemptLogin(){
-        sCurrentUser.setUsername(mUsername);
-        sCurrentUser.setPassword(mPassword);
         setEnableFormFields(false);
-        SnackbarManager.show(Snackbar.with(getActivity()).text("Logging in as: " + mUsername).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
 
         ApiManager.getService().loginUser(mUsername, mPassword, new Callback<ResponseLogin>() {
             @Override
             public void success(ResponseLogin responseLogin, Response response) {
-                Log.d(TAG, "API MANAGER: loginUser :: OK :: Token :" + responseLogin.getToken());
-                CurrentUser.setToken(responseLogin.getToken());
-                onLoginSuccess();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.d(TAG, "API MANAGER: loginUser :: ERROR :: " + error);
-            }
-        });
-    }
-    public void onLoginSuccess(){
-        Log.d(TAG, "Login Success");
-        //Save user info for future autologins
-        if (mAutoLoginCheckbox.isChecked()) {
-            sCurrentUser.getPrefsEditor().putString("username", mUsername);
-            sCurrentUser.getPrefsEditor().putString("password", mPassword);
-            sCurrentUser.getPrefsEditor().putBoolean("autologin", true);
-            sCurrentUser.getPrefsEditor().apply();
-        }
-
-        ApiManager.getService().getNotices(CurrentUser.getUsername(), CurrentUser.getToken(), new Callback<ResponseNotices>() {
-            @Override
-            public void success(ResponseNotices responseNotices, Response response) {
-
-                ArrayList<Notice> notices = responseNotices.getNotices();
-                Log.d(TAG, "Successful getNotices: " + notices);
-                sCurrentUser.setNotices(notices);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
-
-        ApiManager.getService().getWorkOrders(CurrentUser.getUsername(), CurrentUser.getToken(), new Callback<ResponseWorkOrders>() {
-            @Override
-            public void success(ResponseWorkOrders responseWorkOrders, Response response) {
-                ArrayList<WorkOrder> workOrders = responseWorkOrders.getWorkOrders();
-                String logStr = "API MANAGER: getWorkOrders :: OK :: Size :" + workOrders.size();
-                for (int i = 0; i < workOrders.size(); i++) {
-                    WorkOrder workOrder = workOrders.get(i);
-                    logStr += "\nWO #" + workOrder.getProposalPhase() + " " + workOrder.getDescription();
-                }
-                Log.d(TAG, logStr);
-
-                //Save raw JSON for offline use
-                sCurrentUser.getPrefsEditor().putString("work_order_data", responseWorkOrders.getRawJson());
-
-                //Save new lastUpdated
-                Date retrievedDate = new Date(System.currentTimeMillis());
-                Log.i(TAG, "Saving new last_updated: " + retrievedDate.toString());
-                sCurrentUser.getPrefsEditor().putLong("last_updated", retrievedDate.getTime());
-                sCurrentUser.getPrefsEditor().apply();
-
-                //Save the workOrders
-                sCurrentUser.setWorkOrders(workOrders);
-
+                sCurrentUser.setUsername(mUsername);
+               // sCurrentUser.setPassword(mPassword);
+                sCurrentUser.setToken(responseLogin.getToken());
                 setEnableFormFields(true);
+
+                //Save user info for future autologins
+                if (mAutoLoginCheckbox.isChecked()) {
+                    sCurrentUser.getPreferences().saveAutoLogin(mUsername, mPassword);
+                }
+
+                //TODO: finish the activity
+                getActivity().finish();
                 startActivity(new Intent(getActivity(), OverviewListActivity.class));
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d(TAG, "API MANAGER: getWorkOrders :: ERROR :: " + error);
+                //TODO: Display descriptive error message, such as wrong password.
+                SnackbarManager.show(Snackbar.with(getActivity()).text("Login Failed").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
+                setEnableFormFields(true);
             }
         });
     }
@@ -222,18 +170,6 @@ public class LoginFragment extends Fragment {
         mLoadCircle.setVisibility(enable ? View.INVISIBLE : View.VISIBLE);
     }
 
-
-    /* Shows new Snackbar with errorMessage
-      @param errorMessage (required) string to display in snackbar alert.
-    */
-    private void showErrorSnackbar(String errorMessage){
-        Snackbar.SnackbarDuration duration = Snackbar.SnackbarDuration.LENGTH_INDEFINITE;
-        SnackbarManager.show(
-                Snackbar.with(getActivity())
-                        .text(errorMessage).duration(duration)
-                        .actionLabel("DISMISS")
-                        .actionColor(Color.RED));
-    }
 }
 
 

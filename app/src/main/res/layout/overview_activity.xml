@@ -46,10 +46,34 @@
             android:textSize="22dp"/>
     </LinearLayout>
 
-
-    <ListView
-        android:id="@+id/overview_activity_listView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"/>
+        android:layout_height="fill_parent">
+        <ListView
+            android:id="@+id/overview_activity_listView"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"/>
+
+        <LinearLayout
+            android:id="@+id/overviewActivity_dimOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/dimOverlay"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/load_circle"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Retrieving Work Orders"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

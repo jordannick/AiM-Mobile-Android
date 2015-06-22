@@ -1,10 +1,8 @@
 package edu.oregonstate.AiMLiteMobile.Fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,10 +21,9 @@ import com.nispok.snackbar.SnackbarManager;
 
 import java.util.ArrayList;
 
-import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Adapters.ActionAdapter;
+import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
-import edu.oregonstate.AiMLiteMobile.Models.Note;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.R;
 
@@ -36,19 +33,15 @@ import edu.oregonstate.AiMLiteMobile.R;
 public class ActionQueueListFragment extends ListFragment{
     public static final String TAG = "ActionQueueListFragment";
 
-    private Activity mActivity;
-    private Context mContext;
-    private static CurrentUser sCurrentUser;
+    private Activity activity;
+    private Context context;
+    private static CurrentUser currentUser;
     private ArrayList<Action> actions;
-    private ActionAdapter mActionQueueAdapter;
-    private Callbacks mCallbacks;
+    private ActionAdapter actionQueueAdapter;
+    private Callbacks callbacks;
     private static int actionCount = 0;
-
-
     public static final int TIMELOG_FRAGMENT = 1;
-
     private RelativeLayout recentlyViewedBarLayout;
-
     private View v;
 
     public interface Callbacks{
@@ -58,47 +51,47 @@ public class ActionQueueListFragment extends ListFragment{
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mCallbacks = (Callbacks)activity;
+        callbacks = (Callbacks)activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callbacks = null;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = getActivity();
+        context = activity.getApplicationContext();
+        currentUser = CurrentUser.get(context);
+        actions = currentUser.getActions();
+        actionQueueAdapter = new ActionAdapter(context, actions);
 
-        mActivity = getActivity();
-        mContext = mActivity.getApplicationContext();
-        sCurrentUser = CurrentUser.get(mContext);
-
-        actions = sCurrentUser.getActions();
-
-        mActionQueueAdapter = new ActionAdapter(mContext, actions);
-
-        setListAdapter(mActionQueueAdapter);
+        setListAdapter(actionQueueAdapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(mActionQueueAdapter != null) mActionQueueAdapter.notifyDataSetChanged();
+        if(actionQueueAdapter != null) actionQueueAdapter.notifyDataSetChanged();
         updateTotalHoursText();
         updateSyncCountsText();
 
-
-        Log.d(TAG, "adapter count: " + mActionQueueAdapter.getCount() + " ; actionCount: " + actionCount);
-        if (mActionQueueAdapter.getCount() > actionCount) {
-            //TODO: reimplement Snackbar
+        Log.d(TAG, "adapter count: " + actionQueueAdapter.getCount() + " ; actionCount: " + actionCount);
+        if (actionQueueAdapter.getCount() > actionCount) {
             SnackbarManager.show(Snackbar.with(getActivity()).text("Action Added").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
         }
-        actionCount = mActionQueueAdapter.getCount();
+        actionCount = actionQueueAdapter.getCount();
     }
 
     //Refresh the hours every time fragment comes into focus
     private void updateTotalHoursText(){
+        TextView totalHoursTextView = (TextView) activity.findViewById(R.id.total_hours);
 
-        TextView totalHoursTextView = (TextView)mActivity.findViewById(R.id.total_hours);
         int totalHours = 0;
-
-        for (Action action : sCurrentUser.getActions()){
+        for (Action action : currentUser.getActions()){
             if (action.getHours() > 0){
                 totalHours += action.getHours();
             }
@@ -107,8 +100,8 @@ public class ActionQueueListFragment extends ListFragment{
     }
 
     private void updateSyncCountsText(){
-        TextView unsyncedCountTextView = (TextView)mActivity.findViewById(R.id.unsynced_count);
-        unsyncedCountTextView.setText(String.valueOf(sCurrentUser.getActions().size()));
+        TextView unsyncedCountTextView = (TextView) activity.findViewById(R.id.unsynced_count);
+        unsyncedCountTextView.setText(String.valueOf(currentUser.getActions().size()));
     }
 
     @Override
@@ -118,8 +111,6 @@ public class ActionQueueListFragment extends ListFragment{
 
         recentlyViewedBarLayout = (RelativeLayout)v.findViewById(R.id.actionList_recentlyViewedBarLayout);
 
-
-        CurrentUser currentUser = CurrentUser.get(getActivity());
         final ArrayList<WorkOrder> recentWorkOrders  = currentUser.getRecentlyViewedWorkOrders();
 
         //TextView recentBarL = (TextView)v.findViewById(R.id.actionList_recentBarIconL);
@@ -149,7 +140,6 @@ public class ActionQueueListFragment extends ListFragment{
             recentlyViewedLayout.addView(createRecentRowView(workOrder));
         }
 
-
         RelativeLayout relativeLayout = (RelativeLayout)v.findViewById(R.id.actionList_relativeLayout);
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,7 +148,6 @@ public class ActionQueueListFragment extends ListFragment{
                 toggleRecentlyViewed(true);
             }
         });
-
 
         recentlyViewedBarLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,9 +164,6 @@ public class ActionQueueListFragment extends ListFragment{
         });
 
         return v;
-
-
-
     }
 
     private View createRecentRowView(final WorkOrder workOrder){
@@ -211,12 +197,6 @@ public class ActionQueueListFragment extends ListFragment{
 
     }
 
-
-    private int getPx(int dimensionDp) {
-        float density = getResources().getDisplayMetrics().density;
-        return (int) (dimensionDp * density + 0.5f);
-    }
-
     private void toggleRecentlyViewed(boolean onlyHide){
         Animation slideUp = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in);
         Animation slideDown = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_bottom);
@@ -233,41 +213,18 @@ public class ActionQueueListFragment extends ListFragment{
 
     }
 
-
-/*
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        View footerView = inflater.inflate(R.layout.action_list, getListView(), false);
-
-        //Log.d(TAG, "footerView = "+footerView);
-        //getListView().addFooterView(footerView);
-
-
-    }
-*/
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallbacks = null;
-    }
-
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         //Pass position for retrieving action from it later
-        //mCallbacks.onActionSelected(position);
-        mCallbacks.onActionSelected(position);
+        //callbacks.onActionSelected(position);
+        callbacks.onActionSelected(position);
         toggleRecentlyViewed(false);
         Log.d(TAG, "clicked action position: "+position);
     }
 
     public void onPostActionDialog() {
-        Log.d(TAG, "TADAH CALL BACK");
         toggleRecentlyViewed(true);
-        mActionQueueAdapter.notifyDataSetInvalidated();
+        actionQueueAdapter.notifyDataSetInvalidated();
 
     }
 }

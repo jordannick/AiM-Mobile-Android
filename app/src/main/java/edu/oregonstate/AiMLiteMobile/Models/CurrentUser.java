@@ -1,13 +1,17 @@
 package edu.oregonstate.AiMLiteMobile.Models;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
+
+import edu.oregonstate.AiMLiteMobile.Activities.LoginActivity;
 
 /**
  * Created by jordan_n on 8/13/2014.
@@ -15,112 +19,74 @@ import java.util.Date;
  */
 public class CurrentUser {
     private static final String TAG = "CurrentUser";
+    private static CurrentUser currentUser;
+    private static Context appContext;
+    private Preferences preferences;
 
-    private static String mUsername;
-    private String mPassword;
-    private static Date lastUpdatedDate;
-    private SharedPreferences prefs;
-    private SharedPreferences.Editor prefsEditor;
-    private ArrayList<WorkOrder> mWorkOrders;
-    private ArrayList<Action> mActions;
-    private ArrayList<Notice> mNotices;
+    private String username;
+    private String password;
+    private String token;
+    private Long lastUpdated;
+    private ArrayList<WorkOrder> workOrders;
+    private ArrayList<Action> actions;
+    private ArrayList<Notice> notices;
+    private ArrayList<WorkOrder> recentlyViewedWorkOrders = new ArrayList<>();//Recently viewed workOrders to display in timeLog
 
-    private static CurrentUser sCurrentUser;
-    private static Context sAppContext;
-
-    public static String URLGetAll;
-    public static String URLGetLastUpdated;
-    public static String URLGetNotices;
-    public static String URLLogin;
-
-    //Recently viewed workOrders to display in timeLog
-    private ArrayList<WorkOrder> recentlyViewedWorkOrders = new ArrayList<>();
-    public final int recentlyViewedMax = 5;
-
-    private static String urlBase = "http://api-test.facilities.oregonstate.edu";
-    private static String urlAPIVersion = "1.0";
-    private static String urlObject = "WorkOrder";
-
-    private String lastUpdated = "Never";
-
-    private static String mToken;
-
-    public void prepareLogout(){
-        sCurrentUser.getPrefsEditor().putBoolean("autologin", false);
-        sCurrentUser.getPrefsEditor().apply();
-    }
-
-    public ArrayList<Action> getUnsyncedActions(){
-        ArrayList<Action> unsyncedActions = new ArrayList<>();
-        for (int i = 0; i < mActions.size(); i++) {
-            if(!mActions.get(i).isSynced()){
-                unsyncedActions.add(mActions.get(i));
-            }
-        }
-        Log.d(TAG, "UnsyncedActions built with " + unsyncedActions.size() + " action(s).");
-        return unsyncedActions;
-    }
-
-
-    public SharedPreferences.Editor getPrefsEditor() {
-        if (prefsEditor == null) {
-            prefsEditor = getPrefs().edit();
-        }
-        return prefsEditor;
-    }
-
-    /* SharedPreferences object contents:
-            autologin: bool
-            username: string
-            password: string
-            work_order_data: string
-            notice_data: string
-    */
-    public SharedPreferences getPrefs() {
-        if (prefs == null) {
-            prefs = sAppContext.getSharedPreferences("edu.oregonstate.AiMLiteMobile", Context.MODE_PRIVATE);
-        }
-        return prefs;
-    }
-
-    public void setPrefs(SharedPreferences prefs) {
-        this.prefs = prefs;
-    }
+    public final int RECENTLY_VIEWED_MAX = 5;
 
     private CurrentUser(Context appContext){
-        sAppContext = appContext;
-        mWorkOrders = new ArrayList<WorkOrder>();
-        mNotices = new ArrayList<Notice>();
-        mActions = new ArrayList<Action>();
+        CurrentUser.appContext = appContext;
+        workOrders = new ArrayList<>();
+        notices = new ArrayList<>();
+        actions = new ArrayList<>();
+        preferences = new Preferences(appContext);
     }
 
     public static CurrentUser get(Context c){
-        if (sCurrentUser == null) {
-            sCurrentUser = new CurrentUser(c);
+        if (currentUser == null) {
+            currentUser = new CurrentUser(c);
         }
-        return sCurrentUser;
+        return currentUser;
     }
 
-    public String getURLGetAll() {
-        return URLGetAll;
+    /* We want the new activity to be the only one, so clear all other activities.
+     * Autologin to false prevents instantaneous re-login.
+     */
+    public Intent createLogoutIntent(Context c){
+        Intent intent = new Intent(c,LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("autologin", false);
+        return intent;
     }
 
-    public String getURLGetLastUpdated() {
-        return URLGetLastUpdated;
+    /* Creates a new AlertDialog, displays it.
+            Prompts the user to confirm Logout or Cancel. */
+    public void logoutUser(final Activity activity){
+        AlertDialog logoutDialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Are you done?");
+        builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                activity.startActivity(createLogoutIntent(activity));
+                activity.finish();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+            }
+        });
+        logoutDialog = builder.create();
+        logoutDialog.show();
     }
 
-    public String getURLGetNotices() {
-        return URLGetNotices;
-    }
-
-    public void addNewWorkOrder(WorkOrder wo){
-        mWorkOrders.add(wo);
+    public ArrayList<WorkOrder> getWorkOrders(){
+        return workOrders;
     }
 
     public void setWorkOrders(ArrayList<WorkOrder> newWorkOrders) {
-        //Want to keep same list reference, so just clearing it here and add repopulating
-        mWorkOrders.clear();
-        //logWorkOrderStatus("PRE", newWorkOrders);
+        //Want to keep same list reference, so clear and repopulate
+        workOrders.clear();
         Collections.sort(newWorkOrders, new Comparator<WorkOrder>() {
             @Override
             public int compare(WorkOrder lhs, WorkOrder rhs) {
@@ -133,176 +99,153 @@ public class CurrentUser {
                 }
             }
         });
-        //logWorkOrderStatus("POST", newWorkOrders);
-        mWorkOrders.addAll(newWorkOrders);
+        workOrders.addAll(newWorkOrders);
     }
 
-    private void logWorkOrderStatus(String str, ArrayList<WorkOrder> workOrders){
-        Log.d(TAG, "BEGIN " + str);
-        for (int i = 0; i < workOrders.size(); i++) {
-            Log.d(TAG, i + " : sec: " + workOrders.get(i).getSectionNum() + " , " + workOrders.get(i).getBeginDate());
-
-        }
-        Log.d(TAG, "END " + str);
+    public String getUsername() {
+        return username;
     }
 
-    public ArrayList<WorkOrder> getWorkOrders(){
-        return mWorkOrders;
-    }
-
-    public static String getUsername() {
-        return mUsername;
-    }
-
-    public static void setUsername(String username) {
-        mUsername = username;
-        buildUrlsWithUsername();
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
-        return mPassword;
+        return password;
     }
 
     public void setPassword(String mPassword) {
-        this.mPassword = mPassword;
-    }
-
-    public static void buildUrlsWithUsername(){
-        URLGetAll = urlBase + '/' + urlAPIVersion + '/' + urlObject + "/getAll/" + mUsername;
-        URLGetNotices = urlBase + '/' + urlAPIVersion + '/' + urlObject + "/getNotices/" + mUsername;
-        URLGetLastUpdated =  urlBase + '/' + urlAPIVersion + '/' + urlObject + "/getLastUpdated/" + mUsername;
-        URLLogin = urlBase + '/' + urlAPIVersion + "/User/login" + '/' + mUsername;
-
-        Log.d(TAG, "URLS:::\n" + URLGetAll +"\n"+URLGetNotices+"\n"+URLGetLastUpdated+"\n"+URLLogin);
-    }
-
-    public void buildLoginUrl(String username){
-        URLLogin = urlBase + '/' + urlAPIVersion + "/User/login" + '/' + username;
-    }
-
-    public String getURLLogin(){
-        Log.d(TAG, "returning loginURL: " + URLLogin);
-        return URLLogin;
-    }
-
-    public String getBaseURL(){
-        return urlBase+'/'+urlAPIVersion + '/' + urlObject;
+        this.password = mPassword;
     }
 
     public ArrayList<Action> getActions() {
-        return mActions;
+        return actions;
     }
 
     public Action getAction(int position) {
-        return mActions.get(position);
+        return actions.get(position);
     }
 
     public void addAction(Action action) {
-        mActions.add(0, action);
+        actions.add(0, action);
     }
 
-    public String getLastUpdated() {
+    public Long getLastUpdated() {
         return lastUpdated;
     }
 
-    public void setLastUpdated(String lastUpdated) {
+    public void setLastUpdated(Long lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 
-    public static String getToken() {
-        return mToken;
+    public String getToken() {
+        return token;
     }
 
-    public static void setToken(String newToken) {
-        mToken = newToken;
+    public void setToken(String newToken) {
+        token = newToken;
     }
 
+    public ArrayList<WorkOrder> getRecentlyViewedWorkOrders(){
+        return recentlyViewedWorkOrders;
+    }
 
     public void addRecentlyViewedWorkOrder(WorkOrder workOrder){
-        //Add workOrder to top of arrayList, removing oldest if newSize > 5
-
-/*
-        if(recentlyViewedWorkOrders.size() > 0){
-            if (recentlyViewedWorkOrders.get(0).getProposalPhase().equals(workOrder.getProposalPhase())) {
-                Log.d(TAG, "Strings equal" +recentlyViewedWorkOrders.get(0).getProposalPhase() + " == " + workOrder.getProposalPhase());
-            }else{
-                Log.d(TAG, "Strings NOT equal" + recentlyViewedWorkOrders.get(0).getProposalPhase() + " != " + workOrder.getProposalPhase());
+        //Add workOrder to top of arrayList, removing oldest if newSize > RECENTLY_VIEWED_MAX
+        int index = -1;
+        for (int i = 0; i < recentlyViewedWorkOrders.size(); i++) {
+            if (recentlyViewedWorkOrders.get(i).getProposalPhase().equals(workOrder.getProposalPhase())) {
+                index = i;
             }
-        }*/
-/*
-        String test1 = "Hello";
-        String test2 = "Hello";*/
+        }
 
-//        if(test1.equals(test2)){
-//            Log.d(TAG, "Strings equal");
-//        }else{
-//            Log.d(TAG, "Strings NOT equal");
-//        }
-//
-//        if(test1.equals("Hello")){
-//            Log.d(TAG, "Strings equal");
-//        }else{
-//            Log.d(TAG, "Strings equal");
-//        }
-
-
-
-        int index = findIndexWorkOrder(recentlyViewedWorkOrders, workOrder);
         if (index == -1) {
             int curSize = recentlyViewedWorkOrders.size();
             int newSize = curSize + 1;
-            if(newSize > recentlyViewedMax){
+            if(newSize > RECENTLY_VIEWED_MAX){
                 //Remove oldest workOrder in arrayList
                 recentlyViewedWorkOrders.remove(curSize-1);
             }
             //Add new workOrder to beginning of arrayList
             recentlyViewedWorkOrders.add(0, workOrder);
-
-            //Debug messages
-            Log.d(TAG, "workOrder: " + workOrder.getProposalPhase() + " added. New size: " + recentlyViewedWorkOrders.size());
-            for (int i = 0; i < recentlyViewedWorkOrders.size(); i++) {
-                Log.d(TAG, "-- " + i + " : " + recentlyViewedWorkOrders.get(i));
-            }
-        }else{
+        } else {
             //WorkOrder already exists, move to front.
-            Log.d(TAG, "PRE size : " + recentlyViewedWorkOrders.size());
             recentlyViewedWorkOrders.remove(index);
-            Log.d(TAG, "POST size : " + recentlyViewedWorkOrders.size());
             recentlyViewedWorkOrders.add(0, workOrder);
         }
     }
 
-    private int findIndexWorkOrder(ArrayList<WorkOrder> arrayList, WorkOrder workOrder){
-        for (int i = 0; i < arrayList.size(); i++) {
-            Log.d(TAG, "comparing " + arrayList.get(i).getProposalPhase() + " with " + workOrder.getProposalPhase());
-            if (arrayList.get(i).getProposalPhase().equals(workOrder.getProposalPhase())) {
-                Log.d(TAG, "compare true");
-                return i;
-            }
-        }
-        Log.d(TAG, "compare false");
-        return -1;
-    }
-
-    public ArrayList<WorkOrder> getRecentlyViewedWorkOrders(){
-        return  recentlyViewedWorkOrders;
-    }
-
-
-    public static Date getLastUpdatedDate() {
-        return lastUpdatedDate;
-    }
-
-    public static void setLastUpdatedDate(Date lastUpdatedDate) {
-        CurrentUser.lastUpdatedDate = lastUpdatedDate;
-    }
-
-
     public ArrayList<Notice> getNotices() {
-        return mNotices;
+        return notices;
     }
 
     public void setNotices(ArrayList<Notice> mNotices) {
-        this.mNotices = mNotices;
+        this.notices = mNotices;
     }
+
+    public Preferences getPreferences() {
+        return preferences;
+    }
+
+    public class Preferences {
+        /* SharedPreferences object contents:
+                    autologin: bool
+                    username: string
+                    password: string
+                    work_order_data: string
+                    notice_data: string
+                    last_updated: long
+            */
+        private SharedPreferences prefs;
+        private SharedPreferences.Editor prefsEditor;
+
+        public Preferences(Context c) {
+            prefs = c.getSharedPreferences("edu.oregonstate.AiMLiteMobile", Context.MODE_PRIVATE);
+            prefsEditor = prefs.edit();
+        }
+
+        public boolean getAutoLogin(){
+            return prefs.getBoolean("autologin", false);
+        }
+
+        public void saveAutoLogin(String username, String password) {
+            prefsEditor.putString("username", username);
+            prefsEditor.putString("password", password);
+            prefsEditor.putBoolean("autologin", true);
+            prefsEditor.apply();
+        }
+
+        public String getUsername(){
+            return prefs.getString("username", "");
+        }
+
+        public String getPassword(){
+            return prefs.getString("password", "");
+        }
+
+        public void saveUserCredentials(String username, String password){
+            prefsEditor.putString("username", username);
+            prefsEditor.putString("password", password);
+            prefsEditor.apply();
+        }
+
+        public void saveWorkOrders(String rawJson){
+            prefsEditor.putString("work_order_data", rawJson);
+            prefsEditor.apply();
+        }
+
+        public String getLastUpdated(){
+            return prefs.getString("last_updated", "");
+        }
+
+        public void saveLastUpdated(Long lastUpdated){
+            prefsEditor.putLong("last_updated", lastUpdated);
+            prefsEditor.apply();
+        }
+
+        public boolean isNewerLastUpdated(Long lastUpdated){
+            return true;
+        }
+    }
+
 }
