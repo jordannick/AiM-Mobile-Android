@@ -57,19 +57,21 @@ public class LoginActivity extends AppCompatActivity {
 
         sCurrentUser = CurrentUser.get(getApplicationContext());
 
-        mUsernameField = (EditText)findViewById(R.id.login_username);
-        mPasswordField = (EditText)findViewById(R.id.login_password);
-        mAutoLoginCheckbox = (CheckBox)findViewById(R.id.auto_login);
-        mSavedUserText = (TextView)findViewById(R.id.loginView_savedUser);
-        mLoginButton = (Button)findViewById(R.id.login_button);
-        mLoadCircle = (ProgressBar)findViewById(R.id.load_circle);
+        mUsernameField = (EditText) findViewById(R.id.login_username);
+        mPasswordField = (EditText) findViewById(R.id.login_password);
+        mAutoLoginCheckbox = (CheckBox) findViewById(R.id.auto_login);
+        mSavedUserText = (TextView) findViewById(R.id.loginView_savedUser);
+        mLoginButton = (Button) findViewById(R.id.login_button);
+        mLoadCircle = (ProgressBar) findViewById(R.id.load_circle);
         mLoadCircle.setVisibility(View.INVISIBLE);
 
-        userIcon = (TextView)findViewById(R.id.login_username_icon);
-        passwordIcon = (TextView)findViewById(R.id.login_password_icon);
+        userIcon = (TextView) findViewById(R.id.login_username_icon);
+        passwordIcon = (TextView) findViewById(R.id.login_password_icon);
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/FontAwesome.otf");
-        userIcon.setTypeface(tf); userIcon.setText(R.string.icon_user);
-        passwordIcon.setTypeface(tf); passwordIcon.setText(R.string.icon_password);
+        userIcon.setTypeface(tf);
+        userIcon.setText(R.string.icon_user);
+        passwordIcon.setTypeface(tf);
+        passwordIcon.setText(R.string.icon_password);
 
         // Prevents autologin after user logout
         boolean autologin = getIntent().getBooleanExtra("autologin", true);
@@ -78,9 +80,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void loginHandler(boolean autologin){
+    private void loginHandler(boolean autologin) {
         //Check if autologin should occur
-        if (sCurrentUser.getPreferences().getAutoLogin()){
+        if (sCurrentUser.getPreferences().getAutoLogin()) {
             if (autologin) {
                 mUsername = sCurrentUser.getPreferences().getUsername();
                 mPassword = sCurrentUser.getPreferences().getPassword();
@@ -88,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                     attemptLogin();
                 }
             } else {
-                mSavedUserText.setText(sCurrentUser.getPreferences().getUsername()+"\ncurrently saved");
+                mSavedUserText.setText(sCurrentUser.getPreferences().getUsername() + "\ncurrently saved");
             }
         }
 
@@ -103,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (!mUsername.matches("") && !mPassword.matches("")) {
                     //If both fields are not empty
                     attemptLogin();
-                }else{
+                } else {
                     if (mUsername.matches("")) {
                         mUsernameField.setError("Username required");
                     }
@@ -115,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void attemptLogin(){
+    private void attemptLogin() {
         final AppCompatActivity activity = this;
         setEnableFormFields(false);
         ApiManager.getService().loginUser(mUsername, mPassword, new Callback<ResponseLogin>() {
@@ -148,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
     /* Sets the enable property of known input elements.
        @param enable (required) boolean for new enable
     */
-    private void setEnableFormFields(boolean enable){
+    private void setEnableFormFields(boolean enable) {
         mUsernameField.setEnabled(enable);
         mPasswordField.setEnabled(enable);
         mAutoLoginCheckbox.setEnabled(enable);

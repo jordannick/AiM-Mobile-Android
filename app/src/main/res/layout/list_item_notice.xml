@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
-    android:paddingTop="4dp"
-    >
+    android:paddingTop="4dp">
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        card_view:cardCornerRadius="4dp"
+        android:layout_marginBottom="6dp"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
-        android:layout_marginBottom="6dp"
-        card_view:cardPreventCornerOverlap="true"
         card_view:cardBackgroundColor="@color/cardView_cardBackground"
-        >
+        card_view:cardCornerRadius="4dp"
+        card_view:cardPreventCornerOverlap="true">
 
-        <RelativeLayout android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="109dp"
-            android:layout_margin="6dp"
-            >
+            android:layout_margin="6dp">
 
             <LinearLayout
                 android:id="@+id/actionRow_topHalfLayout"
@@ -37,20 +33,20 @@
                     android:id="@+id/row_type"
                     android:layout_width="wrap_content"
                     android:layout_height="33dp"
-                    android:text="-"
                     android:gravity="center"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
+                    android:paddingBottom="0dp"
                     android:paddingLeft="6dp"
                     android:paddingRight="6dp"
-                    android:paddingBottom="0dp"/>
+                    android:text="-"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/imageView_priorityIconOverview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/priority_urgent"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/priority_urgent" />
                 <!--<ImageView
                     android:id="@+id/imageView_timeSensitive"
                     android:layout_width="wrap_content"
@@ -68,16 +64,17 @@
                     android:id="@+id/actionRow_dateLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:gravity="end"
-                    >
+                    android:gravity="end">
+
                     <TextView
                         android:id="@+id/actionRow_valueAgo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:text="-"
                         android:textColor="@color/cardView_cardText"
-                        android:textSize="18sp"
-                        android:gravity="center_vertical"/>
+                        android:textSize="18sp" />
+
                     <TextView
                         android:id="@+id/actionRow_stringAgo"
                         android:layout_width="wrap_content"
@@ -85,11 +82,10 @@
                         android:paddingLeft="4dp"
                         android:text="-"
                         android:textColor="@color/cardView_cardText"
-                        android:textSize="10sp"/>
+                        android:textSize="10sp" />
 
                 </LinearLayout>
             </LinearLayout>
-
 
 
             <TextView
@@ -98,15 +94,13 @@
                 android:layout_height="76dp"
 
                 android:layout_below="@id/actionRow_topHalfLayout"
-                android:text="-"
-                android:textSize="18sp"
                 android:gravity="center_vertical"
                 android:maxLines="3"
                 android:paddingLeft="6dp"
                 android:paddingRight="6dp"
-                android:textColor="@color/cardView_cardText"/>
-
-
+                android:text="-"
+                android:textColor="@color/cardView_cardText"
+                android:textSize="18sp" />
 
 
         </RelativeLayout>

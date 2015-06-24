@@ -4,7 +4,6 @@ package edu.oregonstate.AiMLiteMobile;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,12 +82,9 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
     }
 
 
-
-
     @Override
     public void onBindViewHolder(WorkOrderViewHolder holder, final int position) {
         final WorkOrderListItem wo = workOrderListItems.get(position);
-
 
         if(wo.getType() != WorkOrderListItem.Type.SECTION){
 
@@ -144,67 +140,55 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
         return workOrderListItems.size();
     }
 
-
     private void initListItems(){
         int i = 0;
         workOrderListItems = new ArrayList<>();
-        sectionDailyIndex = workOrderListItems.size();
-        workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Daily", R.string.icon_daily, null));
 
+        if (workOrders.size() > 0) {
 
-        i++;
-        while (i < workOrders.size() && workOrders.get(i).getSectionNum() == 0){
-            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, workOrders.get(i)));
+            sectionDailyIndex = workOrderListItems.size();
+            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Daily", R.string.icon_daily, null));
             i++;
-        }
-        sectionBacklogIndex = workOrderListItems.size();
-        workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Backlog", R.string.icon_backlog, null));
 
-
-        i++;
-        Log.d(TAG, "POST initListItems : backlog: " + sectionBacklogIndex + " vs size: " + workOrderListItems.size());
-
-        while (i < workOrders.size() && workOrders.get(i).getSectionNum() == 1){
-            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, workOrders.get(i)));
+            while (i < workOrders.size() && workOrders.get(i).getSectionNum() == 0) {
+                workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, workOrders.get(i)));
+                i++;
+            }
+            sectionBacklogIndex = workOrderListItems.size();
+            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Backlog", R.string.icon_backlog, null));
             i++;
-        }
-        sectionAdminIndex = workOrderListItems.size();
-        workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Admin", R.string.icon_admin, null));
 
-
-        i++;
-
-        while (i < workOrders.size() && workOrders.get(i).getSectionNum() == 2){
-            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, workOrders.get(i)));
+            while (i < workOrders.size() && workOrders.get(i).getSectionNum() == 1) {
+                workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, workOrders.get(i)));
+                i++;
+            }
+            sectionAdminIndex = workOrderListItems.size();
+            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Admin", R.string.icon_admin, null));
             i++;
-        }
-        sectionCompletedIndex = workOrderListItems.size();
-        workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Recently Completed", R.string.icon_recentlyCompleted, null));
 
-
-        i++;
-        while (i < workOrders.size() && workOrders.get(i).getSectionNum() == 3){
-            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, workOrders.get(i)));
+            while (i < workOrders.size() && workOrders.get(i).getSectionNum() == 2) {
+                workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, workOrders.get(i)));
+                i++;
+            }
+            sectionCompletedIndex = workOrderListItems.size();
+            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Recently Completed", R.string.icon_recentlyCompleted, null));
             i++;
+
+            while (i < workOrders.size() && workOrders.get(i).getSectionNum() == 3) {
+                workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, workOrders.get(i)));
+                i++;
+            }
         }
-
-        Log.d(TAG, "POST initListItems. " + sectionDailyIndex + " : " + sectionBacklogIndex + " : " + sectionAdminIndex + " : " + sectionCompletedIndex );
-        Log.d(TAG, "POST initListItems. " + workOrderListItems.get(sectionBacklogIndex).getSectionTitle());
-
-
     }
 
-
-    public static class WorkOrderViewHolder extends RecyclerView.ViewHolder{
+    public static class WorkOrderViewHolder extends RecyclerView.ViewHolder {
         protected TextView phaseId;
         protected TextView description;
         protected ImageView priorityIcon;
         protected TextView valueAgo;
         protected TextView stringAgo;
-
         protected TextView sectionIcon;
         protected TextView sectionTitle;
-
 
         public WorkOrderViewHolder(View v) {
             super(v);

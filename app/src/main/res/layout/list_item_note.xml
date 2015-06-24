@@ -1,80 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
-    android:paddingTop="4dp"
-    >
-<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:paddingTop="4dp">
 
-    android:layout_marginLeft="6dp"
-    android:layout_marginRight="6dp"
-    android:layout_marginBottom="6dp"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
-    card_view:cardCornerRadius="4dp"
-    card_view:cardPreventCornerOverlap="true">
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+
+        card_view:cardCornerRadius="4dp"
+        card_view:cardPreventCornerOverlap="true">
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:background="@color/cardView_cardBackground">
+            android:background="@color/cardView_cardBackground"
+            android:orientation="vertical">
 
-           <!-- <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:background="@color/noteView_divider"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"/>-->
+            <!-- <View
+                 android:layout_width="fill_parent"
+                 android:layout_height="1dp"
+                 android:background="@color/noteView_divider"
+                 android:layout_marginLeft="12dp"
+                 android:layout_marginRight="12dp"/>-->
 
             <TextView
                 android:id="@+id/note_note_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="8dp"
                 android:text="This is an example description. I ate oatmeal this morning. With some coffee, and a wrap. It was quite good."
                 android:textColor="@android:color/secondary_text_light"
-                android:textSize="18sp"
-                android:padding="8dp"/>
+                android:textSize="18sp" />
 
 
+            <!--&#45;&#45; Added June 4, 2015 1:05am by TODD CROSS-->
 
-                <!--&#45;&#45; Added June 4, 2015 1:05am by TODD CROSS-->
 
+            <TextView
+                android:id="@+id/note_name_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/note_note_textView"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="TODD CROSS"
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/note_name_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TODD CROSS"
-                    android:textSize="16sp"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/note_note_textView"
-                    android:textColor="@android:color/secondary_text_light"
-                    android:paddingTop="6dp"
-                    android:paddingRight="8dp"/>
-
-                <TextView
-                    android:id="@+id/note_date_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/note_name_textView"
-                    android:text="Added June 4, 2015 1:05am"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/secondary_text_light"
-                    android:paddingTop="4dp"
-                    android:paddingRight="8dp"/>
+            <TextView
+                android:id="@+id/note_date_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/note_name_textView"
+                android:paddingRight="8dp"
+                android:paddingTop="4dp"
+                android:text="Added June 4, 2015 1:05am"
+                android:textColor="@android:color/secondary_text_light"
+                android:textSize="16sp" />
 
         </RelativeLayout>
-
-
-
 
 
     </android.support.v7.widget.CardView>

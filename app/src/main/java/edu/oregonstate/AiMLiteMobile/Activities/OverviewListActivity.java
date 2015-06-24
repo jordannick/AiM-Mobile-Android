@@ -1,6 +1,5 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -15,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,11 +23,9 @@ import com.nispok.snackbar.SnackbarManager;
 import java.util.ArrayList;
 
 import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
-import edu.oregonstate.AiMLiteMobile.Adapters.WorkOrderAdapter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.Notice;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
-import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
 import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseNotices;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
@@ -43,8 +39,6 @@ import retrofit.client.Response;
 public class OverviewListActivity extends AppCompatActivity implements RecyWorkOrderAdapter.Callbacks {
     private static final String TAG = "OverviewListActivity";
     private static CurrentUser currentUser;
-    private ListView listView;
-    private WorkOrderAdapter adapter;
     private Activity activity;
 
     private LinearLayoutManager linearLayoutManager;
@@ -61,16 +55,14 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recAdapter = new RecyWorkOrderAdapter(currentUser.getWorkOrders(), this);
         recyclerView.setAdapter(recAdapter);
 
-
-        //initListView();
-        initSectionIcons();
+        //initSectionIcons();
 
         SnackbarManager.show(Snackbar.with(this).text("Logged in as " + currentUser.getUsername().toUpperCase()).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
 
@@ -87,7 +79,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         currentUser.logoutUser(this);
     }
 
@@ -97,57 +89,46 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         return true;
     }
 
-    private void initListView() {
-        listView = (ListView)findViewById(R.id.overview_activity_listView);
-        adapter = new WorkOrderAdapter(this, currentUser.getWorkOrders());
-        listView.setAdapter(adapter);
-        listView.setDividerHeight(0);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                WorkOrderListItem item = adapter.getItem(position);
-                if (item.getType() == WorkOrderListItem.Type.ITEM) {
-                    onWorkOrderSelected(item.getWorkOrder());
-                }
-            }
-        });
-    }
 
-    private void initSectionIcons(){
-        TextView tv0 = (TextView)findViewById(R.id.overview_activity_section_icon0);
-        TextView tv1 = (TextView)findViewById(R.id.overview_activity_section_icon1);
-        TextView tv2 = (TextView)findViewById(R.id.overview_activity_section_icon2);
-        TextView tv3 = (TextView)findViewById(R.id.overview_activity_section_icon3);
+    private void initSectionIcons() {
+        TextView tv0 = (TextView) findViewById(R.id.overview_activity_section_icon0);
+        TextView tv1 = (TextView) findViewById(R.id.overview_activity_section_icon1);
+        TextView tv2 = (TextView) findViewById(R.id.overview_activity_section_icon2);
+        TextView tv3 = (TextView) findViewById(R.id.overview_activity_section_icon3);
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/FontAwesome.otf");
-        tv0.setTypeface(tf); tv1.setTypeface(tf); tv2.setTypeface(tf); tv3.setTypeface(tf);
-        tv0.setText(R.string.icon_daily); tv1.setText(R.string.icon_backlog); tv2.setText(R.string.icon_admin); tv3.setText(R.string.icon_recentlyCompleted);
+        tv0.setTypeface(tf);
+        tv1.setTypeface(tf);
+        tv2.setTypeface(tf);
+        tv3.setTypeface(tf);
+        tv0.setText(R.string.icon_daily);
+        tv1.setText(R.string.icon_backlog);
+        tv2.setText(R.string.icon_admin);
+        tv3.setText(R.string.icon_recentlyCompleted);
 
-       /* setClickListener(tv0, adapter.sectionDailyIndex);
-        setClickListener(tv1, adapter.sectionBacklogIndex+1);
-        setClickListener(tv2, adapter.sectionAdminIndex+2);
-        setClickListener(tv3, adapter.sectionCompletedIndex+3);*/
+        setClickListener(tv0, recAdapter.sectionDailyIndex);
+        setClickListener(tv1, recAdapter.sectionBacklogIndex);
+        setClickListener(tv2, recAdapter.sectionAdminIndex);
+        setClickListener(tv3, recAdapter.sectionCompletedIndex);
     }
 
     private void setClickListener(TextView tv, final int position) {
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //listView.smoothScrollToPositionFromTop(adapter.sectionBacklogIndex, 0);
-                listView.setSelection(position);
+                linearLayoutManager.scrollToPositionWithOffset(position, 0);
             }
         });
     }
 
     // Start an instance of DetailActivity
-    public void onWorkOrderSelected(WorkOrder workOrder){
-        //Intent i = new Intent(this, TestActivity.class);
+    public void onWorkOrderSelected(WorkOrder workOrder) {
         Intent i = new Intent(this, DetailActivity.class);
         i.putExtra(WorkOrder.WORK_ORDER_EXTRA, workOrder);
         startActivity(i);
         overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
     }
 
-    private void createNoticesViewPopup(){
+    private void createNoticesViewPopup() {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         LayoutInflater inflater = this.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.popup_notes_list, null);
@@ -166,7 +147,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         alertDialog.show();
     }
 
-    public void beginActionQueueActivity(){
+    public void beginActionQueueActivity() {
         Intent i = new Intent(this, ActionQueueListActivity.class);
         startActivity(i);
         overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
@@ -174,11 +155,11 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_notification:
                 createNoticesViewPopup();
                 break;
-            case  R.id.action_queue:
+            case R.id.action_queue:
                 beginActionQueueActivity();
                 break;
             case R.id.log_out:
@@ -193,7 +174,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         return super.onOptionsItemSelected(item);
     }
 
-    private void requestLastUpdated(){
+    private void requestLastUpdated() {
 
         ApiManager.getService().getLastUpdated(currentUser.getUsername(), currentUser.getToken(), new Callback<String>() {
             @Override
@@ -211,7 +192,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         });
     }
 
-    private void requestWorkOrders(){
+    private void requestWorkOrders() {
 
         ApiManager.getService().getWorkOrders(currentUser.getUsername(), currentUser.getToken(), new Callback<ResponseWorkOrders>() {
             @Override
@@ -222,6 +203,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
                 currentUser.setWorkOrders(workOrders);
                 //adapter.refreshWorkOrders(currentUser.getWorkOrders());
                 recAdapter.refreshWorkOrders(currentUser.getWorkOrders());
+                initSectionIcons();
                 setDimVisibility(View.GONE);
             }
 
@@ -234,7 +216,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         });
     }
 
-    private void requestNotices(){
+    private void requestNotices() {
 
         ApiManager.getService().getNotices(currentUser.getUsername(), currentUser.getToken(), new Callback<ResponseNotices>() {
             @Override
@@ -250,8 +232,8 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         });
     }
 
-    private void setDimVisibility(int visibility){
-     //   activity.findViewById(R.id.overviewActivity_dimOverlay).setVisibility(visibility);
+    private void setDimVisibility(int visibility) {
+        activity.findViewById(R.id.overviewActivity_dimOverlay).setVisibility(visibility);
     }
 
 }

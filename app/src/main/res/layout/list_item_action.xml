@@ -7,14 +7,12 @@
     android:paddingRight="4dp"
     android:paddingTop="4dp">
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="0dp"
-        card_view:cardPreventCornerOverlap="true"
-        >
+        card_view:cardPreventCornerOverlap="true">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -25,136 +23,128 @@
                 android:layout_width="wrap_content"
 
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:padding="4dp"
                 android:text="654321-001"
-                android:textStyle="bold"
                 android:textColor="@color/actionQueue_workOrder"
                 android:textSize="14sp"
-                android:padding="4dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/action_timeSince"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wed 18 2015"
-                android:textSize="14sp"
-                android:textColor="@android:color/tertiary_text_light"
-                android:gravity="center"
-                android:paddingTop="4dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="4dp"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"/>
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:paddingBottom="4dp"
+                android:paddingRight="8dp"
+                android:paddingTop="4dp"
+                android:text="Wed 18 2015"
+                android:textColor="@android:color/tertiary_text_light"
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:id="@+id/action_hours_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@id/action_timeSince"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:paddingRight="8dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/action_timeSince"
+                android:orientation="horizontal"
                 android:paddingLeft="8dp"
-                >
+                android:paddingRight="8dp">
+
                 <TextView
                     android:id="@+id/action_hours"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#555555"
+                    android:paddingRight="2dp"
                     android:text="3"
+                    android:textColor="#555555"
                     android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:paddingRight="2dp"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/hours_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#555555"
-                    android:text="h"
-                    android:textSize="14sp"
                     android:paddingTop="6dp"
-                    android:textStyle="bold"/>
-
+                    android:text="h"
+                    android:textColor="#555555"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
 
             </LinearLayout>
+
             <TextView
                 android:id="@+id/action_taken"
-                android:layout_below="@id/action_work_order_id"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/primary_text_light"
+                android:layout_below="@id/action_work_order_id"
                 android:layout_toLeftOf="@id/action_hours_layout"
-                android:text="Team Bonding"
+                android:gravity="center_vertical"
                 android:maxLines="2"
                 android:padding="4dp"
-                android:gravity="center_vertical"
-                android:textSize="16sp"/>
-
+                android:text="Team Bonding"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="16sp" />
 
 
             <TextView
                 android:id="@+id/action_notes_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/action_hours_layout"
-                android:text="0 Notes"
-                android:textColor="@android:color/tertiary_text_light"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/action_hours_layout"
+                android:paddingBottom="4dp"
                 android:paddingRight="8dp"
                 android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                />
+                android:text="0 Notes"
+                android:textColor="@android:color/tertiary_text_light" />
 
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@id/action_taken"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_below="@id/action_taken"
                 android:gravity="left"
-                android:padding="4dp"
-                >
+                android:orientation="horizontal"
+                android:padding="4dp">
+
                 <TextView
                     android:id="@+id/action_oldStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/tertiary_text_light"
-                    android:textSize="12sp"
                     android:text="Work In Progress"
-                    />
+                    android:textColor="@android:color/tertiary_text_light"
+                    android:textSize="12sp" />
+
                 <ImageView
                     android:id="@+id/action_changed_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_arrow_down_grey"
                     android:rotation="-90"
-                    />
+                    android:src="@drawable/icon_arrow_down_grey" />
+
                 <TextView
                     android:id="@+id/action_newStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/secondary_text_light"
                     android:text="Work Complete"
-                    />
+                    android:textColor="@android:color/secondary_text_light"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
         </RelativeLayout>
-
-
-
-
 
 
     </android.support.v7.widget.CardView>
