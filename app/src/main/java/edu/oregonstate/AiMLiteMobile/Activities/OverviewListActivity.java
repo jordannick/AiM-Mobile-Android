@@ -122,7 +122,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         tv0.setTypeface(tf); tv1.setTypeface(tf); tv2.setTypeface(tf); tv3.setTypeface(tf);
         tv0.setText(R.string.icon_daily); tv1.setText(R.string.icon_backlog); tv2.setText(R.string.icon_admin); tv3.setText(R.string.icon_recentlyCompleted);
 
-       /* setClickListener(tv0, adapter.sectionDailyIndex);
+       /* setClickListener(tv0, recAdapter.sectionDailyIndex);
         setClickListener(tv1, adapter.sectionBacklogIndex+1);
         setClickListener(tv2, adapter.sectionAdminIndex+2);
         setClickListener(tv3, adapter.sectionCompletedIndex+3);*/
@@ -134,6 +134,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
             public void onClick(View v) {
                 //listView.smoothScrollToPositionFromTop(adapter.sectionBacklogIndex, 0);
                 listView.setSelection(position);
+
             }
         });
     }
@@ -141,6 +142,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     // Start an instance of DetailActivity
     public void onWorkOrderSelected(WorkOrder workOrder){
         //Intent i = new Intent(this, TestActivity.class);
+        Log.d(TAG, "Work Order Selected: " + workOrder.getProposalPhase());
         Intent i = new Intent(this, DetailActivity.class);
         i.putExtra(WorkOrder.WORK_ORDER_EXTRA, workOrder);
         startActivity(i);

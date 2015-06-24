@@ -43,7 +43,7 @@ public class DetailMainFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.detail_view, parent, false);
+        //View v = inflater.inflate(R.layout.detail_view, parent, false);
         this.v = v;
         return v;
     }
