@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -153,6 +154,7 @@ public class CurrentUser {
     public void addRecentlyViewedWorkOrder(WorkOrder workOrder){
         //Add workOrder to top of arrayList, removing oldest if newSize > RECENTLY_VIEWED_MAX
         int index = -1;
+        Log.d(TAG, "Work order for addRecently: " + workOrder.getProposalPhase());
         for (int i = 0; i < recentlyViewedWorkOrders.size(); i++) {
             if (recentlyViewedWorkOrders.get(i).getProposalPhase().equals(workOrder.getProposalPhase())) {
                 index = i;

@@ -96,14 +96,9 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         TextView tv2 = (TextView) findViewById(R.id.overview_activity_section_icon2);
         TextView tv3 = (TextView) findViewById(R.id.overview_activity_section_icon3);
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/FontAwesome.otf");
-        tv0.setTypeface(tf);
-        tv1.setTypeface(tf);
-        tv2.setTypeface(tf);
-        tv3.setTypeface(tf);
-        tv0.setText(R.string.icon_daily);
-        tv1.setText(R.string.icon_backlog);
-        tv2.setText(R.string.icon_admin);
-        tv3.setText(R.string.icon_recentlyCompleted);
+
+        tv0.setTypeface(tf); tv1.setTypeface(tf); tv2.setTypeface(tf); tv3.setTypeface(tf);
+        tv0.setText(R.string.icon_daily); tv1.setText(R.string.icon_backlog); tv2.setText(R.string.icon_admin); tv3.setText(R.string.icon_recentlyCompleted);
 
         setClickListener(tv0, recAdapter.sectionDailyIndex);
         setClickListener(tv1, recAdapter.sectionBacklogIndex);
@@ -121,7 +116,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     }
 
     // Start an instance of DetailActivity
-    public void onWorkOrderSelected(WorkOrder workOrder) {
+    public void onWorkOrderSelected(WorkOrder workOrder){
         Intent i = new Intent(this, DetailActivity.class);
         i.putExtra(WorkOrder.WORK_ORDER_EXTRA, workOrder);
         startActivity(i);

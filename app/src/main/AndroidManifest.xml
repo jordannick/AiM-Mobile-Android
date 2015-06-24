@@ -31,7 +31,11 @@
         <activity
             android:name=".Activities.DetailActivity"
             android:label="@string/detail_activity_title"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName="edu.oregonstate.AiMLiteMobile.Activities.OverviewListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.oregonstate.AiMLiteMobile.Activities.OverviewListActivity"/>
 
 
         </activity>
