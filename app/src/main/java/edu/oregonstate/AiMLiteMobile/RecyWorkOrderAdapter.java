@@ -1,4 +1,4 @@
-/*
+
 package edu.oregonstate.AiMLiteMobile;
 
 import android.app.Activity;
@@ -19,10 +19,10 @@ import java.util.List;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
 
-*/
+
 /**
  * Created by sellersk on 6/15/2015.
- *//*
+ */
 
 public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdapter.WorkOrderViewHolder> {
     private static final String TAG = "RecyWorkOrderAdapter";
@@ -44,6 +44,13 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
         this.workOrders = workOrders;
         initListItems();
     }
+
+    public void refreshWorkOrders(ArrayList<WorkOrder> workOrders){
+        this.workOrders = workOrders;
+        initListItems();
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public WorkOrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -75,20 +82,15 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
         return new WorkOrderViewHolder(view);
     }
 
+
+
+
     @Override
     public void onBindViewHolder(WorkOrderViewHolder holder, final int position) {
         final WorkOrderListItem wo = workOrderListItems.get(position);
 
 
         if(wo.getType() != WorkOrderListItem.Type.SECTION){
-<<<<<<< HEAD
-            holder.vName.setText("TEST");
-        }else{
-            Log.d(TAG, "Type section: " + position);
-        }
-
-
-=======
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -121,25 +123,14 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
 
             holder.valueAgo.setText(wo.getWorkOrder().getDateElements()[3]);
             holder.stringAgo.setText(wo.getWorkOrder().getDateElements()[4]);
-        } else {
+        }else{
+            Log.d(TAG, "Type section: " + position);
+
             Typeface FONTAWESOME = Typeface.createFromAsset(context.getAssets(), "fonts/FontAwesome.otf");
             holder.sectionIcon.setText(wo.getSectionIcon());
             holder.sectionIcon.setTypeface(FONTAWESOME);
             holder.sectionTitle.setText(wo.getSectionTitle());
-
-
-
-
         }
-
-
-
->>>>>>> origin/master
-*/
-/*        holder.vName.setText(wo.name);
-        holder.vSurname.setText(wo.surname);
-        holder.vEmail.setText(ci.email);
-        holder.vTitle.setText(ci.name + " " + ci.surname);*//*
 
     }
 
@@ -217,24 +208,15 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
 
         public WorkOrderViewHolder(View v) {
             super(v);
-
-<<<<<<< HEAD
-            vName =  (TextView) v.findViewById(R.id.row_proposal);
-
-=======
             phaseId =  (TextView) v.findViewById(R.id.row_proposal);
             description = (TextView) v.findViewById(R.id.row_description);
             priorityIcon = (ImageView) v.findViewById(R.id.imageView_priorityIconOverview);
             valueAgo = (TextView) v.findViewById(R.id.actionRow_valueAgo);
             stringAgo = (TextView) v.findViewById(R.id.actionRow_stringAgo);
-
-
             sectionIcon = (TextView) v.findViewById(R.id.listItem_section_icon);
             sectionTitle = (TextView) v.findViewById(R.id.listItem_section);
->>>>>>> origin/master
         }
     }
 
-
 }
-*/
+

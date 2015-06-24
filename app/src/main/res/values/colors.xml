@@ -11,16 +11,10 @@
     <color name="routine_green_old">#4e7300</color>
     <color name="scheduled_blue">#5C6BC0</color>
     <color name="scheduled_blue_old">#385e86</color>
-
     <color name="timeSensitive_purple">#673AB7</color>
-
-
 
     <!--WorkOrder List-->
     <color name="section_icon_shortcuts">#FFFFFF</color>
-
-
-
 
 
     <!--LoginView-->
@@ -36,6 +30,9 @@
     <color name="theme_secondary">#EF6C00</color><!--D0640C-->
     <color name="theme_accent">#C5CAE9</color> <!--CURRENTLY UNUSED-->
 
+    <color name="colorPrimary">#FF9800</color>
+    <color name="colorPrimaryDark">#F57C00</color>
+    <color name="colorAccent">#FF5722</color>
 
     <!--ActionBar-->
     <color name="tab_color">#FFD740</color>

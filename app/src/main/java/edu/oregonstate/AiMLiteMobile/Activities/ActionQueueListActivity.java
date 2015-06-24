@@ -28,9 +28,9 @@ public class ActionQueueListActivity extends SingleFragmentActivity implements A
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActionBar actionBar = getActionBar();
+        /*ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        actionBar.setHomeButtonEnabled(true);*/
         setTitle(R.string.action_queue_activity_title);
         currentUser = CurrentUser.get(getApplicationContext());
     }

@@ -1,60 +1,27 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:homeAsUpIndicator">@drawable/back_arrow_white</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
 
         <item name="android:spinnerDropDownItemStyle">@style/mySpinnerItemStyle</item>
-
-        <item name="android:actionMenuTextColor">@color/actionMenu_text</item>
-<!--        <item name="android:actionBarTabTextStyle">@style/TabTextStyle</item>
-        <item name="android:actionMenuTextColor">@color/actionbar_text</item>-->
-
-        <!-- Support library compatibility -->
-<!--        <item name="actionBarTabTextStyle">@style/TabTextStyle</item>
-        <item name="actionMenuTextColor">@color/actionbar_text</item>-->
-
     </style>
 
-    !-- general styles for the action bar -->
-    <style name="MyActionBar"
-        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse"
-        >
-
-        <item name="android:background">@color/theme_secondary</item>
-        <item name="android:displayOptions">showTitle</item>
-        <item name="android:titleTextStyle">@style/MyTitleTextStyle</item>
-
-
-
-<!--        <item name="android:backgroundStacked">@drawable/actionbar_background</item>
-        <item name="android:backgroundSplit">@drawable/actionbar_background</item>-->
-
-        <!-- Support library compatibility -->
-<!--        <item name="titleTextStyle">@style/TitleTextStyle</item>-->
-<!--        <item name="backgroundStacked">@drawable/actionbar_background</item>
-        <item name="backgroundSplit">@drawable/actionbar_background</item>-->
-    </style>
-
-
-    <style name="MyTitleTextStyle" parent="@android:style/Widget.TextView">
-        <item name="android:textSize">15sp</item>
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textStyle">bold</item>
-    </style>
 
     <style name="mySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
         <!--<item name="android:textColor">@color/details_text_title</item>-->
-
     </style>
+
 
     <style name="actionQueue_recentTitle">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/actionQueue_recentlyViewedText</item>
-
     </style>
+
+
     <style name="actionQueue_recentDescription">
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/actionQueue_recentlyViewedText</item>

@@ -38,9 +38,9 @@ public class DetailActivity extends SingleFragmentActivity {
         super.onCreate(savedInstanceState);
         currentUser = CurrentUser.get(getApplicationContext());
         workOrder = (WorkOrder)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+     //   ActionBar actionBar = getActionBar();
+       // actionBar.setDisplayHomeAsUpEnabled(true);
+       // actionBar.setHomeButtonEnabled(true);
     }
 
     @Override

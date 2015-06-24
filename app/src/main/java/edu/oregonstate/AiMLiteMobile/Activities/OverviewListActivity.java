@@ -6,6 +6,10 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,29 +34,43 @@ import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseNotices;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
 import edu.oregonstate.AiMLiteMobile.R;
+import edu.oregonstate.AiMLiteMobile.RecyWorkOrderAdapter;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class OverviewListActivity extends Activity {
+public class OverviewListActivity extends AppCompatActivity implements RecyWorkOrderAdapter.Callbacks {
     private static final String TAG = "OverviewListActivity";
     private static CurrentUser currentUser;
     private ListView listView;
     private WorkOrderAdapter adapter;
     private Activity activity;
 
+    private LinearLayoutManager linearLayoutManager;
+    private RecyWorkOrderAdapter recAdapter;
+    private RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
-        setContentView(R.layout.overview_activity);
         currentUser = CurrentUser.get(getApplicationContext());
+        setContentView(R.layout.overview_activity_new);
 
-        initListView();
-        initSectionIcons();ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recAdapter = new RecyWorkOrderAdapter(currentUser.getWorkOrders(), this);
+        recyclerView.setAdapter(recAdapter);
+
+
+        //initListView();
+        initSectionIcons();
 
         SnackbarManager.show(Snackbar.with(this).text("Logged in as " + currentUser.getUsername().toUpperCase()).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
 
@@ -104,10 +122,10 @@ public class OverviewListActivity extends Activity {
         tv0.setTypeface(tf); tv1.setTypeface(tf); tv2.setTypeface(tf); tv3.setTypeface(tf);
         tv0.setText(R.string.icon_daily); tv1.setText(R.string.icon_backlog); tv2.setText(R.string.icon_admin); tv3.setText(R.string.icon_recentlyCompleted);
 
-        setClickListener(tv0, adapter.sectionDailyIndex);
+       /* setClickListener(tv0, adapter.sectionDailyIndex);
         setClickListener(tv1, adapter.sectionBacklogIndex+1);
         setClickListener(tv2, adapter.sectionAdminIndex+2);
-        setClickListener(tv3, adapter.sectionCompletedIndex+3);
+        setClickListener(tv3, adapter.sectionCompletedIndex+3);*/
     }
 
     private void setClickListener(TextView tv, final int position) {
@@ -202,7 +220,8 @@ public class OverviewListActivity extends Activity {
                 ArrayList<WorkOrder> workOrders = responseWorkOrders.getWorkOrders();
                 currentUser.getPreferences().saveWorkOrders(responseWorkOrders.getRawJson());
                 currentUser.setWorkOrders(workOrders);
-                adapter.refreshWorkOrders(currentUser.getWorkOrders());
+                //adapter.refreshWorkOrders(currentUser.getWorkOrders());
+                recAdapter.refreshWorkOrders(currentUser.getWorkOrders());
                 setDimVisibility(View.GONE);
             }
 
@@ -232,7 +251,7 @@ public class OverviewListActivity extends Activity {
     }
 
     private void setDimVisibility(int visibility){
-        activity.findViewById(R.id.overviewActivity_dimOverlay).setVisibility(visibility);
+     //   activity.findViewById(R.id.overviewActivity_dimOverlay).setVisibility(visibility);
     }
 
 }
