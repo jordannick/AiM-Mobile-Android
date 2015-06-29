@@ -1,17 +1,13 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -23,7 +19,6 @@ import android.widget.TextView;
 import edu.oregonstate.AiMLiteMobile.Adapters.NoteAdapter;
 import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
 import edu.oregonstate.AiMLiteMobile.Fragments.AddActionDialogFragment;
-import edu.oregonstate.AiMLiteMobile.Fragments.DetailMainFragment;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.R;
@@ -42,6 +37,8 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "DetailActivity onCreate");
+
         setContentView(R.layout.detail_activity);
         currentUser = CurrentUser.get(getApplicationContext());
         workOrder = (WorkOrder)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
@@ -56,7 +53,7 @@ public class DetailActivity extends AppCompatActivity {
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    NavUtils.navigateUpFromSameTask(DetailActivity.this);
+                    finish();
                 }
             });
             toolbar.inflateMenu(R.menu.menu_detail);
@@ -65,6 +62,11 @@ public class DetailActivity extends AppCompatActivity {
         populateViews();
     }
 
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "DetailActivity onDestroy");
+        super.onDestroy();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                     attemptLogin();
                 }
             } else {
-                mSavedUserText.setText(sCurrentUser.getPreferences().getUsername() + "\ncurrently saved");
+                mSavedUserText.setText(sCurrentUser.getPreferences().getUsername() + " currently saved");
             }
         }
 
