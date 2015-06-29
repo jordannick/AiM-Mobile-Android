@@ -13,9 +13,6 @@
     <color name="scheduled_blue_old">#385e86</color>
     <color name="timeSensitive_purple">#673AB7</color>
 
-    <!--WorkOrder List-->
-    <color name="section_icon_shortcuts">#FFFFFF</color>
-
 
     <!--LoginView-->
     <color name="loginView_loginButton_text">#FFFFFF</color>
@@ -26,45 +23,23 @@
 
 
     <!-- Material Theme -->
-    <color name="theme_primary">#E65100</color>
-    <color name="theme_secondary">#EF6C00</color><!--D0640C-->
-    <color name="theme_accent">#C5CAE9</color> <!--CURRENTLY UNUSED-->
-
     <color name="colorPrimary">#FF9800</color>
-    <color name="colorPrimaryDark">#F57C00</color>
+    <color name="colorPrimaryDark">#F57C00</color><!--F57C00-->
     <color name="colorAccent">#FF5722</color>
+    <color name="colorPrimaryLight">#FFE0B2</color>
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#727272</color>
+    <color name="colorWhite">#ffffff</color>
 
-    <!--ActionBar-->
-    <color name="tab_color">#FFD740</color>
-    <color name="actionMenu_text">#FFFFFF</color>
+    <color name="listItemSection_text">#ffffff</color>
+    <color name="listItemSection_background">#424242</color>
 
 
-    <!--CardView-->
-    <color name="cardView_layoutBackground">#e4e4e4</color>
+    <!--WorkOrder CardView-->
     <color name="cardView_cardBackground">#ffffff</color>
     <color name="cardView_cardText">#000000</color>
-
     <color name="workOrderList_sectionHeader">#EF6C00</color>
-    <color name="workOrderList_sectionHeaderDivider">#EF6C00</color>
-
-
-    <!-- Contact Page   -->
-    <color name="contactView_background">#FFFFFF</color>
-    <color name="contactView_titleBackground">#00796B</color>
-    <color name="contactView_title">#FFFFFF</color>
-    <color name="contactView_divider">#E0E0E0</color>
-
-
-    <!--Note Page-->
-    <color name="noteView_divider">#BDBDBD</color>
-    <color name="noteView_author">#00796B</color>
-
-
-    <!--Detail Overview-->
-    <color name="detailsView_details_text">#FFFFFF</color>
-    <color name="detailsView_details_title">#FFFFFF</color>
-    <color name="detailsView_details_cardBackground">#607D8B</color><!--#00796B-->
-
+    <color name="workOrderList_sectionHeaderDivider">#727272</color>
 
     <!--Action Add-->
     <color name="addAction_sectionTitles">#F57C00</color>
@@ -72,6 +47,7 @@
 
 
     <!--ActionQueue-->
+    <color name="actionQueue_titleBarBackground">#FFFFFF</color>
     <color name="actionQueue_workOrder">#00796B</color>
     <color name="actionQueue_recentlyViewedBackground">#FFFFFF</color>
     <color name="actionQueue_recentlyViewedText">#212121</color>
@@ -82,13 +58,8 @@
 
 
     <!--General Use-->
-    <color name="sectionTitle">#00796B</color>
-    <color name="sectionTitle_underline">#B300796B</color>
-        <!--SlidingTabLayout-->
-        <color name="sliding_tab_layout_selected_title">#FFFFFF</color>
-        <color name="sliding_tab_layout_unselected_title">#A6FFFFFF</color>
-
     <color name="dimOverlay">#4D000000</color>
+
 </resources>
 
 

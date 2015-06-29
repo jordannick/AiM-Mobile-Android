@@ -123,7 +123,7 @@ public class AddActionDialogFragment extends DialogFragment {
                 //Confirm button saves the edits to action
                 else if (getActivity().getLocalClassName().equals("Activities.ActionQueueListActivity")) {
                     currentUser.addAction(createAction(actionSpinner.getSelectedItem().toString(), statusSpinner.getSelectedItem().toString(), hoursEditText.getText().toString(), noteEditText.getText().toString()));
-                    ((ActionQueueListFragment)getTargetFragment()).onPostActionDialog();
+                    //((ActionQueueListFragment)getTargetFragment()).onPostActionDialog();
                     actionDialog.dismiss();
                 }
                 else {

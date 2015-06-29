@@ -152,8 +152,10 @@ public class ApiManager {
                             wo.setSection("Daily");
                         }else if(rand.nextInt(100)%2 == 0){
                             wo.setSection("Backlog");
-                        }else{
+                        }else if(rand.nextInt(100)%2 == 0){
                             wo.setSection("Admin");
+                        }else{
+                            wo.setSection("Recently Completed");
                         }
                         workOrders.add(wo);
                     }

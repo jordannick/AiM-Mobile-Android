@@ -1,7 +1,5 @@
 package edu.oregonstate.AiMLiteMobile.Network;
 
-import retrofit.client.Response;
-
 /**
  * Created by sellersk on 6/10/2015.
  */

@@ -37,9 +37,9 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "DetailActivity onCreate");
 
-        setContentView(R.layout.detail_activity);
+        setContentView(R.layout.activity_detail);
+
         currentUser = CurrentUser.get(getApplicationContext());
         workOrder = (WorkOrder)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
         currentUser.addRecentlyViewedWorkOrder(workOrder);
@@ -47,15 +47,16 @@ public class DetailActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(toolbar != null){
-            toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-            toolbar.setTitle("Work Order");
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        if(getActionBar() != null){
+            //toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+            getActionBar().setHomeButtonEnabled(true);
+            //toolbar.setTitle("Work Order");
+            /*toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     finish();
                 }
-            });
+            });*/
             toolbar.inflateMenu(R.menu.menu_detail);
         }
 
@@ -172,13 +173,13 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (((TextView) findViewById(R.id.textView_moveSectionTitle)).getText().equals("Move to\nBacklog")) {
-                    ((TextView) findViewById(R.id.textView_moveSectionIcon)).startAnimation(sectionChangeAnim);
-                    ((TextView) findViewById(R.id.textView_moveSectionTitle)).startAnimation(sectionChangeAnim);
-                    ((TextView) findViewById(R.id.textView_moveSectionTitle)).setText("Move to\nDaily");
-                    ((TextView) findViewById(R.id.textView_moveSectionIcon)).setText(getString(R.string.icon_moveToDaily));
+                    findViewById(R.id.textView_moveSectionIcon).startAnimation(sectionChangeAnim);
+                    findViewById(R.id.textView_moveSectionTitle).startAnimation(sectionChangeAnim);
+                    ((TextView)findViewById(R.id.textView_moveSectionTitle)).setText("Move to\nDaily");
+                    ((TextView)findViewById(R.id.textView_moveSectionIcon)).setText(getString(R.string.icon_moveToDaily));
                 } else if (((TextView) findViewById(R.id.textView_moveSectionTitle)).getText().equals("Move to\nDaily")) {
-                    ((TextView) findViewById(R.id.textView_moveSectionIcon)).startAnimation(sectionChangeAnim);
-                    ((TextView) findViewById(R.id.textView_moveSectionTitle)).startAnimation(sectionChangeAnim);
+                    findViewById(R.id.textView_moveSectionIcon).startAnimation(sectionChangeAnim);
+                    findViewById(R.id.textView_moveSectionTitle).startAnimation(sectionChangeAnim);
                     ((TextView) findViewById(R.id.textView_moveSectionTitle)).setText("Move to\nBacklog");
                     ((TextView) findViewById(R.id.textView_moveSectionIcon)).setText(getString(R.string.icon_moveToBacklog));
                 }
@@ -216,7 +217,7 @@ public class DetailActivity extends AppCompatActivity {
     private void createNoticesViewPopup(){
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         LayoutInflater inflater = this.getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.popup_notes_list, null);
+        View convertView = inflater.inflate(R.layout.dialog_notes_list, null);
 
         convertView.findViewById(R.id.dialogNotes_buttonCancel).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,7 +236,7 @@ public class DetailActivity extends AppCompatActivity {
     private void createNotesViewPopup(){
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.popup_notes_list, null);
+        View convertView = inflater.inflate(R.layout.dialog_notes_list, null);
 
         convertView.findViewById(R.id.dialogNotes_buttonCancel).setOnClickListener(new View.OnClickListener() {
             @Override

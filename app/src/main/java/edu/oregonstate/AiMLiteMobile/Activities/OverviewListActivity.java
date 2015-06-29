@@ -52,7 +52,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
         activity = this;
         currentUser = CurrentUser.get(getApplicationContext());
-        setContentView(R.layout.overview_activity_new);
+        setContentView(R.layout.activity_overview);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -64,7 +64,9 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         recAdapter = new RecyWorkOrderAdapter(currentUser.getWorkOrders(), this);
         recyclerView.setAdapter(recAdapter);
 
-        //initSectionIcons();
+
+
+        initSectionIcons();
 
         SnackbarManager.show(Snackbar.with(this).text("Logged in as " + currentUser.getUsername().toUpperCase()).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
 
@@ -108,16 +110,18 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         tv0.setTypeface(tf); tv1.setTypeface(tf); tv2.setTypeface(tf); tv3.setTypeface(tf);
         tv0.setText(R.string.icon_daily); tv1.setText(R.string.icon_backlog); tv2.setText(R.string.icon_admin); tv3.setText(R.string.icon_recentlyCompleted);
 
-        setClickListener(tv0, recAdapter.sectionDailyIndex);
-        setClickListener(tv1, recAdapter.sectionBacklogIndex);
-        setClickListener(tv2, recAdapter.sectionAdminIndex);
-        setClickListener(tv3, recAdapter.sectionCompletedIndex);
+        setClickListener(tv0, recAdapter.wrapper.getSectionIndex(WorkOrder.DAILY_SECTION_ID));
+        setClickListener(tv1, recAdapter.wrapper.getSectionIndex(WorkOrder.BACKLOG_SECTION_ID));
+        setClickListener(tv2, recAdapter.wrapper.getSectionIndex(WorkOrder.ADMIN_SECTION_ID));
+        setClickListener(tv3, recAdapter.wrapper.getSectionIndex(WorkOrder.RECENTLY_COMPLETED_SECTION_ID));
     }
 
     private void setClickListener(TextView tv, final int position) {
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //recyclerView.smoothScrollToPosition(position);
+                //recyclerView.getLayoutManager().scrollToPosition(position);
                 linearLayoutManager.scrollToPositionWithOffset(position, 0);
             }
         });
@@ -134,7 +138,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     private void createNoticesViewPopup() {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         LayoutInflater inflater = this.getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.popup_notes_list, null);
+        View convertView = inflater.inflate(R.layout.dialog_notes_list, null);
 
         convertView.findViewById(R.id.dialogNotes_buttonCancel).setOnClickListener(new View.OnClickListener() {
             @Override

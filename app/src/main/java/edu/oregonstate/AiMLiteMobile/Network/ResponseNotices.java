@@ -3,7 +3,6 @@ package edu.oregonstate.AiMLiteMobile.Network;
 import java.util.ArrayList;
 
 import edu.oregonstate.AiMLiteMobile.Models.Notice;
-import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 
 /**
  * Created by sellersk on 6/10/2015.

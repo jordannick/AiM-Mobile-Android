@@ -20,6 +20,11 @@ public class WorkOrder implements Serializable {
 
     public final UUID uuid = java.util.UUID.randomUUID();
 
+    public static final int DAILY_SECTION_ID = 0;
+    public static final int BACKLOG_SECTION_ID = 1;
+    public static final int ADMIN_SECTION_ID = 2;
+    public static final int RECENTLY_COMPLETED_SECTION_ID = 3;
+
     String mDescription;
     String mBeginDate;
     String mEndDate;
@@ -49,7 +54,7 @@ public class WorkOrder implements Serializable {
 
     public ArrayList<Note> getNotes() {
         if (mNotes == null) {
-            mNotes = new ArrayList<Note>();
+            mNotes = new ArrayList<>();
 
             //%% DEBUG %%
             int day = 86400000;
@@ -318,16 +323,16 @@ public class WorkOrder implements Serializable {
         int num = -1;
         switch (mSection){
             case "Daily":
-                num = 0;
+                num = DAILY_SECTION_ID;
                 break;
             case "Backlog":
-                num = 1;
+                num = BACKLOG_SECTION_ID;
                 break;
             case "Admin":
-                num = 2;
+                num = ADMIN_SECTION_ID;
                 break;
             case "Recently Completed":
-                num = 3;
+                num = RECENTLY_COMPLETED_SECTION_ID;
                 break;
         }
         setSectionNum(num);

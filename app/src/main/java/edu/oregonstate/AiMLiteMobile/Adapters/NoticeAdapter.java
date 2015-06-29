@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import edu.oregonstate.AiMLiteMobile.Models.Note;
 import edu.oregonstate.AiMLiteMobile.Models.Notice;
 import edu.oregonstate.AiMLiteMobile.R;
 
@@ -38,7 +37,7 @@ public class NoticeAdapter extends ArrayAdapter<Notice> {
         Notice notice = mNotices.get(position);
 
         Typeface GUDEA = Typeface.createFromAsset(mContext.getAssets(), "fonts/Gudea-Regular.otf");
-        Typeface GUDEABOLD = Typeface.createFromAsset(mContext.getAssets(), "fonts/Gudea-Bold.otf");
+        //Typeface GUDEABOLD = Typeface.createFromAsset(mContext.getAssets(), "fonts/Gudea-Bold.otf");
         ((TextView)convertView.findViewById(R.id.row_type)).setTypeface(GUDEA);
         ((TextView)convertView.findViewById(R.id.row_description)).setTypeface(GUDEA);
         ((TextView)convertView.findViewById(R.id.row_type)).setText(notice.getType());

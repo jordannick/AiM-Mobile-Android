@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_view);
+        setContentView(R.layout.activity_login);
         setTitle(R.string.login_title);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             if (autologin) {
                 mUsername = sCurrentUser.getPreferences().getUsername();
                 mPassword = sCurrentUser.getPreferences().getPassword();
-                if (mUsername != "" && mPassword != "") {
+                if (!mUsername.equals("") && !mPassword.equals("")) {
                     attemptLogin();
                 }
             } else {
