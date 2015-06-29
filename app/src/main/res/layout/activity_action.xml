@@ -3,18 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/actionList_relativeLayout"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:background="@color/cardView_layoutBackground">
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/titleBar_include"
-        layout="@layout/action_list_title_bar" />
+        layout="@layout/view_action_list_header" />
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/titleBar_include"></ListView>
+        android:layout_below="@id/titleBar_include"/>
 
     <TextView
         android:id="@android:id/empty"

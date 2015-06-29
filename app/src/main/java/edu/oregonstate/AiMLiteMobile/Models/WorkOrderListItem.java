@@ -1,7 +1,5 @@
 package edu.oregonstate.AiMLiteMobile.Models;
 
-import edu.oregonstate.AiMLiteMobile.R;
-
 /**
  * Created by SellersK on 6/1/2015.
  */
@@ -9,11 +7,12 @@ public class WorkOrderListItem {
 
     public static int numTypes = 2;
 
-    public WorkOrderListItem(Type type, String sectionTitle, int sectionIcon, WorkOrder workOrder) {
+    public WorkOrderListItem(Type type, String sectionTitle, int sectionIcon, WorkOrder workOrder, int sectionCount) {
         this.type = type;
         this.sectionIcon = sectionIcon;
         this.sectionTitle = sectionTitle;
         this.workOrder = workOrder;
+        this.sectionCount = sectionCount;
     }
 
     private Type type;
@@ -23,6 +22,7 @@ public class WorkOrderListItem {
 
     private String sectionTitle;
     private int sectionIcon;
+    private int sectionCount;
     private WorkOrder workOrder;
 
     public Type getType() {
@@ -55,5 +55,13 @@ public class WorkOrderListItem {
 
     public void setSectionIcon(int sectionIcon) {
         this.sectionIcon = sectionIcon;
+    }
+
+    public int getSectionCount() {
+        return sectionCount;
+    }
+
+    public void setSectionCount(int sectionCount) {
+        this.sectionCount = sectionCount;
     }
 }

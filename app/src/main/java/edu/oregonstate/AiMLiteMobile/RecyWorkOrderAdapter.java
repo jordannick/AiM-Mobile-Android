@@ -26,18 +26,20 @@ import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
 public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdapter.WorkOrderViewHolder> {
     private static final String TAG = "RecyWorkOrderAdapter";
 
-    private List<WorkOrderListItem> workOrderListItems;
-    private List<WorkOrder> workOrders;
+    private ArrayList<WorkOrderListItem> workOrderListItems;
+    private ArrayList<WorkOrder> workOrders;
     private Context context;
     public Callbacks mCallbacks;
+    public WorkOrderListWrapper wrapper;
 
     public interface Callbacks {
         void onWorkOrderSelected(WorkOrder wo);
     }
 
     public int sectionDailyIndex, sectionBacklogIndex, sectionAdminIndex, sectionCompletedIndex;
+    public int sectionDailyCount, sectionBacklogCount, sectionAdminCount, sectionCompletedCount;
 
-    public RecyWorkOrderAdapter(List<WorkOrder> workOrders, Activity activity) {
+    public RecyWorkOrderAdapter(ArrayList<WorkOrder> workOrders, Activity activity) {
         mCallbacks = (Callbacks) activity;
         context = activity;
         this.workOrders = workOrders;
@@ -80,7 +82,6 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
 
         return new WorkOrderViewHolder(view);
     }
-
 
     @Override
     public void onBindViewHolder(WorkOrderViewHolder holder, final int position) {
@@ -126,6 +127,8 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
             holder.sectionIcon.setText(wo.getSectionIcon());
             holder.sectionIcon.setTypeface(FONTAWESOME);
             holder.sectionTitle.setText(wo.getSectionTitle());
+            holder.count.setText(String.valueOf(wo.getSectionCount()));
+
         }
 
     }
@@ -137,48 +140,13 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
 
     @Override
     public int getItemCount() {
+        Log.d(TAG, "workOrderListItems size: " + workOrderListItems.size());
         return workOrderListItems.size();
     }
 
     private void initListItems(){
-        int i = 0;
-        workOrderListItems = new ArrayList<>();
-
-        if (workOrders.size() > 0) {
-
-            sectionDailyIndex = workOrderListItems.size();
-            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Daily", R.string.icon_daily, null));
-            i++;
-
-            while (i < workOrders.size() && workOrders.get(i).getSectionNum() == 0) {
-                workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, workOrders.get(i)));
-                i++;
-            }
-            sectionBacklogIndex = workOrderListItems.size();
-            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Backlog", R.string.icon_backlog, null));
-            i++;
-
-            while (i < workOrders.size() && workOrders.get(i).getSectionNum() == 1) {
-                workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, workOrders.get(i)));
-                i++;
-            }
-            sectionAdminIndex = workOrderListItems.size();
-            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Admin", R.string.icon_admin, null));
-            i++;
-
-            while (i < workOrders.size() && workOrders.get(i).getSectionNum() == 2) {
-                workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, workOrders.get(i)));
-                i++;
-            }
-            sectionCompletedIndex = workOrderListItems.size();
-            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Recently Completed", R.string.icon_recentlyCompleted, null));
-            i++;
-
-            while (i < workOrders.size() && workOrders.get(i).getSectionNum() == 3) {
-                workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, workOrders.get(i)));
-                i++;
-            }
-        }
+        wrapper = new WorkOrderListWrapper(workOrders);
+        workOrderListItems = wrapper.getWorkOrderListItems();
     }
 
     public static class WorkOrderViewHolder extends RecyclerView.ViewHolder {
@@ -189,6 +157,7 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
         protected TextView stringAgo;
         protected TextView sectionIcon;
         protected TextView sectionTitle;
+        protected TextView count;
 
         public WorkOrderViewHolder(View v) {
             super(v);
@@ -199,6 +168,7 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
             stringAgo = (TextView) v.findViewById(R.id.actionRow_stringAgo);
             sectionIcon = (TextView) v.findViewById(R.id.listItem_section_icon);
             sectionTitle = (TextView) v.findViewById(R.id.listItem_section);
+            count = (TextView)v.findViewById(R.id.list_item_section_count);
         }
     }
 

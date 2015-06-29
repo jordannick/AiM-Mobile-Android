@@ -4,11 +4,7 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="8dp"
-    card_view:cardBackgroundColor="#FFCC80"
+    card_view:cardBackgroundColor="@color/actionQueue_titleBarBackground"
     card_view:cardCornerRadius="4dp"
     card_view:cardElevation="5dp"
     card_view:cardPreventCornerOverlap="true">
@@ -17,7 +13,6 @@
         android:id="@+id/total_hours_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#FFCC80"
         android:gravity="left"
         android:padding="8dp">
 

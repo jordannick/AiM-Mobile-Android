@@ -61,7 +61,7 @@ public class ActionAdapter extends ArrayAdapter<Action> {
 
         ((TextView) convertView.findViewById(R.id.action_taken)).setText(action.getActionTaken());
 
-        if (action.getUpdatedStatus() != null && action.getUpdatedStatus() != action.getWorkOrder().getStatus()){
+        if (action.getUpdatedStatus() != null && !action.getUpdatedStatus().equals(action.getWorkOrder().getStatus())){
             ((TextView) convertView.findViewById(R.id.action_oldStatus)).setText(action.getWorkOrder().getStatus());
             ((TextView) convertView.findViewById(R.id.action_newStatus)).setText(action.getUpdatedStatus());
         } else {

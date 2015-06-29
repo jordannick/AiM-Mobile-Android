@@ -27,4 +27,28 @@
         <item name="android:textColor">@color/actionQueue_recentlyViewedText</item>
     </style>
 
+
+    <style name="CardViewStyle" parent="CardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="cardBackgroundColor">@color/cardView_cardBackground</item>
+    </style>
+
+
+    <!--
+    card_view:cardCornerRadius="4dp"
+                    card_view:cardPreventCornerOverlap="true"
+    android:id="@+id/card_view0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    card_view:cardCornerRadius="4dp"
+                    card_view:cardPreventCornerOverlap="true">-->
+
 </resources>

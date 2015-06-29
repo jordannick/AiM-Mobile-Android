@@ -1,17 +1,12 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -23,7 +18,6 @@ import android.widget.TextView;
 import edu.oregonstate.AiMLiteMobile.Adapters.NoteAdapter;
 import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
 import edu.oregonstate.AiMLiteMobile.Fragments.AddActionDialogFragment;
-import edu.oregonstate.AiMLiteMobile.Fragments.DetailMainFragment;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.R;
@@ -42,7 +36,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.detail_activity);
+        setContentView(R.layout.activity_detail);
         currentUser = CurrentUser.get(getApplicationContext());
         workOrder = (WorkOrder)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
         currentUser.addRecentlyViewedWorkOrder(workOrder);
@@ -50,15 +44,16 @@ public class DetailActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(toolbar != null){
-            toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-            toolbar.setTitle("Work Order");
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        if(getActionBar() != null){
+            //toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+            getActionBar().setHomeButtonEnabled(true);
+            //toolbar.setTitle("Work Order");
+            /*toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     NavUtils.navigateUpFromSameTask(DetailActivity.this);
                 }
-            });
+            });*/
             toolbar.inflateMenu(R.menu.menu_detail);
         }
 
@@ -170,13 +165,13 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (((TextView) findViewById(R.id.textView_moveSectionTitle)).getText().equals("Move to\nBacklog")) {
-                    ((TextView) findViewById(R.id.textView_moveSectionIcon)).startAnimation(sectionChangeAnim);
-                    ((TextView) findViewById(R.id.textView_moveSectionTitle)).startAnimation(sectionChangeAnim);
-                    ((TextView) findViewById(R.id.textView_moveSectionTitle)).setText("Move to\nDaily");
-                    ((TextView) findViewById(R.id.textView_moveSectionIcon)).setText(getString(R.string.icon_moveToDaily));
+                    findViewById(R.id.textView_moveSectionIcon).startAnimation(sectionChangeAnim);
+                    findViewById(R.id.textView_moveSectionTitle).startAnimation(sectionChangeAnim);
+                    ((TextView)findViewById(R.id.textView_moveSectionTitle)).setText("Move to\nDaily");
+                    ((TextView)findViewById(R.id.textView_moveSectionIcon)).setText(getString(R.string.icon_moveToDaily));
                 } else if (((TextView) findViewById(R.id.textView_moveSectionTitle)).getText().equals("Move to\nDaily")) {
-                    ((TextView) findViewById(R.id.textView_moveSectionIcon)).startAnimation(sectionChangeAnim);
-                    ((TextView) findViewById(R.id.textView_moveSectionTitle)).startAnimation(sectionChangeAnim);
+                    findViewById(R.id.textView_moveSectionIcon).startAnimation(sectionChangeAnim);
+                    findViewById(R.id.textView_moveSectionTitle).startAnimation(sectionChangeAnim);
                     ((TextView) findViewById(R.id.textView_moveSectionTitle)).setText("Move to\nBacklog");
                     ((TextView) findViewById(R.id.textView_moveSectionIcon)).setText(getString(R.string.icon_moveToBacklog));
                 }
@@ -214,7 +209,7 @@ public class DetailActivity extends AppCompatActivity {
     private void createNoticesViewPopup(){
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         LayoutInflater inflater = this.getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.popup_notes_list, null);
+        View convertView = inflater.inflate(R.layout.dialog_notes_list, null);
 
         convertView.findViewById(R.id.dialogNotes_buttonCancel).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -233,7 +228,7 @@ public class DetailActivity extends AppCompatActivity {
     private void createNotesViewPopup(){
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.popup_notes_list, null);
+        View convertView = inflater.inflate(R.layout.dialog_notes_list, null);
 
         convertView.findViewById(R.id.dialogNotes_buttonCancel).setOnClickListener(new View.OnClickListener() {
             @Override
