@@ -48,6 +48,8 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "OverviewListActivity onCreate");
+
         activity = this;
         currentUser = CurrentUser.get(getApplicationContext());
         setContentView(R.layout.activity_overview);
@@ -78,6 +80,12 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     protected void onResume() {
         invalidateOptionsMenu();
         super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "OverviewListActivity onDestroy");
+        super.onDestroy();
     }
 
     @Override

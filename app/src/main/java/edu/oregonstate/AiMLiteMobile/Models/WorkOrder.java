@@ -103,13 +103,13 @@ public class WorkOrder implements Serializable {
         //mDateCreated = formatNew.format(dateElements);
 
         try {
-            Log.d(TAG, "dateElements: "+dateElements);
+            //Log.d(TAG, "dateElements: "+dateElements);
 
             Date date = format.parse(dateElements);
             //mDateCreated = date.toString();
             mDateCreated = formatClean.format(date);
             mDateCreated = mDateCreated.replace("AM", "am").replace("PM","pm");
-            Log.d(TAG, "mDateCreated: "+mDateCreated);
+            //Log.d(TAG, "mDateCreated: "+mDateCreated);
 
 
 

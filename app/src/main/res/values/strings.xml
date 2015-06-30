@@ -7,7 +7,7 @@
 
 
     <string name="app_name">AiM Lite Mobile</string>
-    <string name="login_title">Login</string>
+    <string name="login_title">Welcome</string>
     <string name="list_title">Work Orders</string>
     <string name="detail_id">Phase ID:</string>
     <string name="detail_status">Status:</string>

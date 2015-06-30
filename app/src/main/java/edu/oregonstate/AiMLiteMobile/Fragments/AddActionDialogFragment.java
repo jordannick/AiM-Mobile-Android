@@ -63,8 +63,8 @@ public class AddActionDialogFragment extends DialogFragment {
         final EditText noteEditText =  ((EditText)(v.findViewById(R.id.editText_note)));
         final TextView hoursEditText = (TextView)v.findViewById(R.id.hoursEditText);
 
-        TextView title = (TextView)v.findViewById(R.id.dialogNewAction_title);
-        title.setText(dialogTitle);
+        //TextView title = (TextView)v.findViewById(R.id.dialogNewAction_title);
+       // title.setText(dialogTitle);
 
         actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         actionDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -72,7 +72,7 @@ public class AddActionDialogFragment extends DialogFragment {
         hoursEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         hoursEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 24), new InputFilter.LengthFilter(1)});
         hoursEditText.setGravity(Gravity.CENTER);
-
+/*
         //Scroll to bottom when dialog shifts on New Note press
         dialogScrollView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
@@ -93,7 +93,7 @@ public class AddActionDialogFragment extends DialogFragment {
 
             @Override
             public void afterTextChanged(Editable s) {}
-        });
+        });*/
 
         //Cancel button dismisses the view and hides keyboard
         v.findViewById(R.id.dialogConfirm_buttonCancel).setOnClickListener(new View.OnClickListener() {
@@ -149,6 +149,13 @@ public class AddActionDialogFragment extends DialogFragment {
         });
 
         return v;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        super.onViewCreated(view, savedInstanceState);
+
     }
 
     private Action createAction(String actionTaken, String status, String hours, String noteString){

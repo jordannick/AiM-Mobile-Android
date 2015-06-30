@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,7 +37,9 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_detail);
+
         currentUser = CurrentUser.get(getApplicationContext());
         workOrder = (WorkOrder)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
         currentUser.addRecentlyViewedWorkOrder(workOrder);
@@ -51,7 +54,7 @@ public class DetailActivity extends AppCompatActivity {
             /*toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    NavUtils.navigateUpFromSameTask(DetailActivity.this);
+                    finish();
                 }
             });*/
             toolbar.inflateMenu(R.menu.menu_detail);
@@ -60,6 +63,11 @@ public class DetailActivity extends AppCompatActivity {
         populateViews();
     }
 
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "DetailActivity onDestroy");
+        super.onDestroy();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
