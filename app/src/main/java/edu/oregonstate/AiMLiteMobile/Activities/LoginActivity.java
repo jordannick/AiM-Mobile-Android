@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseLogin;
@@ -30,14 +32,15 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
     //Layout variables
-    private EditText mUsernameField;
-    private EditText mPasswordField;
-    private Button mLoginButton;
-    private CheckBox mAutoLoginCheckbox;
-    private TextView mSavedUserText;
-    private ProgressBar mLoadCircle;
-    private TextView userIcon;
-    private TextView passwordIcon;
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.login_username) EditText mUsernameField;
+    @Bind(R.id.login_password) EditText mPasswordField;
+    @Bind(R.id.login_button) Button mLoginButton;
+    @Bind(R.id.auto_login) CheckBox mAutoLoginCheckbox;
+    @Bind(R.id.loginView_savedUser) TextView mSavedUserText;
+    @Bind(R.id.load_circle) ProgressBar mLoadCircle;
+    @Bind(R.id.login_username_icon) TextView userIcon;
+    @Bind(R.id.login_password_icon) TextView passwordIcon;
 
     private static CurrentUser sCurrentUser;
 
@@ -51,22 +54,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle(R.string.login_title);
+        ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         sCurrentUser = CurrentUser.get(getApplicationContext());
-
-        mUsernameField = (EditText) findViewById(R.id.login_username);
-        mPasswordField = (EditText) findViewById(R.id.login_password);
-        mAutoLoginCheckbox = (CheckBox) findViewById(R.id.auto_login);
-        mSavedUserText = (TextView) findViewById(R.id.loginView_savedUser);
-        mLoginButton = (Button) findViewById(R.id.login_button);
-        mLoadCircle = (ProgressBar) findViewById(R.id.load_circle);
         mLoadCircle.setVisibility(View.INVISIBLE);
 
-        userIcon = (TextView) findViewById(R.id.login_username_icon);
-        passwordIcon = (TextView) findViewById(R.id.login_password_icon);
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/FontAwesome.otf");
         userIcon.setTypeface(tf);
         userIcon.setText(R.string.icon_user);

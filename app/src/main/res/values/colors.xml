@@ -57,6 +57,12 @@
     <color name="actionQueue_recentlyViewedTitleIcons">#BDBDBD</color>
 
 
+
+
+    <color name="overviewActivity_sectionIconNormal">#F57C00</color>
+    <color name="overviewActivity_sectionIconPressed">#F68715</color>
+
+
     <!--General Use-->
     <color name="dimOverlay">#4D000000</color>
 

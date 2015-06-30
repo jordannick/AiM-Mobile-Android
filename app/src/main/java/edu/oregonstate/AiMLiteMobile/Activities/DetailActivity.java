@@ -13,8 +13,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.NoteAdapter;
 import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
 import edu.oregonstate.AiMLiteMobile.Fragments.AddActionDialogFragment;
@@ -33,6 +36,32 @@ public class DetailActivity extends AppCompatActivity {
     public static WorkOrder workOrder;
     private NoteAdapter notesAdapter;
 
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.row_proposal_detail) TextView proposal;
+    @Bind(R.id.descriptionTextView_detail) TextView description;
+    @Bind(R.id.actionRow_valueAgo_detail) TextView valueAgo;
+    @Bind(R.id.actionRow_stringAgo) TextView timeAgo;
+    @Bind(R.id.dateCreatedTextView) TextView dateCreated;
+
+    @Bind(R.id.detailView_textLocation) TextView location;
+    @Bind(R.id.detailView_textPriority) TextView priority;
+    @Bind(R.id.detailView_textStatus) TextView status;
+    @Bind(R.id.detailView_textAssigned) TextView assigned;
+    @Bind(R.id.detailView_textFunding) TextView funding;
+    @Bind(R.id.detailView_textCategory) TextView category;
+    @Bind(R.id.detailView_textShop) TextView shop;
+    @Bind(R.id.imageView_priorityIconDetail) ImageView priorityIcon;
+    @Bind(R.id.imageView_statusIcon) ImageView statusIcon;
+    @Bind(R.id.textView_moveSectionIcon) TextView moveSectionTextIcon;
+    @Bind(R.id.layout_moveSection) RelativeLayout moveSection;
+    @Bind(R.id.textView_moveSectionTitle) TextView moveSectionTitle;
+    @Bind(R.id.button_viewNotes_icon) TextView viewNotesIcon;
+    @Bind(R.id.button_addAction_icon) TextView addActionIcon;
+    @Bind(R.id.button_viewNotes_text) TextView viewNotesText;
+    @Bind(R.id.button_addAction) RelativeLayout addAction;
+    @Bind(R.id.button_viewNotes) RelativeLayout viewNotes;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -42,13 +71,15 @@ public class DetailActivity extends AppCompatActivity {
         currentUser.addRecentlyViewedWorkOrder(workOrder);
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //ButterKnife Time
+        ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
         if(getActionBar() != null){
             //toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
             getActionBar().setHomeButtonEnabled(true);
             //toolbar.setTitle("Work Order");
-            /*toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            /*toolbar.setNavigationOnClickListener(new View.OnCl ickListener() {
                 @Override
                 public void onClick(View v) {
                     NavUtils.navigateUpFromSameTask(DetailActivity.this);
@@ -95,24 +126,26 @@ public class DetailActivity extends AppCompatActivity {
     private void populateViews(){
         setTitle("Work Order");
 
-        ((TextView)findViewById(R.id.row_proposal_detail)).setText(workOrder.getProposalPhase());
-        ((TextView)findViewById(R.id.descriptionTextView_detail)).setText(workOrder.getDescription());
-        ((TextView)findViewById(R.id.actionRow_valueAgo_detail)).setText(workOrder.getDateElements()[3]);
-        ((TextView)findViewById(R.id.actionRow_stringAgo)).setText(workOrder.getDateElements()[4]);
-        ((TextView)findViewById(R.id.dateCreatedTextView)).setText("Requested: " + workOrder.getDateCreated() + " by " + workOrder.getContactName() + " (" + workOrder.getDepartment() + ")");
+
+        proposal.setText(workOrder.getProposalPhase());
+        description.setText(workOrder.getDescription());
+        valueAgo.setText(workOrder.getDateElements()[3]);
+        timeAgo.setText(workOrder.getDateElements()[4]);
+        dateCreated.setText("Requested: " + workOrder.getDateCreated() + " by " + workOrder.getContactName() + " (" + workOrder.getDepartment() + ")");
+
 
         if (!workOrder.getLocationCode().equals("null")){
-            ((TextView)findViewById(R.id.detailView_textLocation)).setText(workOrder.getBuilding() + "; Room # " + workOrder.getLocationCode());
+            location.setText(workOrder.getBuilding() + "; Room # " + workOrder.getLocationCode());
         } else {
-            ((TextView)findViewById(R.id.detailView_textLocation)).setText(workOrder.getBuilding());
+            location.setText(workOrder.getBuilding());
         }
-        ((TextView)findViewById(R.id.detailView_textPriority)).setText(workOrder.getPriority());
+        priority.setText(workOrder.getPriority());
 
-        ((TextView)findViewById(R.id.detailView_textStatus)).setText(workOrder.getStatus());
-        ((TextView)findViewById(R.id.detailView_textAssigned)).setText("None");
-        ((TextView)findViewById(R.id.detailView_textFunding)).setText(workOrder.getCraftCode());
-        ((TextView)findViewById(R.id.detailView_textCategory)).setText(workOrder.getCategory());
-        ((TextView)findViewById(R.id.detailView_textShop)).setText(workOrder.getShop());
+        status.setText(workOrder.getStatus());
+        assigned.setText("None");
+        funding.setText(workOrder.getCraftCode());
+        category.setText(workOrder.getCategory());
+        shop.setText(workOrder.getShop());
 
 
         notesAdapter = new NoteAdapter(this, workOrder.getNotes());
@@ -120,72 +153,92 @@ public class DetailActivity extends AppCompatActivity {
         Typeface FONTAWESOME = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/FontAwesome.otf");
         Typeface GUDEA = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Gudea-Regular.otf");
         Typeface GUDEABOLD = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Gudea-Bold.otf");
-        ((TextView)findViewById(R.id.descriptionTextView_detail)).setTypeface(GUDEA);
-        ((TextView)findViewById(R.id.row_proposal_detail)).setTypeface(GUDEABOLD);
-        ((TextView)findViewById(R.id.dateCreatedTextView)).setTypeface(GUDEA);
+        description.setTypeface(GUDEA);
+        proposal.setTypeface(GUDEABOLD);
+        dateCreated.setTypeface(GUDEA);
 
-        ImageView priorityImageView = (ImageView)findViewById(R.id.imageView_priorityIconDetail);
+
+
         switch (workOrder.getPriority()){
             case "TIME SENSITIVE":
-                priorityImageView.setImageResource(R.drawable.priority_time_sensitive);
+                priorityIcon.setImageResource(R.drawable.priority_time_sensitive);
                 break;
             case "URGENT":
-                priorityImageView.setImageResource(R.drawable.priority_urgent);
+                priorityIcon.setImageResource(R.drawable.priority_urgent);
                 break;
             case "EMERGENCY":
-                priorityImageView.setImageResource(R.drawable.priority_emergency);
+                priorityIcon.setImageResource(R.drawable.priority_emergency);
                 break;
             default:
-                priorityImageView.setVisibility(View.GONE);
+                priorityIcon.setVisibility(View.GONE);
         }
 
 
-        ImageView statusImageView = (ImageView)findViewById(R.id.imageView_statusIcon);
         switch (workOrder.getStatus()){
 
             case "ASSIGNED":
-                statusImageView.setImageResource(R.drawable.status_assigned);
+                statusIcon.setImageResource(R.drawable.status_assigned);
                 break;
             case "WORK IN PROGRESS":
-                statusImageView.setImageResource(R.drawable.status_work_in_progress);
+                statusIcon.setImageResource(R.drawable.status_work_in_progress);
                 break;
             case "WORK COMPLETE":
-                statusImageView.setImageResource(R.drawable.status_work_complete);
+                statusIcon.setImageResource(R.drawable.status_work_complete);
                 break;
             case "ON HOLD":
-                statusImageView.setImageResource(R.drawable.status_on_hold);
+                statusIcon.setImageResource(R.drawable.status_on_hold);
                 break;
         }
 
-        ((TextView)findViewById(R.id.textView_moveSectionIcon)).setTypeface(FONTAWESOME);
-        ((TextView)findViewById(R.id.textView_moveSectionIcon)).setText(getString(R.string.icon_moveToBacklog));
+        moveSectionTextIcon.setTypeface(FONTAWESOME);
+        moveSectionTextIcon.setText(getString(R.string.icon_moveToBacklog));
         final Animation sectionChangeAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out_dim);
+        AnimationUtils.loadAnimation(this, R.anim.fade_out_dim);
 
-        findViewById(R.id.layout_moveSection).setOnClickListener(new View.OnClickListener() {
+        sectionChangeAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                toggleSectionTitleViews();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        moveSection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (((TextView) findViewById(R.id.textView_moveSectionTitle)).getText().equals("Move to\nBacklog")) {
-                    findViewById(R.id.textView_moveSectionIcon).startAnimation(sectionChangeAnim);
-                    findViewById(R.id.textView_moveSectionTitle).startAnimation(sectionChangeAnim);
-                    ((TextView)findViewById(R.id.textView_moveSectionTitle)).setText("Move to\nDaily");
-                    ((TextView)findViewById(R.id.textView_moveSectionIcon)).setText(getString(R.string.icon_moveToDaily));
-                } else if (((TextView) findViewById(R.id.textView_moveSectionTitle)).getText().equals("Move to\nDaily")) {
-                    findViewById(R.id.textView_moveSectionIcon).startAnimation(sectionChangeAnim);
-                    findViewById(R.id.textView_moveSectionTitle).startAnimation(sectionChangeAnim);
-                    ((TextView) findViewById(R.id.textView_moveSectionTitle)).setText("Move to\nBacklog");
-                    ((TextView) findViewById(R.id.textView_moveSectionIcon)).setText(getString(R.string.icon_moveToBacklog));
-                }
+                moveSection.startAnimation(sectionChangeAnim);
+/*                if (moveSectionTitle.getText().equals("Move to\nBacklog")) {
+                    moveSection.startAnimation(sectionChangeAnim);
+                    //moveSectionTextIcon.startAnimation(sectionChangeAnim);
+                    //moveSectionTitle.startAnimation(sectionChangeAnim);
+                    moveSectionTitle.setText("Move to\nDaily");
+                    moveSectionTextIcon.setText(getString(R.string.icon_moveToDaily));
+                } else if (moveSectionTitle.getText().equals("Move to\nDaily")) {
+                    //moveSectionTextIcon.startAnimation(sectionChangeAnim);
+                   // moveSectionTitle.startAnimation(sectionChangeAnim);
+                    moveSectionTitle.setText("Move to\nBacklog");
+                    moveSectionTextIcon.setText(getString(R.string.icon_moveToBacklog));
+                }*/
             }
         });
 
-        //Set up bottom two buttons
-        ((TextView)findViewById(R.id.button_viewNotes_icon)).setText(getString(R.string.icon_list));
-        ((TextView)findViewById(R.id.button_viewNotes_icon)).setTypeface(FONTAWESOME);
-        ((TextView)findViewById(R.id.button_addAction_icon)).setText(getString(R.string.icon_timeLog));
-        ((TextView)findViewById(R.id.button_addAction_icon)).setTypeface(FONTAWESOME);
-        ((TextView) findViewById(R.id.button_viewNotes_text)).setText("View Notes (" + notesAdapter.getCount() + ")");
 
-        findViewById(R.id.button_addAction).setOnClickListener(new View.OnClickListener() {
+        //Set up bottom two buttons
+        viewNotesIcon.setText(getString(R.string.icon_list));
+        viewNotesIcon.setTypeface(FONTAWESOME);
+        addActionIcon.setText(getString(R.string.icon_timeLog));
+        addActionIcon.setTypeface(FONTAWESOME);
+        viewNotesText.setText("View Notes (" + notesAdapter.getCount() + ")");
+
+        addAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Open up entry dialog, passing work order object
@@ -197,7 +250,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.button_viewNotes).setOnClickListener(new View.OnClickListener() {
+        viewNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createNotesViewPopup();
@@ -205,6 +258,15 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
+    private void toggleSectionTitleViews(){
+        if (moveSectionTitle.getText().equals("Move to\nBacklog")) {
+            moveSectionTitle.setText("Move to\nDaily");
+            moveSectionTextIcon.setText(getString(R.string.icon_moveToDaily));
+        }else if(moveSectionTitle.getText().equals("Move to\nDaily")) {
+            moveSectionTitle.setText("Move to\nBacklog");
+            moveSectionTextIcon.setText(getString(R.string.icon_moveToBacklog));
+        }
+    }
 
     private void createNoticesViewPopup(){
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
