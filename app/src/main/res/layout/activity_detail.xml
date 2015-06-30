@@ -58,8 +58,7 @@
                                 android:paddingLeft="6dp"
                                 android:paddingRight="6dp"
                                 android:text="136732-001"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
+                                android:textSize="20dp" />
 
                             <ImageView
                                 android:id="@+id/imageView_priorityIconDetail"
@@ -250,9 +249,9 @@
                                 android:layout_alignParentTop="true"
                                 android:layout_marginLeft="12dp"
                                 android:layout_marginTop="8dp"
+                                android:textColor="@android:color/tertiary_text_light"
                                 android:text="LOCATION"
-                                android:textSize="11dp"
-                                android:textStyle="bold" />
+                                android:textSize="11dp" />
 
                             <TextView
                                 android:id="@+id/detailView_textLocation"
@@ -263,6 +262,7 @@
                                 android:layout_below="@id/detailView_titleLocation"
                                 android:layout_marginLeft="8dp"
                                 android:text="RICHARDSON HALL Room #0388"
+                                android:textColor="@android:color/secondary_text_light"
                                 android:textSize="15dp" />
 
                             <TextView
@@ -273,8 +273,7 @@
                                 android:layout_below="@id/detailView_textLocation"
                                 android:layout_marginTop="12dp"
                                 android:text="STATUS"
-                                android:textSize="11dp"
-                                android:textStyle="bold" />
+                                android:textSize="11dp" />
 
 
                             <TextView
@@ -286,6 +285,7 @@
                                 android:layout_below="@id/detailView_titleStatus"
                                 android:layout_marginLeft="8dp"
                                 android:text="WORK IN PROGRESS"
+                                android:textColor="@android:color/secondary_text_light"
                                 android:textSize="15dp" />
 
                             <ImageView
@@ -308,8 +308,8 @@
                                 android:layout_below="@id/detailView_textStatus"
                                 android:layout_marginTop="12dp"
                                 android:text="FUNDING"
-                                android:textSize="11dp"
-                                android:textStyle="bold" />
+                                android:textColor="@android:color/tertiary_text_light"
+                                android:textSize="11dp"/>
 
                             <TextView
                                 android:id="@+id/detailView_textFunding"
@@ -320,6 +320,7 @@
                                 android:layout_below="@id/detailView_titleFunding"
                                 android:layout_marginLeft="8dp"
                                 android:text="QRS011 (BILLABLE)"
+                                android:textColor="@android:color/secondary_text_light"
                                 android:textSize="15dp" />
 
                             <TextView
@@ -330,9 +331,9 @@
                                 android:layout_alignStart="@id/detailView_titleLocation"
                                 android:layout_below="@id/detailView_textFunding"
                                 android:layout_marginTop="12dp"
+                                android:textColor="@android:color/tertiary_text_light"
                                 android:text="SHOP"
-                                android:textSize="11dp"
-                                android:textStyle="bold" />
+                                android:textSize="11dp"/>
 
                             <TextView
                                 android:id="@+id/detailView_textShop"
@@ -343,6 +344,7 @@
                                 android:layout_below="@id/detailView_titleShop"
                                 android:layout_marginLeft="8dp"
                                 android:text="LANDSCAPING"
+                                android:textColor="@android:color/secondary_text_light"
                                 android:textSize="15dp" />
 
                         </RelativeLayout>
@@ -361,8 +363,7 @@
                                 android:layout_marginLeft="12dp"
                                 android:layout_marginTop="8dp"
                                 android:text="PRIORITY"
-                                android:textSize="11dp"
-                                android:textStyle="bold" />
+                                android:textSize="11dp" />
 
                             <TextView
                                 android:id="@+id/detailView_textPriority"
@@ -373,6 +374,7 @@
                                 android:layout_below="@id/detailView_titlePriority"
                                 android:layout_marginLeft="8dp"
                                 android:text="URGENT"
+                                android:textColor="@android:color/secondary_text_light"
                                 android:textSize="15dp" />
 
                             <TextView
@@ -382,9 +384,9 @@
                                 android:layout_alignLeft="@id/detailView_titlePriority"
                                 android:layout_below="@id/detailView_textPriority"
                                 android:layout_marginTop="12dp"
+                                android:textColor="@android:color/tertiary_text_light"
                                 android:text="ASSIGNED"
-                                android:textSize="11dp"
-                                android:textStyle="bold" />
+                                android:textSize="11dp" />
 
                             <TextView
                                 android:id="@+id/detailView_textAssigned"
@@ -394,6 +396,7 @@
                                 android:layout_below="@id/detailView_titleAssigned"
                                 android:layout_marginLeft="8dp"
                                 android:text="MICHAEL BAMBERGER, DAVID HORN, LANCE JONES"
+                                android:textColor="@android:color/secondary_text_light"
                                 android:textSize="15dp" />
 
                             <TextView
@@ -404,8 +407,7 @@
                                 android:layout_below="@id/detailView_textAssigned"
                                 android:layout_marginTop="12dp"
                                 android:text="CATEGORY"
-                                android:textSize="11dp"
-                                android:textStyle="bold" />
+                                android:textSize="11dp"/>
 
                             <TextView
                                 android:id="@+id/detailView_textCategory"
@@ -417,6 +419,7 @@
                                 android:layout_marginLeft="8dp"
                                 android:layout_weight="3"
                                 android:text="PD1075_SOFT COSTS"
+                                android:textColor="@android:color/secondary_text_light"
                                 android:textSize="15sp" />
 
                         </RelativeLayout>

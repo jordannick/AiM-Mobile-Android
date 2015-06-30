@@ -1,6 +1,7 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,8 @@ import com.nispok.snackbar.SnackbarManager;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.ActionAdapter;
 import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
 import edu.oregonstate.AiMLiteMobile.Fragments.AddActionDialogFragment;
@@ -37,14 +40,24 @@ public class ActionQueueListActivity extends AppCompatActivity{
     private static CurrentUser currentUser;
     private ArrayList<Action> actions;
     private ActionAdapter actionQueueAdapter;
-    private RelativeLayout recentlyViewedBarLayout;
 
     public static final int TIMELOG_FRAGMENT = 1;
+
+    private Context self;
+
+    @Bind(R.id.actionList_recentBarIconR) TextView recentBarR;
+    @Bind(R.id.actionList_recentBarIconL) TextView recentBarL;
+    @Bind(R.id.actionList_recentBarIconR2) TextView recentBarR2;
+    @Bind(R.id.actionList_recentBarIconL2) TextView recentBarL2;
+    @Bind(R.id.actionList_recentlyViewedLayout) LinearLayout recentlyViewedLayout;
+    @Bind(R.id.actionList_recentlyViewedBarLayout) RelativeLayout recentlyViewedBarLayout;
+    @Bind(R.id.actionList_relativeLayout) RelativeLayout relativeLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_action);
+        self = this;
         setTitle(R.string.action_queue_activity_title);
         currentUser = CurrentUser.get(getApplicationContext());
         actions = currentUser.getActions();
@@ -54,15 +67,15 @@ public class ActionQueueListActivity extends AppCompatActivity{
     }
 
     private void populateViews(){
-        recentlyViewedBarLayout = (RelativeLayout)findViewById(R.id.actionList_recentlyViewedBarLayout);
-
         final ArrayList<WorkOrder> recentWorkOrders  = currentUser.getRecentlyViewedWorkOrders();
 
+        //BIND OUR LAYOUTS! WOO BUTTER
+        ButterKnife.bind(this);
+        //TextView recentBarR = (TextView)findViewById(R.id.actionList_recentBarIconR);
         //TextView recentBarL = (TextView)findViewById(R.id.actionList_recentBarIconL);
-        TextView recentBarR = (TextView)findViewById(R.id.actionList_recentBarIconR);
-        TextView recentBarL = (TextView)findViewById(R.id.actionList_recentBarIconL);
-        TextView recentBarR2 = (TextView)findViewById(R.id.actionList_recentBarIconR2);
-        TextView recentBarL2 = (TextView)findViewById(R.id.actionList_recentBarIconL2);
+        //TextView recentBarR2 = (TextView)findViewById(R.id.actionList_recentBarIconR2);
+        //TextView recentBarL2 = (TextView)findViewById(R.id.actionList_recentBarIconL2);
+
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/FontAwesome.otf");
         recentBarR.setTypeface(tf); recentBarL.setTypeface(tf);
         recentBarR2.setTypeface(tf); recentBarL2.setTypeface(tf);
@@ -71,7 +84,7 @@ public class ActionQueueListActivity extends AppCompatActivity{
         recentBarR2.setText(R.string.icon_recentBarCollapse);
         recentBarL2.setText(R.string.icon_recentBarCollapse);
 
-        final LinearLayout recentlyViewedLayout = (LinearLayout)findViewById(R.id.actionList_recentlyViewedLayout);
+        //final LinearLayout recentlyViewedLayout = (LinearLayout)findViewById(R.id.actionList_recentlyViewedLayout);
         recentlyViewedLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,8 +97,6 @@ public class ActionQueueListActivity extends AppCompatActivity{
             WorkOrder workOrder = recentWorkOrders.get(i);
             recentlyViewedLayout.addView(createRecentRowView(workOrder));
         }
-
-        RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.actionList_relativeLayout);
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,7 +113,7 @@ public class ActionQueueListActivity extends AppCompatActivity{
                     recentlyViewedLayout.setVisibility(View.VISIBLE);
                 }else{
                     //Show snackbar alert of "no recents"
-                    SnackbarManager.show(Snackbar.with(getApplicationContext()).text("No Recently Viewed").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
+                    SnackbarManager.show(Snackbar.with(self).text("No Recently Viewed").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
 
                 }
             }
@@ -113,6 +124,7 @@ public class ActionQueueListActivity extends AppCompatActivity{
     private View createRecentRowView(final WorkOrder workOrder){
         LayoutInflater inflater = getLayoutInflater();
         View rowView = inflater.inflate(R.layout.list_item_recent, null);
+
         TextView workOrderNum = (TextView)rowView.findViewById(R.id.timeLog_recentWorkOrderNum);
         TextView description = (TextView)rowView.findViewById(R.id.timeLog_recentDescription);
 
@@ -132,14 +144,13 @@ public class ActionQueueListActivity extends AppCompatActivity{
     private void toggleRecentlyViewed(boolean onlyHide){
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_in);
         Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_out_bottom);
-        LinearLayout layout = (LinearLayout) findViewById(R.id.actionList_recentlyViewedLayout);
-        if(layout.getVisibility() == View.VISIBLE){
-            layout.setVisibility(View.GONE);
-            layout.startAnimation(slideDown);
+        if(recentlyViewedLayout.getVisibility() == View.VISIBLE){
+            recentlyViewedLayout.setVisibility(View.GONE);
+            recentlyViewedLayout.startAnimation(slideDown);
             recentlyViewedBarLayout.startAnimation(slideUp);
         }else if(!onlyHide){
-            layout.setVisibility(View.VISIBLE);
-            layout.startAnimation(slideUp);
+            recentlyViewedLayout.setVisibility(View.VISIBLE);
+            recentlyViewedLayout.startAnimation(slideUp);
             recentlyViewedBarLayout.startAnimation(slideDown);
         }
 

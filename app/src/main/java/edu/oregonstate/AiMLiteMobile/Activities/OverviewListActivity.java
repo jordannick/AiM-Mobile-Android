@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +26,8 @@ import com.nispok.snackbar.SnackbarManager;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.Notice;
@@ -40,14 +43,29 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class OverviewListActivity extends AppCompatActivity implements RecyWorkOrderAdapter.Callbacks{
+public class OverviewListActivity extends AppCompatActivity implements RecyWorkOrderAdapter.Callbacks {
     private static final String TAG = "OverviewListActivity";
     private static CurrentUser currentUser;
     private Activity activity;
 
     private LinearLayoutManager linearLayoutManager;
     private RecyWorkOrderAdapter recAdapter;
-    private RecyclerView recyclerView;
+
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.recycler_view)
+    RecyclerView recyclerView;
+    @Bind(R.id.overview_activity_section_icon0)
+    TextView sectionIcon0;
+    @Bind(R.id.overview_activity_section_icon1)
+    TextView sectionIcon1;
+    @Bind(R.id.overview_activity_section_icon2)
+    TextView sectionIcon2;
+    @Bind(R.id.overview_activity_section_icon3)
+    TextView sectionIcon3;
+    @Bind(R.id.overviewActivity_dimOverlay)
+    LinearLayout dimOverlay;
+
 
     private TextView notifBox = null;
 
@@ -61,12 +79,13 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         activity = this;
         currentUser = CurrentUser.get(getApplicationContext());
         setContentView(R.layout.activity_overview);
+        ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -120,7 +139,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
             @Override
             public boolean onQueryTextChange(String newText) {
                 Log.d(TAG, "text changed");
-                if ( TextUtils.isEmpty(newText) ) {
+                if (TextUtils.isEmpty(newText)) {
                     recAdapter.getFilter().filter("");
                 } else {
                     recAdapter.getFilter().filter(newText.toString());
@@ -136,11 +155,6 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
                 return false;
             }
         });
-
-
-
-
-
 
 
         final View menu_notification = menu.findItem(R.id.menu_notification).getActionView();
@@ -163,30 +177,22 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     }
 
     private void initSectionIcons() {
-        TextView tv0 = (TextView) findViewById(R.id.overview_activity_section_icon0);
-        TextView tv1 = (TextView) findViewById(R.id.overview_activity_section_icon1);
-        TextView tv2 = (TextView) findViewById(R.id.overview_activity_section_icon2);
-        TextView tv3 = (TextView) findViewById(R.id.overview_activity_section_icon3);
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/FontAwesome.otf");
 
-        tv0.setTypeface(tf);
-        tv1.setTypeface(tf);
-        tv2.setTypeface(tf);
-        tv3.setTypeface(tf);
-        tv0.setText(R.string.icon_daily);
-        tv1.setText(R.string.icon_backlog);
-        tv2.setText(R.string.icon_admin);
-        tv3.setText(R.string.icon_recentlyCompleted);
+        sectionIcon0.setTypeface(tf);
+        sectionIcon1.setTypeface(tf);
+        sectionIcon2.setTypeface(tf);
+        sectionIcon3.setTypeface(tf);
+        sectionIcon0.setText(R.string.icon_daily);
+        sectionIcon1.setText(R.string.icon_backlog);
+        sectionIcon2.setText(R.string.icon_admin);
+        sectionIcon3.setText(R.string.icon_recentlyCompleted);
 
-        /*setClickListener(tv0, recAdapter.wrapper.getSectionIndex(WorkOrder.DAILY_SECTION_ID), "Daily");
-        setClickListener(tv1, recAdapter.wrapper.getSectionIndex(WorkOrder.BACKLOG_SECTION_ID), "Backlog");
-        setClickListener(tv2, recAdapter.wrapper.getSectionIndex(WorkOrder.ADMIN_SECTION_ID), "Admin");
-        setClickListener(tv3, recAdapter.wrapper.getSectionIndex(WorkOrder.RECENTLY_COMPLETED_SECTION_ID), "Recently Completed");*/
+        setClickListener(sectionIcon0, "Daily");
+        setClickListener(sectionIcon1, "Backlog");
+        setClickListener(sectionIcon2, "Admin");
+        setClickListener(sectionIcon3, "Recently Completed");
 
-        setClickListener(tv0, "Daily");
-        setClickListener(tv1, "Backlog");
-        setClickListener(tv2, "Admin");
-        setClickListener(tv3, "Recently Completed");
     }
 
 
@@ -197,9 +203,9 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
                 //linearLayoutManager.scrollToPositionWithOffset(position, 0);
 
                 // Look for the matching section title to scroll to
-                for (WorkOrderListItem item : recAdapter.getWorkOrderListItems()){
-                    if (item.getType() == WorkOrderListItem.Type.SECTION){
-                        if (section.equals(item.getSectionTitle())){
+                for (WorkOrderListItem item : recAdapter.getWorkOrderListItems()) {
+                    if (item.getType() == WorkOrderListItem.Type.SECTION) {
+                        if (section.equals(item.getSectionTitle())) {
                             linearLayoutManager.scrollToPositionWithOffset(recAdapter.getWorkOrderListItems().indexOf(item), 0);
                         }
                     }
@@ -270,8 +276,6 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 */
 
 
-
-
     private void requestLastUpdated() {
 
         ApiManager.getService().getLastUpdated(currentUser.getUsername(), currentUser.getToken(), new Callback<String>() {
@@ -334,7 +338,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     }
 
     private void setDimVisibility(int visibility) {
-        activity.findViewById(R.id.overviewActivity_dimOverlay).setVisibility(visibility);
+        dimOverlay.setVisibility(visibility);
     }
 
 }
