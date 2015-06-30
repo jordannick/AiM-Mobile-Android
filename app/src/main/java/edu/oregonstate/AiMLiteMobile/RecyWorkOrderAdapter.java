@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,10 +25,11 @@ import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
  * Created by sellersk on 6/15/2015.
  */
 
-public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdapter.WorkOrderViewHolder> {
+public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdapter.WorkOrderViewHolder> implements Filterable {
     private static final String TAG = "RecyWorkOrderAdapter";
 
     private ArrayList<WorkOrderListItem> workOrderListItems;
+    private ArrayList<WorkOrderListItem> workOrderListItemsOrig;
     private ArrayList<WorkOrder> workOrders;
     private Context context;
     public Callbacks mCallbacks;
@@ -36,8 +39,7 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
         void onWorkOrderSelected(WorkOrder wo);
     }
 
-    public int sectionDailyIndex, sectionBacklogIndex, sectionAdminIndex, sectionCompletedIndex;
-    public int sectionDailyCount, sectionBacklogCount, sectionAdminCount, sectionCompletedCount;
+
 
     public RecyWorkOrderAdapter(ArrayList<WorkOrder> workOrders, Activity activity) {
         mCallbacks = (Callbacks) activity;
@@ -140,13 +142,16 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "workOrderListItems size: " + workOrderListItems.size());
         return workOrderListItems.size();
     }
 
     private void initListItems(){
         wrapper = new WorkOrderListWrapper(workOrders);
         workOrderListItems = wrapper.getWorkOrderListItems();
+    }
+
+    public ArrayList<WorkOrderListItem> getWorkOrderListItems() {
+        return workOrderListItems;
     }
 
     public static class WorkOrderViewHolder extends RecyclerView.ViewHolder {
@@ -171,6 +176,93 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
             count = (TextView)v.findViewById(R.id.list_item_section_count);
         }
     }
+
+
+    public void flushFilter() {
+        initListItems();
+        notifyDataSetChanged();
+
+        if (workOrderListItemsOrig != null) workOrderListItemsOrig.clear();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                final FilterResults filterReturn = new FilterResults();
+
+                final List<WorkOrderListItem> results = new ArrayList<WorkOrderListItem>();
+
+                if (workOrderListItemsOrig == null){
+                    workOrderListItemsOrig = new ArrayList<>();
+                    workOrderListItemsOrig.addAll(workOrderListItems);
+                } else if (workOrderListItemsOrig.isEmpty()){
+                    workOrderListItemsOrig.addAll(workOrderListItems);
+                }
+
+                int dailyCount = 0;
+                int backlogCount = 0;
+                int adminCount = 0;
+                int completedCount = 0 ;
+
+                if (constraint != null) {
+                    if (workOrderListItemsOrig != null && workOrderListItemsOrig.size() > 0) {
+                        for (WorkOrderListItem item : workOrderListItemsOrig) {
+                            if (item.getType() != WorkOrderListItem.Type.SECTION){
+                                if (item.getWorkOrder().getDescription().toLowerCase().contains(constraint.toString().toLowerCase())) { // Add only if matched string
+                                    results.add(item);
+
+                                    //Recalculate section counts for filtered list
+                                    if (item.getWorkOrder().getSection().equals("Daily")){
+                                        dailyCount++;
+                                    } else if (item.getWorkOrder().getSection().equals("Backlog")){
+                                        backlogCount++;
+                                    } else if (item.getWorkOrder().getSection().equals("Admin")){
+                                        adminCount++;
+                                    } else if (item.getWorkOrder().getSection().equals("Recently Completed")){
+                                        completedCount++;
+                                    }
+                                }
+                            } else { // Always add section to filtered list
+                                results.add(item);
+                            }
+                        }
+
+
+                        for (WorkOrderListItem item : results){
+                            if (item.getType() == WorkOrderListItem.Type.SECTION){
+                                if (item.getSectionTitle().equals("Daily")){
+                                    item.setSectionCount(dailyCount);
+                                } else if (item.getSectionTitle().equals("Backlog")){
+                                    item.setSectionCount(backlogCount);
+                                } else if (item.getSectionTitle().equals("Admin")){
+                                    item.setSectionCount(adminCount);
+                                } else if (item.getSectionTitle().equals("Recently Completed")){
+                                    item.setSectionCount(completedCount);
+                                }
+                            }
+                        }
+                    }
+                    filterReturn.values = results;
+                }
+
+                return filterReturn;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                workOrderListItems.clear();
+                workOrderListItems.addAll((ArrayList<WorkOrderListItem>)results.values);
+                notifyDataSetChanged();
+            }
+
+        };
+    }
+
+
+
+
 
 }
 

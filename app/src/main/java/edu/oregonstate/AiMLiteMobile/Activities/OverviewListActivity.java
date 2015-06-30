@@ -2,17 +2,20 @@ package edu.oregonstate.AiMLiteMobile.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,6 +29,7 @@ import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.Notice;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
+import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
 import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseNotices;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
@@ -36,7 +40,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class OverviewListActivity extends AppCompatActivity implements RecyWorkOrderAdapter.Callbacks {
+public class OverviewListActivity extends AppCompatActivity implements RecyWorkOrderAdapter.Callbacks{
     private static final String TAG = "OverviewListActivity";
     private static CurrentUser currentUser;
     private Activity activity;
@@ -44,6 +48,10 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     private LinearLayoutManager linearLayoutManager;
     private RecyWorkOrderAdapter recAdapter;
     private RecyclerView recyclerView;
+
+    private TextView notifBox = null;
+
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +65,13 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recAdapter = new RecyWorkOrderAdapter(currentUser.getWorkOrders(), this);
         recyclerView.setAdapter(recAdapter);
-
 
 
         initSectionIcons();
@@ -73,6 +81,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         //requestLastUpdated();
         requestWorkOrders();
         requestNotices();
+
 
     }
 
@@ -96,9 +105,62 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_overview_list, menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.search_button).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d(TAG, "text changed");
+                if ( TextUtils.isEmpty(newText) ) {
+                    recAdapter.getFilter().filter("");
+                } else {
+                    recAdapter.getFilter().filter(newText.toString());
+                }
+                return true;
+            }
+        });
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                recAdapter.flushFilter();
+                return false;
+            }
+        });
+
+
+
+
+
+
+
+        final View menu_notification = menu.findItem(R.id.menu_notification).getActionView();
+        notifBox = (TextView) menu_notification.findViewById(R.id.hotlist_hot);
+
+        setNotifCount(currentUser.getNotices().size());
+
+        menu_notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNoticesViewPopup();
+            }
+        });
+
         return true;
     }
 
+    private void setNotifCount(int count) {
+        notifBox.setText(String.valueOf(count));
+    }
 
     private void initSectionIcons() {
         TextView tv0 = (TextView) findViewById(R.id.overview_activity_section_icon0);
@@ -107,32 +169,55 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         TextView tv3 = (TextView) findViewById(R.id.overview_activity_section_icon3);
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/FontAwesome.otf");
 
-        tv0.setTypeface(tf); tv1.setTypeface(tf); tv2.setTypeface(tf); tv3.setTypeface(tf);
-        tv0.setText(R.string.icon_daily); tv1.setText(R.string.icon_backlog); tv2.setText(R.string.icon_admin); tv3.setText(R.string.icon_recentlyCompleted);
+        tv0.setTypeface(tf);
+        tv1.setTypeface(tf);
+        tv2.setTypeface(tf);
+        tv3.setTypeface(tf);
+        tv0.setText(R.string.icon_daily);
+        tv1.setText(R.string.icon_backlog);
+        tv2.setText(R.string.icon_admin);
+        tv3.setText(R.string.icon_recentlyCompleted);
 
-        setClickListener(tv0, recAdapter.wrapper.getSectionIndex(WorkOrder.DAILY_SECTION_ID));
-        setClickListener(tv1, recAdapter.wrapper.getSectionIndex(WorkOrder.BACKLOG_SECTION_ID));
-        setClickListener(tv2, recAdapter.wrapper.getSectionIndex(WorkOrder.ADMIN_SECTION_ID));
-        setClickListener(tv3, recAdapter.wrapper.getSectionIndex(WorkOrder.RECENTLY_COMPLETED_SECTION_ID));
+        /*setClickListener(tv0, recAdapter.wrapper.getSectionIndex(WorkOrder.DAILY_SECTION_ID), "Daily");
+        setClickListener(tv1, recAdapter.wrapper.getSectionIndex(WorkOrder.BACKLOG_SECTION_ID), "Backlog");
+        setClickListener(tv2, recAdapter.wrapper.getSectionIndex(WorkOrder.ADMIN_SECTION_ID), "Admin");
+        setClickListener(tv3, recAdapter.wrapper.getSectionIndex(WorkOrder.RECENTLY_COMPLETED_SECTION_ID), "Recently Completed");*/
+
+        setClickListener(tv0, "Daily");
+        setClickListener(tv1, "Backlog");
+        setClickListener(tv2, "Admin");
+        setClickListener(tv3, "Recently Completed");
     }
 
-    private void setClickListener(TextView tv, final int position) {
+
+    private void setClickListener(TextView tv, final String section) {
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //recyclerView.smoothScrollToPosition(position);
-                //recyclerView.getLayoutManager().scrollToPosition(position);
-                linearLayoutManager.scrollToPositionWithOffset(position, 0);
+                //linearLayoutManager.scrollToPositionWithOffset(position, 0);
+
+                // Look for the matching section title to scroll to
+                for (WorkOrderListItem item : recAdapter.getWorkOrderListItems()){
+                    if (item.getType() == WorkOrderListItem.Type.SECTION){
+                        if (section.equals(item.getSectionTitle())){
+                            linearLayoutManager.scrollToPositionWithOffset(recAdapter.getWorkOrderListItems().indexOf(item), 0);
+                        }
+                    }
+                }
             }
         });
     }
 
     // Start an instance of DetailActivity
-    public void onWorkOrderSelected(WorkOrder workOrder){
+    public void onWorkOrderSelected(WorkOrder workOrder) {
+        //recAdapter.flushFilter();
+
+
         Intent i = new Intent(this, DetailActivity.class);
         i.putExtra(WorkOrder.WORK_ORDER_EXTRA, workOrder);
         startActivity(i);
         overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
+        searchView.setQuery("", false);
     }
 
     private void createNoticesViewPopup() {
@@ -158,13 +243,15 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         Intent i = new Intent(this, ActionQueueListActivity.class);
         startActivity(i);
         overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
+        searchView.setQuery("", false);
     }
+/*
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_notification:
-                createNoticesViewPopup();
+
                 break;
             case R.id.action_queue:
                 beginActionQueueActivity();
@@ -180,6 +267,10 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         }
         return super.onOptionsItemSelected(item);
     }
+*/
+
+
+
 
     private void requestLastUpdated() {
 
@@ -211,6 +302,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
                 //adapter.refreshWorkOrders(currentUser.getWorkOrders());
                 recAdapter.refreshWorkOrders(currentUser.getWorkOrders());
                 initSectionIcons();
+                activity.findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
                 setDimVisibility(View.GONE);
             }
 
@@ -218,6 +310,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
             public void failure(RetrofitError error) {
                 Log.d(TAG, "requestWorkOrders FAIL");
                 SnackbarManager.show(Snackbar.with(activity).text("Failed to retrieve work orders").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
+                activity.findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
                 setDimVisibility(View.GONE);
             }
         });
@@ -230,6 +323,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
             public void success(ResponseNotices responseNotices, Response response) {
                 ArrayList<Notice> notices = responseNotices.getNotices();
                 currentUser.setNotices(notices);
+                setNotifCount(currentUser.getNotices().size());
             }
 
             @Override

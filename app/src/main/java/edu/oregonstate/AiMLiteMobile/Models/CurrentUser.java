@@ -61,6 +61,14 @@ public class CurrentUser {
         return intent;
     }
 
+    private void clearAll(){
+        workOrders.clear();
+        actions.clear();
+        notices.clear();
+        recentlyViewedWorkOrders.clear();
+        lastUpdated = null;
+    }
+
     /* Creates a new AlertDialog, displays it.
             Prompts the user to confirm Logout or Cancel. */
     public void logoutUser(final Activity activity){
@@ -69,6 +77,7 @@ public class CurrentUser {
         builder.setTitle("Are you done?");
         builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                clearAll();
                 activity.startActivity(createLogoutIntent(activity));
                 activity.finish();
             }
