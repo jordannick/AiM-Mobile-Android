@@ -37,5 +37,4 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'com.android.support:design:22.2.0'
-    compile files('C:/Users/sellersk/Documents/GitHub/AiM-Mobile-Android/libs/butterknife-7.0.0.jar')
 }
