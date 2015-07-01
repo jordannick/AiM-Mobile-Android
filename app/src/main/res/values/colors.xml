@@ -67,6 +67,14 @@
     <!--General Use-->
     <color name="dimOverlay">#4D000000</color>
 
+    <!--OSU Official Web palette-->
+    <color name="OSU_orange">#c34500</color>
+    <color name="OSU_blue">#385e86</color>
+    <color name="OSU_red">#af292e</color>
+    <color name="OSU_green">#4e7300</color>
+    <color name="OSU_white">#f5f2ed</color>
+    <color name="OSU_black">#373737</color>
+
 </resources>
 
 

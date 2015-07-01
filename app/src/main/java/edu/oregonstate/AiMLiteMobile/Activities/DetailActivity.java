@@ -286,7 +286,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void createNoticesViewPopup(){
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        /*final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         LayoutInflater inflater = this.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_notes_list, null);
 
@@ -301,7 +301,7 @@ public class DetailActivity extends AppCompatActivity {
         ListView lv = (ListView) convertView.findViewById(R.id.popupNotes_listView);
         lv.setSelector(android.R.color.transparent);
         lv.setAdapter(noticesAdapter);
-        alertDialog.show();
+        alertDialog.show();*/
     }
 
     private void createNotesViewPopup(){

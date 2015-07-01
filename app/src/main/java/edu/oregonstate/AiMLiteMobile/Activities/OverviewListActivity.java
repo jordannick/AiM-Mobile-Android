@@ -1,7 +1,6 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -14,13 +13,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nispok.snackbar.Snackbar;
@@ -31,14 +30,13 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.NavigationAdapter;
-import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
-import edu.oregonstate.AiMLiteMobile.Models.Notice;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
 import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseNotices;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
+import edu.oregonstate.AiMLiteMobile.NotificationManager;
 import edu.oregonstate.AiMLiteMobile.R;
 import edu.oregonstate.AiMLiteMobile.RecyWorkOrderAdapter;
 import retrofit.Callback;
@@ -48,16 +46,22 @@ import retrofit.client.Response;
 
 public class OverviewListActivity extends AppCompatActivity implements RecyWorkOrderAdapter.Callbacks {
     private static final String TAG = "OverviewListActivity";
+
     private static CurrentUser currentUser;
+    private static NotificationManager notificationManager;
     private Activity activity;
+    private Menu menu;
 
     private LinearLayoutManager linearLayoutManager;
     private RecyWorkOrderAdapter recAdapter;
+    private SearchView searchView;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
+    @Bind(R.id.overview_activity_shortcuts)
+    LinearLayout sectionShortcutBar;
     @Bind(R.id.overview_activity_section_icon0)
     TextView sectionIcon0;
     @Bind(R.id.overview_activity_section_icon1)
@@ -69,55 +73,61 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     @Bind(R.id.overviewActivity_dimOverlay)
     LinearLayout dimOverlay;
 
+    @Bind(R.id.left_drawer)
+    RecyclerView recyclerViewDrawer;
+    @Bind(R.id.right_drawer)
+    RecyclerView recyclerViewDrawerNotification;
+    @Bind(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
 
-    private TextView notifBox = null;
-
-
-    @Bind(R.id.left_drawer) RecyclerView recyclerViewDrawer;
-    @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
-    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "OverviewListActivity onCreate");
 
-        activity = this;
-        currentUser = CurrentUser.get(getApplicationContext());
         setContentView(R.layout.activity_overview);
         ButterKnife.bind(this);
-
         setSupportActionBar(toolbar);
 
+        activity = this;
+
+        currentUser = CurrentUser.get(getApplicationContext());
+        notificationManager = NotificationManager.get(this, recyclerViewDrawerNotification);
+
+        SnackbarManager.show(Snackbar.with(this).text("Logged in as " + currentUser.getUsername().toUpperCase()).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recAdapter = new RecyWorkOrderAdapter(currentUser.getWorkOrders(), this);
         recyclerView.setAdapter(recAdapter);
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                InputMethodManager imm = (InputMethodManager) getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            }
+        });
+
 
         initSectionIcons();
 
-        SnackbarManager.show(Snackbar.with(this).text("Logged in as " + currentUser.getUsername().toUpperCase()).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
-
-        //requestLastUpdated();
         requestWorkOrders();
         requestNotices();
 
-
         initNavigationDrawer();
-
     }
 
-    private void initNavigationDrawer(){
+
+    private void initNavigationDrawer() {
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                //getActionBar().setTitle();
             }
 
             @Override
@@ -130,10 +140,8 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-
-
-        linearLayoutManager = new LinearLayoutManager(this);
-        recyclerViewDrawer.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager linearLayoutManagerDrawer = new LinearLayoutManager(this);
+        recyclerViewDrawer.setLayoutManager(linearLayoutManagerDrawer);
         String[] navTitles = new String[4];
         int[] icons = new int[4];
 
@@ -146,11 +154,11 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         navTitles[3] = "Log out";
         icons[3] = R.string.icon_logout;
 
-
         Typeface iconTypeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/FontAwesome.otf");
         NavigationAdapter adapter = new NavigationAdapter(navTitles, icons, currentUser.getUsername().toUpperCase(), iconTypeface);
         recyclerViewDrawer.setAdapter(adapter);
     }
+
 
     @Override
     protected void onResume() {
@@ -172,11 +180,14 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_overview_list, menu);
+        this.menu = menu;
 
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.search_button).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        searchView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -186,10 +197,11 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.d(TAG, "text changed");
                 if (TextUtils.isEmpty(newText)) {
+                    sectionShortcutBar.setVisibility(View.VISIBLE);
                     recAdapter.getFilter().filter("");
-                } else {
+                } else { //Start filtering the RecycleView when chars are entered
+                    sectionShortcutBar.setVisibility(View.GONE);
                     recAdapter.getFilter().filter(newText.toString());
                 }
                 return true;
@@ -199,29 +211,25 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                recAdapter.flushFilter();
+                recAdapter.flushFilter(); //Bring back the full list when search is closed
+                sectionShortcutBar.setVisibility(View.VISIBLE);
                 return false;
             }
         });
 
 
-        final View menu_notification = menu.findItem(R.id.menu_notification).getActionView();
-        notifBox = (TextView) menu_notification.findViewById(R.id.hotlist_hot);
-
-        setNotifCount(currentUser.getNotices().size());
-
+        View menu_notification = menu.findItem(R.id.menu_notification).getActionView();
         menu_notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createNoticesViewPopup();
+                //createNoticesViewPopup();
+                //drawerLayout.openDrawer(GravityCompat.END);
+                notificationManager.openDrawer(drawerLayout);
             }
         });
 
-        return true;
-    }
 
-    private void setNotifCount(int count) {
-        notifBox.setText(String.valueOf(count));
+        return true;
     }
 
     private void initSectionIcons() {
@@ -240,7 +248,6 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         setClickListener(sectionIcon1, "Backlog");
         setClickListener(sectionIcon2, "Admin");
         setClickListener(sectionIcon3, "Recently Completed");
-
     }
 
 
@@ -248,12 +255,11 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //linearLayoutManager.scrollToPositionWithOffset(position, 0);
-
-                // Look for the matching section title to scroll to
+                // Look for the matching section title to scroll to (Section title positions may change during searches)
                 for (WorkOrderListItem item : recAdapter.getWorkOrderListItems()) {
                     if (item.getType() == WorkOrderListItem.Type.SECTION) {
                         if (section.equals(item.getSectionTitle())) {
+                            Log.e(TAG, "scroll to: " + recAdapter.getWorkOrderListItems().indexOf(item));
                             linearLayoutManager.scrollToPositionWithOffset(recAdapter.getWorkOrderListItems().indexOf(item), 0);
                         }
                     }
@@ -264,9 +270,6 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
     // Start an instance of DetailActivity
     public void onWorkOrderSelected(WorkOrder workOrder) {
-        //recAdapter.flushFilter();
-
-
         Intent i = new Intent(this, DetailActivity.class);
         i.putExtra(WorkOrder.WORK_ORDER_EXTRA, workOrder);
         startActivity(i);
@@ -274,24 +277,6 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         searchView.setQuery("", false);
     }
 
-    private void createNoticesViewPopup() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        LayoutInflater inflater = this.getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.dialog_notes_list, null);
-
-        convertView.findViewById(R.id.dialogNotes_buttonCancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
-        NoticeAdapter noticesAdapter = new NoticeAdapter(this, currentUser.getNotices());
-        alertDialog.setView(convertView);
-        ListView lv = (ListView) convertView.findViewById(R.id.popupNotes_listView);
-        lv.setSelector(android.R.color.transparent);
-        lv.setAdapter(noticesAdapter);
-        alertDialog.show();
-    }
 
     public void beginActionQueueActivity() {
         Intent i = new Intent(this, ActionQueueListActivity.class);
@@ -299,29 +284,6 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
         searchView.setQuery("", false);
     }
-/*
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_notification:
-
-                break;
-            case R.id.action_queue:
-                beginActionQueueActivity();
-                break;
-            case R.id.log_out:
-                currentUser.logoutUser(this);
-                break;
-            case R.id.force_refresh:
-                //updateWorkOrderList();
-                break;
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-*/
 
 
     private void requestLastUpdated() {
@@ -373,9 +335,8 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         ApiManager.getService().getNotices(currentUser.getUsername(), currentUser.getToken(), new Callback<ResponseNotices>() {
             @Override
             public void success(ResponseNotices responseNotices, Response response) {
-                ArrayList<Notice> notices = responseNotices.getNotices();
-                currentUser.setNotices(notices);
-                setNotifCount(currentUser.getNotices().size());
+                notificationManager.refreshNotices(responseNotices.getNotices());
+                if (menu != null) notificationManager.updateNoticeCount(menu);
             }
 
             @Override

@@ -131,14 +131,33 @@
 
     </LinearLayout>
 
+
+    <Button
+
+        style="?android:attr/buttonStyleSmall"
+        android:background="@color/OSU_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:id="@+id/forget_button"
+        android:textColor="@color/emergency_red"
+        android:layout_below="@+id/loginView_credentialLayout"
+        android:visibility="gone"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="4dp"/>
+
     <TextView
         android:id="@+id/loginView_savedUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/loginView_credentialLayout"
-        android:layout_centerHorizontal="true"
-        android:text="crosst currently saved"
-        android:textColor="@android:color/white" />
+        android:layout_toRightOf="@id/forget_button"
+        android:text="no one currently saved"
+        android:textColor="@android:color/white"
+        android:visibility="gone"/>
+
+
+
 
     <ProgressBar
         android:id="@+id/load_circle"
@@ -147,5 +166,7 @@
         android:layout_below="@+id/loginView_savedUser"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal" />
+
+
 
 </RelativeLayout>

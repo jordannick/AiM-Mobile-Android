@@ -1,11 +1,12 @@
 package edu.oregonstate.AiMLiteMobile.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,36 +17,63 @@ import edu.oregonstate.AiMLiteMobile.R;
 /**
  * Created by jordan_n on 6/15/2015.
  */
-public class NoticeAdapter extends ArrayAdapter<Notice> {
+public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.NoticeViewHolder> {
 
-    private final Context mContext;
-    ArrayList<Notice> mNotices;
+    private Context context;
+    private ArrayList<Notice> notices;
 
-    public NoticeAdapter(Context c, ArrayList<Notice> notices){
-        super(c, 0, notices);
-        mContext = c;
-        mNotices = notices;
+    public NoticeAdapter(ArrayList<Notice> notices, Context context) {
+
+        this.context = context;
+        this.notices = notices;
+    }
+
+    public void refreshNotices(ArrayList<Notice> notices){
+        this.notices = notices;
+        notifyDataSetChanged();
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null){
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_item_notice, parent, false);
-        }
-
-        Notice notice = mNotices.get(position);
-
-        Typeface GUDEA = Typeface.createFromAsset(mContext.getAssets(), "fonts/Gudea-Regular.otf");
-        //Typeface GUDEABOLD = Typeface.createFromAsset(mContext.getAssets(), "fonts/Gudea-Bold.otf");
-        ((TextView)convertView.findViewById(R.id.row_type)).setTypeface(GUDEA);
-        ((TextView)convertView.findViewById(R.id.row_description)).setTypeface(GUDEA);
-        ((TextView)convertView.findViewById(R.id.row_type)).setText(notice.getType());
-
-        ((TextView)convertView.findViewById(R.id.row_description)).setText(notice.getDescription());
-
-        ((TextView)convertView.findViewById(R.id.actionRow_valueAgo)).setText(notice.getDateElements()[3]);
-        ((TextView)convertView.findViewById(R.id.actionRow_stringAgo)).setText(notice.getDateElements()[4]);
-        return convertView;
+    public NoticeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.
+                from(parent.getContext()).
+                inflate(R.layout.list_item_notice, parent, false);
+        return new NoticeViewHolder(view);
     }
+
+    @Override
+    public void onBindViewHolder(NoticeViewHolder holder, int position) {
+        Notice notice = notices.get(position);
+        Typeface GUDEA = Typeface.createFromAsset(context.getAssets(), "fonts/Gudea-Regular.otf");
+        holder.type.setTypeface(GUDEA);
+        holder.description.setTypeface(GUDEA);
+
+        holder.type.setText(notice.getType());
+        holder.description.setText(notice.getDescription());
+        holder.valueAgo.setText(notice.getDateElements()[3]);
+        holder.valueAgo.setText(notice.getDateElements()[4]);
+    }
+
+    @Override
+    public int getItemCount() {
+        return notices.size();
+    }
+
+    public static class NoticeViewHolder extends RecyclerView.ViewHolder {
+
+        protected TextView type;
+        protected TextView description;
+        protected TextView valueAgo;
+        protected TextView stringAgo;
+
+        public NoticeViewHolder(View v) {
+            super(v);
+            type = (TextView) v.findViewById(R.id.row_type);
+            description = (TextView) v.findViewById(R.id.row_description);
+            valueAgo = (TextView) v.findViewById(R.id.actionRow_valueAgo);
+            stringAgo = (TextView) v.findViewById(R.id.actionRow_stringAgo);
+        }
+    }
+
+
 }
