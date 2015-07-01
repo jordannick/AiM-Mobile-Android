@@ -178,7 +178,7 @@ public class ActionQueueListActivity extends AppCompatActivity{
         getMenuInflater().inflate(R.menu.menu_action_queue, menu);
         return true;
     }
-
+/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -198,7 +198,7 @@ public class ActionQueueListActivity extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @Override
     public void onBackPressed() {

@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -78,17 +79,16 @@ public class DetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-        if(getActionBar() != null){
-            //toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-            getActionBar().setHomeButtonEnabled(true);
-            //toolbar.setTitle("Work Order");
-            /*toolbar.setNavigationOnClickListener(new View.OnCl ickListener() {
+
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    finish();
+                    onBackPressed();
                 }
-            });*/
-            toolbar.inflateMenu(R.menu.menu_detail);
+            });
         }
 
         populateViews();
@@ -99,6 +99,14 @@ public class DetailActivity extends AppCompatActivity {
         Log.d(TAG, "DetailActivity onDestroy");
         super.onDestroy();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        return true;
+    }
+
+    /*
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -119,6 +127,7 @@ public class DetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+*/
 
     @Override
     public void onBackPressed() {
