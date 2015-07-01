@@ -30,6 +30,7 @@
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#727272</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="navigationDrawerBackground">#ffffff</color>
 
     <color name="listItemSection_text">#ffffff</color>
     <color name="listItemSection_background">#424242</color>
@@ -37,7 +38,7 @@
 
     <!--WorkOrder CardView-->
     <color name="cardView_cardBackground">#ffffff</color>
-    <color name="cardView_cardText">#000000</color>
+    <color name="cardView_cardText">#4a4a4a</color>
     <color name="workOrderList_sectionHeader">#EF6C00</color>
     <color name="workOrderList_sectionHeaderDivider">#727272</color>
 

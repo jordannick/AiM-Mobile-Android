@@ -23,6 +23,7 @@ import com.nispok.snackbar.SnackbarManager;
 import java.util.ArrayList;
 
 import butterknife.Bind;
+
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.ActionAdapter;
 import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;

@@ -33,29 +33,29 @@ public class WorkOrderListWrapper {
 
         for (int i = 0; i < workOrders.size(); i++) {
             WorkOrder wo = workOrders.get(i);
-            Log.d(TAG, "Work order: " + wo.getProposalPhase() + " :: --> " + wo.getSectionNum());
+            //Log.d(TAG, "Work order: " + wo.getProposalPhase() + " :: --> " + wo.getSectionNum());
             switch (wo.getSectionNum()){
                 case WorkOrder.DAILY_SECTION_ID:
                     daily.add(wo);
-                    Log.d(TAG, "Daily added!");
+                    //Log.d(TAG, "Daily added!");
                     break;
                 case WorkOrder.BACKLOG_SECTION_ID:
                     backlog.add(wo);
-                    Log.d(TAG, "Backlog added!");
+                    //Log.d(TAG, "Backlog added!");
                     break;
                 case WorkOrder.ADMIN_SECTION_ID:
                     admin.add(wo);
-                    Log.d(TAG, "Admin added!");
+                    //Log.d(TAG, "Admin added!");
                     break;
                 case WorkOrder.RECENTLY_COMPLETED_SECTION_ID:
                     completed.add(wo);
-                    Log.d(TAG, "Recently added!");
+                    //Log.d(TAG, "Recently added!");
                     break;
                 default:
             }
         }
 
-        Log.d(TAG, "Array sizes. daily: " + daily.size() + ", admin: " + admin.size() + ", backlog: " + backlog.size() + " completed: " + completed.size());
+        //Log.d(TAG, "Array sizes. daily: " + daily.size() + ", admin: " + admin.size() + ", backlog: " + backlog.size() + " completed: " + completed.size());
         workOrderListItems = new ArrayList<>();
         sectionIndex[WorkOrder.DAILY_SECTION_ID] = workOrderListItems.size();
         workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Daily", R.string.icon_daily, null, daily.size()));
@@ -80,7 +80,7 @@ public class WorkOrderListWrapper {
     }
 
     public ArrayList<WorkOrderListItem> getWorkOrderListItems() {
-        Log.d(TAG, "Returning getWorkOrderList: " + workOrderListItems.size());
+        //Log.d(TAG, "Returning getWorkOrderList: " + workOrderListItems.size());
         return workOrderListItems;
     }
 

@@ -42,7 +42,7 @@ public class ApiManager {
     private static final RestAdapter REST_ADAPTER = new RestAdapter.Builder()
             .setEndpoint(API_URL)
             .setConverter(new CustomConverter())
-            .setLogLevel(RestAdapter.LogLevel.FULL)
+            .setLogLevel(RestAdapter.LogLevel.BASIC)
             .build();
 
     private static final AimService AIM_SERVICE = REST_ADAPTER.create(AimService.class);
@@ -115,7 +115,7 @@ public class ApiManager {
         @Override
         public Object fromBody(TypedInput body, Type type) throws ConversionException {
             if (type == ResponseLogin.class){
-                Log.d(TAG, "CustomConverter TYPE MATCH: " + type.toString());
+                ////Log.d(TAG, "CustomConverter TYPE MATCH: " + type.toString());
                 String token = "";
                 try {
                     token =  (new JSONObject(fromStream(body.in()))).getString("token");
@@ -124,7 +124,7 @@ public class ApiManager {
                 }
                 return (new ResponseLogin(token));
             } else if(type == ResponseWorkOrders.class){
-                Log.d(TAG, "CustomConverter TYPE MATCH: " + type.toString());
+                ////Log.d(TAG, "CustomConverter TYPE MATCH: " + type.toString());
                 ArrayList<WorkOrder> workOrders = new ArrayList<>();
                 JSONArray array = new JSONArray();
                 try {
@@ -173,14 +173,14 @@ public class ApiManager {
                     //TODO find out actual notice response
 
                     JSONObject objNewlyAssigned = (JSONObject)obj.get("newly_assigned");
-                    Log.d(TAG, "obj newly: " + objNewlyAssigned.toString());
+                    ////Log.d(TAG, "obj newly: " + objNewlyAssigned.toString());
 
 
                     for (int i = 0; i < objNewlyAssigned.names().length();i++){
-                        Log.d(TAG, "obj test: " + objNewlyAssigned.names().getString(i));
+                        //Log.d(TAG, "obj test: " + objNewlyAssigned.names().getString(i));
                         String name = objNewlyAssigned.names().getString(i);
                         JSONObject objNotice = (JSONObject) objNewlyAssigned.get(name);
-                        Log.d(TAG, "obj test2: " + objNotice);
+                        //Log.d(TAG, "obj test2: " + objNotice);
                         Notice notice = new Notice();
                         notice.setDescription(objNotice.getString("description"));
                         notice.setEditClerk(objNotice.getString("edit_clerk"));
@@ -193,7 +193,7 @@ public class ApiManager {
 
 
                     //for (int i = 0; i < array.length(); i++) {
-                    /*Log.d(TAG, "notice obj: "+ obj.toString());
+                    /*//Log.d(TAG, "notice obj: "+ obj.toString());
                     for (int i = 0; i < 2; i++) {
                         Notice notice = new Notice();
                         notice.setText(obj.getString("description"));
@@ -210,7 +210,7 @@ public class ApiManager {
             }
 
             //Don't reach
-            Log.d(TAG, "CustomConverter fromBody returning NULL");
+            //Log.d(TAG, "CustomConverter fromBody returning NULL");
             return null;
         }
 

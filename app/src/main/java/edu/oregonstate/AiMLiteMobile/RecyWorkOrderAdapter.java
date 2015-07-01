@@ -63,7 +63,7 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "normal item height: " + v.getHeight());
+                    //Log.d(TAG, "normal item height: " + v.getHeight());
                 }
             });
 
@@ -74,7 +74,7 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "section item height: " + v.getHeight());
+                    //Log.d(TAG, "section item height: " + v.getHeight());
                 }
             });
         }
@@ -121,7 +121,7 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
             holder.valueAgo.setText(wo.getWorkOrder().getDateElements()[3]);
             holder.stringAgo.setText(wo.getWorkOrder().getDateElements()[4]);
         }else{
-            Log.d(TAG, "Type section: " + position);
+            //Log.d(TAG, "Type section: " + position);
 
             Typeface FONTAWESOME = Typeface.createFromAsset(context.getAssets(), "fonts/FontAwesome.otf");
             holder.sectionIcon.setText(wo.getSectionIcon());
@@ -140,7 +140,7 @@ public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdap
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "workOrderListItems size: " + workOrderListItems.size());
+        //Log.d(TAG, "workOrderListItems size: " + workOrderListItems.size());
         return workOrderListItems.size();
     }
 

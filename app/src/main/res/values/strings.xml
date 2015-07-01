@@ -34,6 +34,8 @@
     <string name="icon_moveToBacklog">&#xf0ab;</string>
     <string name="icon_user">&#xf007;</string>
     <string name="icon_password">&#xf023;</string>
+    <string name="icon_settings">&#xf013;</string>
+    <string name="icon_logout">&#xf08b;</string>
 
     <string name="icon_recentBarExpand">&#xf077;</string>
     <string name="icon_recentBarCollapse">&#xf078;</string>
@@ -43,5 +45,11 @@
     <!--Add Action Fragment-->
     <string name="add_action_spinner_action_prompt">Select Action</string>
     <string name="add_action_spinner_status_prompt">Select New Status</string>
+
+
+    <!--Nav Drawer-->
+    <string name="drawer_close">open drawer</string>
+    <string name="drawer_open">close drawer</string>
+
 
 </resources>

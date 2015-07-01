@@ -37,7 +37,7 @@
                     android:text="136732-001"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="@color/colorSecondaryText"/>
+                    android:textColor="@color/cardView_cardText"/>
 
                 <ImageView
                     android:id="@+id/imageView_priorityIconOverview"
@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="4dp"
                         android:text="hours ago"
-                        android:textColor="@color/colorPrimaryText"
+                        android:textColor="@color/cardView_cardText"
                         android:textSize="10sp" />
 
                 </LinearLayout>

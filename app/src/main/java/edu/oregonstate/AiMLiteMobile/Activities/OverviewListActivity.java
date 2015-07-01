@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import edu.oregonstate.AiMLiteMobile.Adapters.NavigationAdapter;
 import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.Notice;
@@ -57,6 +60,8 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     @Bind(R.id.overview_activity_section_icon3) TextView sectionIcon3;
     @Bind(R.id.overviewActivity_dimOverlay) LinearLayout dimOverlay;
 
+    @Bind(R.id.left_drawer) RecyclerView recyclerViewDrawer;
+    @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +90,51 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         //requestLastUpdated();
         requestWorkOrders();
         requestNotices();
+
+
+        initNavigationDrawer();
+
+
+    }
+
+    private void initNavigationDrawer(){
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                //getActionBar().setTitle();
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+        drawerLayout.setDrawerListener(drawerToggle);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+
+
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerViewDrawer.setLayoutManager(linearLayoutManager);
+        String[] navTitles = new String[4];
+        int[] icons = new int[4];
+
+        navTitles[0] = "Notices";
+        icons[0] = R.string.icon_notices;
+        navTitles[1] = "Time Log";
+        icons[1] = R.string.icon_timeLog;
+        navTitles[2] = "Settings";
+        icons[2] = R.string.icon_settings;
+        navTitles[3] = "Log out";
+        icons[3] = R.string.icon_logout;
+
+
+        Typeface iconTypeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/FontAwesome.otf");
+        NavigationAdapter adapter = new NavigationAdapter(navTitles, icons, currentUser.getUsername().toUpperCase(), iconTypeface);
+        recyclerViewDrawer.setAdapter(adapter);
 
     }
 
