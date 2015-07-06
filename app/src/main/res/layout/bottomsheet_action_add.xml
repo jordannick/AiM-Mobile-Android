@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    android:id="@+id/content"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
+<!--
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_action_add"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusableInTouchMode="true"
         android:orientation="vertical">
@@ -17,7 +24,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <!--    <TextView
+            <TextView
                 android:id="@+id/dialogNewAction_title"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -26,7 +33,7 @@
                 android:padding="8dp"
                 android:text="Title"
                 android:textColor="#fff"
-                android:textSize="22dp" />-->
+                android:textSize="22dp" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -45,7 +52,6 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="12dp"
                         android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
                         android:text="STATUS"
                         android:textColor="@color/addAction_sectionTitles"
                         android:textSize="14sp"
@@ -63,13 +69,11 @@
                         android:id="@+id/spinner_updateStatus"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/spinner_border"
-                        android:layout_marginLeft="24dp"
+                        android:layout_marginLeft="48dp"
                         android:layout_marginRight="24dp"
                         android:entries="@array/statusItems"
                         android:prompt="@string/add_action_spinner_status_prompt"
-                        android:spinnerMode="dropdown"
-                        android:padding="8dp"/>
+                        android:spinnerMode="dropdown" />
 
                 </RelativeLayout>
             </LinearLayout>
@@ -91,7 +95,87 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="12dp"
                         android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
+                        android:text="HOURS SPENT"
+                        android:textColor="@color/addAction_sectionTitles"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    &lt;!&ndash;<EditText
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="48dp"
+                        android:layout_marginRight="24dp"/>&ndash;&gt;
+
+                    <Button
+                        android:id="@+id/button_minusHours"
+                        style="?android:borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="48dp"
+                        android:text="\u2212"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:textSize="32dp" />
+
+                    <Button
+                        android:id="@+id/button_addHours"
+                        style="?android:borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="24dp"
+                        android:text="\u002B"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:textSize="32dp" />
+
+                    &lt;!&ndash; <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="5"
+                         android:textSize="32dp"
+                         android:layout_toLeftOf="@id/button_addHours"
+                         android:layout_toRightOf="@id/button_minusHours"
+                         android:layout_centerVertical="true"
+                         android:gravity="center"/>&ndash;&gt;
+
+                    <EditText
+                        android:id="@+id/hoursEditText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_margin="16dp"
+                        android:layout_toLeftOf="@id/button_addHours"
+                        android:layout_toRightOf="@id/button_minusHours"
+                        android:gravity="center"
+                        android:textSize="16dp" />
+
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:paddingTop="4dp">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="12dp"
+                        android:paddingTop="4dp"
                         android:text="ACTION TAKEN"
                         android:textColor="@color/addAction_sectionTitles"
                         android:textSize="14sp"
@@ -109,13 +193,11 @@
                         android:id="@+id/spinner_actionTaken"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/spinner_border"
-                        android:layout_marginLeft="24dp"
+                        android:layout_marginLeft="48dp"
                         android:layout_marginRight="24dp"
                         android:entries="@array/actionTakenItems"
                         android:prompt="@string/add_action_spinner_status_prompt"
-                        android:spinnerMode="dropdown"
-                        android:padding="8dp"/>
+                        android:spinnerMode="dropdown" />
 
                 </RelativeLayout>
             </LinearLayout>
@@ -137,92 +219,6 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="12dp"
                         android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:text="HOURS SPENT"
-                        android:textColor="@color/addAction_sectionTitles"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <!--<EditText
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="48dp"
-                        android:layout_marginRight="24dp"/>-->
-
-                    <Button
-                        android:id="@+id/button_minusHours"
-                        style="?android:borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
-                        android:text="\u2212"
-                        android:textColor="@android:color/holo_blue_dark"
-                        android:textSize="36dp" />
-
-                    <Button
-                        android:id="@+id/button_addHours"
-                        style="?android:borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="24dp"
-                        android:text="\u002B"
-                        android:textColor="@android:color/holo_blue_dark"
-                        android:textSize="36dp" />
-
-                    <!-- <TextView
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="5"
-                         android:textSize="32dp"
-                         android:layout_toLeftOf="@id/button_addHours"
-                         android:layout_toRightOf="@id/button_minusHours"
-                         android:layout_centerVertical="true"
-                         android:gravity="center"/>-->
-
-                    <EditText
-                        android:id="@+id/hoursEditText"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_margin="16dp"
-                        android:layout_toLeftOf="@id/button_addHours"
-                        android:layout_toRightOf="@id/button_minusHours"
-                        android:gravity="center"
-                        android:textSize="20dp"
-                        android:padding="4dp"
-                        android:background="@drawable/spinner_border"/>
-
-
-                </RelativeLayout>
-            </LinearLayout>
-
-
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="12dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
                         android:text="NOTES"
                         android:textColor="@color/addAction_sectionTitles"
                         android:textSize="14sp"
@@ -239,11 +235,9 @@
                     <EditText
                         android:id="@+id/editText_note"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_marginLeft="24dp"
-                        android:layout_marginRight="24dp"
-                        android:inputType="textPersonName"
-                        />
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="48dp"
+                        android:layout_marginRight="24dp" />
 
                 </RelativeLayout>
             </LinearLayout>
@@ -282,4 +276,4 @@
 
 
     </RelativeLayout>
-</ScrollView>
+</ScrollView>-->

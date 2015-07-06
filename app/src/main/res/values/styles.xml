@@ -39,7 +39,6 @@
         <item name="cardBackgroundColor">@color/cardView_cardBackground</item>
     </style>
 
-
     <!--
     card_view:cardCornerRadius="4dp"
                     card_view:cardPreventCornerOverlap="true"

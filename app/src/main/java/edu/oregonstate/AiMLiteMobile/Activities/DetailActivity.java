@@ -4,12 +4,14 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -18,10 +20,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.flipboard.bottomsheet.BottomSheetLayout;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.NoteAdapter;
-import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
 import edu.oregonstate.AiMLiteMobile.Fragments.AddActionDialogFragment;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
@@ -54,14 +57,17 @@ public class DetailActivity extends AppCompatActivity {
     @Bind(R.id.detailView_textShop) TextView shop;
     @Bind(R.id.imageView_priorityIconDetail) ImageView priorityIcon;
     @Bind(R.id.imageView_statusIcon) ImageView statusIcon;
-    @Bind(R.id.textView_moveSectionIcon) TextView moveSectionTextIcon;
-    @Bind(R.id.layout_moveSection) RelativeLayout moveSection;
-    @Bind(R.id.textView_moveSectionTitle) TextView moveSectionTitle;
+    @Bind(R.id.button_moveSection_icon) TextView moveSectionTextIcon;
+    @Bind(R.id.button_moveSection) RelativeLayout moveSection;
+    @Bind(R.id.button_moveSection_text) TextView moveSectionTitle;
     @Bind(R.id.button_viewNotes_icon) TextView viewNotesIcon;
     @Bind(R.id.button_addAction_icon) TextView addActionIcon;
     @Bind(R.id.button_viewNotes_text) TextView viewNotesText;
     @Bind(R.id.button_addAction) RelativeLayout addAction;
     @Bind(R.id.button_viewNotes) RelativeLayout viewNotes;
+
+    @Bind(R.id.bottomsheet)
+    BottomSheetLayout bottomSheet;
 
 
     @Override
@@ -232,16 +238,16 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 moveSection.startAnimation(sectionChangeAnim);
-/*                if (moveSectionTitle.getText().equals("Move to\nBacklog")) {
+                /*if (moveSectionTitle.getText().equals("To Backlog")) {
                     moveSection.startAnimation(sectionChangeAnim);
                     //moveSectionTextIcon.startAnimation(sectionChangeAnim);
                     //moveSectionTitle.startAnimation(sectionChangeAnim);
-                    moveSectionTitle.setText("Move to\nDaily");
+                    moveSectionTitle.setText("To Daily");
                     moveSectionTextIcon.setText(getString(R.string.icon_moveToDaily));
-                } else if (moveSectionTitle.getText().equals("Move to\nDaily")) {
+                } else if (moveSectionTitle.getText().equals("To Daily")) {
                     //moveSectionTextIcon.startAnimation(sectionChangeAnim);
                    // moveSectionTitle.startAnimation(sectionChangeAnim);
-                    moveSectionTitle.setText("Move to\nBacklog");
+                    moveSectionTitle.setText("To Backlog");
                     moveSectionTextIcon.setText(getString(R.string.icon_moveToBacklog));
                 }*/
             }
@@ -253,15 +259,17 @@ public class DetailActivity extends AppCompatActivity {
         viewNotesIcon.setTypeface(FONTAWESOME);
         addActionIcon.setText(getString(R.string.icon_timeLog));
         addActionIcon.setTypeface(FONTAWESOME);
-        viewNotesText.setText("View Notes (" + notesAdapter.getCount() + ")");
+        viewNotesText.setText("Notes (" + notesAdapter.getCount() + ")");
 
         addAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 // Open up entry dialog, passing work order object
                 AddActionDialogFragment actionFragment = new AddActionDialogFragment();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("WorkOrder", workOrder);
+                bundle.putString("Title", workOrder.getProposalPhase().toString());
                 actionFragment.setArguments(bundle);
                 actionFragment.show(getFragmentManager(), "Diag");
             }
@@ -275,12 +283,13 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
+
     private void toggleSectionTitleViews(){
-        if (moveSectionTitle.getText().equals("Move to\nBacklog")) {
-            moveSectionTitle.setText("Move to\nDaily");
+        if (moveSectionTitle.getText().equals("To Backlog")) {
+            moveSectionTitle.setText("To Daily");
             moveSectionTextIcon.setText(getString(R.string.icon_moveToDaily));
-        }else if(moveSectionTitle.getText().equals("Move to\nDaily")) {
-            moveSectionTitle.setText("Move to\nBacklog");
+        }else if(moveSectionTitle.getText().equals("To Daily")) {
+            moveSectionTitle.setText("To Backlog");
             moveSectionTextIcon.setText(getString(R.string.icon_moveToBacklog));
         }
     }

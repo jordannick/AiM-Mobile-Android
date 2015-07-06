@@ -72,15 +72,22 @@ public class AddActionDialogFragment extends DialogFragment {
         hoursEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         hoursEditText.setFilters(new InputFilter[]{new InputFilterMinMax(0, 24), new InputFilter.LengthFilter(1)});
         hoursEditText.setGravity(Gravity.CENTER);
-/*
-        //Scroll to bottom when dialog shifts on New Note press
+
+        //Scroll to bottom when dialog layout shifts (for EditText touch)
         dialogScrollView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                dialogScrollView.scrollTo(0, dialogScrollView.getBottom());
+                dialogScrollView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialogScrollView.scrollTo(0, dialogScrollView.getBottom());
+                    }
+                });
+
             }
         });
 
+/*
         //Scroll to bottom when any note text is entered
         noteEditText.addTextChangedListener(new TextWatcher() {
             @Override

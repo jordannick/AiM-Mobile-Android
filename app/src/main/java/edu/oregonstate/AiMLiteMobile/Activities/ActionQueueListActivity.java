@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -79,6 +80,9 @@ public class ActionQueueListActivity extends AppCompatActivity{
         setContentView(R.layout.activity_action);
         ButterKnife.bind(this); //BIND OUR LAYOUTS! WOO BUTTER
         setSupportActionBar(toolbar);
+        //getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setHomeButtonEnabled(true);
 
         self = this;
 
@@ -237,6 +241,15 @@ public class ActionQueueListActivity extends AppCompatActivity{
 
         return super.onOptionsItemSelected(item);
     }*/
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "MenuItem clicked! " + item);
+        switch (item.getItemId()){
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onBackPressed() {
