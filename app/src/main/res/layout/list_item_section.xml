@@ -8,8 +8,8 @@
     card_view:cardPreventCornerOverlap="true"
     app:cardBackgroundColor="@color/listItemSection_background"
     android:id="@+id/card_view"
-    android:layout_marginBottom="6dp"
-    android:layout_marginTop="6dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginTop="4dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
@@ -17,8 +17,8 @@
         android:layout_height="match_parent"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp">
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp">
 
         <RelativeLayout
             android:id="@+id/listItem_section_layout"

@@ -41,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.load_circle) ProgressBar mLoadCircle;
     @Bind(R.id.login_username_icon) TextView userIcon;
     @Bind(R.id.login_password_icon) TextView passwordIcon;
+    @Bind(R.id.forget_button) Button forgetAutoLoginButton;
 
     private static CurrentUser sCurrentUser;
 
@@ -70,6 +71,16 @@ public class LoginActivity extends AppCompatActivity {
         // Prevents autologin after user logout
         boolean autologin = getIntent().getBooleanExtra("autologin", true);
 
+        forgetAutoLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSavedUserText.setVisibility(View.GONE);
+                forgetAutoLoginButton.setVisibility(View.GONE);
+
+                //TODO remove autologin info for user
+            }
+        });
+
         loginHandler(autologin);
     }
 
@@ -84,7 +95,14 @@ public class LoginActivity extends AppCompatActivity {
                     attemptLogin();
                 }
             } else {
-                mSavedUserText.setText(sCurrentUser.getPreferences().getUsername() + " currently saved");
+                mSavedUserText.setText(sCurrentUser.getPreferences().getUsername() + " set to auto-login");
+                mSavedUserText.setVisibility(View.VISIBLE);
+                forgetAutoLoginButton.setVisibility(View.VISIBLE);
+
+/*                //Autofill username and autologin checkbox. Still require password?
+                mUsernameField.setText(sCurrentUser.getPreferences().getUsername());
+                mAutoLoginCheckbox.setChecked(true);
+                mPasswordField.requestFocus();*/
             }
         }
 
@@ -128,6 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 //TODO: finish the activity
+
                 activity.finish();
                 startActivity(new Intent(activity, OverviewListActivity.class));
             }

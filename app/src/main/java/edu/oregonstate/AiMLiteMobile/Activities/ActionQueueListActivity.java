@@ -1,19 +1,19 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,14 +23,13 @@ import com.nispok.snackbar.SnackbarManager;
 import java.util.ArrayList;
 
 import butterknife.Bind;
-
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.ActionAdapter;
-import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
 import edu.oregonstate.AiMLiteMobile.Fragments.AddActionDialogFragment;
 import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
+import edu.oregonstate.AiMLiteMobile.NotificationManager;
 import edu.oregonstate.AiMLiteMobile.R;
 
 /**
@@ -39,6 +38,8 @@ import edu.oregonstate.AiMLiteMobile.R;
 public class ActionQueueListActivity extends AppCompatActivity{
     private static final String TAG = "AiM_ActionQueueActivity";
     private static CurrentUser currentUser;
+    private static NotificationManager notificationManager;
+    private Menu menu;
     private ArrayList<Action> actions;
     private ActionAdapter actionQueueAdapter;
 
@@ -46,21 +47,44 @@ public class ActionQueueListActivity extends AppCompatActivity{
 
     private Context self;
 
-    @Bind(R.id.actionList_recentBarIconR) TextView recentBarR;
-    @Bind(R.id.actionList_recentBarIconL) TextView recentBarL;
-    @Bind(R.id.actionList_recentBarIconR2) TextView recentBarR2;
-    @Bind(R.id.actionList_recentBarIconL2) TextView recentBarL2;
-    @Bind(R.id.actionList_recentlyViewedLayout) LinearLayout recentlyViewedLayout;
-    @Bind(R.id.actionList_recentlyViewedBarLayout) RelativeLayout recentlyViewedBarLayout;
-    @Bind(R.id.actionList_relativeLayout) RelativeLayout relativeLayout;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+
+    @Bind(R.id.actionList_recentBarIconR)
+    TextView recentBarR;
+    @Bind(R.id.actionList_recentBarIconL)
+    TextView recentBarL;
+    @Bind(R.id.actionList_recentBarIconR2)
+    TextView recentBarR2;
+    @Bind(R.id.actionList_recentBarIconL2)
+    TextView recentBarL2;
+    @Bind(R.id.actionList_recentlyViewedLayout)
+    LinearLayout recentlyViewedLayout;
+    @Bind(R.id.actionList_recentlyViewedBarLayout)
+    RelativeLayout recentlyViewedBarLayout;
+    @Bind(R.id.actionList_relativeLayout)
+    RelativeLayout relativeLayout;
+
+    @Bind(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+    @Bind(R.id.right_drawer)
+    RecyclerView recyclerViewDrawerNotification;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_action);
+        ButterKnife.bind(this); //BIND OUR LAYOUTS! WOO BUTTER
+        setSupportActionBar(toolbar);
+
         self = this;
-        setTitle(R.string.action_queue_activity_title);
+
         currentUser = CurrentUser.get(getApplicationContext());
+        notificationManager = NotificationManager.get(this, recyclerViewDrawerNotification);
+
         actions = currentUser.getActions();
 
         actionQueueAdapter = new ActionAdapter(this, actions);
@@ -68,19 +92,19 @@ public class ActionQueueListActivity extends AppCompatActivity{
         populateViews();
     }
 
-    private void populateViews(){
-        final ArrayList<WorkOrder> recentWorkOrders  = currentUser.getRecentlyViewedWorkOrders();
+    private void populateViews() {
+        final ArrayList<WorkOrder> recentWorkOrders = currentUser.getRecentlyViewedWorkOrders();
 
-        //BIND OUR LAYOUTS! WOO BUTTER
-        ButterKnife.bind(this);
         //TextView recentBarR = (TextView)findViewById(R.id.actionList_recentBarIconR);
         //TextView recentBarL = (TextView)findViewById(R.id.actionList_recentBarIconL);
         //TextView recentBarR2 = (TextView)findViewById(R.id.actionList_recentBarIconR2);
         //TextView recentBarL2 = (TextView)findViewById(R.id.actionList_recentBarIconL2);
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/FontAwesome.otf");
-        recentBarR.setTypeface(tf); recentBarL.setTypeface(tf);
-        recentBarR2.setTypeface(tf); recentBarL2.setTypeface(tf);
+        recentBarR.setTypeface(tf);
+        recentBarL.setTypeface(tf);
+        recentBarR2.setTypeface(tf);
+        recentBarL2.setTypeface(tf);
         recentBarL.setText(R.string.icon_recentBarExpand);
         recentBarR.setText(R.string.icon_recentBarExpand);
         recentBarR2.setText(R.string.icon_recentBarCollapse);
@@ -110,10 +134,10 @@ public class ActionQueueListActivity extends AppCompatActivity{
         recentlyViewedBarLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(recentWorkOrders.size() > 0) {
+                if (recentWorkOrders.size() > 0) {
                     toggleRecentlyViewed(false);
                     recentlyViewedLayout.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     //Show snackbar alert of "no recents"
                     SnackbarManager.show(Snackbar.with(self).text("No Recently Viewed").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
 
@@ -123,12 +147,12 @@ public class ActionQueueListActivity extends AppCompatActivity{
     }
 
 
-    private View createRecentRowView(final WorkOrder workOrder){
+    private View createRecentRowView(final WorkOrder workOrder) {
         LayoutInflater inflater = getLayoutInflater();
         View rowView = inflater.inflate(R.layout.list_item_recent, null);
 
-        TextView workOrderNum = (TextView)rowView.findViewById(R.id.timeLog_recentWorkOrderNum);
-        TextView description = (TextView)rowView.findViewById(R.id.timeLog_recentDescription);
+        TextView workOrderNum = (TextView) rowView.findViewById(R.id.timeLog_recentWorkOrderNum);
+        TextView description = (TextView) rowView.findViewById(R.id.timeLog_recentDescription);
 
         workOrderNum.setText(workOrder.getProposalPhase());
         description.setText(workOrder.getDescription());
@@ -143,14 +167,14 @@ public class ActionQueueListActivity extends AppCompatActivity{
         return rowView;
     }
 
-    private void toggleRecentlyViewed(boolean onlyHide){
+    private void toggleRecentlyViewed(boolean onlyHide) {
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_in);
         Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_out_bottom);
-        if(recentlyViewedLayout.getVisibility() == View.VISIBLE){
+        if (recentlyViewedLayout.getVisibility() == View.VISIBLE) {
             recentlyViewedLayout.setVisibility(View.GONE);
             recentlyViewedLayout.startAnimation(slideDown);
             recentlyViewedBarLayout.startAnimation(slideUp);
-        }else if(!onlyHide){
+        } else if (!onlyHide) {
             recentlyViewedLayout.setVisibility(View.VISIBLE);
             recentlyViewedLayout.startAnimation(slideUp);
             recentlyViewedBarLayout.startAnimation(slideDown);
@@ -158,7 +182,7 @@ public class ActionQueueListActivity extends AppCompatActivity{
 
     }
 
-    private void createTimeEntryDialog(WorkOrder workOrder){
+    private void createTimeEntryDialog(WorkOrder workOrder) {
         AddActionDialogFragment actionFragment = new AddActionDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("WorkOrder", workOrder);
@@ -171,13 +195,25 @@ public class ActionQueueListActivity extends AppCompatActivity{
 
     //Start the HTTP POSTs to submit actions from queue.
     //Remove from queue upon successful POST
-    public void syncActions(){
+    public void syncActions() {
         //TODO: implement retrofit addAction
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_action_queue, menu);
+
+        this.menu = menu;
+        View menu_notification = menu.findItem(R.id.menu_notification).getActionView();
+        menu_notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //createNoticesViewPopup();
+                //drawerLayout.openDrawer(GravityCompat.END);
+                notificationManager.openDrawer(drawerLayout);
+            }
+        });
+
         return true;
     }
 /*
@@ -208,22 +244,5 @@ public class ActionQueueListActivity extends AppCompatActivity{
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
-    private void createNoticesViewPopup(){
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        LayoutInflater inflater = this.getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.dialog_notes_list, null);
 
-        convertView.findViewById(R.id.dialogNotes_buttonCancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
-        NoticeAdapter noticesAdapter = new NoticeAdapter(this, currentUser.getNotices());
-        alertDialog.setView(convertView);
-        ListView lv = (ListView) convertView.findViewById(R.id.popupNotes_listView);
-        lv.setSelector(android.R.color.transparent);
-        lv.setAdapter(noticesAdapter);
-        alertDialog.show();
-    }
 }

@@ -1,84 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/actionList_relativeLayout"
-    android:layout_width="wrap_content"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/titleBar_include"
-        layout="@layout/view_action_list_header" />
-
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/titleBar_include"/>
-
-    <TextView
-        android:id="@android:id/empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="No Actions Added"
-        android:textColor="@android:color/tertiary_text_light"
-        android:textSize="20dp" />
 
 
     <RelativeLayout
-        android:id="@+id/actionList_recentlyViewedBarLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/actionQueue_recentlyViewedTitleHideBackground"
-        android:orientation="horizontal">
+        android:id="@+id/actionList_relativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
-        <TextView
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimaryDark"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            <include
+                android:id="@+id/titleBar_include"
+                layout="@layout/view_action_list_header" />
+        </android.support.design.widget.AppBarLayout>
+
+
+
+        <ListView
+            android:id="@android:id/list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:padding="12dp"
-            android:text="Recently Viewed"
-            android:textColor="@color/actionQueue_recentlyViewedTitleText"
-            android:textSize="18dp" />
+            />
 
         <TextView
-            android:id="@+id/actionList_recentBarIconR"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="12dp"
-            android:text="TEST"
-            android:textColor="@color/actionQueue_recentlyViewedTitleIcons" />
+            android:id="@android:id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="No Actions Added"
+            android:textColor="@android:color/tertiary_text_light"
+            android:textSize="20dp" />
 
-        <TextView
-            android:id="@+id/actionList_recentBarIconL"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="12dp"
-            android:text="TEST"
-            android:textColor="@color/actionQueue_recentlyViewedTitleIcons" />
-
-    </RelativeLayout>
-
-
-    <LinearLayout
-        android:id="@+id/actionList_recentlyViewedLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/actionQueue_recentlyViewedBackground"
-        android:orientation="vertical"
-        android:visibility="gone">
 
         <RelativeLayout
+            android:id="@+id/actionList_recentlyViewedBarLayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/actionQueue_recentlyViewedTitleShowBackground"
+            android:layout_alignParentBottom="true"
+            android:background="@color/actionQueue_recentlyViewedTitleHideBackground"
             android:orientation="horizontal">
 
             <TextView
@@ -86,34 +60,85 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:padding="12dp"
-                android:text="Choose to Add Time"
+                android:text="Recently Viewed"
                 android:textColor="@color/actionQueue_recentlyViewedTitleText"
-                android:textSize="18dp"
-                android:textStyle="bold" />
+                android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/actionList_recentBarIconR2"
+                android:id="@+id/actionList_recentBarIconR"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
-                android:gravity="center"
                 android:text="TEST"
                 android:textColor="@color/actionQueue_recentlyViewedTitleIcons" />
 
             <TextView
-                android:id="@+id/actionList_recentBarIconL2"
+                android:id="@+id/actionList_recentBarIconL"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="12dp"
-                android:gravity="center"
                 android:text="TEST"
                 android:textColor="@color/actionQueue_recentlyViewedTitleIcons" />
+
         </RelativeLayout>
 
-    </LinearLayout>
 
-</RelativeLayout>
+        <LinearLayout
+            android:id="@+id/actionList_recentlyViewedLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/actionQueue_recentlyViewedBackground"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/actionQueue_recentlyViewedTitleShowBackground"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:padding="12dp"
+                    android:text="Choose to Add Time"
+                    android:textColor="@color/actionQueue_recentlyViewedTitleText"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/actionList_recentBarIconR2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="12dp"
+                    android:gravity="center"
+                    android:text="TEST"
+                    android:textColor="@color/actionQueue_recentlyViewedTitleIcons" />
+
+                <TextView
+                    android:id="@+id/actionList_recentBarIconL2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:gravity="center"
+                    android:text="TEST"
+                    android:textColor="@color/actionQueue_recentlyViewedTitleIcons" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <include layout="@layout/notification_drawer" />
+
+</android.support.v4.widget.DrawerLayout>
