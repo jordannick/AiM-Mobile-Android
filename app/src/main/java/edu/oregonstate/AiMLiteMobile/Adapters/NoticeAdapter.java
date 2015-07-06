@@ -17,6 +17,8 @@ import edu.oregonstate.AiMLiteMobile.R;
  * Created by jordan_n on 6/15/2015.
  */
 public class NoticeAdapter extends ArrayAdapter<Notice> {
+    private final static String TAG = "AiM_NoticeAdapter";
+
 
     private final Context mContext;
     ArrayList<Notice> mNotices;

@@ -37,7 +37,7 @@ import edu.oregonstate.AiMLiteMobile.R;
  * Created by sellersk on 2/19/2015.
  */
 public class ActionQueueListActivity extends AppCompatActivity{
-    private static final String TAG = "ActionQueueActivity";
+    private static final String TAG = "AiM_ActionQueueActivity";
     private static CurrentUser currentUser;
     private ArrayList<Action> actions;
     private ActionAdapter actionQueueAdapter;
@@ -62,6 +62,7 @@ public class ActionQueueListActivity extends AppCompatActivity{
         setTitle(R.string.action_queue_activity_title);
         currentUser = CurrentUser.get(getApplicationContext());
         actions = currentUser.getActions();
+
         actionQueueAdapter = new ActionAdapter(this, actions);
 
         populateViews();

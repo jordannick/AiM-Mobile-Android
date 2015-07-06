@@ -8,6 +8,7 @@ import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
  * Created by sellersk on 6/10/2015.
  */
 public class ResponseWorkOrders {
+    private static final String TAG = "AiM_ResponseWorkOrders";
 
     private ArrayList<WorkOrder> workOrders;
     private String rawJson;

@@ -1,5 +1,6 @@
 package edu.oregonstate.AiMLiteMobile.Adapters;
 
+import android.app.Activity;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,13 +11,14 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import edu.oregonstate.AiMLiteMobile.Activities.OverviewListActivity;
 import edu.oregonstate.AiMLiteMobile.R;
 
 /**
  * Created by SellersK on 6/30/2015.
  */
 public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.ViewHolder> {
-    private static final String TAG = "NavigationAdapter";
+    private static final String TAG = "AiM_NavigationAdapter";
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
@@ -25,14 +27,21 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     private int icons[];
     private String name;
 
+    private OverviewListActivity delegate;
+
     Typeface iconTypeface;
 
+    public interface NavigationClickHandler{
+        void handleClick(int position);
+    }
 
-    public NavigationAdapter(String[] navTitles, int[] icons, String name, Typeface iconTypeface) {
+
+    public NavigationAdapter(Activity delegate, String[] navTitles, int[] icons, String name, Typeface iconTypeface) {
         this.navTitles = navTitles;
         this.icons = icons;
         this.name = name;
         this.iconTypeface = iconTypeface;
+        this.delegate = (OverviewListActivity)delegate;
     }
 
     @Override
@@ -42,25 +51,28 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
             return new ViewHolder(v, viewType, iconTypeface);
         } else if(viewType == TYPE_ITEM){
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.nav_item, parent, false);
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "WOO Clicked #" + v);
-                }
-            });
             return new ViewHolder(v, viewType, iconTypeface);
         }
         return null;
     }
 
     @Override
-    public void onBindViewHolder(NavigationAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(NavigationAdapter.ViewHolder holder, final int position) {
+        holder.position = position;
         if(holder.holderId == TYPE_HEADER){
             holder.headerName.setText(name);
         }else if(holder.holderId == TYPE_ITEM){
             Log.d(TAG, "Setting onBind for navTitle #" + position);
             holder.rowTitle.setText(navTitles[position-1]);
             holder.rowIcon.setText(icons[position-1]);
+            final int pos = position;
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    delegate.handleClick(pos);
+                }
+            });
+
         }
     }
 
@@ -82,6 +94,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         protected int holderId;
+        protected  int position;
 
         protected TextView rowTitle;
         protected TextView rowIcon;

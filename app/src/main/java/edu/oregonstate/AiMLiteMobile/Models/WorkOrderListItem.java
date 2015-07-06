@@ -4,7 +4,7 @@ package edu.oregonstate.AiMLiteMobile.Models;
  * Created by SellersK on 6/1/2015.
  */
 public class WorkOrderListItem {
-
+    private static final String TAG = "AiM_WorkOrderListItem";
     public static int numTypes = 2;
 
     public WorkOrderListItem(Type type, String sectionTitle, int sectionIcon, WorkOrder workOrder, int sectionCount) {

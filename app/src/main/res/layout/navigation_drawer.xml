@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="start"
     android:background="@color/navigationDrawerBackground"
-    android:scrollbars="vertical"
+    android:scrollbars="none"
     />
 
 

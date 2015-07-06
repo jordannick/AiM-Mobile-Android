@@ -1,4 +1,4 @@
-package edu.oregonstate.AiMLiteMobile;
+package edu.oregonstate.AiMLiteMobile.Models;
 
 import android.util.Log;
 
@@ -6,12 +6,13 @@ import java.util.ArrayList;
 
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
+import edu.oregonstate.AiMLiteMobile.R;
 
 /**
  * Created by sellersk on 6/24/2015.
  */
 public class WorkOrderListWrapper {
-    private static final String TAG = "WorkOrderListWrapper";
+    private static final String TAG = "AiM_WorkOrderListWrapper";
     private ArrayList<WorkOrder> workOrders;
     private ArrayList<WorkOrderListItem> workOrderListItems;
 

@@ -35,7 +35,7 @@ import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.R;
 
 public class AddActionDialogFragment extends DialogFragment {
-    private static final String TAG = "AddActionDialogFragment";
+    private static final String TAG = "AiM_AddActionDialogFragment";
 
     private static CurrentUser currentUser;
     private WorkOrder workOrder;

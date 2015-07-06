@@ -15,7 +15,7 @@ import edu.oregonstate.AiMLiteMobile.R;
  * Created by jordan_n on 8/13/2014.
  */
 public class WorkOrder implements Serializable {
-    private static final String TAG = "WorkOrder";
+    private static final String TAG = "AiM_WorkOrder";
     public static final String WORK_ORDER_EXTRA = "edu.oregonstate.AiMLiteMobile.Models.WorkOrder";
 
     public final UUID uuid = java.util.UUID.randomUUID();

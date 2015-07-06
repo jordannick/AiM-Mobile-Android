@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
  * Created by jordan_n on 6/30/2015.
  */
 public class SearchResultsActivity extends AppCompatActivity {
+    public static final String TAG = "AiM_SearchResultsActivity";
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

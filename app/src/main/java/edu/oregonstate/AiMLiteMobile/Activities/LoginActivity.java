@@ -29,7 +29,7 @@ import retrofit.client.Response;
  * Created by jordan_n on 8/15/2014.
  */
 public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "AiM_LoginActivity";
 
     //Layout variables
     @Bind(R.id.toolbar) Toolbar toolbar;

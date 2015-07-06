@@ -19,7 +19,7 @@ import edu.oregonstate.AiMLiteMobile.R;
  * Created by sellersk on 2/19/2015.
  */
 public class ActionAdapter extends ArrayAdapter<Action> {
-    private final static String TAG = "ActionAdapter";
+    private final static String TAG = "AiM_ActionAdapter";
 
     private final Context mContext;
     private ArrayList<Action> mActions;

@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by sellersk on 2/19/2015.
  */
 public class Action implements Serializable {
-    private static final String TAG = "Action";
+    private static final String TAG = "AiM_Action";
     public static final String EDIT_ACTION_EXTRA = "edu.oregonstate.AiMLiteMobile.Models.Action";
 
     private WorkOrder mWorkOrder;

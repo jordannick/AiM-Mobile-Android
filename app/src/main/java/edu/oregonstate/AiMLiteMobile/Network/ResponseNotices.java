@@ -8,6 +8,7 @@ import edu.oregonstate.AiMLiteMobile.Models.Notice;
  * Created by sellersk on 6/10/2015.
  */
 public class ResponseNotices {
+    private static final String TAG = "AiM_ResponseNotices";
 
     private ArrayList<Notice> notices;
     private String rawJson;

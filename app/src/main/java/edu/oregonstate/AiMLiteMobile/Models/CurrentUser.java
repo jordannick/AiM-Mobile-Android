@@ -19,7 +19,7 @@ import edu.oregonstate.AiMLiteMobile.Activities.LoginActivity;
  * Maintains the local session of the logged in user.
  */
 public class CurrentUser {
-    private static final String TAG = "CurrentUser";
+    private static final String TAG = "AiM_CurrentUser";
     private static CurrentUser currentUser;
     private static Context appContext;
     private Preferences preferences;

@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by sellersk on 8/20/2014.
  */
 public class Note implements Serializable {
-    private static final String TAG = "Note";
+    private static final String TAG = "AiM_Note";
 
     String mNote;
     String mAuthor;

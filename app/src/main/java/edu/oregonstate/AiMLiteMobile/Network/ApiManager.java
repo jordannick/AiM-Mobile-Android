@@ -35,7 +35,7 @@ import retrofit.mime.TypedOutput;
  * Created by sellersk on 6/10/2015.
  */
 public class ApiManager {
-    private static final String TAG = "ApiManager";
+    private static final String TAG = "AiM_ApiManager";
 
     private static final String API_URL = "http://api-test.facilities.oregonstate.edu/1.0";
 

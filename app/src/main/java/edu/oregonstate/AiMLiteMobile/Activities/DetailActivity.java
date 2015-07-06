@@ -32,7 +32,7 @@ import edu.oregonstate.AiMLiteMobile.R;
  * Created by jordan_n on 8/13/2014.
  */
 public class DetailActivity extends AppCompatActivity {
-    private static final String TAG = "DetailActivity";
+    private static final String TAG = "AiM_DetailActivity";
 
     private static CurrentUser currentUser;
     public static WorkOrder workOrder;

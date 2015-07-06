@@ -1,5 +1,5 @@
 
-package edu.oregonstate.AiMLiteMobile;
+package edu.oregonstate.AiMLiteMobile.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,6 +19,8 @@ import java.util.List;
 
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
+import edu.oregonstate.AiMLiteMobile.R;
+import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListWrapper;
 
 
 /**
@@ -26,7 +28,7 @@ import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
  */
 
 public class RecyWorkOrderAdapter extends RecyclerView.Adapter<RecyWorkOrderAdapter.WorkOrderViewHolder> implements Filterable {
-    private static final String TAG = "RecyWorkOrderAdapter";
+    private static final String TAG = "AiM_RecyWorkOrderAdapter";
 
     private ArrayList<WorkOrderListItem> workOrderListItems;
     private ArrayList<WorkOrderListItem> workOrderListItemsOrig;

@@ -6,7 +6,7 @@ import android.text.Spanned;
 import android.util.Log;
 
 public class InputFilterMinMax implements InputFilter {
-    private final static String TAG = "InputFilterMinMax";
+    private final static String TAG = "AiM_InputFilterMinMax";
 
     private int min, max;
 

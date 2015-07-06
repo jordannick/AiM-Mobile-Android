@@ -20,7 +20,7 @@ import edu.oregonstate.AiMLiteMobile.R;
  * Created by sellersk on 8/20/2014.
  */
 public class NoteAdapter extends ArrayAdapter<Note> {
-    private final static String TAG = "NoteAdapter";
+    private final static String TAG = "AiM_NoteAdapter";
 
     private final Context mContext;
     private ArrayList<Note> mNotes;

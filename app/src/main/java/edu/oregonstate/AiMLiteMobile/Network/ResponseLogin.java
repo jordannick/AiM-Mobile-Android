@@ -4,6 +4,7 @@ package edu.oregonstate.AiMLiteMobile.Network;
  * Created by sellersk on 6/10/2015.
  */
 public class ResponseLogin {
+    private static final String TAG = "AiM_ResponseLogin";
 
     private String token;
 

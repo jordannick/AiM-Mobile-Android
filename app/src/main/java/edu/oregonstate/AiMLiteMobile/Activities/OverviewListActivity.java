@@ -15,14 +15,19 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
@@ -32,6 +37,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.NavigationAdapter;
 import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
+import edu.oregonstate.AiMLiteMobile.Euler;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.Notice;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
@@ -40,19 +46,22 @@ import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseNotices;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
 import edu.oregonstate.AiMLiteMobile.R;
-import edu.oregonstate.AiMLiteMobile.RecyWorkOrderAdapter;
+import edu.oregonstate.AiMLiteMobile.Adapters.RecyWorkOrderAdapter;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class OverviewListActivity extends AppCompatActivity implements RecyWorkOrderAdapter.Callbacks {
-    private static final String TAG = "OverviewListActivity";
+public class OverviewListActivity extends AppCompatActivity implements RecyWorkOrderAdapter.Callbacks, NavigationAdapter.NavigationClickHandler {
+    private static final String TAG = "AiM_OverviewListACT";
     private static CurrentUser currentUser;
     private Activity activity;
 
     private LinearLayoutManager linearLayoutManager;
     private RecyWorkOrderAdapter recAdapter;
+
+    private int screenWidth;
+    private int screenHeight;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -69,18 +78,26 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     @Bind(R.id.overviewActivity_dimOverlay)
     LinearLayout dimOverlay;
 
+    @Bind(R.id.bottomsheet)
+    BottomSheetLayout bottomSheet;
+
+
+    @Override
+    public void handleClick(int position) {
+        Log.d(TAG, "HANDLE CLICK LISTENED : " + position);
+    }
 
     private TextView notifBox = null;
 
 
-    @Bind(R.id.left_drawer) RecyclerView recyclerViewDrawer;
+/*    @Bind(R.id.left_drawer) RecyclerView recyclerViewDrawer;*/
     @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
     private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "OverviewListActivity onCreate");
+        Log.d(TAG, "onCreate");
 
         activity = this;
         currentUser = CurrentUser.get(getApplicationContext());
@@ -110,6 +127,29 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
         initNavigationDrawer();
 
+
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        screenWidth = displayMetrics.widthPixels;
+        screenHeight = displayMetrics.heightPixels;
+
+
+        //int number = 999 * 999;
+        //Euler.listAllPalindromes(number);
+
+        Euler.findSumAmicableNumbers(10000);
+    }
+
+    private void bottomSheetTest(){
+        //bottomSheet.showWithSheetView(LayoutInflater.from(this).inflate(R.layout.activity_detail, bottomSheet, false));
+        View v = LayoutInflater.from(this).inflate(R.layout.bottomsheet_detail, bottomSheet, false);
+        //bottomSheet.addView(v, 100, 100);
+
+
+        //FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)(.8*screenHeight));
+        //bottomSheet.addView(v, 0, layoutParams);
+        //v.setLayoutParams(layoutParams);
+         //bottomSheet.sho
+        bottomSheet.showWithSheetView(v);
     }
 
     private void initNavigationDrawer(){
@@ -118,6 +158,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 //getActionBar().setTitle();
+
             }
 
             @Override
@@ -132,8 +173,9 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
 
 
-        linearLayoutManager = new LinearLayoutManager(this);
-        recyclerViewDrawer.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager linearLayoutManagerDrawer = new LinearLayoutManager(this);
+        RecyclerView recyclerViewDrawer = (RecyclerView)findViewById(R.id.left_drawer);
+        recyclerViewDrawer.setLayoutManager(linearLayoutManagerDrawer);
         String[] navTitles = new String[4];
         int[] icons = new int[4];
 
@@ -147,10 +189,12 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         icons[3] = R.string.icon_logout;
 
 
+
         Typeface iconTypeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/FontAwesome.otf");
-        NavigationAdapter adapter = new NavigationAdapter(navTitles, icons, currentUser.getUsername().toUpperCase(), iconTypeface);
+        NavigationAdapter adapter = new NavigationAdapter(this, navTitles, icons, currentUser.getUsername().toUpperCase(), iconTypeface);
         recyclerViewDrawer.setAdapter(adapter);
     }
+
 
     @Override
     protected void onResume() {
@@ -166,7 +210,12 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
     @Override
     public void onBackPressed() {
-        currentUser.logoutUser(this);
+
+        if(bottomSheet.isSheetShowing()){
+            bottomSheet.dismissSheet();
+        }else {
+            currentUser.logoutUser(this);
+        }
     }
 
     @Override
@@ -221,7 +270,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     }
 
     private void setNotifCount(int count) {
-        notifBox.setText(String.valueOf(count));
+        //notifBox.setText(String.valueOf(count));
     }
 
     private void initSectionIcons() {
@@ -267,11 +316,13 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         //recAdapter.flushFilter();
 
 
-        Intent i = new Intent(this, DetailActivity.class);
+        bottomSheetTest();
+
+        /*Intent i = new Intent(this, DetailActivity.class);
         i.putExtra(WorkOrder.WORK_ORDER_EXTRA, workOrder);
         startActivity(i);
         overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
-        searchView.setQuery("", false);
+        searchView.setQuery("", false);*/
     }
 
     private void createNoticesViewPopup() {

@@ -11,7 +11,7 @@ import java.util.Locale;
  */
 public class Notice {
 
-    private static final String TAG = "Notice";
+    private static final String TAG = "AiM_Notice";
 
     String id;
     String type;
