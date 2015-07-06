@@ -98,21 +98,18 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     public void handleNavigationClick(int position) {
         Log.d(TAG, "HANDLE CLICK LISTENED : " + position);
         switch (position){
-            case 1:  //Overview
-                //Nothing. already in overview
-                break;
-            case 2: //Time Log
+            case 1: //Time Log
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 beginActionQueueActivity();
                 break;
-            case 3: //Notices
+            case 2: //Notices
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 notificationManager.openDrawer(drawerLayout);
                 break;
-            case 4: //Settings
+            case 3: //Settings
                 //Todo: create settings activity/dialog
                 break;
-            case 5: //Log Out
+            case 4: //Log Out
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 currentUser.logoutUser(this);
                 break;
@@ -316,7 +313,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         Intent i = new Intent(this, ActionQueueListActivity.class);
 
         startActivity(i);
-        //overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
+        overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
         searchView.setQuery("", false);
     }
 

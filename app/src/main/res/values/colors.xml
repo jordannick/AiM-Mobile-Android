@@ -30,6 +30,7 @@
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#727272</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorSelected">#f6f6f6</color>
     <color name="navigationDrawerBackground">#ffffff</color>
 
     <color name="listItemSection_text">#ffffff</color>
@@ -59,6 +60,14 @@
 
 
 
+    <color name="selector_recentWorkOrder_unpressed">#ffffff</color>
+    <color name="selector_recentWorkOrder_pressed">#DEDEDE</color>
+
+    <color name="selector_workOrder_pressed">#DDDDDD</color>
+    <color name="selector_workOrder_unpressed">#eeeeee</color>
+
+
+
 
     <color name="overviewActivity_sectionIconNormal">#F57C00</color>
     <color name="overviewActivity_sectionIconPressed">#F68715</color>
@@ -74,6 +83,8 @@
     <color name="OSU_green">#4e7300</color>
     <color name="OSU_white">#f5f2ed</color>
     <color name="OSU_black">#373737</color>
+
+    <color name="Material_grey">#757575</color>
 
 </resources>
 

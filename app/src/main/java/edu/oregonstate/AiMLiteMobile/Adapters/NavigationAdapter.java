@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,6 +35,8 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
 
     Typeface iconTypeface;
 
+    private int count = 0;
+
     public interface NavigationClickHandler{
         void handleNavigationClick(int position);
     }
@@ -48,16 +54,20 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     public NavigationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(viewType == TYPE_HEADER) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.nav_header, parent, false);
+            v.setBackgroundResource(R.drawable.navigation_header_background);
             return new ViewHolder(v, viewType, iconTypeface);
         } else if(viewType == TYPE_ITEM){
+            count++;
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.nav_item, parent, false);
+            if(count > 2) v = LayoutInflater.from(parent.getContext()).inflate(R.layout.nav_item_bottom, parent, false);
+
             return new ViewHolder(v, viewType, iconTypeface);
         }
         return null;
     }
 
     @Override
-    public void onBindViewHolder(NavigationAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final NavigationAdapter.ViewHolder holder, final int position) {
         holder.position = position;
         if(holder.holderId == TYPE_HEADER){
             holder.headerName.setText(name);
@@ -65,6 +75,20 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
             Log.d(TAG, "Setting onBind for navTitle #" + position);
             holder.rowTitle.setText(navTitles[position-1]);
             holder.rowIcon.setText(icons[position-1]);
+            switch (position-1){
+                case 0:
+                    holder.rowIcon.setTextColor(delegate.getResources().getColor(R.color.routine_green));
+                    break;
+                case 1:
+                    holder.rowIcon.setTextColor(delegate.getResources().getColor(R.color.colorPrimaryDark));
+                    break;
+                case 2:
+                    holder.rowIcon.setTextColor(delegate.getResources().getColor(R.color.Material_grey));
+                    break;
+                case 3:
+                    holder.rowIcon.setTextColor(delegate.getResources().getColor(R.color.Material_grey));
+                    break;
+            }
             final int pos = position;
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -75,6 +99,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
 
         }
     }
+
 
     @Override
     public int getItemCount() {
@@ -112,4 +137,6 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
             holderId = viewType;
         }
     }
+
+
 }

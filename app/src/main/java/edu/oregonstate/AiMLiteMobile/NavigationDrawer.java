@@ -47,6 +47,8 @@ public class NavigationDrawer {
             }
         };
 
+
+
         drawerLayout.setDrawerListener(drawerToggle);
         ActionBar actionBar = delegate.getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white);
@@ -57,22 +59,24 @@ public class NavigationDrawer {
         LinearLayoutManager linearLayoutManagerDrawer = new LinearLayoutManager(delegate);
         RecyclerView recyclerViewDrawer = (RecyclerView)delegate.findViewById(R.id.left_drawer);
         recyclerViewDrawer.setLayoutManager(linearLayoutManagerDrawer);
-        String[] navTitles = new String[5];
-        int[] icons = new int[5];
-
+        String[] navTitles = new String[4];
+        int[] icons = new int[4];
+/*
         navTitles[0] = "Overview";
-        icons[0] = R.string.icon_home;
-        navTitles[1] = "Time Log";
-        icons[1] = R.string.icon_timeLog;
-        navTitles[2] = "Notices";
-        icons[2] = R.string.icon_notices;
-        navTitles[3] = "Settings";
-        icons[3] = R.string.icon_settings;
-        navTitles[4] = "Log out";
-        icons[4] = R.string.icon_logout;
+        icons[0] = R.string.icon_home;*/
+        navTitles[0] = "Time Log";
+        icons[0] = R.string.icon_timeLog;
+        navTitles[1] = "Notices";
+        icons[1] = R.string.icon_notices;
+        navTitles[2] = "Settings";
+        icons[2] = R.string.icon_settings;
+        navTitles[3] = "Log out";
+        icons[3] = R.string.icon_logout;
 
         Typeface iconTypeface = Typeface.createFromAsset(delegate.getApplicationContext().getAssets(), "fonts/FontAwesome.otf");
         NavigationAdapter adapter = new NavigationAdapter(delegate, navTitles, icons, currentUser.getUsername().toUpperCase(), iconTypeface);
         recyclerViewDrawer.setAdapter(adapter);
+
+
     }
 }
