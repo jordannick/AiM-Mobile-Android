@@ -170,7 +170,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
-        
+
     }
 
     private void bottomSheetTest(){

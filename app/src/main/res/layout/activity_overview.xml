@@ -93,7 +93,8 @@
                     android:layout_height="match_parent"
                     android:background="@color/dimOverlay"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
 
                     <ProgressBar
                         android:id="@+id/load_circle"

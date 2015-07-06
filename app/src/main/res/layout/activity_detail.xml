@@ -6,10 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.flipboard.bottomsheet.BottomSheetLayout
-        android:id="@+id/bottomsheet"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <RelativeLayout
             android:id="@+id/relativeLayout1"
@@ -30,8 +26,7 @@
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/toolbar"
-                android:background="#BDBDBD">
+                android:layout_below="@id/toolbar">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -158,17 +153,10 @@
                                  android:textSize="18sp"/>
                          </LinearLayout>
                      </android.support.v7.widget.CardView>-->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="12dp"
-                        android:layout_marginRight="12dp"
-                        android:background="#EEEEEE"
-                        android:orientation="vertical">
 
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"><!--
 
@@ -215,25 +203,74 @@
                             <android.support.v7.widget.CardView
                                 style="@style/CardViewStyle"
                                 android:layout_marginBottom="8dp"
-                                android:layout_marginRight="8dp">
+                                android:layout_marginRight="8dp"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginTop="8dp">
 
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
                                     android:orientation="vertical"
-                                    android:padding="4dp">
+                                    android:layout_margin="4dp">
 
                                     <TextView
+                                        android:id="@+id/detailView_titleRequestor"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="REQUESTOR"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_alignParentTop="true"
+                                        android:layout_marginLeft="12dp"
+                                        android:layout_marginTop="8dp"
+                                        android:layout_marginBottom="4dp"
+                                        android:textSize="12dp"/>
+
+                                    <TextView
+                                        android:id="@+id/detailView_textRequestor"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="John Doe"
+                                        android:layout_marginLeft="8dp"
+                                        android:layout_marginBottom="4dp"
+                                        android:layout_alignLeft="@id/detailView_titleRequestor"
+                                        android:layout_below="@id/detailView_titleRequestor"
+                                        android:textColor="@android:color/secondary_text_light"/>
+
+                                    <TextView
+                                        android:id="@+id/detailView_requestedTime"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Jun 1 8:45 AM"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_below="@id/detailView_titleRequestor"
+                                        android:textColor="@android:color/secondary_text_light"
+                                        android:paddingRight="4dp"/>
+
+                                    <TextView
+                                        android:id="@+id/detailView_requestedDepartment"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="QFS CONSTR MNG CHANGE"
+                                        android:layout_below="@id/detailView_textRequestor"
+                                        android:layout_alignLeft="@id/detailView_titleRequestor"
+                                        android:layout_marginLeft="8dp"
+                                        android:textColor="@android:color/secondary_text_light"/>
+
+
+
+                                    <!--<TextView
                                         android:id="@+id/dateCreatedTextView"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:padding="8dp"
                                         android:text="Requested: Dec 2, 2014 2:27pm by MORGAN ADAIR (ASC - ANIMAL &amp; RANGELAND SCIENCES)"
-                                        android:textSize="16dp" />
+                                        android:textSize="16dp"
+                                        android:textColor="@android:color/secondary_text_light"/>-->
 
 
-                                </LinearLayout>
+                                </RelativeLayout>
                             </android.support.v7.widget.CardView>
 
 
@@ -249,8 +286,8 @@
                             <LinearLayout
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_marginBottom="12dp"
-                                android:layout_marginTop="12dp"
+                                android:layout_marginBottom="4dp"
+                                android:layout_marginTop="4dp"
                                 android:orientation="horizontal">
 
                                 <RelativeLayout
@@ -442,7 +479,7 @@
                                 </RelativeLayout>
                             </LinearLayout>
                         </android.support.v7.widget.CardView>
-                    </LinearLayout>
+
                 </LinearLayout>
 
 
@@ -459,7 +496,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/colorPrimaryDark"
+                    android:background="#7B1FA2"
                     android:paddingBottom="8dp"
                     android:paddingTop="8dp">
 
@@ -489,7 +526,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="#1E88E5"
+                    android:background="#1976D2"
                     android:paddingBottom="8dp"
                     android:paddingTop="8dp">
 
@@ -520,7 +557,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="#43A047"
+                    android:background="#388E3C"
                     android:paddingBottom="8dp"
                     android:paddingTop="8dp">
 
@@ -548,6 +585,8 @@
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>
-    </com.flipboard.bottomsheet.BottomSheetLayout>
+
+    <include layout="@layout/notification_drawer" />
+
 </android.support.v4.widget.DrawerLayout>
 
