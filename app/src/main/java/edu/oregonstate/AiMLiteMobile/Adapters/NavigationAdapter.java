@@ -32,7 +32,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     Typeface iconTypeface;
 
     public interface NavigationClickHandler{
-        void handleClick(int position);
+        void handleNavigationClick(int position);
     }
 
 
@@ -69,7 +69,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    delegate.handleClick(pos);
+                    delegate.handleNavigationClick(pos);
                 }
             });
 

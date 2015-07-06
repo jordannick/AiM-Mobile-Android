@@ -29,6 +29,7 @@
     <string name="icon_recentlyCompleted">&#xf046;</string>
     <string name="icon_notices">&#xf0f3;</string>
     <string name="icon_timeLog">&#xf017;</string>
+    <string name="icon_home">&#xf015;</string>
 
     <string name="icon_moveToDaily">&#xf0aa;</string>
     <string name="icon_moveToBacklog">&#xf0ab;</string>

@@ -17,12 +17,10 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,11 +34,10 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.NavigationAdapter;
-import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
-import edu.oregonstate.AiMLiteMobile.Euler;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
+import edu.oregonstate.AiMLiteMobile.NavigationDrawer;
 import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseNotices;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
@@ -57,6 +54,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
     private static CurrentUser currentUser;
     private static NotificationManager notificationManager;
+    private static NavigationDrawer navigationDrawer;
     private Activity activity;
     private Menu menu;
 
@@ -95,8 +93,30 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
 
     @Override
-    public void handleClick(int position) {
+    public void handleNavigationClick(int position) {
         Log.d(TAG, "HANDLE CLICK LISTENED : " + position);
+        switch (position){
+            case 1:  //Overview
+                //Nothing. already in overview
+                break;
+            case 2: //Time Log
+                drawerLayout.closeDrawer(Gravity.LEFT);
+                beginActionQueueActivity();
+                break;
+            case 3: //Notices
+                drawerLayout.closeDrawer(Gravity.LEFT);
+                notificationManager.openDrawer(drawerLayout);
+                break;
+            case 4: //Settings
+                //Todo: create settings activity/dialog
+                break;
+            case 5: //Log Out
+                drawerLayout.closeDrawer(Gravity.LEFT);
+                currentUser.logoutUser(this);
+                break;
+        }
+
+
     }
 
     private TextView notifBox = null;
@@ -109,10 +129,14 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
+        Log.d(TAG, "oncreate!");
+
         activity = this;
 
         currentUser = CurrentUser.get(getApplicationContext());
         notificationManager = NotificationManager.get(this, recyclerViewDrawerNotification);
+        navigationDrawer = new NavigationDrawer(this);
+
 
         SnackbarManager.show(Snackbar.with(this).text("Logged in as " + currentUser.getUsername().toUpperCase()).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
 
@@ -139,17 +163,14 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         requestWorkOrders();
         requestNotices();
 
-        initNavigationDrawer();
+        //initNavigationDrawer();
 
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
 
 
-        //int number = 999 * 999;
-        //Euler.listAllPalindromes(number);
 
-        Euler.findSumAmicableNumbers(10000);
     }
 
     private void bottomSheetTest(){
@@ -164,46 +185,6 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
          //bottomSheet.sho
         bottomSheet.showWithSheetView(v);
     }
-
-
-    private void initNavigationDrawer() {
-        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                //getActionBar().setTitle();
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-        };
-        drawerLayout.setDrawerListener(drawerToggle);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-        LinearLayoutManager linearLayoutManagerDrawer = new LinearLayoutManager(this);
-        RecyclerView recyclerViewDrawer = (RecyclerView)findViewById(R.id.left_drawer);
-        recyclerViewDrawer.setLayoutManager(linearLayoutManagerDrawer);
-        String[] navTitles = new String[4];
-        int[] icons = new int[4];
-
-        navTitles[0] = "Notices";
-        icons[0] = R.string.icon_notices;
-        navTitles[1] = "Time Log";
-        icons[1] = R.string.icon_timeLog;
-        navTitles[2] = "Settings";
-        icons[2] = R.string.icon_settings;
-        navTitles[3] = "Log out";
-        icons[3] = R.string.icon_logout;
-
-        Typeface iconTypeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/FontAwesome.otf");
-        NavigationAdapter adapter = new NavigationAdapter(this, navTitles, icons, currentUser.getUsername().toUpperCase(), iconTypeface);
-        recyclerViewDrawer.setAdapter(adapter);
-    }
-
 
     @Override
     protected void onResume() {
@@ -333,8 +314,9 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
     public void beginActionQueueActivity() {
         Intent i = new Intent(this, ActionQueueListActivity.class);
+
         startActivity(i);
-        overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
+        //overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
         searchView.setQuery("", false);
     }
 

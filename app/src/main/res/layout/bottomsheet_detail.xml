@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<ScrollView
+    android:layout_height="500dp"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -66,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:text="LANDSCAPE COMPOSTING SHED FOR THE MULTI-ANIMAL TEACHING FACILITY - PLANS REVIEW MOAR MOAR MOAR MOAR MOAR MOAR"
+            android:text="STING SHED FOR THE MULTI-ANIM"
             android:textColor="@android:color/secondary_text_light"
             android:textSize="15sp" />
 
@@ -399,3 +406,4 @@
     </LinearLayout>
 </android.support.v7.widget.CardView>
 
+</ScrollView>
