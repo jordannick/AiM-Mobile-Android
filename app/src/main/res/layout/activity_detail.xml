@@ -6,166 +6,171 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout1"
+    <com.flipboard.bottomsheet.BottomSheetLayout
+        android:id="@+id/bottomsheet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-
-<!--        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimaryDark"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />-->
+            android:layout_height="wrap_content">
 
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#BDBDBD"> <!--
-            android:layout_below="@id/toolbar"-->
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimaryDark"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-            <LinearLayout
+
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_below="@id/toolbar"
+                android:background="#BDBDBD">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/card_view0"
-                    style="@style/CardViewStyle"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp">
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_view0"
+                        style="@style/CardViewStyle"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="8dp">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="6dp">
-
-                        <LinearLayout
-                            android:id="@+id/actionRow_topHalfLayout_detail"
-                            android:layout_width="fill_parent"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_margin="6dp">
+
+                            <LinearLayout
+                                android:id="@+id/actionRow_topHalfLayout_detail"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/row_proposal_detail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="33dp"
+                                    android:gravity="center"
+                                    android:paddingBottom="0dp"
+                                    android:paddingLeft="6dp"
+                                    android:paddingRight="6dp"
+                                    android:text="136732-001"
+                                    android:textColor="#4a4a4a"
+                                    android:textSize="20dp" />
+
+                                <ImageView
+                                    android:id="@+id/imageView_priorityIconDetail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:src="@drawable/priority_urgent" />
+                                <!--<ImageView
+                                    android:id="@+id/imageView_timeSensitive"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/priority_emergency"
+                                    android:visibility="gone"/>-->
+                                <!-- <TextView
+                                     android:id="@+id/row_section"
+                                     android:layout_width="wrap_content"
+                                     android:layout_height="wrap_content"
+                                     android:text="test"
+                                     android:textSize="20sp"
+                                     />-->
+                                <LinearLayout
+                                    android:id="@+id/actionRow_dateLayout_detail"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="fill_parent"
+                                    android:gravity="end">
+
+                                    <TextView
+                                        android:id="@+id/actionRow_valueAgo_detail"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:text="4"
+                                        android:textColor="@color/cardView_cardText"
+                                        android:textSize="18sp" />
+
+                                    <TextView
+                                        android:id="@+id/actionRow_stringAgo"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingLeft="4dp"
+                                        android:text="hours ago"
+                                        android:textColor="@color/cardView_cardText"
+                                        android:textSize="10sp" />
+
+                                </LinearLayout>
+                            </LinearLayout>
+
 
                             <TextView
-                                android:id="@+id/row_proposal_detail"
-                                android:layout_width="wrap_content"
-                                android:layout_height="33dp"
-                                android:textColor="#4a4a4a"
-                                android:gravity="center"
-                                android:paddingBottom="0dp"
+                                android:id="@+id/descriptionTextView_detail"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/actionRow_topHalfLayout_detail"
+                                android:gravity="center_vertical"
                                 android:paddingLeft="6dp"
                                 android:paddingRight="6dp"
-                                android:text="136732-001"
-                                android:textSize="20dp" />
+                                android:text="LANDSCAPE COMPOSTING SHED FOR THE MULTI-ANIMAL TEACHING FACILITY - PLANS REVIEW MOAR MOAR MOAR MOAR MOAR MOAR"
+                                android:textColor="@android:color/secondary_text_light"
+                                android:textSize="18sp" />
 
-                            <ImageView
-                                android:id="@+id/imageView_priorityIconDetail"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:src="@drawable/priority_urgent" />
-                            <!--<ImageView
-                                android:id="@+id/imageView_timeSensitive"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/priority_emergency"
-                                android:visibility="gone"/>-->
-                            <!-- <TextView
-                                 android:id="@+id/row_section"
+
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+
+                    <!-- <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                         android:id="@+id/card_view"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         card_view:cardCornerRadius="0dp"
+                         card_view:cardPreventCornerOverlap="true">
+                         <LinearLayout
+                         android:layout_width="fill_parent"
+                         android:layout_height="fill_parent"
+                         android:padding="4dp">
+                             <ImageView
+                                 android:id="@+id/imageView_priorityIconDetail"
                                  android:layout_width="wrap_content"
                                  android:layout_height="wrap_content"
-                                 android:text="test"
-                                 android:textSize="20sp"
-                                 />-->
-                            <LinearLayout
-                                android:id="@+id/actionRow_dateLayout_detail"
-                                android:layout_width="fill_parent"
-                                android:layout_height="fill_parent"
-                                android:gravity="end">
-
-                                <TextView
-                                    android:id="@+id/actionRow_valueAgo_detail"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_vertical"
-                                    android:text="4"
-                                    android:textColor="@color/cardView_cardText"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:id="@+id/actionRow_stringAgo"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:paddingLeft="4dp"
-                                    android:text="hours ago"
-                                    android:textColor="@color/cardView_cardText"
-                                    android:textSize="10sp" />
-
-                            </LinearLayout>
-                        </LinearLayout>
-
-
-                        <TextView
-                            android:id="@+id/descriptionTextView_detail"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/actionRow_topHalfLayout_detail"
-                            android:gravity="center_vertical"
-                            android:paddingLeft="6dp"
-                            android:paddingRight="6dp"
-                            android:text="LANDSCAPE COMPOSTING SHED FOR THE MULTI-ANIMAL TEACHING FACILITY - PLANS REVIEW MOAR MOAR MOAR MOAR MOAR MOAR"
-                            android:textColor="@android:color/secondary_text_light"
-                            android:textSize="18sp" />
-
-
-                    </RelativeLayout>
-                </android.support.v7.widget.CardView>
-
-
-                <!-- <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                     android:id="@+id/card_view"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     card_view:cardCornerRadius="0dp"
-                     card_view:cardPreventCornerOverlap="true">
-                     <LinearLayout
-                     android:layout_width="fill_parent"
-                     android:layout_height="fill_parent"
-                     android:padding="4dp">
-                         <ImageView
-                             android:id="@+id/imageView_priorityIconDetail"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_gravity="center_vertical"/>
-                         <TextView
-                             android:id="@+id/descriptionTextView"
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:textColor="@android:color/primary_text_light"
-                             android:text="QCP300 QF13 LANDSCAPE - SHOPS SUPPORT - CAMPUS WAY BETWEEN 30TH AND 35TH STREETS SIDEWALK LIGHT POLE INSTALLATION"
-                             android:padding="8dp"
-                             android:textSize="18sp"/>
-                     </LinearLayout>
-                 </android.support.v7.widget.CardView>-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:background="#EEEEEE">
-
-
+                                 android:layout_gravity="center_vertical"/>
+                             <TextView
+                                 android:id="@+id/descriptionTextView"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:textColor="@android:color/primary_text_light"
+                                 android:text="QCP300 QF13 LANDSCAPE - SHOPS SUPPORT - CAMPUS WAY BETWEEN 30TH AND 35TH STREETS SIDEWALK LIGHT POLE INSTALLATION"
+                                 android:padding="8dp"
+                                 android:textSize="18sp"/>
+                         </LinearLayout>
+                     </android.support.v7.widget.CardView>-->
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp"
+                        android:background="#EEEEEE"
+                        android:orientation="vertical">
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"><!--
 
 
                         <android.support.v7.widget.CardView
@@ -205,323 +210,344 @@
 
                             </RelativeLayout>
                         </android.support.v7.widget.CardView>
+-->
+
+                            <android.support.v7.widget.CardView
+                                style="@style/CardViewStyle"
+                                android:layout_marginBottom="8dp"
+                                android:layout_marginRight="8dp">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:orientation="vertical"
+                                    android:padding="4dp">
+
+                                    <TextView
+                                        android:id="@+id/dateCreatedTextView"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="8dp"
+                                        android:text="Requested: Dec 2, 2014 2:27pm by MORGAN ADAIR (ASC - ANIMAL &amp; RANGELAND SCIENCES)"
+                                        android:textSize="16dp" />
+
+
+                                </LinearLayout>
+                            </android.support.v7.widget.CardView>
+
+
+                        </LinearLayout>
 
 
                         <android.support.v7.widget.CardView
                             style="@style/CardViewStyle"
-                            android:layout_marginBottom="8dp"
+                            android:layout_marginBottom="64dp"
+                            android:layout_marginLeft="8dp"
                             android:layout_marginRight="8dp">
 
                             <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:orientation="vertical"
-                                android:padding="4dp">
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_marginBottom="12dp"
+                                android:layout_marginTop="12dp"
+                                android:orientation="horizontal">
 
-                                <TextView
-                                    android:id="@+id/dateCreatedTextView"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:padding="8dp"
-                                    android:text="Requested: Dec 2, 2014 2:27pm by MORGAN ADAIR (ASC - ANIMAL &amp; RANGELAND SCIENCES)"
-                                    android:textSize="16dp" />
+                                <RelativeLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="fill_parent"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/detailView_titleLocation"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_alignParentTop="true"
+                                        android:layout_marginLeft="12dp"
+                                        android:layout_marginTop="8dp"
+                                        android:text="LOCATION"
+                                        android:textColor="@android:color/tertiary_text_light"
+                                        android:textSize="11dp" />
+
+                                    <TextView
+                                        android:id="@+id/detailView_textLocation"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignLeft="@id/detailView_titleLocation"
+                                        android:layout_alignStart="@id/detailView_titleLocation"
+                                        android:layout_below="@id/detailView_titleLocation"
+                                        android:layout_marginLeft="8dp"
+                                        android:text="RICHARDSON HALL Room #0388"
+                                        android:textColor="@android:color/secondary_text_light"
+                                        android:textSize="15dp" />
+
+                                    <TextView
+                                        android:id="@+id/detailView_titleStatus"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignLeft="@id/detailView_titleLocation"
+                                        android:layout_below="@id/detailView_textLocation"
+                                        android:layout_marginTop="12dp"
+                                        android:text="STATUS"
+                                        android:textSize="11dp" />
 
 
+                                    <TextView
+                                        android:id="@+id/detailView_textStatus"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignLeft="@id/detailView_titleLocation"
+                                        android:layout_alignStart="@id/detailView_titleLocation"
+                                        android:layout_below="@id/detailView_titleStatus"
+                                        android:layout_marginLeft="8dp"
+                                        android:text="WORK IN PROGRESS"
+                                        android:textColor="@android:color/secondary_text_light"
+                                        android:textSize="15dp" />
+
+                                    <ImageView
+                                        android:id="@+id/imageView_statusIcon"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@id/detailView_titleStatus"
+                                        android:layout_toRightOf="@id/detailView_textStatus"
+                                        android:paddingLeft="4dp"
+                                        android:scaleX="1.1"
+                                        android:scaleY="1.1"
+                                        android:src="@drawable/status_work_in_progress" />
+
+                                    <TextView
+                                        android:id="@+id/detailView_titleFunding"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignLeft="@id/detailView_titleLocation"
+                                        android:layout_alignStart="@id/detailView_titleLocation"
+                                        android:layout_below="@id/detailView_textStatus"
+                                        android:layout_marginTop="12dp"
+                                        android:text="FUNDING"
+                                        android:textColor="@android:color/tertiary_text_light"
+                                        android:textSize="11dp" />
+
+                                    <TextView
+                                        android:id="@+id/detailView_textFunding"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignLeft="@id/detailView_titleLocation"
+                                        android:layout_alignStart="@id/detailView_titleLocation"
+                                        android:layout_below="@id/detailView_titleFunding"
+                                        android:layout_marginLeft="8dp"
+                                        android:text="QRS011 (BILLABLE)"
+                                        android:textColor="@android:color/secondary_text_light"
+                                        android:textSize="15dp" />
+
+                                    <TextView
+                                        android:id="@+id/detailView_titleShop"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignLeft="@id/detailView_titleLocation"
+                                        android:layout_alignStart="@id/detailView_titleLocation"
+                                        android:layout_below="@id/detailView_textFunding"
+                                        android:layout_marginTop="12dp"
+                                        android:text="SHOP"
+                                        android:textColor="@android:color/tertiary_text_light"
+                                        android:textSize="11dp" />
+
+                                    <TextView
+                                        android:id="@+id/detailView_textShop"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignLeft="@id/detailView_titleLocation"
+                                        android:layout_alignStart="@id/detailView_titleLocation"
+                                        android:layout_below="@id/detailView_titleShop"
+                                        android:layout_marginLeft="8dp"
+                                        android:text="LANDSCAPING"
+                                        android:textColor="@android:color/secondary_text_light"
+                                        android:textSize="15dp" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="fill_parent"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/detailView_titlePriority"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_alignParentTop="true"
+                                        android:layout_marginLeft="12dp"
+                                        android:layout_marginTop="8dp"
+                                        android:text="PRIORITY"
+                                        android:textSize="11dp" />
+
+                                    <TextView
+                                        android:id="@+id/detailView_textPriority"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignLeft="@id/detailView_titlePriority"
+                                        android:layout_alignStart="@id/detailView_titlePriority"
+                                        android:layout_below="@id/detailView_titlePriority"
+                                        android:layout_marginLeft="8dp"
+                                        android:text="URGENT"
+                                        android:textColor="@android:color/secondary_text_light"
+                                        android:textSize="15dp" />
+
+                                    <TextView
+                                        android:id="@+id/detailView_titleAssigned"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignLeft="@id/detailView_titlePriority"
+                                        android:layout_below="@id/detailView_textPriority"
+                                        android:layout_marginTop="12dp"
+                                        android:text="ASSIGNED"
+                                        android:textColor="@android:color/tertiary_text_light"
+                                        android:textSize="11dp" />
+
+                                    <TextView
+                                        android:id="@+id/detailView_textAssigned"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignLeft="@id/detailView_titlePriority"
+                                        android:layout_below="@id/detailView_titleAssigned"
+                                        android:layout_marginLeft="8dp"
+                                        android:text="MICHAEL BAMBERGER, DAVID HORN, LANCE JONES"
+                                        android:textColor="@android:color/secondary_text_light"
+                                        android:textSize="15dp" />
+
+                                    <TextView
+                                        android:id="@+id/detailView_titleCategory"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignLeft="@id/detailView_titlePriority"
+                                        android:layout_below="@id/detailView_textAssigned"
+                                        android:layout_marginTop="12dp"
+                                        android:text="CATEGORY"
+                                        android:textSize="11dp" />
+
+                                    <TextView
+                                        android:id="@+id/detailView_textCategory"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignLeft="@id/detailView_titlePriority"
+                                        android:layout_alignStart="@id/detailView_titlePriority"
+                                        android:layout_below="@id/detailView_titleCategory"
+                                        android:layout_marginLeft="8dp"
+                                        android:layout_weight="3"
+                                        android:text="PD1075_SOFT COSTS"
+                                        android:textColor="@android:color/secondary_text_light"
+                                        android:textSize="15sp" />
+
+                                </RelativeLayout>
                             </LinearLayout>
                         </android.support.v7.widget.CardView>
-
-
                     </LinearLayout>
-
-
-                    <android.support.v7.widget.CardView
-                        style="@style/CardViewStyle"
-                        android:layout_marginBottom="64dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp">
-
-                        <LinearLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:layout_marginBottom="12dp"
-                            android:layout_marginTop="12dp"
-                            android:orientation="horizontal">
-
-                            <RelativeLayout
-                                android:layout_width="0dp"
-                                android:layout_height="fill_parent"
-                                android:layout_weight="1">
-
-                                <TextView
-                                    android:id="@+id/detailView_titleLocation"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentLeft="true"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_marginLeft="12dp"
-                                    android:layout_marginTop="8dp"
-                                    android:textColor="@android:color/tertiary_text_light"
-                                    android:text="LOCATION"
-                                    android:textSize="11dp" />
-
-                                <TextView
-                                    android:id="@+id/detailView_textLocation"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignLeft="@id/detailView_titleLocation"
-                                    android:layout_alignStart="@id/detailView_titleLocation"
-                                    android:layout_below="@id/detailView_titleLocation"
-                                    android:layout_marginLeft="8dp"
-                                    android:text="RICHARDSON HALL Room #0388"
-                                    android:textColor="@android:color/secondary_text_light"
-                                    android:textSize="15dp" />
-
-                                <TextView
-                                    android:id="@+id/detailView_titleStatus"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignLeft="@id/detailView_titleLocation"
-                                    android:layout_below="@id/detailView_textLocation"
-                                    android:layout_marginTop="12dp"
-                                    android:text="STATUS"
-                                    android:textSize="11dp" />
-
-
-                                <TextView
-                                    android:id="@+id/detailView_textStatus"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignLeft="@id/detailView_titleLocation"
-                                    android:layout_alignStart="@id/detailView_titleLocation"
-                                    android:layout_below="@id/detailView_titleStatus"
-                                    android:layout_marginLeft="8dp"
-                                    android:text="WORK IN PROGRESS"
-                                    android:textColor="@android:color/secondary_text_light"
-                                    android:textSize="15dp" />
-
-                                <ImageView
-                                    android:id="@+id/imageView_statusIcon"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/detailView_titleStatus"
-                                    android:layout_toRightOf="@id/detailView_textStatus"
-                                    android:paddingLeft="4dp"
-                                    android:scaleX="1.1"
-                                    android:scaleY="1.1"
-                                    android:src="@drawable/status_work_in_progress" />
-
-                                <TextView
-                                    android:id="@+id/detailView_titleFunding"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignLeft="@id/detailView_titleLocation"
-                                    android:layout_alignStart="@id/detailView_titleLocation"
-                                    android:layout_below="@id/detailView_textStatus"
-                                    android:layout_marginTop="12dp"
-                                    android:text="FUNDING"
-                                    android:textColor="@android:color/tertiary_text_light"
-                                    android:textSize="11dp"/>
-
-                                <TextView
-                                    android:id="@+id/detailView_textFunding"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignLeft="@id/detailView_titleLocation"
-                                    android:layout_alignStart="@id/detailView_titleLocation"
-                                    android:layout_below="@id/detailView_titleFunding"
-                                    android:layout_marginLeft="8dp"
-                                    android:text="QRS011 (BILLABLE)"
-                                    android:textColor="@android:color/secondary_text_light"
-                                    android:textSize="15dp" />
-
-                                <TextView
-                                    android:id="@+id/detailView_titleShop"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignLeft="@id/detailView_titleLocation"
-                                    android:layout_alignStart="@id/detailView_titleLocation"
-                                    android:layout_below="@id/detailView_textFunding"
-                                    android:layout_marginTop="12dp"
-                                    android:textColor="@android:color/tertiary_text_light"
-                                    android:text="SHOP"
-                                    android:textSize="11dp"/>
-
-                                <TextView
-                                    android:id="@+id/detailView_textShop"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignLeft="@id/detailView_titleLocation"
-                                    android:layout_alignStart="@id/detailView_titleLocation"
-                                    android:layout_below="@id/detailView_titleShop"
-                                    android:layout_marginLeft="8dp"
-                                    android:text="LANDSCAPING"
-                                    android:textColor="@android:color/secondary_text_light"
-                                    android:textSize="15dp" />
-
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:layout_width="0dp"
-                                android:layout_height="fill_parent"
-                                android:layout_weight="1">
-
-                                <TextView
-                                    android:id="@+id/detailView_titlePriority"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentLeft="true"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_marginLeft="12dp"
-                                    android:layout_marginTop="8dp"
-                                    android:text="PRIORITY"
-                                    android:textSize="11dp" />
-
-                                <TextView
-                                    android:id="@+id/detailView_textPriority"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignLeft="@id/detailView_titlePriority"
-                                    android:layout_alignStart="@id/detailView_titlePriority"
-                                    android:layout_below="@id/detailView_titlePriority"
-                                    android:layout_marginLeft="8dp"
-                                    android:text="URGENT"
-                                    android:textColor="@android:color/secondary_text_light"
-                                    android:textSize="15dp" />
-
-                                <TextView
-                                    android:id="@+id/detailView_titleAssigned"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignLeft="@id/detailView_titlePriority"
-                                    android:layout_below="@id/detailView_textPriority"
-                                    android:layout_marginTop="12dp"
-                                    android:textColor="@android:color/tertiary_text_light"
-                                    android:text="ASSIGNED"
-                                    android:textSize="11dp" />
-
-                                <TextView
-                                    android:id="@+id/detailView_textAssigned"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignLeft="@id/detailView_titlePriority"
-                                    android:layout_below="@id/detailView_titleAssigned"
-                                    android:layout_marginLeft="8dp"
-                                    android:text="MICHAEL BAMBERGER, DAVID HORN, LANCE JONES"
-                                    android:textColor="@android:color/secondary_text_light"
-                                    android:textSize="15dp" />
-
-                                <TextView
-                                    android:id="@+id/detailView_titleCategory"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignLeft="@id/detailView_titlePriority"
-                                    android:layout_below="@id/detailView_textAssigned"
-                                    android:layout_marginTop="12dp"
-                                    android:text="CATEGORY"
-                                    android:textSize="11dp"/>
-
-                                <TextView
-                                    android:id="@+id/detailView_textCategory"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignLeft="@id/detailView_titlePriority"
-                                    android:layout_alignStart="@id/detailView_titlePriority"
-                                    android:layout_below="@id/detailView_titleCategory"
-                                    android:layout_marginLeft="8dp"
-                                    android:layout_weight="3"
-                                    android:text="PD1075_SOFT COSTS"
-                                    android:textColor="@android:color/secondary_text_light"
-                                    android:textSize="15sp" />
-
-                            </RelativeLayout>
-                        </LinearLayout>
-                    </android.support.v7.widget.CardView>
-                </LinearLayout>
                 </LinearLayout>
 
 
-        </ScrollView>
+            </ScrollView>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:id="@+id/button_viewNotes"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                android:background="#1E88E5">
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/button_viewNotes_text"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/button_moveSection"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:paddingBottom="12dp"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="12dp"
-                    android:text="View Notes"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp" />
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp">
 
-                <TextView
-                    android:id="@+id/button_viewNotes_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/button_viewNotes_text"
-                    android:paddingLeft="12dp"
-                    android:text="icon"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/button_moveSection_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="icon"
+                        android:textColor="#FFFFFF"
+                        android:textSize="22sp" />
 
-            <View
-                android:id="@+id/separator"
-                android:layout_width="8dp"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF" />
+                    <TextView
+                        android:id="@+id/button_moveSection_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/button_moveSection_icon"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        android:text="To Backlog"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/button_viewNotes"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#1E88E5"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:id="@+id/button_viewNotes_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="icon"
+                        android:textColor="#FFFFFF"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/button_viewNotes_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/button_viewNotes_icon"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        android:text="Notes"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+                </RelativeLayout>
 
 
-            <RelativeLayout
-                android:id="@+id/button_addAction"
+                <RelativeLayout
+                    android:id="@+id/button_addAction"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#43A047"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp">
 
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginRight="8dp"
-                android:layout_weight="1"
-                android:background="#43A047">
+                    <TextView
+                        android:id="@+id/button_addAction_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="icon"
+                        android:textColor="#FFFFFF"
+                        android:textSize="22sp" />
 
-                <TextView
-                    android:id="@+id/button_addAction_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:paddingBottom="12dp"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="12dp"
-                    android:text="Add Time"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/button_addAction_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/button_addAction_icon"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        android:text="Add Time"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/button_addAction_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/button_addAction_text"
-                    android:paddingLeft="12dp"
-                    android:text="icon"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
-            </RelativeLayout>
-        </LinearLayout>
-    </RelativeLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </com.flipboard.bottomsheet.BottomSheetLayout>
 </android.support.v4.widget.DrawerLayout>
 

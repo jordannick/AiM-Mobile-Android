@@ -17,12 +17,9 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,8 +33,6 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.NavigationAdapter;
-import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
-import edu.oregonstate.AiMLiteMobile.Euler;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
@@ -146,10 +141,6 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         screenHeight = displayMetrics.heightPixels;
 
 
-        //int number = 999 * 999;
-        //Euler.listAllPalindromes(number);
-
-        Euler.findSumAmicableNumbers(10000);
     }
 
     private void bottomSheetTest(){
@@ -319,15 +310,15 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
     // Start an instance of DetailActivity
     public void onWorkOrderSelected(WorkOrder workOrder) {
-        //recAdapter.flushFilter();
-        bottomSheetTest();
+       // bottomSheetTest();
 
-        /*Intent i = new Intent(this, DetailActivity.class);
+        //recAdapter.flushFilter();
+
         Intent i = new Intent(this, DetailActivity.class);
         i.putExtra(WorkOrder.WORK_ORDER_EXTRA, workOrder);
         startActivity(i);
         overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
-        searchView.setQuery("", false);*/
+        searchView.setQuery("", false);
     }
 
 
