@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,12 +24,15 @@ import android.widget.TextView;
 
 import com.flipboard.bottomsheet.BottomSheetLayout;
 
+import org.w3c.dom.Text;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.NoteAdapter;
 import edu.oregonstate.AiMLiteMobile.Fragments.AddActionDialogFragment;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
+import edu.oregonstate.AiMLiteMobile.NotificationManager;
 import edu.oregonstate.AiMLiteMobile.R;
 
 
@@ -40,13 +45,22 @@ public class DetailActivity extends AppCompatActivity {
     private static CurrentUser currentUser;
     public static WorkOrder workOrder;
     private NoteAdapter notesAdapter;
+    private static NotificationManager notificationManager;
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.row_proposal_detail) TextView proposal;
     @Bind(R.id.descriptionTextView_detail) TextView description;
     @Bind(R.id.actionRow_valueAgo_detail) TextView valueAgo;
     @Bind(R.id.actionRow_stringAgo) TextView timeAgo;
-    @Bind(R.id.dateCreatedTextView) TextView dateCreated;
+    //@Bind(R.id.dateCreatedTextView) TextView dateCreated;
+    @Bind(R.id.detailView_textRequestor)
+    TextView requestor;
+
+    @Bind(R.id.detailView_requestedDepartment)
+    TextView requestorDepartment;
+
+    @Bind(R.id.detailView_requestedTime)
+    TextView requestorTime;
 
     @Bind(R.id.detailView_textLocation) TextView location;
     @Bind(R.id.detailView_textPriority) TextView priority;
@@ -66,8 +80,10 @@ public class DetailActivity extends AppCompatActivity {
     @Bind(R.id.button_addAction) RelativeLayout addAction;
     @Bind(R.id.button_viewNotes) RelativeLayout viewNotes;
 
-    @Bind(R.id.bottomsheet)
-    BottomSheetLayout bottomSheet;
+    @Bind(R.id.detail_activity_layout)
+    DrawerLayout drawerLayout;
+    @Bind(R.id.right_drawer)
+    RecyclerView recyclerViewDrawerNotification;
 
 
     @Override
@@ -96,7 +112,7 @@ public class DetailActivity extends AppCompatActivity {
                 }
             });
         }
-
+        notificationManager = NotificationManager.get(this, recyclerViewDrawerNotification);
         populateViews();
     }
 
@@ -109,6 +125,18 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detail, menu);
+
+        //this.menu = menu;
+        View menu_notification = menu.findItem(R.id.menu_notification).getActionView();
+        menu_notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //createNoticesViewPopup();
+                //drawerLayout.openDrawer(GravityCompat.END);
+                notificationManager.openDrawer(drawerLayout);
+            }
+        });
+
         return true;
     }
 
@@ -154,7 +182,10 @@ public class DetailActivity extends AppCompatActivity {
         description.setText(workOrder.getDescription());
         valueAgo.setText(workOrder.getDateElements()[3]);
         timeAgo.setText(workOrder.getDateElements()[4]);
-        dateCreated.setText("Requested: " + workOrder.getDateCreated() + " by " + workOrder.getContactName() + " (" + workOrder.getDepartment() + ")");
+       // dateCreated.setText("Requested: " + workOrder.getDateCreated() + " by " + workOrder.getContactName() + " (" + workOrder.getDepartment() + ")");
+        requestor.setText(workOrder.getContactName());
+        requestorDepartment.setText(workOrder.getDepartment());
+        requestorTime.setText(workOrder.getDateCreated());
 
 
         if (!workOrder.getLocationCode().equals("null")){
@@ -178,7 +209,7 @@ public class DetailActivity extends AppCompatActivity {
         Typeface GUDEABOLD = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Gudea-Bold.otf");
         description.setTypeface(GUDEA);
         proposal.setTypeface(GUDEABOLD);
-        dateCreated.setTypeface(GUDEA);
+        //dateCreated.setTypeface(GUDEA);
 
 
 
@@ -237,7 +268,10 @@ public class DetailActivity extends AppCompatActivity {
         moveSection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moveSection.startAnimation(sectionChangeAnim);
+                //moveSection.startAnimation(sectionChangeAnim);
+                moveSectionTextIcon.startAnimation(sectionChangeAnim);
+
+
                 /*if (moveSectionTitle.getText().equals("To Backlog")) {
                     moveSection.startAnimation(sectionChangeAnim);
                     //moveSectionTextIcon.startAnimation(sectionChangeAnim);
