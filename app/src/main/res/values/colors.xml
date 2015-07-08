@@ -67,6 +67,10 @@
     <color name="selector_workOrder_unpressed">#eeeeee</color>
 
 
+    <color name="selector_nav_item_unpressed">#ffffff</color>
+    <color name="selector_nav_item_pressed">#F2F2F2</color>
+
+
 
 
     <color name="overviewActivity_sectionIconNormal">#F57C00</color>
@@ -84,7 +88,10 @@
     <color name="OSU_white">#f5f2ed</color>
     <color name="OSU_black">#373737</color>
 
-    <color name="Material_grey">#757575</color>
+    <color name="Material_grey">#727272</color>
+    <color name="Material_font_black">#212121</color>
+    <color name="Material_font_grey">#747474</color>
+    <color name="Material_icon_grey">#A9A9A9</color>
 
 </resources>
 

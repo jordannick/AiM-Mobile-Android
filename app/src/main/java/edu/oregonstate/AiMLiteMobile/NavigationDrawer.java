@@ -10,7 +10,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
+import edu.oregonstate.AiMLiteMobile.Activities.OverviewListActivity;
 import edu.oregonstate.AiMLiteMobile.Adapters.NavigationAdapter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 
@@ -23,6 +25,7 @@ public class NavigationDrawer {
     private CurrentUser currentUser;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
+    private Typeface iconTypeface;
 
     public NavigationDrawer(AppCompatActivity delegate) {
         this.delegate = delegate;
@@ -30,6 +33,7 @@ public class NavigationDrawer {
         drawerLayout = (DrawerLayout)delegate.findViewById(R.id.drawer_layout);
         toolbar = (Toolbar)delegate.findViewById(R.id.toolbar);
         initNavigationDrawer();
+        initFooterViews();
     }
 
 
@@ -39,6 +43,9 @@ public class NavigationDrawer {
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 //getActionBar().setTitle();
+                //((OverviewListActivity)delegate).beginActionQueueActivity();
+                RetrofitTest test = new RetrofitTest(delegate);
+                test.performTest(10);
             }
 
             @Override
@@ -57,26 +64,44 @@ public class NavigationDrawer {
 
 
         LinearLayoutManager linearLayoutManagerDrawer = new LinearLayoutManager(delegate);
-        RecyclerView recyclerViewDrawer = (RecyclerView)delegate.findViewById(R.id.left_drawer);
+        RecyclerView recyclerViewDrawer = (RecyclerView)delegate.findViewById(R.id.left_drawer_recycler);
         recyclerViewDrawer.setLayoutManager(linearLayoutManagerDrawer);
-        String[] navTitles = new String[4];
-        int[] icons = new int[4];
-/*
-        navTitles[0] = "Overview";
-        icons[0] = R.string.icon_home;*/
+        String[] navTitles = new String[2];
+        int[] icons = new int[2];
+
         navTitles[0] = "Time Log";
         icons[0] = R.string.icon_timeLog;
         navTitles[1] = "Notices";
         icons[1] = R.string.icon_notices;
-        navTitles[2] = "Settings";
+/*        navTitles[2] = "Settings";
         icons[2] = R.string.icon_settings;
         navTitles[3] = "Log out";
-        icons[3] = R.string.icon_logout;
+        icons[3] = R.string.icon_logout;*/
 
-        Typeface iconTypeface = Typeface.createFromAsset(delegate.getApplicationContext().getAssets(), "fonts/FontAwesome.otf");
+        iconTypeface = Typeface.createFromAsset(delegate.getApplicationContext().getAssets(), "fonts/FontAwesome.otf");
         NavigationAdapter adapter = new NavigationAdapter(delegate, navTitles, icons, currentUser.getUsername().toUpperCase(), iconTypeface);
         recyclerViewDrawer.setAdapter(adapter);
 
+
+    }
+
+    private void initFooterViews(){
+        TextView refreshIcon = (TextView)delegate.findViewById(R.id.nav_footer_refresh_icon);
+        TextView refreshTitle = (TextView)delegate.findViewById(R.id.nav_footer_refresh_title);
+        TextView settingsIcon = (TextView)delegate.findViewById(R.id.nav_footer_settings_icon);
+        TextView settingsTitle = (TextView)delegate.findViewById(R.id.nav_footer_settings_title);
+        TextView logoutIcon = (TextView)delegate.findViewById(R.id.nav_footer_logout_icon);
+        TextView logoutTitle = (TextView)delegate.findViewById(R.id.nav_footer_logout_title);
+
+        refreshIcon.setTypeface(iconTypeface);
+        refreshIcon.setText(R.string.icon_refresh);
+        settingsIcon.setTypeface(iconTypeface);
+        settingsIcon.setText(R.string.icon_settings);
+        logoutIcon.setTypeface(iconTypeface);
+        logoutIcon.setText(R.string.icon_logout);
+        refreshTitle.setText("Force Refresh");
+        settingsTitle.setText("Settings");
+        logoutTitle.setText("Logout");
 
     }
 }

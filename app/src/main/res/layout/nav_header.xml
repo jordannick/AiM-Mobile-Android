@@ -2,17 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:background="@color/colorPrimaryDark"
-    android:gravity="center_vertical">
+    android:background="@color/colorPrimaryDark">
 
-    <TextView
+<!--    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Logged in as"
-        android:textColor="#EEEEEE"
+        android:textColor="#F5F5F5"
         android:layout_marginLeft="28dp"
         android:layout_marginBottom="8dp"
-        android:textStyle="bold"/>
+        android:layout_marginTop="22dp"/> &lt;!&ndash;EEEEEE&ndash;&gt;-->
 
     <TextView
         android:id="@+id/nav_header_name"
@@ -20,10 +19,23 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:textColor="@color/colorWhite"
-        android:text="CROSST"
-        android:textSize="36dp"
-        android:layout_marginLeft="48dp"
+        android:text="USER"
+        android:textSize="32dp"
+        android:layout_marginTop="54dp"
+        android:layout_marginLeft="28dp"
         android:textStyle="bold"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#F5F5F5"
+        android:textSize="14dp"
+        android:text="Updated 12 minutes ago"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="72dp" />
+
+
 
 
 

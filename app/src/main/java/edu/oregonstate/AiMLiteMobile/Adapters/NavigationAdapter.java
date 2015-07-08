@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -35,7 +36,6 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
 
     Typeface iconTypeface;
 
-    private int count = 0;
 
     public interface NavigationClickHandler{
         void handleNavigationClick(int position);
@@ -48,7 +48,12 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         this.name = name;
         this.iconTypeface = iconTypeface;
         this.delegate = (OverviewListActivity)delegate;
+        Log.d(TAG, "Display metrics, height: " + delegate.getResources().getDisplayMetrics().heightPixels);
+
+        setFooterClickListeners();
+
     }
+
 
     @Override
     public NavigationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -57,10 +62,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
             v.setBackgroundResource(R.drawable.navigation_header_background);
             return new ViewHolder(v, viewType, iconTypeface);
         } else if(viewType == TYPE_ITEM){
-            count++;
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.nav_item, parent, false);
-            if(count > 2) v = LayoutInflater.from(parent.getContext()).inflate(R.layout.nav_item_bottom, parent, false);
-
             return new ViewHolder(v, viewType, iconTypeface);
         }
         return null;
@@ -136,6 +138,27 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
             }
             holderId = viewType;
         }
+    }
+
+
+    private void setFooterClickListeners(){
+        LinearLayout refreshLayout = (LinearLayout)delegate.findViewById(R.id.nav_footer_refresh_layout);
+        LinearLayout settingsLayout = (LinearLayout)delegate.findViewById(R.id.nav_footer_settings_layout);
+        LinearLayout logoutLayout = (LinearLayout)delegate.findViewById(R.id.nav_footer_logout_layout);
+
+        setClickListener(refreshLayout, 3);
+        setClickListener(settingsLayout, 4);
+        setClickListener(logoutLayout, 5);
+    }
+
+    private void setClickListener(LinearLayout layout, int pos){
+        final int position = pos;
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delegate.handleNavigationClick(position);
+            }
+        });
     }
 
 

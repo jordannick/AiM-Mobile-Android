@@ -260,5 +260,22 @@ public class ActionQueueListActivity extends AppCompatActivity{
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "aa On Stop ActionQueue");
+        super.onStop();
+    }
 
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "aa On Desroy ActionQueue");
+
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.d(TAG, "aa On Save ActionQueue");
+        super.onSaveInstanceState(outState);
+    }
 }

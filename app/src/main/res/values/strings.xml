@@ -37,6 +37,7 @@
     <string name="icon_password">&#xf023;</string>
     <string name="icon_settings">&#xf013;</string>
     <string name="icon_logout">&#xf08b;</string>
+    <string name="icon_refresh">&#xf021;</string>
 
     <string name="icon_recentBarExpand">&#xf077;</string>
     <string name="icon_recentBarCollapse">&#xf078;</string>

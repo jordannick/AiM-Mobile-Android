@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.NavigationAdapter;
+import edu.oregonstate.AiMLiteMobile.InternalStorageWriter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
@@ -86,7 +87,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
     @Bind(R.id.bottomsheet)
     BottomSheetLayout bottomSheet;
-    @Bind(R.id.left_drawer)
+    @Bind(R.id.left_drawer_recycler)
     RecyclerView recyclerViewDrawer;
     @Bind(R.id.right_drawer)
     RecyclerView recyclerViewDrawerNotification;
@@ -106,10 +107,15 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 notificationManager.openDrawer(drawerLayout);
                 break;
-            case 3: //Settings
-                //Todo: create settings activity/dialog
+            case 3: //Refresh
                 break;
-            case 4: //Log Out
+            case 4: //Settings
+                //Todo: create settings activity/dialog
+                InternalStorageWriter writer = new InternalStorageWriter(this, "testFilename");
+                writer.writeToFile("Hello World!");
+                writer.printFileContents();
+                break;
+            case 5: //Log Out
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 currentUser.logoutUser(this);
                 break;
@@ -191,7 +197,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
     @Override
     protected void onDestroy() {
-        Log.d(TAG, "OverviewListActivity onDestroy");
+        Log.d(TAG, "aa OverviewListActivity onDestroy");
         super.onDestroy();
     }
 
@@ -203,6 +209,20 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         }else {
             currentUser.logoutUser(this);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "aa On Stop Overview");
+        super.onStop();
+    }
+
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.d(TAG, "aa On Save OverView");
+        super.onSaveInstanceState(outState);
     }
 
     @Override
