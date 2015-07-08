@@ -10,9 +10,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
+import edu.oregonstate.AiMLiteMobile.Models.Note;
 import edu.oregonstate.AiMLiteMobile.Models.Notice;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 
@@ -147,16 +153,54 @@ public class ApiManager {
                         wo.setDepartment(obj.getString("department"));
                         wo.setProposalPhase(String.format("%s-%s", obj.getString("proposal"), obj.getString("sort_code")));
 
-                        Random rand = new Random();
-                        if(rand.nextInt(100)%2 == 0){
+                        if (obj.getString("section").equals("Daily Assignments")){
                             wo.setSection("Daily");
-                        }else if(rand.nextInt(100)%2 == 0){
-                            wo.setSection("Backlog");
-                        }else if(rand.nextInt(100)%2 == 0){
-                            wo.setSection("Admin");
-                        }else{
-                            wo.setSection("Recently Completed");
+                        } else {
+                            wo.setSection(obj.getString("section"));
                         }
+
+                        JSONArray objNotes = obj.getJSONArray("notes");
+
+                        ArrayList<Note> notes = new ArrayList<Note>();
+
+                        if (objNotes.length() > 0){
+                            //Log.d(TAG, "notes = " + objNotes);
+                            Log.d(TAG, "WO with notes: "+ wo.getDescription());
+                            for (int j = 0; j < objNotes.length(); j++) {
+                                JSONObject objNote = objNotes.getJSONObject(j);
+                                Log.d(TAG, "note: " + objNote.getString("notes"));
+
+                                String rawDate = objNote.getString("edit_date");
+                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s", Locale.US); //Expecting this format
+                                Date parsedDate = format.parse(rawDate);
+
+                                Note note = new Note(objNote.getString("notes"), objNote.getString("name"), parsedDate);
+                                notes.add(note);
+                            }
+
+                            // Sort notes array in chronological order
+                            Collections.sort(notes, new Comparator<Note>() {
+                                @Override
+                                public int compare(Note lhs, Note rhs) {
+                                    if (lhs.getDate().before(rhs.getDate())){
+                                        return 1;
+                                    } else if (lhs.getDate().after(rhs.getDate())) {
+                                        return -1;
+                                    } else {
+                                        return 0;
+                                    }
+
+                                }
+                            });
+
+                            wo.setNotes(notes);
+                        }
+
+
+
+
+
+
                         workOrders.add(wo);
                     }
                 } catch (Exception e) {

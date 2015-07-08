@@ -47,7 +47,7 @@
     <!--Add Action Fragment-->
     <string name="add_action_spinner_action_prompt">Select Action</string>
     <string name="add_action_spinner_status_prompt">Select New Status</string>
-
+    <string name="add_action_spinner_timetype_prompt">Time Type</string>
 
     <!--Nav Drawer-->
     <string name="drawer_close">open drawer</string>

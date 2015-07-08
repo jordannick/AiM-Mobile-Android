@@ -348,6 +348,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void createNotesViewPopup(){
+        Log.d(TAG, "NoteViewPopup Start");
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         LayoutInflater inflater = getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_notes_list, null);
@@ -361,9 +362,14 @@ public class DetailActivity extends AppCompatActivity {
 
         alertDialog.setView(convertView);
         ListView lv = (ListView) convertView.findViewById(R.id.popupNotes_listView);
+
+        TextView emptyText = (TextView) convertView.findViewById(android.R.id.empty);
+        lv.setEmptyView(emptyText);
+
         lv.setSelector(android.R.color.transparent);
         lv.setAdapter(notesAdapter);
         alertDialog.show();
+        Log.d(TAG, "NoteViewPopup End");
     }
 
     public void beginActionQueueActivity(){

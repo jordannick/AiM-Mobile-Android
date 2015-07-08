@@ -4,10 +4,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -23,8 +22,12 @@ import android.widget.TextView;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Locale;
 
 import edu.oregonstate.AiMLiteMobile.Activities.ActionQueueListActivity;
 import edu.oregonstate.AiMLiteMobile.Helpers.InputFilterMinMax;
@@ -51,20 +54,26 @@ public class AddActionDialogFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.dialog_action_add, container, false);
 
         currentUser = CurrentUser.get(getActivity().getApplicationContext());
 
         final Dialog actionDialog = getDialog();
-        final ScrollView dialogScrollView = ((ScrollView)(v.findViewById(R.id.layout_action_add)));
-        final Spinner statusSpinner =  (Spinner)v.findViewById(R.id.spinner_updateStatus);
-        final Spinner actionSpinner = (Spinner)v.findViewById(R.id.spinner_actionTaken);
-        final EditText noteEditText =  ((EditText)(v.findViewById(R.id.editText_note)));
-        final TextView hoursEditText = (TextView)v.findViewById(R.id.hoursEditText);
+        final ScrollView dialogScrollView = ((ScrollView) (v.findViewById(R.id.layout_action_add)));
+        final Spinner statusSpinner = (Spinner) v.findViewById(R.id.spinner_updateStatus);
+        final Spinner actionSpinner = (Spinner) v.findViewById(R.id.spinner_actionTaken);
+        final Spinner timeTypeSpinner = (Spinner) v.findViewById(R.id.spinner_timetype);
+        final EditText noteEditText = ((EditText) (v.findViewById(R.id.editText_note)));
+        final TextView hoursEditText = (TextView) v.findViewById(R.id.hoursEditText);
+
 
         //TextView title = (TextView)v.findViewById(R.id.dialogNewAction_title);
-       // title.setText(dialogTitle);
+        // title.setText(dialogTitle);
+        ArrayList<String> spinnerArray = new ArrayList<>(Arrays.asList("xyz", "abc"));
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, spinnerArray); //selected item will look like a spinner set from XML
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timeTypeSpinner.setAdapter(spinnerArrayAdapter);
 
         actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         actionDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -132,8 +141,7 @@ public class AddActionDialogFragment extends DialogFragment {
                     currentUser.addAction(createAction(actionSpinner.getSelectedItem().toString(), statusSpinner.getSelectedItem().toString(), hoursEditText.getText().toString(), noteEditText.getText().toString()));
                     //((ActionQueueListFragment)getTargetFragment()).onPostActionDialog();
                     actionDialog.dismiss();
-                }
-                else {
+                } else {
                     Log.e(TAG, "Using dialog in unsupported activity");
                 }
             }
@@ -165,14 +173,20 @@ public class AddActionDialogFragment extends DialogFragment {
 
     }
 
-    private Action createAction(String actionTaken, String status, String hours, String noteString){
+    private Action createAction(String actionTaken, String status, String hours, String noteString) {
         int hoursInt = 0;
         ArrayList<Note> notes = new ArrayList<>();
 
-        if (!hours.isEmpty()){
+        if (!hours.isEmpty()) {
             hoursInt = Integer.parseInt(hours);
         }
-        if (!noteString.isEmpty()){
+        if (!noteString.isEmpty()) {
+            /*SimpleDateFormat format = new SimpleDateFormat("MMM d',' y h:mma", Locale.US);
+            Date currentDate = new Date(System.currentTimeMillis());
+            Date formattedDate = "";
+            formattedDate = format.format(currentDate);
+            formattedDate = formattedDate.replace("AM", "am").replace("PM", "pm");*/
+
             Note note = new Note(noteString, currentUser.getUsername(), new Date(System.currentTimeMillis()));
             notes.add(note);
         }

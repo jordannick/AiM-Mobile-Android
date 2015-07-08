@@ -58,10 +58,10 @@ public class WorkOrder implements Serializable {
 
             //%% DEBUG %%
             int day = 86400000;
-            mNotes.add(new Note("Single line example text", "WILLIAMSONT", new Date(System.currentTimeMillis() - (int) (day * .3))));
+           /* mNotes.add(new Note("Single line example text", "WILLIAMSONT", new Date(System.currentTimeMillis() - (int) (day * .3))));
             mNotes.add(new Note("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis() - (int) (day * 3.4))));
             mNotes.add(new Note("This is an example description. I ate oatmeal this morning. With some coffee, and a wrap. It was quite good. I'm gonna continue writing.", "MCGILLD", new Date(System.currentTimeMillis() - (int) (day * 10.8))));
-            //mNotes.add(new Note("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis() - (int) (day * 3.4))));
+          */  //mNotes.add(new Note("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis() - (int) (day * 3.4))));
             //mNotes.add(new Note("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis() - (int) (day * 3.4))));
             //mNotes.add(new Note("Multi line example text.\nMulti line example text.", "PITTSL", new Date(System.currentTimeMillis() - (int) (day * 3.4))));
             //%% DEBUG %%
