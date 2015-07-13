@@ -14,7 +14,7 @@ public class Action implements Serializable {
     private WorkOrder mWorkOrder;
     private String actionTaken;
     private String updatedStatus;
-    private int hours;
+    private double hours;
     private ArrayList<Note> notes;
     private Date dateStamp;
 
@@ -23,12 +23,12 @@ public class Action implements Serializable {
     *  REG_NB   Regular Time
     *  RST_NB   Student Regular Pay
     *  RWS_NB   Federal Work Study Student Pay   */
-    public enum TimeType {
+    /*public enum TimeType {
         OTM_NB, REG_NB, RST_NB, RWS_NB
-    }
+    }*/
 
     private boolean synced;
-    private TimeType timeType;
+    //private TimeType timeType;
 
     public boolean isSynced() {
         return synced;
@@ -38,13 +38,13 @@ public class Action implements Serializable {
         this.synced = synced;
     }
 
-    public TimeType getTimeType() {
+   /* public TimeType getTimeType() {
         return timeType;
     }
 
     public void setTimeType(TimeType timeType) {
         this.timeType = timeType;
-    }
+    }*/
 
     public WorkOrder getWorkOrder() {
         return mWorkOrder;
@@ -62,11 +62,11 @@ public class Action implements Serializable {
         this.updatedStatus = updatedStatus;
     }
 
-    public int getHours() {
+    public double getHours() {
         return hours;
     }
 
-    public void setHours(int hours) {
+    public void setHours(double hours) {
         this.hours = hours;
     }
 
@@ -95,7 +95,7 @@ public class Action implements Serializable {
         this.actionTaken = actionTaken;
     }
 
-    public Action(WorkOrder workOrder, String actionTakenString, String updatedStatus, int hours, ArrayList<Note> notes) {
+    public Action(WorkOrder workOrder, String actionTakenString, String updatedStatus, double hours, ArrayList<Note> notes) {
         this.mWorkOrder = workOrder;
         this.actionTaken = actionTakenString;
         if(updatedStatus != null) { //If not null, the status has been updated.

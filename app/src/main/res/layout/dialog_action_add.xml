@@ -28,11 +28,182 @@
                     android:textColor="#fff"
                     android:textSize="22dp" />-->
 
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
                 android:paddingTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="12dp"
+                        android:paddingTop="4dp"
+                        android:text="HOURS SPENT"
+                        android:textColor="@color/addAction_sectionTitles"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/hours_required"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="*Required"
+                        android:paddingTop="4dp"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:textColor="@color/emergency_red_old"
+                        android:layout_marginRight="48dp"
+                        android:layout_alignParentRight="true"
+                        android:visibility="gone"/>
+
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/hours_entry_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    >
+
+                    <Button
+                        android:id="@+id/button_minusHours"
+                        style="?android:borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="\u2212"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:textSize="48dp" />
+
+
+                    <EditText
+                        android:id="@+id/hoursEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/spinner_border"
+                        android:gravity="center"
+                        android:minWidth="72dp"
+                        android:padding="8dp"
+                        android:textSize="28sp"
+                        android:text="0.0"/>
+
+                    <Button
+                        android:id="@+id/button_addHours"
+                        style="?android:borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="\u002B"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:textSize="48dp"/>
+                </LinearLayout>
+
+
+
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spinner_timetype"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:background="@drawable/spinner_border"
+                        android:padding="8dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:prompt="@string/add_action_spinner_timetype_prompt"
+                        android:spinnerMode="dropdown"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:paddingTop="4dp">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="12dp"
+                        android:paddingTop="4dp"
+                        android:text="ACTION TAKEN"
+                        android:textColor="@color/addAction_sectionTitles"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/action_required"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="*Required"
+                        android:paddingTop="4dp"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:textColor="@color/emergency_red_old"
+                        android:layout_marginRight="48dp"
+                        android:layout_alignParentRight="true"
+                        android:visibility="gone"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spinner_actionTaken"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/spinner_border"
+                        android:entries="@array/actionTakenItems"
+                        android:padding="8dp"
+                        android:prompt="@string/add_action_spinner_status_prompt"
+                        android:spinnerMode="dropdown" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:paddingTop="4dp">
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -63,8 +234,8 @@
                         android:id="@+id/spinner_updateStatus"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
-                        android:layout_marginRight="24dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
                         android:background="@drawable/spinner_border"
                         android:entries="@array/statusItems"
                         android:padding="8dp"
@@ -74,139 +245,15 @@
                 </RelativeLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical"
-                android:paddingTop="4dp">
 
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="4dp"
-                        android:paddingLeft="12dp"
-                        android:paddingTop="4dp"
-                        android:text="ACTION TAKEN"
-                        android:textColor="@color/addAction_sectionTitles"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
 
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <Spinner
-                        android:id="@+id/spinner_actionTaken"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
-                        android:layout_marginRight="24dp"
-                        android:background="@drawable/spinner_border"
-                        android:entries="@array/actionTakenItems"
-                        android:padding="8dp"
-                        android:prompt="@string/add_action_spinner_status_prompt"
-                        android:spinnerMode="dropdown" />
-
-                </RelativeLayout>
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
                 android:paddingTop="4dp">
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="4dp"
-                        android:paddingLeft="12dp"
-                        android:paddingTop="4dp"
-                        android:text="HOURS SPENT"
-                        android:textColor="@color/addAction_sectionTitles"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/hours_entry_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_weight="1">
-
-                        <Button
-                            android:id="@+id/button_minusHours"
-                            style="?android:borderlessButtonStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="\u2212"
-                            android:textColor="@android:color/holo_blue_dark"
-                            android:textSize="36dp" />
-
-
-                        <EditText
-                            android:id="@+id/hoursEditText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/spinner_border"
-                            android:gravity="center"
-                            android:minWidth="42dp"
-                            android:padding="4dp"
-                            android:textSize="20sp" />
-
-                        <Button
-                            android:id="@+id/button_addHours"
-                            style="?android:borderlessButtonStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="\u002B"
-                            android:textColor="@android:color/holo_blue_dark"
-                            android:textSize="36dp" />
-                    </LinearLayout>
-
-                    <Spinner
-                        android:id="@+id/spinner_timetype"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/spinner_border"
-                        android:padding="8dp"
-                        android:prompt="@string/add_action_spinner_timetype_prompt"
-                        android:spinnerMode="dropdown"/>
-
-                </LinearLayout>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="fill_parent"

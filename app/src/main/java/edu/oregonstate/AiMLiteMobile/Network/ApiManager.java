@@ -193,10 +193,27 @@ public class ApiManager {
                                 }
                             });
 
+
+
                             wo.setNotes(notes);
                         }
 
+                        JSONArray objTimeTypes = obj.getJSONArray("time_types");
 
+                        ArrayList<String> timeTypes = new ArrayList<String>();
+
+                        if (objTimeTypes.length() > 0){
+                            for (int j = 0; j < objTimeTypes.length(); j++){
+                                JSONObject objTimeType = objTimeTypes.getJSONObject(j);
+                                String timeType = objTimeType.getString("time_type") + " - " + objTimeType.getString("description");
+                                timeTypes.add(timeType);
+                            }
+
+                            // Sort time types array in alphabetical order
+                            Collections.sort(timeTypes, String.CASE_INSENSITIVE_ORDER);
+
+                            wo.setTimeTypes(timeTypes);
+                        }
 
 
 

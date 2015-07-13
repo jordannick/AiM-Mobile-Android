@@ -52,6 +52,8 @@ public class WorkOrder implements Serializable {
     String mProposalPhase;
     String[] mDateElements = new String[5]; //[0] DayOfWeek  [1] MonthDay  [2] Year  [3] ValueDaysAgo [4] StringDaysAgo
 
+    ArrayList<String> mTimeTypes;
+
     public ArrayList<Note> getNotes() {
         if (mNotes == null) {
             mNotes = new ArrayList<>();
@@ -69,6 +71,16 @@ public class WorkOrder implements Serializable {
         return mNotes;
     }
 
+    public ArrayList<String> getTimeTypes() {
+        if (mTimeTypes == null){
+            mTimeTypes = new ArrayList<>();
+        }
+        return mTimeTypes;
+    }
+
+    public void setTimeTypes(ArrayList<String> mTimeTypes) {
+        this.mTimeTypes = mTimeTypes;
+    }
 
     public void setPriority(String priority) {
         mPriority = priority;
