@@ -68,7 +68,7 @@ public class ApiManager {
         // GET WORK ORDERS
         @Headers({"Content-type: application/x-www-form-urlencoded"})
         @FormUrlEncoded
-        @POST("/WorkOrder/getAll/{username}")
+        @POST("/WorkOrder/getAll/{username}")  //DEBUG. ADDED B TO BREAK IT todo: undo
         void getWorkOrders(@Path("username") String username, @Field("token") String token, Callback<ResponseWorkOrders> callback);
 
         // GET NOTICES

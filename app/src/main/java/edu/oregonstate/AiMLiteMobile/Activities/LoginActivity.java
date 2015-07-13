@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -17,6 +18,7 @@ import com.nispok.snackbar.SnackbarManager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import edu.oregonstate.AiMLiteMobile.InternalStorageWriter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseLogin;
@@ -113,20 +115,38 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mUsername = mUsernameField.getText().toString();
                 mPassword = mPasswordField.getText().toString();
-                //Check for empty fields
-                if (!mUsername.matches("") && !mPassword.matches("")) {
-                    //If both fields are not empty
-                    attemptLogin();
-                } else {
-                    if (mUsername.matches("")) {
-                        mUsernameField.setError("Username required");
-                    }
-                    if (mPassword.matches("")) {
-                        mPasswordField.setError("Password required");
+
+                if(mPassword.toLowerCase().equals("offline")){  //Offline mode enabled
+                    boolean hasSavedData = InternalStorageWriter.hasSavedData(getApplicationContext(), mUsername);
+                    Log.d(TAG, "" + mUsername + " saved data: " + hasSavedData);
+                    offlineLogin();
+                }else{
+                    //Check for empty fields
+                    if (!mUsername.matches("") && !mPassword.matches("")) {
+                        //If both fields are not empty
+                        attemptLogin();
+                    } else {
+                        if (mUsername.matches("")) {
+                            mUsernameField.setError("Username required");
+                        }
+                        if (mPassword.matches("")) {
+                            mPasswordField.setError("Password required");
+                        }
                     }
                 }
             }
         });
+    }
+
+    private void offlineLogin(){
+        sCurrentUser.setUsername(mUsername);
+        sCurrentUser.setOfflineMode(true);
+        setEnableFormFields(true);
+
+        this.finish();
+        Intent intent = new Intent(this, OverviewListActivity.class);
+        intent.putExtra("offline", true);
+        startActivity(intent);
     }
 
     private void attemptLogin() {

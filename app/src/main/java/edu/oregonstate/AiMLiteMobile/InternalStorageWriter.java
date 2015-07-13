@@ -8,6 +8,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Random;
+
+import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 
 /**
  * Created by sellersk on 7/7/2015.
@@ -17,50 +24,67 @@ public class InternalStorageWriter {
 
 
     private Context context;
-    private String filename;
-
-    private File file;
+    private String filename_workOrders;
 
 
-    public InternalStorageWriter(Context context, String filename) {
+    public InternalStorageWriter(Context context, String username) {
         this.context = context;
-        this.filename = filename;
-        file = new File(context.getFilesDir(), filename);
+        filename_workOrders = username.toLowerCase() + "_workOrders";
     }
 
-    public void writeToFile(String toWrite){
+    /* Saves a new WorkOrderListDataBean object to internal storage, overwriting an existing one.
+    *  @param workOrders: input arrayList to be saved
+    */
+    public void saveWorkOrders(ArrayList<WorkOrder> workOrders){
         try {
-            byte[] bytes = toWrite.getBytes();
-            FileOutputStream outputStream = context.openFileOutput(filename, Context.MODE_APPEND);
-            outputStream.write(bytes);
+            WorkOrderListDataBean dataBean = new WorkOrderListDataBean(workOrders);
+            FileOutputStream fos = context.openFileOutput(filename_workOrders, Context.MODE_PRIVATE);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+            os.writeObject(dataBean);
+            os.flush();
+            os.close();
+            fos.close();
         } catch (FileNotFoundException e) {
-            Log.d(TAG, "Error opening file for write: " + filename);
             e.printStackTrace();
         } catch (IOException e) {
-            Log.d(TAG, "Error writing to file: " + filename);
             e.printStackTrace();
         }
-
     }
 
-    public void printFileContents(){
+    public ArrayList<WorkOrder> retrieveWorkOrders() {
+        ArrayList<WorkOrder> workOrders = null;
         try {
-            FileInputStream inputStream = context.openFileInput(filename);
-            StringBuilder builder = new StringBuilder();
-            int content;
-            while((content = inputStream.read()) != -1){
-                builder.append((char)content);
+            FileInputStream fis = context.openFileInput(filename_workOrders);
+            ObjectInputStream is = new ObjectInputStream(fis);
+            WorkOrderListDataBean dataBean = (WorkOrderListDataBean)is.readObject();
+            workOrders = dataBean.getWorkOrders();
+            is.close();
+            fis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return workOrders;
+    }
+
+    public static boolean hasSavedData(Context context, String username){
+        ArrayList<WorkOrder> workOrders = null;
+        String filename = username.toLowerCase() + "_workOrders";
+        try {
+            FileInputStream fis = context.openFileInput(filename);
+            //ObjectInputStream is = new ObjectInputStream(fis);   //Unneeded for availability check
+            if (fis.available() > 0){
+                return true;
             }
-            String result = builder.toString();
-            Log.d(TAG, "SUCCESS Resulting read: " + result);
+            //is.close();
+            fis.close();
         } catch (FileNotFoundException e) {
-            Log.d(TAG, "Error opening file for read: " + filename);
+            Log.e(TAG, "hasSavedData FileNotFoundException");
             e.printStackTrace();
-        } catch (IOException e) {
-            Log.d(TAG, "Error reading file: " + filename);
+        } catch (IOException e){
+            Log.e(TAG, "hasSavedData IOException");
             e.printStackTrace();
         }
+        return false;
     }
-
 
 }

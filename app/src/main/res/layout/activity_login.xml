@@ -16,6 +16,16 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+
+    <View
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        android:background="@color/emergency_red"
+        android:rotation="270"
+        android:layout_alignParentRight="true"
+        />
+
+
     <LinearLayout
         android:id="@+id/loginView_credentialLayout"
         android:layout_width="match_parent"

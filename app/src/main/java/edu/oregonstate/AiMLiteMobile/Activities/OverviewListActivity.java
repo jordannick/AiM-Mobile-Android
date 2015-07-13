@@ -1,13 +1,14 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +21,6 @@ import android.util.Log;
 
 import android.view.Gravity;
 
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -31,6 +31,10 @@ import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.OptionalDataException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -111,9 +115,6 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
                 break;
             case 4: //Settings
                 //Todo: create settings activity/dialog
-                InternalStorageWriter writer = new InternalStorageWriter(this, "testFilename");
-                writer.writeToFile("Hello World!");
-                writer.printFileContents();
                 break;
             case 5: //Log Out
                 drawerLayout.closeDrawer(Gravity.LEFT);
@@ -170,23 +171,59 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
         //initNavigationDrawer();
 
+        if(currentUser.isOfflineMode()){
+            setupOfflineMode();
+        }
+
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
 
+
+
     }
 
-    private void bottomSheetTest(){
-        //bottomSheet.showWithSheetView(LayoutInflater.from(this).inflate(R.layout.activity_detail, bottomSheet, false));
-        View v = LayoutInflater.from(this).inflate(R.layout.bottomsheet_detail, bottomSheet, false);
-        //bottomSheet.addView(v, 100, 100);
 
 
-        //FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)(.8*screenHeight));
-        //bottomSheet.addView(v, 0, layoutParams);
-        //v.setLayoutParams(layoutParams);
-         //bottomSheet.sho
-        bottomSheet.showWithSheetView(v);
+    private int countObjects(ObjectInputStream ois){
+        int objectsCount = 0;
+        boolean doneReadingInput = false;
+        while (!doneReadingInput){
+            System.out.println("***1");
+            Object result = null;
+            try {
+                System.out.println("***2");
+                result = ois.readObject();
+            }
+            catch (EOFException eofe){
+                System.out.println("***3");
+                doneReadingInput = true;
+            }
+            catch (OptionalDataException ode) {
+                System.out.println("***4");
+                doneReadingInput = ode.eof;
+
+            }catch (Exception e){
+                System.out.println("**2*4");
+            }
+
+            if (result != null)
+            {
+                System.out.println("***5");
+                objectsCount++;
+                //WriteSMSObjects whatEver = (WriteSMSObjects)result;
+                //Printing some value from the object
+                //System.out.println(whatEver.getCommandID());
+            }
+        }
+
+        System.out.println("number of Objects are : " + objectsCount);
+        return objectsCount;
+    }
+
+
+    private void setupOfflineMode(){
+
     }
 
     @Override
@@ -203,7 +240,6 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
     @Override
     public void onBackPressed() {
-
         if(bottomSheet.isSheetShowing()){
             bottomSheet.dismissSheet();
         }else {
@@ -365,11 +401,13 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
                 ArrayList<WorkOrder> workOrders = responseWorkOrders.getWorkOrders();
                 currentUser.getPreferences().saveWorkOrders(responseWorkOrders.getRawJson());
                 currentUser.setWorkOrders(workOrders);
+                currentUser.backupWorkOrders(workOrders);
                 //adapter.refreshWorkOrders(currentUser.getWorkOrders());
                 recAdapter.refreshWorkOrders(currentUser.getWorkOrders());
                 initSectionIcons();
                 activity.findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
                 setDimVisibility(View.GONE);
+
             }
 
             @Override
@@ -378,8 +416,27 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
                 SnackbarManager.show(Snackbar.with(activity).text("Failed to retrieve work orders").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
                 activity.findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
                 setDimVisibility(View.GONE);
+
+                promptUserLoadOfflineData();
             }
         });
+    }
+
+    public void promptUserLoadOfflineData(){
+        AlertDialog loadOfflineDialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Load offline data?");
+        builder.setPositiveButton("Load", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                currentUser.loadSavedWorkOrders(recAdapter);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+            }
+        });
+        loadOfflineDialog = builder.create();
+        loadOfflineDialog.show();
     }
 
     private void requestNotices() {

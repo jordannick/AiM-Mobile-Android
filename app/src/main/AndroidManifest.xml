@@ -37,6 +37,7 @@
 
         </activity>
 
+        <!--DEBUG PLEASE REMOVE-->
 
         <activity
             android:name=".Activities.DetailActivity"

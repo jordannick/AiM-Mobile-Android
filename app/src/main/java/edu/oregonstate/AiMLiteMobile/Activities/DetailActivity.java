@@ -305,6 +305,7 @@ public class DetailActivity extends AppCompatActivity {
                 bundle.putSerializable("WorkOrder", workOrder);
                 bundle.putString("Title", workOrder.getProposalPhase().toString());
                 actionFragment.setArguments(bundle);
+
                 actionFragment.show(getFragmentManager(), "Diag");
             }
         });
@@ -315,6 +316,8 @@ public class DetailActivity extends AppCompatActivity {
                 createNotesViewPopup();
             }
         });
+
+        Class.forName("edu.oregonstate.AiMLiteMobile.Activities.ActionQueueListActivity")
     }
 
 

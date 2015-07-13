@@ -7,12 +7,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 import edu.oregonstate.AiMLiteMobile.Activities.LoginActivity;
+import edu.oregonstate.AiMLiteMobile.Adapters.RecyWorkOrderAdapter;
+import edu.oregonstate.AiMLiteMobile.InternalStorageWriter;
 
 /**
  * Created by jordan_n on 8/13/2014.
@@ -32,6 +35,9 @@ public class CurrentUser {
     private ArrayList<Action> actions;
     private ArrayList<Notice> notices;
     private ArrayList<WorkOrder> recentlyViewedWorkOrders = new ArrayList<>();//Recently viewed workOrders to display in timeLog
+
+    private InternalStorageWriter internalStorageWriter;
+    private boolean offlineMode = false;
 
     public final int RECENTLY_VIEWED_MAX = 5;
 
@@ -87,12 +93,31 @@ public class CurrentUser {
             }
         });
         logoutDialog = builder.create();
+
+
         logoutDialog.show();
+        //logoutDialog.getWindow().setLayout(600, 400);
+
+
     }
 
     public ArrayList<WorkOrder> getWorkOrders(){
         return workOrders;
     }
+
+    public void backupWorkOrders(ArrayList<WorkOrder> arr){
+        Log.d(TAG, "interalStorageWriter: " + internalStorageWriter);
+        internalStorageWriter.saveWorkOrders(arr);
+    }
+
+    public void loadSavedWorkOrders(RecyWorkOrderAdapter adapter){
+        ArrayList<WorkOrder> workOrders = internalStorageWriter.retrieveWorkOrders();
+        this.workOrders = workOrders;
+        adapter.refreshWorkOrders(workOrders);
+    }
+
+
+
 
     public void setWorkOrders(ArrayList<WorkOrder> newWorkOrders) {
         //Want to keep same list reference, so clear and repopulate
@@ -117,6 +142,9 @@ public class CurrentUser {
     }
 
     public void setUsername(String username) {
+        if(this.username == null){
+            internalStorageWriter = new InternalStorageWriter(appContext, username);
+        }
         this.username = username;
     }
 
@@ -154,6 +182,14 @@ public class CurrentUser {
 
     public void setToken(String newToken) {
         token = newToken;
+    }
+
+    public boolean isOfflineMode() {
+        return offlineMode;
+    }
+
+    public void setOfflineMode(boolean offlineMode) {
+        this.offlineMode = offlineMode;
     }
 
     public ArrayList<WorkOrder> getRecentlyViewedWorkOrders(){
