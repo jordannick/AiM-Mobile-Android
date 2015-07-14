@@ -28,16 +28,6 @@ public class ActionAdapter extends ArrayAdapter<Action> {
         super(c, 0, actions);
         mContext = c;
         mActions = actions;
-
-        /*%% DEBUG %%*/
-        /*if(mActions.size() < 3) {
-            WorkOrder workOrder = CurrentUser.get(mContext).getWorkOrders().get(0);
-            Action newAction = new Action(workOrder, "Fixed some pipes under the sink.", "WORK COMPLETE", 4, new ArrayList<Note>());
-            mActions.add(newAction);
-            mActions.add(newAction);
-            //mActions.add(newAction);
-        }*/
-        /*## END DEBUG %%*/
     }
 
     @Override

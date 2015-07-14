@@ -317,7 +317,6 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        Class.forName("edu.oregonstate.AiMLiteMobile.Activities.ActionQueueListActivity")
     }
 
 

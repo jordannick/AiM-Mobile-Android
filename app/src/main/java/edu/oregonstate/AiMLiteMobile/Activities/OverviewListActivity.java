@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +24,7 @@ import android.util.Log;
 import android.view.Gravity;
 
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
@@ -35,7 +38,11 @@ import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.OptionalDataException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -46,6 +53,7 @@ import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
 import edu.oregonstate.AiMLiteMobile.NavigationDrawer;
 import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
+import edu.oregonstate.AiMLiteMobile.Network.ResponseLastUpdated;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseNotices;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
 import edu.oregonstate.AiMLiteMobile.NotificationManager;
@@ -112,6 +120,9 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
                 notificationManager.openDrawer(drawerLayout);
                 break;
             case 3: //Refresh
+                currentUser.setLastUpdated(0L);
+                requestLastUpdated(true);
+                drawerLayout.closeDrawer(Gravity.LEFT);
                 break;
             case 4: //Settings
                 //Todo: create settings activity/dialog
@@ -166,7 +177,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
         initSectionIcons();
 
-        requestWorkOrders();
+        requestWorkOrders(false);
         requestNotices();
 
         //initNavigationDrawer();
@@ -181,44 +192,6 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
 
 
-    }
-
-
-
-    private int countObjects(ObjectInputStream ois){
-        int objectsCount = 0;
-        boolean doneReadingInput = false;
-        while (!doneReadingInput){
-            System.out.println("***1");
-            Object result = null;
-            try {
-                System.out.println("***2");
-                result = ois.readObject();
-            }
-            catch (EOFException eofe){
-                System.out.println("***3");
-                doneReadingInput = true;
-            }
-            catch (OptionalDataException ode) {
-                System.out.println("***4");
-                doneReadingInput = ode.eof;
-
-            }catch (Exception e){
-                System.out.println("**2*4");
-            }
-
-            if (result != null)
-            {
-                System.out.println("***5");
-                objectsCount++;
-                //WriteSMSObjects whatEver = (WriteSMSObjects)result;
-                //Printing some value from the object
-                //System.out.println(whatEver.getCommandID());
-            }
-        }
-
-        System.out.println("number of Objects are : " + objectsCount);
-        return objectsCount;
     }
 
 
@@ -251,6 +224,10 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     protected void onStop() {
         Log.d(TAG, "aa On Stop Overview");
         super.onStop();
+        searchView.setBackgroundResource(R.color.searchView_default);
+        assert getSupportActionBar() != null;
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.searchView_default)));
+        sectionShortcutBar.setVisibility(View.VISIBLE);
     }
 
 
@@ -261,6 +238,9 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         super.onSaveInstanceState(outState);
     }
 
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_overview_list, menu);
@@ -269,9 +249,74 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.search_button).getActionView();
+        //MenuItemCompat searchItem = (MenuItemCompat)menu.findItem(R.id.search_button);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         searchView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                assert getSupportActionBar() != null;
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.searchView_active)));
+                searchView.setBackgroundResource(R.color.searchView_active);
+                sectionShortcutBar.setVisibility(View.GONE);
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                assert getSupportActionBar() != null;
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.searchView_default)));
+                searchView.setBackgroundResource(R.color.searchView_default);
+                sectionShortcutBar.setVisibility(View.VISIBLE);
+                return false;
+            }
+        });
+
+
+
+
+/*        searchItem.setOnActionExpandListener(new MenuItemCompat.OnActionExpandListener(){
+
+        });*/
+/*        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                sectionShortcutBar.setVisibility(View.GONE);
+                searchView.setBackgroundColor(getResources().getColor(R.color.searchView_active));
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.searchView_active)));
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                searchView.setBackgroundColor(getResources().getColor(R.color.searchView_default));
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.searchView_default)));
+                return true;
+            }
+        });*/
+
+//        searchView.setOnSearchClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                sectionShortcutBar.setVisibility(View.GONE);
+//                searchView.setBackgroundColor(getResources().getColor(R.color.searchView_active));
+//                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.searchView_active)));
+//
+//            }
+//        });
+//
+//        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+//            @Override
+//            public boolean onClose() {
+//                searchView.setBackgroundColor(getResources().getColor(R.color.searchView_default));
+//                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.searchView_default)));
+//                return false;
+//            }
+//        });
+
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -282,7 +327,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (TextUtils.isEmpty(newText)) {
-                    sectionShortcutBar.setVisibility(View.VISIBLE);
+                    //sectionShortcutBar.setVisibility(View.VISIBLE);
                     recAdapter.getFilter().filter("");
                 } else { //Start filtering the RecycleView when chars are entered
                     sectionShortcutBar.setVisibility(View.GONE);
@@ -291,16 +336,6 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
                 return true;
             }
         });
-
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                recAdapter.flushFilter(); //Bring back the full list when search is closed
-                sectionShortcutBar.setVisibility(View.VISIBLE);
-                return false;
-            }
-        });
-
 
         View menu_notification = menu.findItem(R.id.menu_notification).getActionView();
         menu_notification.setOnClickListener(new View.OnClickListener() {
@@ -374,14 +409,33 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     }
 
 
-    private void requestLastUpdated() {
+    private void requestLastUpdated(final boolean displayConfirmation) {
 
-        ApiManager.getService().getLastUpdated(currentUser.getUsername(), currentUser.getToken(), new Callback<String>() {
+        ApiManager.getService().getLastUpdated(currentUser.getUsername(), currentUser.getToken(), new Callback<ResponseLastUpdated>() {
             @Override
-            public void success(String s, Response response) {
-                Log.d(TAG, "requestLastUpdated SUCCESS");
-                //TODO: check retrieved last updated against stored last updated
-                requestWorkOrders();
+            public void success(ResponseLastUpdated responseLastUpdated, Response response) {
+                Log.d(TAG, "requestLastUpdated SUCCESS ::: " + responseLastUpdated.getDate());
+
+                Date lastUpdated = responseLastUpdated.getDate();
+                String dateString = responseLastUpdated.getDateString();
+                //Convert date to ms
+
+                if(!dateString.equals("null")){
+                    Long newTime = lastUpdated.getTime();
+                    if(currentUser.isUpdateNeeded(newTime)){ //If newer time was retrieved, update.
+                        Log.d(TAG, "requestLastUpdated ::: newerTime, update");
+                        requestWorkOrders(displayConfirmation);
+                    }
+                }else{
+                    if(currentUser.isUpdateExpired(System.currentTimeMillis())){ //If current time exceeds expirationDate of data, update
+                        Log.d(TAG, "requestLastUpdated ::: expired, update");
+                        requestWorkOrders(displayConfirmation);
+                    }else{
+                        //Update unneeded, wait for expiration
+                        Log.d(TAG, "requestLastUpdated ::: No Need for Update");
+                    }
+                }
+                Log.d(TAG, "requestLastUpdated ::: END");
             }
 
             @Override
@@ -392,7 +446,11 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         });
     }
 
-    private void requestWorkOrders() {
+    private void requestWorkOrders(final boolean displayConfirmation) {
+        if(displayConfirmation){
+            setDimVisibility(View.VISIBLE);
+        }
+
 
         ApiManager.getService().getWorkOrders(currentUser.getUsername(), currentUser.getToken(), new Callback<ResponseWorkOrders>() {
             @Override
@@ -408,6 +466,13 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
                 activity.findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
                 setDimVisibility(View.GONE);
 
+                currentUser.setLastRefreshed(System.currentTimeMillis());
+                navigationDrawer.invalidateAdapter();
+                currentUser.setLastUpdated(System.currentTimeMillis());
+
+                if(displayConfirmation){
+                    SnackbarManager.show(Snackbar.with(activity).text("Work Orders Updated").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
+                }
             }
 
             @Override

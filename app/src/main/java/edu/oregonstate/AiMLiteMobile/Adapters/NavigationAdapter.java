@@ -1,7 +1,9 @@
 package edu.oregonstate.AiMLiteMobile.Adapters;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
@@ -13,10 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Activities.OverviewListActivity;
+import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.R;
 
 /**
@@ -34,7 +38,11 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
 
     private OverviewListActivity delegate;
 
-    Typeface iconTypeface;
+    private Typeface iconTypeface;
+
+    private CurrentUser currentUser;
+    private View headerView;
+
 
 
     public interface NavigationClickHandler{
@@ -48,18 +56,27 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         this.name = name;
         this.iconTypeface = iconTypeface;
         this.delegate = (OverviewListActivity)delegate;
+        this.currentUser = CurrentUser.get(delegate);
         Log.d(TAG, "Display metrics, height: " + delegate.getResources().getDisplayMetrics().heightPixels);
-
         setFooterClickListeners();
 
     }
 
+    public void refreshHeaderLastUpdated(){
+        Log.d(TAG, "HeaderView checkRefresh");
+        if(headerView != null){
+            Log.d(TAG, "HeaderView not null");
+            ((TextView)headerView.findViewById(R.id.nav_header_updated)).setText(currentUser.getFormattedRefreshAgoString());
+        }
+    }
 
     @Override
     public NavigationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(viewType == TYPE_HEADER) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.nav_header, parent, false);
-            v.setBackgroundResource(R.drawable.navigation_header_background);
+            headerView = v;
+            //v.setBackgroundResource(R.drawable.navigation_header_background);
+            setViewTintedBackground(v);
             return new ViewHolder(v, viewType, iconTypeface);
         } else if(viewType == TYPE_ITEM){
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.nav_item, parent, false);
@@ -73,6 +90,8 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         holder.position = position;
         if(holder.holderId == TYPE_HEADER){
             holder.headerName.setText(name);
+            holder.headerUpdated.setText(currentUser.getFormattedRefreshAgoString());
+            Log.d(TAG, "HeaderView Set");
         }else if(holder.holderId == TYPE_ITEM){
             Log.d(TAG, "Setting onBind for navTitle #" + position);
             holder.rowTitle.setText(navTitles[position-1]);
@@ -126,11 +145,13 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         protected TextView rowTitle;
         protected TextView rowIcon;
         protected TextView headerName;
+        protected TextView headerUpdated;
 
         public ViewHolder(View itemView, int viewType, Typeface iconTypeface) {
             super(itemView);
             if(viewType == TYPE_HEADER){
                 headerName = (TextView)itemView.findViewById(R.id.nav_header_name);
+                headerUpdated = (TextView)itemView.findViewById(R.id.nav_header_updated);
             }else if(viewType == TYPE_ITEM){
                 rowTitle = (TextView)itemView.findViewById(R.id.nav_item_title);
                 rowIcon = (TextView)itemView.findViewById(R.id.nav_item_icon);
@@ -161,5 +182,28 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         });
     }
 
+
+    private void setViewTintedBackground(View v){
+        Random rand = new Random();
+        switch (rand.nextInt(4)+1){
+            case 1:
+                v.setBackgroundResource(R.drawable.navigation_header_background_1);
+                break;
+            case 2:
+                v.setBackgroundResource(R.drawable.navigation_header_background_2);
+                break;
+            case 3:
+                v.setBackgroundResource(R.drawable.navigation_header_background_3);
+                break;
+            case 4:
+                v.setBackgroundResource(R.drawable.navigation_header_background_4);
+                break;
+            case 5:
+                v.setBackgroundResource(R.drawable.navigation_header_background_5);
+                break;
+            default:
+
+        }
+    }
 
 }

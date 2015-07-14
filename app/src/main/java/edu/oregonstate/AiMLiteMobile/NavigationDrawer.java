@@ -26,6 +26,7 @@ public class NavigationDrawer {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private Typeface iconTypeface;
+    private NavigationAdapter adapter;
 
     public NavigationDrawer(AppCompatActivity delegate) {
         this.delegate = delegate;
@@ -44,13 +45,12 @@ public class NavigationDrawer {
                 super.onDrawerClosed(drawerView);
                 //getActionBar().setTitle();
                 //((OverviewListActivity)delegate).beginActionQueueActivity();
-                RetrofitTest test = new RetrofitTest(delegate);
-                test.performTest(10);
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                adapter.refreshHeaderLastUpdated();
             }
         };
 
@@ -79,7 +79,7 @@ public class NavigationDrawer {
         icons[3] = R.string.icon_logout;*/
 
         iconTypeface = Typeface.createFromAsset(delegate.getApplicationContext().getAssets(), "fonts/FontAwesome.otf");
-        NavigationAdapter adapter = new NavigationAdapter(delegate, navTitles, icons, currentUser.getUsername().toUpperCase(), iconTypeface);
+        adapter = new NavigationAdapter(delegate, navTitles, icons, currentUser.getUsername().toUpperCase(), iconTypeface);
         recyclerViewDrawer.setAdapter(adapter);
 
 
@@ -103,5 +103,9 @@ public class NavigationDrawer {
         settingsTitle.setText("Settings");
         logoutTitle.setText("Logout");
 
+    }
+
+    public void invalidateAdapter(){
+        adapter.notifyDataSetChanged();
     }
 }

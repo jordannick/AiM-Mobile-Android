@@ -37,6 +37,16 @@
     <color name="listItemSection_background">#424242</color>
 
 
+
+
+    <!--Search View-->
+    <color name="searchView_default">#F57C00</color>
+    <color name="searchView_active">#2196F3</color>
+
+
+
+
+
     <!--WorkOrder CardView-->
     <color name="cardView_cardBackground">#ffffff</color>
     <color name="cardView_cardText">#4a4a4a</color>

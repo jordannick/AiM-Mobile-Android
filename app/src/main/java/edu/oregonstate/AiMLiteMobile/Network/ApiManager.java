@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +19,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
+import java.util.TimeZone;
 
 import edu.oregonstate.AiMLiteMobile.Models.Note;
 import edu.oregonstate.AiMLiteMobile.Models.Notice;
@@ -27,6 +30,7 @@ import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.client.Response;
 import retrofit.converter.ConversionException;
 import retrofit.converter.Converter;
 import retrofit.http.Field;
@@ -81,7 +85,7 @@ public class ApiManager {
         @Headers({"Content-type: application/x-www-form-urlencoded"})
         @FormUrlEncoded
         @POST("/WorkOrder/getLastUpdated/{username}")
-        void getLastUpdated(@Path("username") String username, @Field("token") String token, Callback<String> callback);
+        void getLastUpdated(@Path("username") String username, @Field("token") String token, Callback<ResponseLastUpdated> callback);
 
 
 
@@ -268,10 +272,30 @@ public class ApiManager {
                 }
 
                 return (new ResponseNotices(notices, obj.toString()));
+            }else if(type == ResponseLastUpdated.class){
+                String dateString = null;
+                Date date = null;
+                try {
+                    dateString = fromStream(body.in()).replaceAll("\"", "");
+
+                    if(dateString.toLowerCase().equals("null")){
+                        Log.d(TAG, "RequestLastUpdated: FOUND NULL");
+                        return new ResponseLastUpdated("null", null);
+                    }
+
+                    //Convert date to ms
+                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+                    format.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+
+                    date = format.parse(dateString);
+
+                } catch (Exception e) {
+                    Log.e(TAG, "Error parsing");
+                    e.printStackTrace();
+                }
+                return (new ResponseLastUpdated(dateString, date));
             }
 
-            //Don't reach
-            //Log.d(TAG, "CustomConverter fromBody returning NULL");
             return null;
         }
 

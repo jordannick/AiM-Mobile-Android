@@ -10,8 +10,11 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.Random;
 
 import edu.oregonstate.AiMLiteMobile.Activities.LoginActivity;
 import edu.oregonstate.AiMLiteMobile.Adapters.RecyWorkOrderAdapter;
@@ -31,6 +34,7 @@ public class CurrentUser {
     private String password;
     private String token;
     private Long lastUpdated;
+    private Long lastRefreshed;
     private ArrayList<WorkOrder> workOrders;
     private ArrayList<Action> actions;
     private ArrayList<Notice> notices;
@@ -40,6 +44,7 @@ public class CurrentUser {
     private boolean offlineMode = false;
 
     public final int RECENTLY_VIEWED_MAX = 5;
+    private final int EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 5;
 
     private CurrentUser(Context appContext){
         CurrentUser.appContext = appContext;
@@ -176,6 +181,73 @@ public class CurrentUser {
         this.lastUpdated = lastUpdated;
     }
 
+    public boolean isUpdateNeeded(Long lastUpdated){
+        if(this.lastUpdated == null) this.lastUpdated = 0L;
+        if(lastUpdated > this.lastUpdated){
+            this.lastUpdated = lastUpdated;
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean isUpdateExpired(Long currentTime){
+        if(currentTime > (lastUpdated+EXPIRATION_TIME)){
+            this.lastUpdated = currentTime;
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public Long getLastRefreshed() {
+        return lastRefreshed;
+    }
+
+    public void setLastRefreshed(Long lastRefreshed) {
+        this.lastRefreshed = lastRefreshed;
+    }
+
+    public String getFormattedRefreshAgoString(){
+        if(lastRefreshed == null) return "Unavailable";
+        int divisor = 1000*60;
+        int diff = (int)((System.currentTimeMillis() - lastRefreshed)/divisor); //Minutes
+
+        int minutesInDay = 60*24;
+        int minutesInHour = 60;
+        if(diff < 1) return "Updated seconds ago";
+        if(diff < 60){
+            if(diff == 1) return "Updated " + diff + " minute ago";
+            return "Updated " + diff + " minutes ago";
+        }else if(diff >= minutesInDay){
+            diff /= minutesInDay;
+            if(diff == 1) return "Updated " + diff + " day ago";
+            return "Updated " + diff + " days ago";
+        }else { //Hours
+            diff /= minutesInHour;
+            if(diff == 1) return "Updated " + diff + " hour ago";
+            return "Updated " + diff + " hours ago";
+        }
+    }
+
+/*    public void testGetFormattedRefreshAgoString(int iterations, int dayMax, int hourMax, int minuteMax){
+        String DTAG = "DEBUG_FORMAT";
+        int i = iterations;
+        Random rand = new Random();
+        long msInDay = 1000 * 60 * 60 * 24;
+        long msInHour = 1000 * 60 * 60;
+        long msInMinute = 1000 * 60;
+        while (i > 0){
+            Long time = System.currentTimeMillis();
+            int dayRemove = rand.nextInt(dayMax);
+            int hourRemove = rand.nextInt(hourMax);
+            int minuteRemove = rand.nextInt(minuteMax);
+            time -= dayRemove*msInDay + hourRemove*msInHour + minuteRemove*msInMinute;
+            Log.d(DTAG, "dayRemove: " + dayRemove + ", hourRemove: " + hourRemove + ", minuteRemove: " + minuteRemove + " ::: " + getFormattedRefreshAgoString(time));
+            i--;
+        }
+    }*/
+
     public String getToken() {
         return token;
     }
@@ -281,12 +353,13 @@ public class CurrentUser {
             prefsEditor.apply();
         }
 
-        public String getLastUpdated(){
-            return prefs.getString("last_updated", "");
+        public Long getLastUpdated(){
+            return prefs.getLong(username.toLowerCase() + "_last_updated", 0);
         }
 
         public void saveLastUpdated(Long lastUpdated){
-            prefsEditor.putLong("last_updated", lastUpdated);
+            String key = username.toLowerCase() + "_last_updated";
+            prefsEditor.putLong(key, lastUpdated);
             prefsEditor.apply();
         }
 

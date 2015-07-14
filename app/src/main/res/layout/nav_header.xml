@@ -27,6 +27,7 @@
 
 
     <TextView
+        android:id="@+id/nav_header_updated"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#F5F5F5"
