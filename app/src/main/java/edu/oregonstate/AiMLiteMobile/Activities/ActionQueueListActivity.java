@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,16 +24,23 @@ import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.ActionAdapter;
+import edu.oregonstate.AiMLiteMobile.Adapters.RecyActionAdapter;
+import edu.oregonstate.AiMLiteMobile.Adapters.RecyWorkOrderAdapter;
 import edu.oregonstate.AiMLiteMobile.Fragments.AddActionDialogFragment;
 import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
+import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.NotificationManager;
 import edu.oregonstate.AiMLiteMobile.R;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by sellersk on 2/19/2015.
@@ -42,7 +51,9 @@ public class ActionQueueListActivity extends AppCompatActivity{
     private static NotificationManager notificationManager;
     private Menu menu;
     private ArrayList<Action> actions;
-    private ActionAdapter actionQueueAdapter;
+    //private ActionAdapter actionQueueAdapter;
+    private LinearLayoutManager linearLayoutManager;
+    private RecyActionAdapter recyActionAdapter;
 
     public static final int TIMELOG_FRAGMENT = 1;
 
@@ -50,7 +61,8 @@ public class ActionQueueListActivity extends AppCompatActivity{
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-
+    @Bind(R.id.recycler_view)
+    RecyclerView recyclerView;
     @Bind(R.id.actionList_recentBarIconR)
     TextView recentBarR;
     @Bind(R.id.actionList_recentBarIconL)
@@ -63,13 +75,14 @@ public class ActionQueueListActivity extends AppCompatActivity{
     LinearLayout recentlyViewedLayout;
     @Bind(R.id.actionList_recentlyViewedBarLayout)
     RelativeLayout recentlyViewedBarLayout;
-    @Bind(R.id.actionList_relativeLayout)
-    RelativeLayout relativeLayout;
 
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     @Bind(R.id.right_drawer)
     RecyclerView recyclerViewDrawerNotification;
+
+    @Bind(R.id.button_submitAll)
+    Button submitAllActions;
 
 
 
@@ -80,20 +93,50 @@ public class ActionQueueListActivity extends AppCompatActivity{
         setContentView(R.layout.activity_action);
         ButterKnife.bind(this); //BIND OUR LAYOUTS! WOO BUTTER
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setHomeButtonEnabled(true);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setHomeButtonEnabled(true);
 
         self = this;
 
         currentUser = CurrentUser.get(getApplicationContext());
         notificationManager = NotificationManager.get(this, recyclerViewDrawerNotification);
 
-        actions = currentUser.getActions();
+       // actions = currentUser.getActions();
+        //actionQueueAdapter = new ActionAdapter(this, actions);
 
-        actionQueueAdapter = new ActionAdapter(this, actions);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyActionAdapter = new RecyActionAdapter(currentUser.getActions(), this);
+        recyclerView.setAdapter(recyActionAdapter);
+
+        submitAllActions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // Log.d(TAG, "Actions #: "+currentUser.getActions().size());
+                syncActions();
+            }
+        });
+
+        recyActionAdapter.refreshActions(currentUser.getActions());
+
+
 
         populateViews();
+    }
+
+    private void shiftItem(int selectedItemPosition){
+        //int selectedItemPosition = recyclerView.getChildAdapterPosition(v);
+        RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(selectedItemPosition);
+        //viewHolder.itemView.setTranslationX(192);
+        Animation cardShiftAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shift_card_right);
+        cardShiftAnim.setFillEnabled(true);
+        cardShiftAnim.setFillAfter(true);
+        AnimationUtils.loadAnimation(this, R.anim.shift_card_right);
+        viewHolder.itemView.startAnimation(cardShiftAnim);
+
+      //  viewHolder.itemView.add
     }
 
     private void populateViews() {
@@ -127,13 +170,13 @@ public class ActionQueueListActivity extends AppCompatActivity{
             WorkOrder workOrder = recentWorkOrders.get(i);
             recentlyViewedLayout.addView(createRecentRowView(workOrder));
         }
-        relativeLayout.setOnClickListener(new View.OnClickListener() {
+        /*relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "LAYOUT ON CLICK");
                 toggleRecentlyViewed(true);
             }
-        });
+        });*/
 
         recentlyViewedBarLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,14 +236,86 @@ public class ActionQueueListActivity extends AppCompatActivity{
         bundle.putString("Title", "New From Recent");
         actionFragment.setArguments(bundle);
         //actionFragment.setTargetFragment(this, TIMELOG_FRAGMENT);
-        actionFragment.show(getFragmentManager(), "Diag");
-
+        //actionFragment.show(getFragmentManager(), "Diag");
+        actionFragment.show(getSupportFragmentManager(), "Diag");
     }
 
     //Start the HTTP POSTs to submit actions from queue.
     //Remove from queue upon successful POST
-    public void syncActions() {
+    private void syncActions() {
         //TODO: implement retrofit addAction
+        for (Action action : currentUser.getActions()){
+            int index = currentUser.getActions().indexOf(action);
+            shiftItem(index);
+            if (!action.isSubmitted()){
+                Log.d(TAG, "Submitting Action "+currentUser.getActions().indexOf(action)+"...");
+                submitAction(action);
+            } else {
+                Log.d(TAG, "Action "+currentUser.getActions().indexOf(action)+": already submitted");
+            }
+        }
+    }
+
+    private void submitAction(final Action action){
+        String timeStamp = new Date(System.currentTimeMillis()).toString();
+        Log.d(TAG, "submitAction timestamp = " + timeStamp);
+
+        if (action.getHours() > 0) {
+            ApiManager.getService().addTime(currentUser.getUsername(), String.valueOf(action.getHours()), action.getWorkOrder().getProposalPhase(), action.getTimeType(), timeStamp, currentUser.getToken(), new Callback<String>() {
+                @Override
+                public void success(String s, Response response) {
+                    Log.d(TAG, "Action addTime Success");
+                    action.setSubmitted(true);
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e(TAG, "Action addTime Fail: " + error.getMessage());
+                }
+            });
+        }
+
+        ApiManager.getService().addActionTaken(currentUser.getUsername(), action.getActionTaken(), action.getWorkOrder().getProposalPhase(), timeStamp, currentUser.getToken(), new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                Log.d(TAG, "Action addActionTaken Success");
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e(TAG, "Action addActionTaken Fail: "+error.getMessage() );
+            }
+        });
+
+        if (action.getNotes().size() > 0) {
+            ApiManager.getService().addNote(currentUser.getUsername(), action.getNotes().get(0).getNote(), action.getWorkOrder().getProposalPhase(), timeStamp, currentUser.getToken(), new Callback<String>() {
+                @Override
+                public void success(String s, Response response) {
+                    Log.d(TAG, "Action addNote Success");
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e(TAG, "Action addNote Fail: " + error.getMessage());
+                }
+            });
+        }
+
+        if (!action.getUpdatedStatus().equals(action.getWorkOrder().getStatus())) {
+            ApiManager.getService().updateStatus(currentUser.getUsername(), action.getWorkOrder().getProposalPhase(), action.getUpdatedStatus(), timeStamp, currentUser.getToken(), new Callback<String>() {
+                @Override
+                public void success(String s, Response response) {
+                    Log.d(TAG, "Action updateStatus Success");
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e(TAG, "Action updateStatus Fail: " + error.getMessage());
+                }
+            });
+        }
+
+
     }
 
     @Override

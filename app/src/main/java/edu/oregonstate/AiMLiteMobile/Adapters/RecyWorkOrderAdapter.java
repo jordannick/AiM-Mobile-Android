@@ -1,4 +1,3 @@
-
 package edu.oregonstate.AiMLiteMobile.Adapters;
 
 import android.app.Activity;
@@ -19,8 +18,8 @@ import java.util.List;
 
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
-import edu.oregonstate.AiMLiteMobile.R;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListWrapper;
+import edu.oregonstate.AiMLiteMobile.R;
 
 
 /**

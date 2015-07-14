@@ -97,8 +97,8 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     @Bind(R.id.overviewActivity_dimOverlay)
     LinearLayout dimOverlay;
 
-    @Bind(R.id.bottomsheet)
-    BottomSheetLayout bottomSheet;
+  /*  @Bind(R.id.bottomsheet)
+    BottomSheetLayout bottomSheet;*/
     @Bind(R.id.left_drawer_recycler)
     RecyclerView recyclerViewDrawer;
     @Bind(R.id.right_drawer)
@@ -213,11 +213,12 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
     @Override
     public void onBackPressed() {
-        if(bottomSheet.isSheetShowing()){
+        currentUser.logoutUser(this);
+       /* if(bottomSheet.isSheetShowing()){
             bottomSheet.dismissSheet();
         }else {
             currentUser.logoutUser(this);
-        }
+        }*/
     }
 
     @Override

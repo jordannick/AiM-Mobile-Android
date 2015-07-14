@@ -6,11 +6,16 @@
     android:layout_height="match_parent">
 
 
-
-    <RelativeLayout
-        android:id="@+id/actionList_relativeLayout"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/actionList_coordinatorLayout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -24,27 +29,17 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-            <include
-                android:id="@+id/titleBar_include"
-                layout="@layout/view_action_list_header" />
+
+            <Button
+                android:id="@+id/button_submitAll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/routine_green"
+                android:text="SUBMIT"
+                android:textColor="@color/colorWhite"
+                android:textSize="28sp" />
+
         </android.support.design.widget.AppBarLayout>
-
-
-
-        <ListView
-            android:id="@android:id/list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-
-        <TextView
-            android:id="@android:id/empty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="No Actions Added"
-            android:textColor="@android:color/tertiary_text_light"
-            android:textSize="20dp" />
 
 
         <RelativeLayout
@@ -53,7 +48,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/actionQueue_recentlyViewedTitleHideBackground"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_anchor="@id/actionList_coordinatorLayout"
+            app:layout_anchorGravity="bottom">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -94,7 +91,9 @@
             android:layout_alignParentBottom="true"
             android:background="@color/actionQueue_recentlyViewedBackground"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            app:layout_anchor="@id/actionList_coordinatorLayout"
+            app:layout_anchorGravity="bottom">
 
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -137,7 +136,7 @@
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
     <include layout="@layout/notification_drawer" />
 

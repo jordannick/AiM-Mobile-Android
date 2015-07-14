@@ -1,7 +1,8 @@
 package edu.oregonstate.AiMLiteMobile.Fragments;
-
+/*
+import android.app.DialogFragment;*/
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -122,7 +123,7 @@ public class AddActionDialogFragment extends DialogFragment {
                 //Confirm button starts ActionQueue activity, passing it the new action
                 if (getActivity().getLocalClassName().equals("Activities.DetailActivity")) {
                     if (actionSpinner.getSelectedItemPosition() != 0 && hoursWorked > 0) { // Make sure an action is selected
-                        currentUser.addAction(createAction(actionSpinner.getSelectedItem().toString(), statusSpinner.getSelectedItem().toString(), hoursEditText.getText().toString(), noteEditText.getText().toString()));
+                        currentUser.addAction(createAction(actionSpinner.getSelectedItem().toString(), statusSpinner.getSelectedItem().toString(), hoursEditText.getText().toString(), timeTypeSpinner.getSelectedItem().toString(), noteEditText.getText().toString()));
                         Intent intent = new Intent(getActivity(), ActionQueueListActivity.class);
                         getActivity().finish();
                         startActivity(intent);
@@ -134,7 +135,7 @@ public class AddActionDialogFragment extends DialogFragment {
                 }
                 //Confirm button saves the edits to action
                 else if (getActivity().getLocalClassName().equals("Activities.ActionQueueListActivity")) {
-                    currentUser.addAction(createAction(actionSpinner.getSelectedItem().toString(), statusSpinner.getSelectedItem().toString(), hoursEditText.getText().toString(), noteEditText.getText().toString()));
+                    currentUser.addAction(createAction(actionSpinner.getSelectedItem().toString(), statusSpinner.getSelectedItem().toString(), hoursEditText.getText().toString(), timeTypeSpinner.getSelectedItem().toString(), noteEditText.getText().toString()));
                     //((ActionQueueListFragment)getTargetFragment()).onPostActionDialog();
                     actionDialog.dismiss();
                 } else {
@@ -175,7 +176,7 @@ public class AddActionDialogFragment extends DialogFragment {
 
     }
 
-    private Action createAction(String actionTaken, String status, String hours, String noteString) {
+    private Action createAction(String actionTaken, String status, String hours, String timeType, String noteString) {
         double hoursDouble = 0;
         ArrayList<Note> notes = new ArrayList<>();
 
@@ -187,7 +188,8 @@ public class AddActionDialogFragment extends DialogFragment {
             notes.add(note);
         }
 
-        Action newAction = new Action(workOrder, actionTaken, status, hoursDouble, notes);
+
+        Action newAction = new Action(workOrder, actionTaken, status, hoursDouble, timeType, notes);
         //newAction.setTimeType(Action.TimeType.REG_NB); //%% DEBUG %% Default time type
 
         return newAction;

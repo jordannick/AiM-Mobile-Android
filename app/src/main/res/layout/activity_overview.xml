@@ -4,115 +4,111 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <com.flipboard.bottomsheet.BottomSheetLayout
-                android:id="@+id/bottomsheet"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:visibility="invisible"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimaryDark"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+            <LinearLayout
+                android:id="@+id/overview_activity_shortcuts"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorPrimaryDark"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/overview_activity_section_icon0"
+                    android:layout_width="0dp"
                     android:layout_height="fill_parent"
-                    android:visibility="invisible"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-
-                <android.support.design.widget.AppBarLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-
-                    <android.support.v7.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        android:background="@color/colorPrimaryDark"
-                        app:layout_scrollFlags="scroll|enterAlways"
-                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-                    <LinearLayout
-                        android:id="@+id/overview_activity_shortcuts"
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        android:layout_alignParentBottom="true"
-                        android:background="@color/colorPrimaryDark"
-                        android:gravity="center">
-
-                        <TextView
-                            android:id="@+id/overview_activity_section_icon0"
-                            android:layout_width="0dp"
-                            android:layout_height="fill_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/selector_section_icon"
-                            android:gravity="center"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="22dp" />
-
-                        <TextView
-                            android:id="@+id/overview_activity_section_icon1"
-                            android:layout_width="0dp"
-                            android:layout_height="fill_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/selector_section_icon"
-                            android:gravity="center"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="22dp" />
-
-                        <TextView
-                            android:id="@+id/overview_activity_section_icon2"
-                            android:layout_width="0dp"
-                            android:layout_height="fill_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/selector_section_icon"
-                            android:gravity="center"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="22dp" />
-
-                        <TextView
-                            android:id="@+id/overview_activity_section_icon3"
-                            android:layout_width="0dp"
-                            android:layout_height="fill_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/selector_section_icon"
-                            android:gravity="center"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="22dp" />
-                    </LinearLayout>
-
-                </android.support.design.widget.AppBarLayout>
-
-                <LinearLayout
-                    android:id="@+id/overviewActivity_dimOverlay"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/dimOverlay"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_section_icon"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    >
+                    android:textColor="@color/colorWhite"
+                    android:textSize="22dp" />
 
-                    <ProgressBar
-                        android:id="@+id/load_circle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/overview_activity_section_icon1"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_section_icon"
+                    android:gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="22dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Retrieving Work Orders"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/overview_activity_section_icon2"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_section_icon"
+                    android:gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="22dp" />
+
+                <TextView
+                    android:id="@+id/overview_activity_section_icon3"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_section_icon"
+                    android:gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="22dp" />
+            </LinearLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout
+            android:id="@+id/overviewActivity_dimOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/dimOverlay"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/load_circle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Retrieving Work Orders"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
 
 
-            </android.support.design.widget.CoordinatorLayout>
-            </com.flipboard.bottomsheet.BottomSheetLayout>
-    <include layout="@layout/navigation_drawer"/>
-    <include layout="@layout/notification_drawer"/>
+    </android.support.design.widget.CoordinatorLayout>
+
+    <include layout="@layout/navigation_drawer" />
+
+    <include layout="@layout/notification_drawer" />
 </android.support.v4.widget.DrawerLayout>
 

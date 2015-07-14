@@ -17,6 +17,8 @@ public class Action implements Serializable {
     private double hours;
     private ArrayList<Note> notes;
     private Date dateStamp;
+    private String timeType;
+    private boolean submitted;
 
     /* ---------- Variable: TimeType ----------
     *  OTM_NB   Overtime
@@ -26,6 +28,14 @@ public class Action implements Serializable {
     /*public enum TimeType {
         OTM_NB, REG_NB, RST_NB, RWS_NB
     }*/
+
+    public boolean isSubmitted() {
+        return submitted;
+    }
+
+    public void setSubmitted(boolean submitted) {
+        this.submitted = submitted;
+    }
 
     private boolean synced;
     //private TimeType timeType;
@@ -95,7 +105,15 @@ public class Action implements Serializable {
         this.actionTaken = actionTaken;
     }
 
-    public Action(WorkOrder workOrder, String actionTakenString, String updatedStatus, double hours, ArrayList<Note> notes) {
+    public String getTimeType() {
+        return timeType;
+    }
+
+    public void setTimeType(String timeType) {
+        this.timeType = timeType;
+    }
+
+    public Action(WorkOrder workOrder, String actionTakenString, String updatedStatus, double hours, String timeType, ArrayList<Note> notes) {
         this.mWorkOrder = workOrder;
         this.actionTaken = actionTakenString;
         if(updatedStatus != null) { //If not null, the status has been updated.
@@ -105,6 +123,8 @@ public class Action implements Serializable {
         this.notes = notes;
         this.dateStamp = new Date(System.currentTimeMillis());
         this.synced = false;
+        this.submitted = false;
+        this.timeType = timeType;
     }
 
 

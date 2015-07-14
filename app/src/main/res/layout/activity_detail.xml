@@ -501,6 +501,13 @@
                     android:paddingBottom="8dp"
                     android:paddingTop="8dp">
 
+                    <ProgressBar
+                        android:id="@+id/button_moveSection_loading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone"/>
+
                     <TextView
                         android:id="@+id/button_moveSection_icon"
                         android:layout_width="wrap_content"

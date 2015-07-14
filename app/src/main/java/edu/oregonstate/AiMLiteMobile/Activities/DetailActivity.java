@@ -1,6 +1,7 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
-import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -19,12 +21,17 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flipboard.bottomsheet.BottomSheetLayout;
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
 
 import org.w3c.dom.Text;
+
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,8 +39,12 @@ import edu.oregonstate.AiMLiteMobile.Adapters.NoteAdapter;
 import edu.oregonstate.AiMLiteMobile.Fragments.AddActionDialogFragment;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
+import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.NotificationManager;
 import edu.oregonstate.AiMLiteMobile.R;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 /**
@@ -46,6 +57,7 @@ public class DetailActivity extends AppCompatActivity {
     public static WorkOrder workOrder;
     private NoteAdapter notesAdapter;
     private static NotificationManager notificationManager;
+    private Context self;
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.row_proposal_detail) TextView proposal;
@@ -85,6 +97,9 @@ public class DetailActivity extends AppCompatActivity {
     @Bind(R.id.right_drawer)
     RecyclerView recyclerViewDrawerNotification;
 
+    @Bind(R.id.button_moveSection_loading)
+    ProgressBar moveSectionLoading;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -96,7 +111,7 @@ public class DetailActivity extends AppCompatActivity {
         workOrder = (WorkOrder)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
         currentUser.addRecentlyViewedWorkOrder(workOrder);
 
-
+        self = this;
         //ButterKnife Time
         ButterKnife.bind(this);
 
@@ -244,49 +259,14 @@ public class DetailActivity extends AppCompatActivity {
                 break;
         }
 
-        moveSectionTextIcon.setTypeface(FONTAWESOME);
-        moveSectionTextIcon.setText(getString(R.string.icon_moveToBacklog));
-        final Animation sectionChangeAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out_dim);
-        AnimationUtils.loadAnimation(this, R.anim.fade_out_dim);
-
-        sectionChangeAnim.setAnimationListener(new Animation.AnimationListener() {
+      /*  DetailActivity.this.runOnUiThread(new Runnable() {
             @Override
-            public void onAnimationStart(Animation animation) {
+            public void run() {
 
             }
+        });*/
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                toggleSectionTitleViews();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        moveSection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //moveSection.startAnimation(sectionChangeAnim);
-                moveSectionTextIcon.startAnimation(sectionChangeAnim);
-
-
-                /*if (moveSectionTitle.getText().equals("To Backlog")) {
-                    moveSection.startAnimation(sectionChangeAnim);
-                    //moveSectionTextIcon.startAnimation(sectionChangeAnim);
-                    //moveSectionTitle.startAnimation(sectionChangeAnim);
-                    moveSectionTitle.setText("To Daily");
-                    moveSectionTextIcon.setText(getString(R.string.icon_moveToDaily));
-                } else if (moveSectionTitle.getText().equals("To Daily")) {
-                    //moveSectionTextIcon.startAnimation(sectionChangeAnim);
-                   // moveSectionTitle.startAnimation(sectionChangeAnim);
-                    moveSectionTitle.setText("To Backlog");
-                    moveSectionTextIcon.setText(getString(R.string.icon_moveToBacklog));
-                }*/
-            }
-        });
-
+        initMoveSection();
 
         //Set up bottom two buttons
         viewNotesIcon.setText(getString(R.string.icon_list));
@@ -306,7 +286,8 @@ public class DetailActivity extends AppCompatActivity {
                 bundle.putString("Title", workOrder.getProposalPhase().toString());
                 actionFragment.setArguments(bundle);
 
-                actionFragment.show(getFragmentManager(), "Diag");
+                //actionFragment.show(getFragmentManager(), "Diag");
+                actionFragment.show(getSupportFragmentManager(), "Diag");
             }
         });
 
@@ -317,8 +298,116 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+        //Class.forName("edu.oregonstate.AiMLiteMobile.Activities.ActionQueueListActivity")
     }
 
+    private void initMoveSection(){
+        Typeface FONTAWESOME = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/FontAwesome.otf");
+        moveSectionTextIcon.setTypeface(FONTAWESOME);
+        if (workOrder.getSection().equals("Daily Assignment")){
+            moveSectionTextIcon.setText(getString(R.string.icon_moveToBacklog));
+            moveSectionTitle.setText("To Backlog");
+        } else if (workOrder.getSection().equals("Backlog")){
+            moveSectionTextIcon.setText(getString(R.string.icon_moveToDaily));
+            moveSectionTitle.setText("To Daily");
+        }
+
+        final Animation sectionChangeAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out_dim);
+        AnimationUtils.loadAnimation(this, R.anim.fade_out_dim);
+
+        sectionChangeAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                //toggleSectionTitleViews();
+
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+
+        moveSection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(self);
+                builder.setTitle("Confirm");
+                builder.setMessage("Move Section?");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        requestUpdateSection();
+                    }
+                });
+                builder.setNegativeButton("Cancel", null);
+                builder.show();
+
+            }
+        });
+
+    }
+
+    private void requestUpdateSection(){
+
+        // moveSectionTextIcon.startAnimation(sectionChangeAnim);
+        //moveSectionTitle.startAnimation(sectionChangeAnim);
+
+        String newSection = "";
+
+        if (workOrder.getSection().equals("Daily Assignment")) {
+            newSection = "Backlog";
+        } else if (workOrder.getSection().equals("Backlog")) {
+            newSection = "Daily Assignment";
+        }
+
+        final String newSectionFinal = newSection;
+
+        moveSectionLoading.setVisibility(View.VISIBLE);
+        moveSectionTextIcon.setVisibility(View.INVISIBLE);
+        moveSectionTitle.setVisibility(View.INVISIBLE);
+
+        ApiManager.getService().updateSection(currentUser.getUsername(), workOrder.getProposalPhase(), newSection, new Date(System.currentTimeMillis()).toString(), currentUser.getToken(), new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                Log.d(TAG, "updateSection Success");
+                toggleSectionTitleViews();
+
+                //TODO: is work order object same/different than one in currentUser list?
+                for (WorkOrder workOrderIter : currentUser.getWorkOrders()){
+                    if (workOrderIter.getProposalPhase().equals(workOrder.getProposalPhase())){
+                        workOrderIter.setSection(newSectionFinal);
+                        workOrder = workOrderIter;
+                    }
+                }
+
+                moveSectionLoading.setVisibility(View.INVISIBLE);
+                moveSectionTextIcon.setVisibility(View.VISIBLE);
+                moveSectionTitle.setVisibility(View.VISIBLE);
+                SnackbarManager.show(Snackbar.with(self).text("Work Order Section Changed").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e(TAG, "updateSection Fail: " + error.getMessage());
+                moveSectionLoading.setVisibility(View.INVISIBLE);
+                moveSectionTextIcon.setVisibility(View.VISIBLE);
+                moveSectionTitle.setVisibility(View.VISIBLE);
+                SnackbarManager.show(Snackbar.with(self).text("Move Section Failed").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
+            }
+
+
+        });
+
+    }
 
     private void toggleSectionTitleViews(){
         if (moveSectionTitle.getText().equals("To Backlog")) {
