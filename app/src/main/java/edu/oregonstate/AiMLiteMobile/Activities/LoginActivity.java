@@ -51,7 +51,8 @@ public class LoginActivity extends AppCompatActivity {
     private String mUsername;
     private String mPassword;
 
-
+    public static final String EXTRA_LOGIN = "login";
+    public static final String EXTRA_OFFLINE = "offline";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,9 +144,14 @@ public class LoginActivity extends AppCompatActivity {
         sCurrentUser.setOfflineMode(true);
         setEnableFormFields(true);
 
+        startOverviewActivity(true);
+    }
+
+    private void startOverviewActivity(boolean offline){
         this.finish();
         Intent intent = new Intent(this, OverviewListActivity.class);
-        intent.putExtra("offline", true);
+        intent.putExtra(EXTRA_LOGIN, true);
+        intent.putExtra(EXTRA_OFFLINE, offline);
         startActivity(intent);
     }
 
@@ -167,8 +173,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 //TODO: finish the activity
 
-                activity.finish();
-                startActivity(new Intent(activity, OverviewListActivity.class));
+                startOverviewActivity(false);
             }
 
             @Override

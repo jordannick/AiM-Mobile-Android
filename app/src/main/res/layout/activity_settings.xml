@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:id="@+id/settings_scene_root"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/settings_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimaryDark"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+
+
+
+    <TextView
+        android:id="@+id/settings_about_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/settings_about_text"
+        android:layout_marginBottom="24dp"
+        android:text="Developed by Specialized Admin Services"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+    <Button
+        android:id="@+id/settings_feedback_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Feedback"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_margin="24dp"
+
+        android:layout_above="@id/settings_about_text"
+        android:layout_centerHorizontal="true"
+        android:onClick="feedbackOnClick"
+        android:textColor="@color/settings_feedback_button_text"
+        android:background="@color/settings_feedback_button_bg"
+        android:padding="12dp"/>
+
+</RelativeLayout>

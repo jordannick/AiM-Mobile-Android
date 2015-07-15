@@ -20,6 +20,7 @@
     <string name="add_action_activity_title">New Time</string>
     <string name="edit_action_activity_title">Edit Time</string>
     <string name="detail_activity_title">Work Order Detail</string>
+    <string name="settings_activity_title">Settings</string>
 
 
 
@@ -30,6 +31,7 @@
     <string name="icon_notices">&#xf0f3;</string>
     <string name="icon_timeLog">&#xf017;</string>
     <string name="icon_home">&#xf015;</string>
+    <string name="icon_search">&#xf002;</string>
 
     <string name="icon_moveToDaily">&#xf0aa;</string>
     <string name="icon_moveToBacklog">&#xf0ab;</string>

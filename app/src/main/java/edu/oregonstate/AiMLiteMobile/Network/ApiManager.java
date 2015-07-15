@@ -280,7 +280,7 @@ public class ApiManager {
 
                     if(dateString.toLowerCase().equals("null")){
                         Log.d(TAG, "RequestLastUpdated: FOUND NULL");
-                        return new ResponseLastUpdated("null", null);
+                        return new ResponseLastUpdated(true);
                     }
 
                     //Convert date to ms

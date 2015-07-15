@@ -77,9 +77,6 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     private RecyWorkOrderAdapter recAdapter;
     private SearchView searchView;
 
-    private int screenWidth;
-    private int screenHeight;
-
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.recycler_view)
@@ -97,8 +94,6 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     @Bind(R.id.overviewActivity_dimOverlay)
     LinearLayout dimOverlay;
 
-  /*  @Bind(R.id.bottomsheet)
-    BottomSheetLayout bottomSheet;*/
     @Bind(R.id.left_drawer_recycler)
     RecyclerView recyclerViewDrawer;
     @Bind(R.id.right_drawer)
@@ -106,7 +101,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
 
 
-
+    /*INTERFACE*/
     @Override
     public void handleNavigationClick(int position) {
         Log.d(TAG, "HANDLE CLICK LISTENED : " + position);
@@ -119,15 +114,23 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 notificationManager.openDrawer(drawerLayout);
                 break;
-            case 3: //Refresh
+            case 3: //Search
+                drawerLayout.closeDrawer(Gravity.LEFT);
+                searchView.setIconified(true);
+
+                //searchView.callOnClick();
+                break;
+            case 4: //Refresh
                 currentUser.setLastUpdated(0L);
                 requestLastUpdated(true);
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 break;
-            case 4: //Settings
+            case 5: //Settings
+                drawerLayout.closeDrawer(Gravity.LEFT);
+                beginSettingsActivity();
                 //Todo: create settings activity/dialog
                 break;
-            case 5: //Log Out
+            case 6: //Log Out
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 currentUser.logoutUser(this);
                 break;
@@ -136,18 +139,13 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
     }
 
-    private TextView notifBox = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_overview);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-
-        Log.d(TAG, "oncreate!");
-
         activity = this;
 
         currentUser = CurrentUser.get(getApplicationContext());
@@ -155,9 +153,23 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         navigationDrawer = new NavigationDrawer(this);
 
 
-        SnackbarManager.show(Snackbar.with(this).text("Logged in as " + currentUser.getUsername().toUpperCase()).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
+        initRecyclerView();
+        initSectionIcons();
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        if(getIntent().getBooleanExtra(LoginActivity.EXTRA_LOGIN, false)){
+            Log.d(TAG, "Extra Login true");
+            SnackbarManager.show(Snackbar.with(this).text("Logged in as " + currentUser.getUsername().toUpperCase()).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
+            requestWorkOrders(false);
+            requestNotices();
+        }else{
+            Log.d(TAG, "Extra Login false");
+        }
+        if(currentUser.isOfflineMode()){
+            setupOfflineMode();
+        }
+    }
+
+    private void initRecyclerView(){
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -173,27 +185,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             }
         });
-
-
-        initSectionIcons();
-
-        requestWorkOrders(false);
-        requestNotices();
-
-        //initNavigationDrawer();
-
-        if(currentUser.isOfflineMode()){
-            setupOfflineMode();
-        }
-
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        screenWidth = displayMetrics.widthPixels;
-        screenHeight = displayMetrics.heightPixels;
-
-
-
     }
-
 
     private void setupOfflineMode(){
 
@@ -207,39 +199,32 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
     @Override
     protected void onDestroy() {
-        Log.d(TAG, "aa OverviewListActivity onDestroy");
         super.onDestroy();
     }
 
     @Override
     public void onBackPressed() {
         currentUser.logoutUser(this);
-       /* if(bottomSheet.isSheetShowing()){
-            bottomSheet.dismissSheet();
-        }else {
-            currentUser.logoutUser(this);
-        }*/
     }
 
     @Override
     protected void onStop() {
-        Log.d(TAG, "aa On Stop Overview");
         super.onStop();
+        resetSearch();
+    }
+
+    private void resetSearch(){
         searchView.setBackgroundResource(R.color.searchView_default);
         assert getSupportActionBar() != null;
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.searchView_default)));
         sectionShortcutBar.setVisibility(View.VISIBLE);
+        recAdapter.flushFilter();
     }
-
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Log.d(TAG, "aa On Save OverView");
         super.onSaveInstanceState(outState);
     }
-
-
 
 
     @Override
@@ -252,7 +237,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         searchView = (SearchView) menu.findItem(R.id.search_button).getActionView();
         //MenuItemCompat searchItem = (MenuItemCompat)menu.findItem(R.id.search_button);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
+        searchView.setIconifiedByDefault(true);
         searchView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 
 
@@ -275,49 +260,6 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
                 return false;
             }
         });
-
-
-
-
-/*        searchItem.setOnActionExpandListener(new MenuItemCompat.OnActionExpandListener(){
-
-        });*/
-/*        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                sectionShortcutBar.setVisibility(View.GONE);
-                searchView.setBackgroundColor(getResources().getColor(R.color.searchView_active));
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.searchView_active)));
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                searchView.setBackgroundColor(getResources().getColor(R.color.searchView_default));
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.searchView_default)));
-                return true;
-            }
-        });*/
-
-//        searchView.setOnSearchClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                sectionShortcutBar.setVisibility(View.GONE);
-//                searchView.setBackgroundColor(getResources().getColor(R.color.searchView_active));
-//                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.searchView_active)));
-//
-//            }
-//        });
-//
-//        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-//            @Override
-//            public boolean onClose() {
-//                searchView.setBackgroundColor(getResources().getColor(R.color.searchView_default));
-//                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.searchView_default)));
-//                return false;
-//            }
-//        });
-
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -342,8 +284,6 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         menu_notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //createNoticesViewPopup();
-                //drawerLayout.openDrawer(GravityCompat.END);
                 notificationManager.openDrawer(drawerLayout);
             }
         });
@@ -397,37 +337,29 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         i.putExtra(WorkOrder.WORK_ORDER_EXTRA, workOrder);
         startActivity(i);
         overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
-        searchView.setQuery("", false);
+        //searchView.setQuery("", false);
     }
 
 
-    public void beginActionQueueActivity() {
+    private void beginActionQueueActivity() {
         Intent i = new Intent(this, ActionQueueListActivity.class);
-
         startActivity(i);
         overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
-        searchView.setQuery("", false);
+    }
+
+    private void beginSettingsActivity() {
+        Intent i = new Intent(this, SettingsActivity.class);
+        startActivity(i);
     }
 
 
     private void requestLastUpdated(final boolean displayConfirmation) {
-
         ApiManager.getService().getLastUpdated(currentUser.getUsername(), currentUser.getToken(), new Callback<ResponseLastUpdated>() {
             @Override
             public void success(ResponseLastUpdated responseLastUpdated, Response response) {
                 Log.d(TAG, "requestLastUpdated SUCCESS ::: " + responseLastUpdated.getDate());
 
-                Date lastUpdated = responseLastUpdated.getDate();
-                String dateString = responseLastUpdated.getDateString();
-                //Convert date to ms
-
-                if(!dateString.equals("null")){
-                    Long newTime = lastUpdated.getTime();
-                    if(currentUser.isUpdateNeeded(newTime)){ //If newer time was retrieved, update.
-                        Log.d(TAG, "requestLastUpdated ::: newerTime, update");
-                        requestWorkOrders(displayConfirmation);
-                    }
-                }else{
+                if(responseLastUpdated.isNullReturn()){
                     if(currentUser.isUpdateExpired(System.currentTimeMillis())){ //If current time exceeds expirationDate of data, update
                         Log.d(TAG, "requestLastUpdated ::: expired, update");
                         requestWorkOrders(displayConfirmation);
@@ -435,8 +367,12 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
                         //Update unneeded, wait for expiration
                         Log.d(TAG, "requestLastUpdated ::: No Need for Update");
                     }
+                }else{
+                    if(currentUser.isUpdateNeeded(responseLastUpdated.getDate().getTime())){ //If newer time was retrieved, update.
+                        Log.d(TAG, "requestLastUpdated ::: newerTime, update");
+                        requestWorkOrders(displayConfirmation);
+                    }
                 }
-                Log.d(TAG, "requestLastUpdated ::: END");
             }
 
             @Override
@@ -449,74 +385,47 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
 
     private void requestWorkOrders(final boolean displayConfirmation) {
         if(displayConfirmation){
+            recyclerView.setVisibility(View.INVISIBLE);
             setDimVisibility(View.VISIBLE);
         }
-
 
         ApiManager.getService().getWorkOrders(currentUser.getUsername(), currentUser.getToken(), new Callback<ResponseWorkOrders>() {
             @Override
             public void success(ResponseWorkOrders responseWorkOrders, Response response) {
                 Log.d(TAG, "requestWorkOrders SUCCESS");
-                ArrayList<WorkOrder> workOrders = responseWorkOrders.getWorkOrders();
                 currentUser.getPreferences().saveWorkOrders(responseWorkOrders.getRawJson());
-                currentUser.setWorkOrders(workOrders);
-                currentUser.backupWorkOrders(workOrders);
-                //adapter.refreshWorkOrders(currentUser.getWorkOrders());
+                currentUser.setWorkOrders(responseWorkOrders.getWorkOrders());
+                currentUser.backupWorkOrders(responseWorkOrders.getWorkOrders());
                 recAdapter.refreshWorkOrders(currentUser.getWorkOrders());
-                initSectionIcons();
-                activity.findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
                 setDimVisibility(View.GONE);
 
                 currentUser.setLastRefreshed(System.currentTimeMillis());
-                navigationDrawer.invalidateAdapter();
                 currentUser.setLastUpdated(System.currentTimeMillis());
 
-                if(displayConfirmation){
-                    SnackbarManager.show(Snackbar.with(activity).text("Work Orders Updated").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
-                }
+                if(displayConfirmation)SnackbarManager.show(Snackbar.with(activity).text("Work Orders Updated").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d(TAG, "requestWorkOrders FAIL");
+                Log.e(TAG, "Failed requestWorkOrders\nError: " + error);
                 SnackbarManager.show(Snackbar.with(activity).text("Failed to retrieve work orders").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
-                activity.findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
                 setDimVisibility(View.GONE);
-
-                promptUserLoadOfflineData();
             }
         });
-    }
-
-    public void promptUserLoadOfflineData(){
-        AlertDialog loadOfflineDialog;
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle("Load offline data?");
-        builder.setPositiveButton("Load", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                currentUser.loadSavedWorkOrders(recAdapter);
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-            }
-        });
-        loadOfflineDialog = builder.create();
-        loadOfflineDialog.show();
     }
 
     private void requestNotices() {
-
         ApiManager.getService().getNotices(currentUser.getUsername(), currentUser.getToken(), new Callback<ResponseNotices>() {
             @Override
             public void success(ResponseNotices responseNotices, Response response) {
                 notificationManager.refreshNotices(responseNotices.getNotices());
                 if (menu != null) notificationManager.updateNoticeCount(menu);
             }
-
             @Override
             public void failure(RetrofitError error) {
-
+                Log.e(TAG, "Failed requestNotices\nError: " + error);
             }
         });
     }

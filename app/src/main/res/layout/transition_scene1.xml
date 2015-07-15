@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/settings_scene_root"
+    android:layout_height="match_parent"
+    android:background="@drawable/settings_background"
+    >
+
+
+    <TextView
+        android:id="@+id/settings_about_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/settings_about_text"
+        android:layout_centerHorizontal="true"
+        android:text="Developed by Specialized Admin Services"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="24dp"/>
+    <Button
+        android:id="@+id/settings_feedback_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Feedback"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:onClick="feedbackOnClick"
+        android:layout_centerInParent="true"
+        android:layout_above="@id/settings_about_text"
+        android:textColor="@color/settings_feedback_button_text"
+        android:background="@color/settings_feedback_button_bg"
+        android:padding="12dp"/>
+
+
+    <LinearLayout
+        android:id="@+id/submit_cancel_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp">
+        <Button
+            android:id="@+id/settings_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/settings_cancel_button_bg"
+            android:text="Cancel"
+            android:onClick="cancelOnClick"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"/>
+        <Button
+            android:id="@+id/settings_submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/settings_submit_button_bg"
+            android:text="Submit"
+            android:textStyle="bold"
+            android:layout_marginLeft="32dp"
+            android:textColor="@color/colorWhite"
+            />
+    </LinearLayout>
+    <EditText
+        android:id="@+id/settings_feedback_field"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="64dp"
+        android:layout_marginBottom="24dp"
+        android:visibility="visible"
+        android:background="@color/colorWhite"
+        android:layout_below="@id/submit_cancel_layout"
+        android:layout_above="@id/settings_feedback_button"
+        android:focusable="true"
+        android:hint="Type feedback here..."
+        android:padding="12dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#E3F2FD"
+        android:gravity="top"
+        />
+
+
+
+</RelativeLayout>

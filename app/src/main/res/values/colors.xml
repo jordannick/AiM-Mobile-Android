@@ -103,6 +103,16 @@
     <color name="Material_font_grey">#747474</color>
     <color name="Material_icon_grey">#A9A9A9</color>
 
+
+
+    <color name="settings_feedback_button_bg">#2196F3</color>
+    <color name="settings_feedback_button_text">#FFFFFF</color>
+    <color name="settings_bg_gradientA">#9E9E9E</color>
+    <color name="settings_bg_gradientB">#BDBDBD</color>
+    <color name="settings_about_text">#424242</color>
+    <color name="settings_submit_button_bg">#4CAF50</color>
+    <color name="settings_cancel_button_bg">#F44336</color>
+
 </resources>
 
 

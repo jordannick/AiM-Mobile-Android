@@ -66,13 +66,15 @@ public class NavigationDrawer {
         LinearLayoutManager linearLayoutManagerDrawer = new LinearLayoutManager(delegate);
         RecyclerView recyclerViewDrawer = (RecyclerView)delegate.findViewById(R.id.left_drawer_recycler);
         recyclerViewDrawer.setLayoutManager(linearLayoutManagerDrawer);
-        String[] navTitles = new String[2];
-        int[] icons = new int[2];
+        String[] navTitles = new String[3];
+        int[] icons = new int[3];
 
         navTitles[0] = "Time Log";
         icons[0] = R.string.icon_timeLog;
         navTitles[1] = "Notices";
         icons[1] = R.string.icon_notices;
+        navTitles[2] = "Search";
+        icons[2] = R.string.icon_search;
 /*        navTitles[2] = "Settings";
         icons[2] = R.string.icon_settings;
         navTitles[3] = "Log out";

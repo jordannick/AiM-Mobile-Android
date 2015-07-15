@@ -104,7 +104,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
                     holder.rowIcon.setTextColor(delegate.getResources().getColor(R.color.colorPrimaryDark));
                     break;
                 case 2:
-                    holder.rowIcon.setTextColor(delegate.getResources().getColor(R.color.Material_grey));
+                    holder.rowIcon.setTextColor(delegate.getResources().getColor(R.color.scheduled_blue));
                     break;
                 case 3:
                     holder.rowIcon.setTextColor(delegate.getResources().getColor(R.color.Material_grey));
