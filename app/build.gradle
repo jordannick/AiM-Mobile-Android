@@ -27,6 +27,10 @@ android {
     }
 }
 
+repositories {
+    maven {  url "https://jitpack.io" }
+}
+
 dependencies {
     compile 'com.android.support:support-v4:22.2.0+'
     compile fileTree(dir: 'lib', include: ['*.jar'])
@@ -40,5 +44,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.0'
     compile 'com.flipboard:bottomsheet-core:1.1.0'
     compile 'com.flipboard:bottomsheet-commons:1.1.0'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.1.0'
 }
 

@@ -18,7 +18,6 @@
             android:label="AiMLite Mobile"
             android:windowSoftInputMode="adjustResize|stateHidden"
             >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -68,6 +67,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.oregonstate.AiMLiteMobile.Activities.OverviewListActivity"
                 />
+
 
 
         </activity>
