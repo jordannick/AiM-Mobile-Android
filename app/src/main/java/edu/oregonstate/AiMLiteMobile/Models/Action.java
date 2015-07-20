@@ -3,14 +3,15 @@ package edu.oregonstate.AiMLiteMobile.Models;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by sellersk on 2/19/2015.
  */
 public class Action implements Serializable {
     private static final String TAG = "AiM_Action";
-    public static final String EDIT_ACTION_EXTRA = "edu.oregonstate.AiMLiteMobile.Models.Action";
 
+    private UUID actionId;
     private WorkOrder mWorkOrder;
     private String actionTaken;
     private String updatedStatus;
@@ -20,14 +21,9 @@ public class Action implements Serializable {
     private String timeType;
     private boolean submitted;
 
-    /* ---------- Variable: TimeType ----------
-    *  OTM_NB   Overtime
-    *  REG_NB   Regular Time
-    *  RST_NB   Student Regular Pay
-    *  RWS_NB   Federal Work Study Student Pay   */
-    /*public enum TimeType {
-        OTM_NB, REG_NB, RST_NB, RWS_NB
-    }*/
+    public UUID getActionId() {
+        return actionId;
+    }
 
     public boolean isSubmitted() {
         return submitted;
@@ -36,25 +32,6 @@ public class Action implements Serializable {
     public void setSubmitted(boolean submitted) {
         this.submitted = submitted;
     }
-
-    private boolean synced;
-    //private TimeType timeType;
-
-    public boolean isSynced() {
-        return synced;
-    }
-
-    public void setSynced(boolean synced) {
-        this.synced = synced;
-    }
-
-   /* public TimeType getTimeType() {
-        return timeType;
-    }
-
-    public void setTimeType(TimeType timeType) {
-        this.timeType = timeType;
-    }*/
 
     public WorkOrder getWorkOrder() {
         return mWorkOrder;
@@ -96,7 +73,6 @@ public class Action implements Serializable {
         this.dateStamp = dateStamp;
     }
 
-
     public String getActionTaken() {
         return actionTaken;
     }
@@ -113,16 +89,23 @@ public class Action implements Serializable {
         this.timeType = timeType;
     }
 
+    // Used for editing an existing action object
+    public void replaceValues(String actionTakenString, String updatedStatus, double hours, String timeType, ArrayList<Note> notes) {
+        this.actionTaken = actionTakenString;
+        this.updatedStatus = updatedStatus;
+        this.hours = hours;
+        this.notes = notes;
+        this.timeType = timeType;
+    }
+
     public Action(WorkOrder workOrder, String actionTakenString, String updatedStatus, double hours, String timeType, ArrayList<Note> notes) {
+        this.actionId = UUID.randomUUID();
         this.mWorkOrder = workOrder;
         this.actionTaken = actionTakenString;
-        if(updatedStatus != null) { //If not null, the status has been updated.
-            this.updatedStatus = updatedStatus;
-        }
+        this.updatedStatus = updatedStatus;
         this.hours = hours;
         this.notes = notes;
         this.dateStamp = new Date(System.currentTimeMillis());
-        this.synced = false;
         this.submitted = false;
         this.timeType = timeType;
     }

@@ -17,16 +17,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!--    <TextView
+                <TextView
                     android:id="@+id/dialogNewAction_title"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorPrimary"
+                    android:background="@color/colorPrimaryDark"
                     android:gravity="center"
-                    android:padding="8dp"
-                    android:text="Title"
+                    android:padding="4dp"
+                    android:text="New Entry"
                     android:textColor="#fff"
-                    android:textSize="22dp" />-->
+                    android:textSize="20dp" />
 
 
             <LinearLayout
@@ -56,28 +56,26 @@
                         android:id="@+id/hours_required"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="*Required"
-                        android:paddingTop="4dp"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:textColor="@color/emergency_red_old"
-                        android:layout_marginRight="48dp"
                         android:layout_alignParentRight="true"
-                        android:visibility="gone"/>
+                        android:layout_marginRight="48dp"
+                        android:paddingTop="4dp"
+                        android:text="*Required"
+                        android:textColor="@color/emergency_red_old"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
 
                 </LinearLayout>
-
 
 
                 <LinearLayout
                     android:id="@+id/hours_entry_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_weight="1"
                     android:gravity="center"
-                    >
+                    android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/button_minusHours"
@@ -98,8 +96,8 @@
                         android:gravity="center"
                         android:minWidth="72dp"
                         android:padding="8dp"
-                        android:textSize="28sp"
-                        android:text="0.0"/>
+                        android:text="0.0"
+                        android:textSize="28sp" />
 
                     <Button
                         android:id="@+id/button_addHours"
@@ -108,10 +106,8 @@
                         android:layout_height="wrap_content"
                         android:text="\u002B"
                         android:textColor="@android:color/holo_blue_dark"
-                        android:textSize="48dp"/>
+                        android:textSize="48dp" />
                 </LinearLayout>
-
-
 
 
                 <LinearLayout
@@ -124,16 +120,15 @@
                         android:id="@+id/spinner_timetype"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".5"
-                        android:background="@drawable/spinner_border"
-                        android:padding="8dp"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        android:prompt="@string/add_action_spinner_timetype_prompt"
-                        android:spinnerMode="dropdown"
-                        android:layout_gravity="center_vertical"
+                        android:layout_weight=".5"
+                        android:background="@drawable/spinner_border"
                         android:gravity="center_vertical"
-                        />
+                        android:padding="8dp"
+                        android:prompt="@string/add_action_spinner_timetype_prompt"
+                        android:spinnerMode="dropdown" />
 
                 </LinearLayout>
 
@@ -166,14 +161,14 @@
                         android:id="@+id/action_required"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="*Required"
-                        android:paddingTop="4dp"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:textColor="@color/emergency_red_old"
-                        android:layout_marginRight="48dp"
                         android:layout_alignParentRight="true"
-                        android:visibility="gone"/>
+                        android:layout_marginRight="48dp"
+                        android:paddingTop="4dp"
+                        android:text="*Required"
+                        android:textColor="@color/emergency_red_old"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 
@@ -244,9 +239,6 @@
 
                 </RelativeLayout>
             </LinearLayout>
-
-
-
 
 
             <LinearLayout
