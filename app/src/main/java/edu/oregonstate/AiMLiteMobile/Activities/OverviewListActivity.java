@@ -1,15 +1,12 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,30 +21,20 @@ import android.util.Log;
 import android.view.Gravity;
 
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.io.OptionalDataException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.NavigationAdapter;
-import edu.oregonstate.AiMLiteMobile.InternalStorageWriter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
@@ -58,13 +45,13 @@ import edu.oregonstate.AiMLiteMobile.Network.ResponseNotices;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
 import edu.oregonstate.AiMLiteMobile.NotificationManager;
 import edu.oregonstate.AiMLiteMobile.R;
-import edu.oregonstate.AiMLiteMobile.Adapters.RecyWorkOrderAdapter;
+import edu.oregonstate.AiMLiteMobile.Adapters.WorkOrderAdapter;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class OverviewListActivity extends AppCompatActivity implements RecyWorkOrderAdapter.Callbacks, NavigationAdapter.NavigationClickHandler {
+public class OverviewListActivity extends AppCompatActivity implements WorkOrderAdapter.Callbacks, NavigationAdapter.NavigationClickHandler {
     private static final String TAG = "AiM_OverviewListACT";
 
     private static CurrentUser currentUser;
@@ -74,7 +61,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
     private Menu menu;
 
     private LinearLayoutManager linearLayoutManager;
-    private RecyWorkOrderAdapter recAdapter;
+    private WorkOrderAdapter recAdapter;
     private SearchView searchView;
 
     @Bind(R.id.toolbar)
@@ -173,7 +160,7 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recAdapter = new RecyWorkOrderAdapter(currentUser.getWorkOrders(), this);
+        recAdapter = new WorkOrderAdapter(currentUser.getWorkOrders(), this);
         recyclerView.setAdapter(recAdapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -412,6 +399,8 @@ public class OverviewListActivity extends AppCompatActivity implements RecyWorkO
                 SnackbarManager.show(Snackbar.with(activity).text("Failed to retrieve work orders").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
                 recyclerView.setVisibility(View.VISIBLE);
                 setDimVisibility(View.GONE);
+
+                //promptUserLoadOfflineData();
             }
         });
     }

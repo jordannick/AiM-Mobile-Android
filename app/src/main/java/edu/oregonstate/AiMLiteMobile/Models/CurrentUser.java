@@ -7,17 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.view.WindowManager;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.Random;
 
 import edu.oregonstate.AiMLiteMobile.Activities.LoginActivity;
-import edu.oregonstate.AiMLiteMobile.Adapters.RecyWorkOrderAdapter;
+import edu.oregonstate.AiMLiteMobile.Adapters.WorkOrderAdapter;
 import edu.oregonstate.AiMLiteMobile.InternalStorageWriter;
 
 /**
@@ -115,7 +111,7 @@ public class CurrentUser {
         internalStorageWriter.saveWorkOrders(arr);
     }
 
-    public void loadSavedWorkOrders(RecyWorkOrderAdapter adapter){
+    public void loadSavedWorkOrders(WorkOrderAdapter adapter){
         ArrayList<WorkOrder> workOrders = internalStorageWriter.retrieveWorkOrders();
         this.workOrders = workOrders;
         adapter.refreshWorkOrders(workOrders);

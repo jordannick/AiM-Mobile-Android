@@ -5,7 +5,9 @@ package edu.oregonstate.AiMLiteMobile.Models;
  */
 public class WorkOrderListItem {
     private static final String TAG = "AiM_WorkOrderListItem";
-    public static int numTypes = 2;
+    public static final int SECTION_ITEM = 0;
+    public static final int WORK_ORDER_ITEM = 1;
+
 
     public WorkOrderListItem(Type type, String sectionTitle, int sectionIcon, WorkOrder workOrder, int sectionCount) {
         this.type = type;
