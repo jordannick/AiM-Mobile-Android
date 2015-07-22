@@ -8,17 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import edu.oregonstate.AiMLiteMobile.Models.Action;
-import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.R;
 
 /**
@@ -50,15 +46,17 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
     public ActionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.
                 from(parent.getContext()).
-                inflate(R.layout.list_item_action_new, parent, false);
+                inflate(R.layout.list_item_action, parent, false);
         return new ActionViewHolder(view);
     }
 
     @Override
     public void onViewRecycled(ActionViewHolder holder) {
         holder.submitText.setText("Ready to Submit");
-        holder.submitImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.submit_checked_grey));
+        //holder.submitText.setTextColor(context.getResources().getColor(android.R.color.tertiary_text_dark));
+        holder.submitImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.submit_up));
         //holder.submittedOverlay.setAlpha(0);
+        holder.notesCount.setText("No note");
         super.onViewRecycled(holder);
     }
 
@@ -78,6 +76,10 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
 
         holder.actionTaken.setText(action.getActionTaken());
 
+        if (!action.getNote().equals("")) {
+            holder.notesCount.setText(action.getNote());
+        }
+
         if (action.getUpdatedStatus() != null && !action.getUpdatedStatus().equals(action.getWorkOrder().getStatus())){
            holder.oldStatus.setText(action.getWorkOrder().getStatus());
            holder.newStatus.setText(action.getUpdatedStatus());
@@ -95,10 +97,20 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
         } else {
             holder.hours.setText("0");
         }
+        int i = action.getTimeType().indexOf(' ');
+        String type = "";
+        if (i != -1) {
+            type = action.getTimeType().substring(0, i);
+        }
+        holder.hoursType.setText(type);
 
         //holder.notesCount.setText(String.valueOf(action.getNotes().size() + " Notes"));
 
         if (action.isSubmitted()){
+            holder.submitText.setText("Submitted!");
+            holder.submitImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.submit_checked_grey));
+            holder.submitText.setTextColor(context.getResources().getColor(android.R.color.tertiary_text_dark));
+
             //holder.submittedOverlay.setVisibility(View.VISIBLE);
             //holder.submittedOverlay.setAlpha(1.0f);
         }
@@ -119,6 +131,7 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
         protected TextView timeSince;
         protected TextView hours;
         protected TextView notesCount;
+        protected TextView hoursType;
         //protected RelativeLayout submittedOverlay;
 
         protected TextView submitText;
@@ -127,18 +140,19 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
 
         public ActionViewHolder(View v) {
             super(v);
-            workOrderId = (TextView) v.findViewById(R.id.action_work_order_id);
+            //workOrderId = (TextView) v.findViewById(R.id.action_work_order_id);
             actionTaken = (TextView) v.findViewById(R.id.action_taken);
             oldStatus = (TextView) v.findViewById(R.id.action_oldStatus);
             newStatus = (TextView) v.findViewById(R.id.action_newStatus);
             actionChangedArrow = (ImageView) v.findViewById(R.id.action_changed_arrow);
             timeSince = (TextView) v.findViewById(R.id.action_timeSince);
             hours = (TextView) v.findViewById(R.id.action_hours);
-            notesCount = (TextView) v.findViewById(R.id.action_notes_count);
+            notesCount = (TextView) v.findViewById(R.id.action_note);
             //submittedOverlay = (RelativeLayout) v.findViewById(R.id.action_submitted_overlay);
 
             submitText = (TextView) v.findViewById(R.id.submit_text);
             submitImage = (ImageView) v.findViewById(R.id.submit_image);
+            hoursType = (TextView) v.findViewById(R.id.hours_type);
         }
     }
 

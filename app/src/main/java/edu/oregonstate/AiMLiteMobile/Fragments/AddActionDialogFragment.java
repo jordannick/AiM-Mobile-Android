@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +23,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,7 +30,6 @@ import edu.oregonstate.AiMLiteMobile.Activities.ActionQueueListActivity;
 import edu.oregonstate.AiMLiteMobile.Helpers.InputFilterMinMax;
 import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
-import edu.oregonstate.AiMLiteMobile.Models.Note;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.R;
 
@@ -41,6 +40,10 @@ public class AddActionDialogFragment extends DialogFragment {
     private WorkOrder workOrder;
     private Action actionToEdit;
     private double hoursWorked;
+
+    private static final double MIN_HOURS = 0;
+    private static final double MAX_HOURS = 24;
+    private static final double INCR_HOURS = 0.25;
 
     @Bind(R.id.layout_action_add)
     ScrollView dialogScrollView;
@@ -84,7 +87,7 @@ public class AddActionDialogFragment extends DialogFragment {
             actionToEdit = (Action) getArguments().getSerializable("ActionToEdit");
             hoursWorked = actionToEdit.getHours();
             dialogTitle.setText("Edit Entry");
-        } else if (inViewMode()){
+        } else if (inViewMode()) {
             actionToEdit = (Action) getArguments().getSerializable("ActionToEdit");
             hoursWorked = actionToEdit.getHours();
             dialogTitle.setText("View Submitted Entry");
@@ -110,7 +113,8 @@ public class AddActionDialogFragment extends DialogFragment {
         populateViews();
         setClickListeners(actionDialog);
 
-        if (inViewMode()){
+        // Make everything non-interactive for view only
+        if (inViewMode()) {
             buttonMinusHours.setVisibility(View.INVISIBLE);
             buttonAddHours.setVisibility(View.INVISIBLE);
             buttonConfirm.setVisibility(View.GONE);
@@ -131,21 +135,20 @@ public class AddActionDialogFragment extends DialogFragment {
         spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_custom);
         timeTypeSpinner.setAdapter(spinnerArrayAdapter);
 
-        // Restrict input in hours worked box
+        // Restrict input decimals in hours worked box
         hoursEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         hoursEditText.setFilters(new InputFilter[]{new InputFilterMinMax(4, 2)});
         hoursEditText.setGravity(Gravity.CENTER);
 
-        // Populate inputs
+        // Populate fields
         if (inEditMode() || inViewMode()) {
             if (actionToEdit != null) {
                 hoursEditText.setText(String.valueOf(actionToEdit.getHours()));
                 timeTypeSpinner.setSelection(((ArrayAdapter) timeTypeSpinner.getAdapter()).getPosition(actionToEdit.getTimeType()));
                 actionSpinner.setSelection(((ArrayAdapter) actionSpinner.getAdapter()).getPosition(actionToEdit.getActionTaken()));
                 statusSpinner.setSelection(((ArrayAdapter) statusSpinner.getAdapter()).getPosition(actionToEdit.getUpdatedStatus()));
-                if (actionToEdit.getNotes().size() > 0) {
-                    noteEditText.setText(actionToEdit.getNotes().get(0).getNote());
-                }
+                noteEditText.setText(actionToEdit.getNote());
+
             }
         } else {
             //TODO hardcoded string here may change
@@ -172,66 +175,85 @@ public class AddActionDialogFragment extends DialogFragment {
         buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getActivity().getLocalClassName().equals("Activities.DetailActivity")) { // Fragment appeared from Details
-                    if (isInputValid()) {
-                        // Create the action and start Action Queue activity
-                        currentUser.addAction(createAction(actionSpinner.getSelectedItem().toString(), statusSpinner.getSelectedItem().toString(), hoursEditText.getText().toString(), timeTypeSpinner.getSelectedItem().toString(), noteEditText.getText().toString()));
-                        Intent intent = new Intent(getActivity(), ActionQueueListActivity.class);
-                        getActivity().getSupportFragmentManager().popBackStack();
-                        getActivity().finish();
-                        startActivity(intent);
-                    } else {
-                        // "Required" text appears for specific fields
-                        if (actionSpinner.getSelectedItemPosition() == 0)
-                            actionRequired.setVisibility(View.VISIBLE);
-                        if (hoursWorked <= 0) hoursRequired.setVisibility(View.VISIBLE);
-                    }
-                } else if (getActivity().getLocalClassName().equals("Activities.ActionQueueListActivity")) { // Fragment appeared from Action Queue
-                    if (inEditMode() && isInputValid()) {
-                        for (Action action : currentUser.getActions()) {
-                            if (actionToEdit.getActionId() == action.getActionId()) {
-                                // Save the new values
-                                actionToEdit = createAction(actionSpinner.getSelectedItem().toString(), statusSpinner.getSelectedItem().toString(), hoursEditText.getText().toString(), timeTypeSpinner.getSelectedItem().toString(), noteEditText.getText().toString());
 
-                                action.replaceValues(
-                                        actionToEdit.getActionTaken(),
-                                        actionToEdit.getUpdatedStatus(),
-                                        actionToEdit.getHours(),
-                                        actionToEdit.getTimeType(),
-                                        actionToEdit.getNotes());
+                if (getActivity().getLocalClassName().equals("Activities.DetailActivity") && isInputValid()) { // Fragment was started from Work Order Details
+
+                    // Create the action and start Action Queue activity
+
+                    currentUser.addAction(createAction(
+                            actionSpinner.getSelectedItem().toString(),
+                            statusSpinner.getSelectedItem().toString(),
+                            hoursEditText.getText().toString(),
+                            timeTypeSpinner.getSelectedItem().toString(),
+                            noteEditText.getText().toString()));
+
+                    Intent intent = new Intent(getActivity(), ActionQueueListActivity.class);
+                    getActivity().finish();
+                    startActivity(intent);
+
+                } else if (getActivity().getLocalClassName().equals("Activities.ActionQueueListActivity")) { // Fragment was started from Action Queue
+
+                    if (isInputValid()) {
+                        if (inEditMode()) { // Fragment was started from action list item
+
+                            // Find matching stored action; replace it with a new action with updated values
+
+                            for (Action action : currentUser.getActions()) {
+                                if (actionToEdit.getActionId() == action.getActionId()) {
+
+                                    actionToEdit = createAction(
+                                            actionSpinner.getSelectedItem().toString(),
+                                            statusSpinner.getSelectedItem().toString(),
+                                            hoursEditText.getText().toString(),
+                                            timeTypeSpinner.getSelectedItem().toString(),
+                                            noteEditText.getText().toString());
+
+                                    action.replaceValues(
+                                            actionToEdit.getActionTaken(),
+                                            actionToEdit.getUpdatedStatus(),
+                                            actionToEdit.getHours(),
+                                            actionToEdit.getTimeType(),
+                                            actionToEdit.getNote());
+                                }
                             }
 
-                            Log.d(TAG, "actionToEdit = "+actionToEdit+" ; action replaced = "+action);
+                        } else { // Fragment was started from "Recently Completed" work order
+
+                            currentUser.addAction(createAction(
+                                    actionSpinner.getSelectedItem().toString(),
+                                    statusSpinner.getSelectedItem().toString(),
+                                    hoursEditText.getText().toString(),
+                                    timeTypeSpinner.getSelectedItem().toString(),
+                                    noteEditText.getText().toString()));
+
                         }
-                        getActivity().getSupportFragmentManager().popBackStack();
+
                         ((ActionQueueListActivity) getActivity()).refreshActions();
                         actionDialog.dismiss();
-                    } else {
-                        Log.d(TAG, "clicked. from actionqueuelistactivty");
-                        if (isInputValid()) {
-                            Log.d(TAG, "input is valid.");
-                            currentUser.addAction(createAction(actionSpinner.getSelectedItem().toString(), statusSpinner.getSelectedItem().toString(), hoursEditText.getText().toString(), timeTypeSpinner.getSelectedItem().toString(), noteEditText.getText().toString()));
-                            getActivity().getSupportFragmentManager().popBackStack();
-                            ((ActionQueueListActivity) getActivity()).refreshActions();
-                            actionDialog.dismiss();
-                        }
+
                     }
-
-
-                    //actionDialog.dismiss();
-                } else {
-                    Log.e(TAG, "Using dialog in unsupported activity");
                 }
             }
         });
 
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
         buttonAddHours.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hoursWorked += 0.25;
-                if (hoursWorked >= 24) {
-                    hoursWorked = 24;
+
+                imm.hideSoftInputFromWindow(hoursEditText.getWindowToken(), 0);
+
+                try {
+                    hoursWorked = Double.valueOf(hoursEditText.getText().toString());
+                } catch (Exception e) {
+                    Log.d(TAG, e.toString());
+                    hoursWorked = 0;
                 }
+
+                hoursWorked = Math.round(hoursWorked * 4) / 4f; // Round to nearest quarter
+                hoursWorked += INCR_HOURS;
+                if (hoursWorked >= MAX_HOURS) hoursWorked = MAX_HOURS; // Don't allow too many hours
                 hoursEditText.setText(String.valueOf(hoursWorked));
             }
         });
@@ -239,17 +261,26 @@ public class AddActionDialogFragment extends DialogFragment {
         buttonMinusHours.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hoursWorked -= 0.25;
-                if (hoursWorked < 0) { // Don't allow negative hours
+
+                imm.hideSoftInputFromWindow(hoursEditText.getWindowToken(), 0);
+
+                try {
+                    hoursWorked = Double.valueOf(hoursEditText.getText().toString());
+                } catch (Exception e) {
+                    Log.d(TAG, e.toString());
                     hoursWorked = 0;
                 }
+
+                hoursWorked = Math.round(hoursWorked * 4) / 4f; // Round to nearest quarter
+                hoursWorked -= INCR_HOURS;
+                if (hoursWorked < MIN_HOURS) hoursWorked = MIN_HOURS; // Don't allow negative hours
                 hoursEditText.setText(String.valueOf(hoursWorked));
             }
         });
 
     }
 
-    private Boolean inViewMode(){
+    private Boolean inViewMode() {
         if (getArguments().getBoolean("ViewMode", false)) {
             return true;
         }
@@ -263,24 +294,46 @@ public class AddActionDialogFragment extends DialogFragment {
         return false;
     }
 
+    // Confirm all required fields are filled or within bounds, and give feedback to user
     private Boolean isInputValid() {
-        return (actionSpinner.getSelectedItemPosition() != 0 && hoursWorked > 0);
+
+        boolean isValid = true;
+        actionRequired.setVisibility(View.GONE);
+        hoursRequired.setVisibility(View.GONE);
+        hoursRequired.setText("*Required");
+
+        try {
+            hoursWorked = Double.valueOf(hoursEditText.getText().toString());
+        } catch (Exception e) {
+            Log.d(TAG, e.toString());
+            hoursWorked = 0;
+        }
+
+        if (actionSpinner.getSelectedItemPosition() == 0) {
+            actionRequired.setVisibility(View.VISIBLE);
+            isValid = false;
+        }
+        if (hoursWorked <= MIN_HOURS) {
+            hoursRequired.setVisibility(View.VISIBLE);
+            isValid = false;
+        }
+        if (hoursWorked > MAX_HOURS) {
+            hoursRequired.setVisibility(View.VISIBLE);
+            hoursRequired.setText("Too many hours");
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     private Action createAction(String actionTaken, String status, String hours, String timeType, String noteString) {
-        double hoursDouble = 0;
-        ArrayList<Note> notes = new ArrayList<>();
+        double hoursDouble = MIN_HOURS;
 
         if (!hours.isEmpty()) {
             hoursDouble = Double.parseDouble(hours);
         }
-        if (!noteString.isEmpty()) {
-            Note note = new Note(noteString, currentUser.getUsername(), new Date(System.currentTimeMillis()));
-            notes.add(note);
-        }
 
-        Action newAction = new Action(workOrder, actionTaken, status, hoursDouble, timeType, notes);
-        Log.d(TAG, "action created = "+newAction);
+        Action newAction = new Action(workOrder, actionTaken, status, hoursDouble, timeType, noteString);
         return newAction;
     }
 

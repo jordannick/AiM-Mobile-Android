@@ -17,9 +17,18 @@ public class Action implements Serializable {
     private String updatedStatus;
     private double hours;
     private ArrayList<Note> notes;
+    private String note;
     private Date dateStamp;
     private String timeType;
     private boolean submitted;
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
 
     public UUID getActionId() {
         return actionId;
@@ -90,21 +99,21 @@ public class Action implements Serializable {
     }
 
     // Used for editing an existing action object
-    public void replaceValues(String actionTakenString, String updatedStatus, double hours, String timeType, ArrayList<Note> notes) {
+    public void replaceValues(String actionTakenString, String updatedStatus, double hours, String timeType, String note) {
         this.actionTaken = actionTakenString;
         this.updatedStatus = updatedStatus;
         this.hours = hours;
-        this.notes = notes;
+        this.note = note;
         this.timeType = timeType;
     }
 
-    public Action(WorkOrder workOrder, String actionTakenString, String updatedStatus, double hours, String timeType, ArrayList<Note> notes) {
+    public Action(WorkOrder workOrder, String actionTakenString, String updatedStatus, double hours, String timeType, String note) {
         this.actionId = UUID.randomUUID();
         this.mWorkOrder = workOrder;
         this.actionTaken = actionTakenString;
         this.updatedStatus = updatedStatus;
         this.hours = hours;
-        this.notes = notes;
+        this.note = note;
         this.dateStamp = new Date(System.currentTimeMillis());
         this.submitted = false;
         this.timeType = timeType;
