@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.view.MenuCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,26 +16,27 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 
 import android.view.Gravity;
 
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Filter;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.NavigationAdapter;
+import edu.oregonstate.AiMLiteMobile.Fragments.CustomSearchView;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
@@ -51,18 +53,20 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class OverviewListActivity extends AppCompatActivity implements WorkOrderAdapter.Callbacks, NavigationAdapter.NavigationClickHandler {
+public class OverviewListActivity extends AppCompatActivity implements WorkOrderAdapter.Callbacks, NavigationAdapter.NavigationClickHandler, CustomSearchView.Callbacks {
     private static final String TAG = "AiM_OverviewListACT";
 
     private static CurrentUser currentUser;
     private static NotificationManager notificationManager;
     private static NavigationDrawer navigationDrawer;
     private Activity activity;
-    private Menu menu;
+    private MenuCompat menu;
+    private OverviewListActivity self = this;
 
     private LinearLayoutManager linearLayoutManager;
     private WorkOrderAdapter recAdapter;
     private SearchView searchView;
+    private MenuItem searchMenuItem;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -81,49 +85,68 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
     @Bind(R.id.overviewActivity_dimOverlay)
     LinearLayout dimOverlay;
 
+    @Bind(R.id.overview_activity_search_container)
+    FrameLayout searchViewContainer;
+
     @Bind(R.id.left_drawer_recycler)
     RecyclerView recyclerViewDrawer;
     @Bind(R.id.right_drawer)
     RecyclerView recyclerViewDrawerNotification;
     @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
 
+    private CustomSearchView customSearchView;
 
     /*INTERFACE*/
     @Override
     public void handleNavigationClick(int position) {
         Log.d(TAG, "HANDLE CLICK LISTENED : " + position);
         switch (position){
-            case 1: //Time Log
+            case 1: //Search
                 drawerLayout.closeDrawer(Gravity.LEFT);
-                beginActionQueueActivity();
+                //searchMenuItem.expandActionView();
+                enableSearchView();
+                customSearchView.requestFocus();
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                 break;
-            case 2: //Notices
+            case 2: //Sort
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 notificationManager.openDrawer(drawerLayout);
                 break;
-            case 3: //Search
-                drawerLayout.closeDrawer(Gravity.LEFT);
-                searchView.setIconified(true);
-
-                //searchView.callOnClick();
-                break;
-            case 4: //Refresh
+            case 3: //Refresh
                 currentUser.setLastUpdated(0L);
                 requestLastUpdated(true);
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 break;
-            case 5: //Settings
+            case 4: //Settings
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 beginSettingsActivity();
                 //Todo: create settings activity/dialog
                 break;
-            case 6: //Log Out
+            case 5: //Log Out
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 currentUser.logoutUser(this);
                 break;
         }
+    }
+
+    @Override
+    public void onTextChangedFilter(String newText, final TextView countText) {
+        recAdapter.getFilter().filter(newText);
+        recAdapter.getFilter().filter(newText, new Filter.FilterListener() {
+            @Override
+            public void onFilterComplete(int count) {
+                countText.setText(String.valueOf(recAdapter.getItemCount()-recAdapter.getNumSections()));
+            }
+        });
 
 
+    }
+
+    private void enableSearchView(){
+        if(searchViewContainer.getChildCount() == 0) {
+            customSearchView = new CustomSearchView(this, R.color.colorPrimaryDark, searchViewContainer, currentUser.getWorkOrders().size());
+            customSearchView.attachView();
+        }
     }
 
     @Override
@@ -151,7 +174,7 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
         }else{
             Log.d(TAG, "Extra Login false");
         }
-        if(currentUser.isOfflineMode()){
+        if(getIntent().getBooleanExtra(LoginActivity.EXTRA_OFFLINE, false)){
             setupOfflineMode();
         }
     }
@@ -170,18 +193,31 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
                 InputMethodManager imm = (InputMethodManager) getSystemService(
                         Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
             }
         });
+
+
     }
+
 
     private void setupOfflineMode(){
 
+        currentUser.loadSavedWorkOrders(recAdapter);
     }
 
     @Override
     protected void onResume() {
-        invalidateOptionsMenu();
         super.onResume();
+        invalidateOptionsMenu();
+        Log.d(TAG, "onResume");
+        if(currentUser.isRefreshIntervalExceeded()){
+            Log.d(TAG, "RefreshInterval exceeded");
+            requestLastUpdated(true);
+        }else{
+            Log.d(TAG, "RefreshInterval NOT exceeded. " + currentUser.getLastRefreshed());
+        }
+
     }
 
     @Override
@@ -197,14 +233,9 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
     @Override
     protected void onStop() {
         super.onStop();
-        resetSearch();
-    }
-
-    private void resetSearch(){
-        searchView.setBackgroundResource(R.color.searchView_default);
-        assert getSupportActionBar() != null;
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.searchView_default)));
-        sectionShortcutBar.setVisibility(View.VISIBLE);
+        if(customSearchView != null){
+            customSearchView.close();
+        }
         recAdapter.flushFilter();
     }
 
@@ -217,52 +248,12 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_overview_list, menu);
-        this.menu = menu;
 
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.search_button).getActionView();
-        //MenuItemCompat searchItem = (MenuItemCompat)menu.findItem(R.id.search_button);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(true);
-        searchView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-
-
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
+        MenuItem menu_timeLog = menu.findItem(R.id.menu_time_log);
+        menu_timeLog.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
-            public void onClick(View v) {
-                assert getSupportActionBar() != null;
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.searchView_active)));
-                searchView.setBackgroundResource(R.color.searchView_active);
-                sectionShortcutBar.setVisibility(View.GONE);
-            }
-        });
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                assert getSupportActionBar() != null;
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.searchView_default)));
-                searchView.setBackgroundResource(R.color.searchView_default);
-                sectionShortcutBar.setVisibility(View.VISIBLE);
-                return false;
-            }
-        });
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (TextUtils.isEmpty(newText)) {
-                    //sectionShortcutBar.setVisibility(View.VISIBLE);
-                    recAdapter.getFilter().filter("");
-                } else { //Start filtering the RecycleView when chars are entered
-                    sectionShortcutBar.setVisibility(View.GONE);
-                    recAdapter.getFilter().filter(newText.toString());
-                }
+            public boolean onMenuItemClick(MenuItem item) {
+                beginActionQueueActivity();
                 return true;
             }
         });
@@ -352,12 +343,16 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
                         requestWorkOrders(displayConfirmation);
                     }else{
                         //Update unneeded, wait for expiration
-                        Log.d(TAG, "requestLastUpdated ::: No Need for Update");
+                        Log.d(TAG, "requestLastUpdated ::: Data hasn't expired. No Update");
+                        currentUser.setLastRefreshed(System.currentTimeMillis());
                     }
                 }else{
                     if(currentUser.isUpdateNeeded(responseLastUpdated.getDate().getTime())){ //If newer time was retrieved, update.
                         Log.d(TAG, "requestLastUpdated ::: newerTime, update");
                         requestWorkOrders(displayConfirmation);
+                    }else{
+                        Log.d(TAG, "requestLastUpdated ::: same time, no update needed");
+                        currentUser.setLastRefreshed(System.currentTimeMillis());
                     }
                 }
             }
@@ -410,7 +405,7 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
             @Override
             public void success(ResponseNotices responseNotices, Response response) {
                 notificationManager.refreshNotices(responseNotices.getNotices());
-                if (menu != null) notificationManager.updateNoticeCount(menu);
+                //if (menu != null) notificationManager.updateNoticeCount(menu);
             }
             @Override
             public void failure(RetrofitError error) {

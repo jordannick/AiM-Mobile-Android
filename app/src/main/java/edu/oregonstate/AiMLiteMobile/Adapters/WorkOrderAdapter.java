@@ -35,6 +35,8 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.Work
     public Callbacks mCallbacks;
     public WorkOrderListWrapper wrapper;
 
+    private int numSections = 4;
+
     public interface Callbacks {
         void onWorkOrderSelected(WorkOrder wo);
     }
@@ -61,23 +63,10 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.Work
             view = LayoutInflater.
                     from(parent.getContext()).
                     inflate(R.layout.list_item_workorder, parent, false);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Log.d(TAG, "normal item height: " + v.getHeight());
-                }
-            });
-
         } else {
             view = LayoutInflater.
                     from(parent.getContext()).
                     inflate(R.layout.list_item_section, parent, false);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Log.d(TAG, "section item height: " + v.getHeight());
-                }
-            });
         }
 
 
@@ -181,6 +170,10 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.Work
         notifyDataSetChanged();
 
         if (workOrderListItemsOrig != null) workOrderListItemsOrig.clear();
+    }
+
+    public int getNumSections(){
+        return  numSections;
     }
 
     @Override

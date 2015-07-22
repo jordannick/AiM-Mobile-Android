@@ -53,6 +53,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public static final String EXTRA_LOGIN = "login";
     public static final String EXTRA_OFFLINE = "offline";
+
+    private AppCompatActivity activity = this;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +87,8 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         loginHandler(autologin);
+
+        InternalStorageWriter.logSavedFiles(this);
     }
 
 
@@ -120,7 +124,12 @@ public class LoginActivity extends AppCompatActivity {
                 if(mPassword.toLowerCase().equals("offline")){  //Offline mode enabled
                     boolean hasSavedData = InternalStorageWriter.hasSavedData(getApplicationContext(), mUsername);
                     Log.d(TAG, "" + mUsername + " saved data: " + hasSavedData);
-                    offlineLogin();
+                    if(hasSavedData){
+                        offlineLogin();
+                    }else{
+                        SnackbarManager.show(Snackbar.with(activity).text("No Offline Data").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
+                    }
+
                 }else{
                     //Check for empty fields
                     if (!mUsername.matches("") && !mPassword.matches("")) {
@@ -156,7 +165,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptLogin() {
-        final AppCompatActivity activity = this;
         setEnableFormFields(false);
         ApiManager.getService().loginUser(mUsername, mPassword, new Callback<ResponseLogin>() {
             @Override

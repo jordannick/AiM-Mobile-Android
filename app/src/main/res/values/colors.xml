@@ -25,6 +25,7 @@
     <!-- Material Theme -->
     <color name="colorPrimary">#FF9800</color>
     <color name="colorPrimaryDark">#F57C00</color><!--F57C00-->
+    <color name="colorPrimaryDark_transparent">#80F57C00</color><!--F57C00-->
     <color name="colorAccent">#FF5722</color>
     <color name="colorPrimaryLight">#FFE0B2</color>
     <color name="colorPrimaryText">#212121</color>
@@ -42,6 +43,7 @@
     <!--Search View-->
     <color name="searchView_default">#F57C00</color>
     <color name="searchView_active">#2196F3</color>
+    <color name="searchView_hint">#80ffffff</color>
 
 
 

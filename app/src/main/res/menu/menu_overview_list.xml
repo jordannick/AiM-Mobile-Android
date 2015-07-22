@@ -1,24 +1,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".OverviewListActivity">
+    tools:context=".OverviewListActivity"
 
-    <item android:id="@+id/search_button"
-        android:title="TESTSEARCH"
-        android:icon="@android:drawable/ic_menu_search"
+    >
+
+    <item android:id="@+id/menu_time_log"
+        android:title="Time Log"
+        android:icon="@drawable/clock"
         app:showAsAction="always"
-        app:actionViewClass="android.support.v7.widget.SearchView"
         
         />
 
     <item android:id="@+id/menu_notification"
         app:showAsAction="always"
-        android:title="Notifications"
+        android:title="Notices"
         app:actionLayout="@layout/notices_menu_layout"/>
 
 
 
+<!--    <item android:id="@+id/search_button"
+        android:title="Search"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always"
+        app:actionViewClass="android.support.v7.widget.SearchView"
 
+        />-->
 
 
 

@@ -36,6 +36,9 @@ public class CurrentUser {
     private ArrayList<Notice> notices;
     private ArrayList<WorkOrder> recentlyViewedWorkOrders = new ArrayList<>();//Recently viewed workOrders to display in timeLog
 
+    private int forceRefreshMin = 1;
+    private int forceRefreshInterval = 1000 * 60 * forceRefreshMin;
+
     private InternalStorageWriter internalStorageWriter;
     private boolean offlineMode = false;
 
@@ -66,6 +69,12 @@ public class CurrentUser {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("autologin", false);
         return intent;
+    }
+
+
+    public boolean isRefreshIntervalExceeded(){
+        if(lastRefreshed == null) return false;
+        return (System.currentTimeMillis() > lastRefreshed + forceRefreshInterval);
     }
 
     private void clearAll(){
@@ -143,9 +152,7 @@ public class CurrentUser {
     }
 
     public void setUsername(String username) {
-        if(this.username == null){
-            internalStorageWriter = new InternalStorageWriter(appContext, username);
-        }
+        internalStorageWriter = new InternalStorageWriter(appContext, username);
         this.username = username;
     }
 

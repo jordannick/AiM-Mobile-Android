@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/colorPrimaryDark"
+    android:padding="6dp">
+
+    <ImageButton
+        android:id="@+id/customSearchView_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:padding="8dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/material_clear" />
+
+    <EditText
+        android:id="@+id/customSearchView_editText"
+        style="@style/searchView_removeHighlight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="6dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:singleLine="true"
+        android:layout_toLeftOf="@id/customSearchView_button"
+        android:layout_toStartOf="@id/customSearchView_button"
+        android:textColor="@color/colorPrimaryDark"
+        android:textColorHint="@color/colorPrimaryDark_transparent"
+        android:background="@color/colorWhite"
+        android:inputType="text"
+        android:imeOptions="actionDone"/>
+
+    <TextView
+        android:id="@+id/customSearchView_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="null"
+        android:textSize="16dp"
+        android:layout_toLeftOf="@id/customSearchView_button"
+        android:layout_centerVertical="true"
+        android:textColor="@color/colorPrimaryDark_transparent"
+        android:layout_marginRight="12dp"
+        />
+
+</RelativeLayout>

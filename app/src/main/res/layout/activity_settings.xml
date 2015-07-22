@@ -37,13 +37,28 @@
         android:textColor="@color/settings_feedback_button_text"
         android:background="@color/material_teal"
         android:padding="8dp"/>
+
+    <Button
+        android:id="@+id/settings_files_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Saved Files"
+        android:textStyle="bold"
+        android:textSize="26dp"
+        android:layout_margin="24dp"
+        android:textColor="@color/colorWhite"
+        android:background="@color/material_deep_purple"
+        android:layout_centerHorizontal="true"
+        android:padding="8dp"
+        android:layout_above="@id/settings_feedback_button"/>
+
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/settings_chart"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_margin="24dp"
-        android:layout_above="@id/settings_feedback_button"/>
+        android:layout_above="@id/settings_files_button"/>
 
 
 

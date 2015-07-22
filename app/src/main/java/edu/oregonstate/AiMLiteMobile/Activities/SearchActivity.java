@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 /**
  * Created by jordan_n on 6/30/2015.
  */
-public class SearchResultsActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
     public static final String TAG = "AiM_SearchResultsActivity";
 
 
@@ -19,11 +19,6 @@ public class SearchResultsActivity extends AppCompatActivity {
         handleIntent(getIntent());
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-
-        handleIntent(intent);
-    }
 
     private void handleIntent(Intent intent) {
 

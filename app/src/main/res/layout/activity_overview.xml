@@ -32,55 +32,68 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-            <LinearLayout
-                android:id="@+id/overview_activity_shortcuts"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_alignParentBottom="true"
-                android:background="@color/colorPrimaryDark"
-                android:gravity="center">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/overview_activity_section_icon0"
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_section_icon"
-                    android:gravity="center"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="22dp" />
 
-                <TextView
-                    android:id="@+id/overview_activity_section_icon1"
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_section_icon"
-                    android:gravity="center"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="22dp" />
 
-                <TextView
-                    android:id="@+id/overview_activity_section_icon2"
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_section_icon"
-                    android:gravity="center"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="22dp" />
 
-                <TextView
-                    android:id="@+id/overview_activity_section_icon3"
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_section_icon"
-                    android:gravity="center"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="22dp" />
-            </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/overview_activity_shortcuts"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:layout_alignParentBottom="true"
+                        android:orientation="horizontal"
+                        android:background="@color/colorPrimaryDark"
+                        android:gravity="center">
 
+                        <TextView
+                            android:id="@+id/overview_activity_section_icon0"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/selector_section_icon"
+                            android:gravity="center"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="22dp" />
+
+                        <TextView
+                            android:id="@+id/overview_activity_section_icon1"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/selector_section_icon"
+                            android:gravity="center"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="22dp" />
+
+                        <TextView
+                            android:id="@+id/overview_activity_section_icon2"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/selector_section_icon"
+                            android:gravity="center"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="22dp" />
+
+                        <TextView
+                            android:id="@+id/overview_activity_section_icon3"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/selector_section_icon"
+                            android:gravity="center"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="22dp" />
+                    </LinearLayout>
+                    <FrameLayout
+                        android:id="@+id/overview_activity_search_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
         </android.support.design.widget.AppBarLayout>
 
         <LinearLayout

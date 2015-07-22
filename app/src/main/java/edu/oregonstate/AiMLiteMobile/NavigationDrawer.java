@@ -39,7 +39,13 @@ public class NavigationDrawer {
 
 
     private void initNavigationDrawer(){
+
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(delegate, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                super.onDrawerStateChanged(newState);
+            }
+
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
@@ -56,6 +62,7 @@ public class NavigationDrawer {
 
 
 
+
         drawerLayout.setDrawerListener(drawerToggle);
         ActionBar actionBar = delegate.getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white);
@@ -66,15 +73,13 @@ public class NavigationDrawer {
         LinearLayoutManager linearLayoutManagerDrawer = new LinearLayoutManager(delegate);
         RecyclerView recyclerViewDrawer = (RecyclerView)delegate.findViewById(R.id.left_drawer_recycler);
         recyclerViewDrawer.setLayoutManager(linearLayoutManagerDrawer);
-        String[] navTitles = new String[3];
-        int[] icons = new int[3];
+        String[] navTitles = new String[2];
+        int[] icons = new int[2];
 
-        navTitles[0] = "Time Log";
-        icons[0] = R.string.icon_timeLog;
-        navTitles[1] = "Notices";
-        icons[1] = R.string.icon_notices;
-        navTitles[2] = "Search";
-        icons[2] = R.string.icon_search;
+        navTitles[0] = "Search";
+        icons[0] = R.string.icon_search;
+        navTitles[1] = "Sort";
+        icons[1] = R.string.icon_sort;
 /*        navTitles[2] = "Settings";
         icons[2] = R.string.icon_settings;
         navTitles[3] = "Log out";

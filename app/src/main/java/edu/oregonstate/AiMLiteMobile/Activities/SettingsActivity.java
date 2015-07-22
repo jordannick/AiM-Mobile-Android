@@ -54,12 +54,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Fragments.AddActionDialogFragment;
 import edu.oregonstate.AiMLiteMobile.Fragments.BarChartDialogFragment;
+import edu.oregonstate.AiMLiteMobile.Fragments.ViewSavedFilesDialog;
 import edu.oregonstate.AiMLiteMobile.R;
+import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Action1;
 
 /**
  * Created by sellersk on 7/14/2015.
  */
 public class SettingsActivity extends AppCompatActivity {
+    public static final String TAG = "SettingsActivity";
 
     private boolean emailFieldVisible = false;
 
@@ -72,6 +77,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Bind(R.id.settings_toolbar) Toolbar toolbar;
     @Bind(R.id.settings_scene_root) RelativeLayout sceneRoot;
     @Bind(R.id.settings_feedback_button) Button feedbackButton;
+    @Bind(R.id.settings_files_button) Button filesButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +86,7 @@ public class SettingsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         self = this;
+        assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -97,6 +104,20 @@ public class SettingsActivity extends AppCompatActivity {
                 dialogFragment.show(fragmentManager, "BarChart");
             }
         });
+
+        filesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewSavedFilesDialog filesDialog = new ViewSavedFilesDialog();
+                filesDialog.show(fragmentManager, "SavedFiles");
+            }
+        });
+
+
+
+
+
+
 
     }
 
