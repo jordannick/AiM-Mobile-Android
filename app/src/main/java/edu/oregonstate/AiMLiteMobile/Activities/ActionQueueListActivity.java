@@ -1,6 +1,5 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
-import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -14,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -26,6 +24,8 @@ import android.widget.TextView;
 
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
+
+import org.w3c.dom.Text;
 
 import java.util.Date;
 
@@ -58,7 +58,7 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
     Toolbar toolbar;
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
-    @Bind(R.id.actionList_recentBarIconR)
+    /*@Bind(R.id.actionList_recentBarIconR)
     TextView recentBarR;
     @Bind(R.id.actionList_recentBarIconL)
     TextView recentBarL;
@@ -69,13 +69,17 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
     @Bind(R.id.actionList_recentlyViewedLayout)
     LinearLayout recentlyViewedLayout;
     @Bind(R.id.actionList_recentlyViewedBarLayout)
-    RelativeLayout recentlyViewedBarLayout;
+    RelativeLayout recentlyViewedBarLayout;*/
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     @Bind(R.id.right_drawer)
     RecyclerView recyclerViewDrawerNotification;
     @Bind(R.id.button_submitAll)
-    Button submitAllActions;
+    RelativeLayout submitAllActions;
+    @Bind(R.id.button_submitAll_icon)
+    TextView submitAllIcon;
+    @Bind(R.id.button_recent_icon)
+    TextView recentlyViewedIcon;
 
 
     @Override
@@ -107,39 +111,37 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
 
     }
 
-    private void submittingItem(int selectedItemPosition){
+    private void submittingItem(int selectedItemPosition) {
         RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(selectedItemPosition);
-
-        ((ImageView)viewHolder.itemView.findViewById(R.id.submit_image)).setVisibility(View.GONE);
-
-        ((ProgressBar)viewHolder.itemView.findViewById(R.id.submit_progressBar)).setVisibility(View.VISIBLE);
-
-        ((TextView)viewHolder.itemView.findViewById(R.id.submit_text)).setText("Submitting...");
-
+        ((ImageView) viewHolder.itemView.findViewById(R.id.submit_image)).setVisibility(View.GONE);
+        ((ProgressBar) viewHolder.itemView.findViewById(R.id.submit_progressBar)).setVisibility(View.VISIBLE);
+        ((TextView) viewHolder.itemView.findViewById(R.id.submit_text)).setText("Submitting...");
     }
 
-    private void dimItem(int selectedItemPosition) {
+    private void completedItem(int selectedItemPosition) {
         RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(selectedItemPosition);
-
-        ((ProgressBar)viewHolder.itemView.findViewById(R.id.submit_progressBar)).setVisibility(View.GONE);
-
-        ((ImageView)viewHolder.itemView.findViewById(R.id.submit_image)).setVisibility(View.VISIBLE);
-        ((ImageView)viewHolder.itemView.findViewById(R.id.submit_image)).setImageDrawable(ContextCompat.getDrawable(this, R.drawable.submit_checked_grey))
-        ;
-
+        ((ProgressBar) viewHolder.itemView.findViewById(R.id.submit_progressBar)).setVisibility(View.GONE);
+        ((ImageView) viewHolder.itemView.findViewById(R.id.submit_image)).setVisibility(View.VISIBLE);
+        ((ImageView) viewHolder.itemView.findViewById(R.id.submit_image)).setImageDrawable(ContextCompat.getDrawable(this, R.drawable.submit_checked_grey));
         ((TextView) viewHolder.itemView.findViewById(R.id.submit_text)).setText("Submitted!");
-        //((TextView)viewHolder.itemView.findViewById(R.id.submit_text)).setTextColor(getResources().getColor(R.color.OSU_white));
-
-        //viewHolder.itemView.findViewById(R.id.action_submitted_overlay).animate().alpha(1.0f).setDuration(1000);
+        ((TextView) viewHolder.itemView.findViewById(R.id.submit_text)).setTextColor(getResources().getColor(android.R.color.tertiary_text_dark));
     }
 
-    //TODO - on failure, need to restore submit icon and text
-    private void restoreItem(int selectedItemPosition) {
+    private void failedItem(int selectedItemPosition) {
+        //TODO - on failure, need to restore submit icon and text
         RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(selectedItemPosition);
     }
 
     private void populateViews() {
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/FontAwesome.otf");
+
+        recentlyViewedIcon.setText(getString(R.string.icon_recent));
+        recentlyViewedIcon.setTypeface(tf);
+
+        submitAllIcon.setText(getString(R.string.icon_submit));
+        submitAllIcon.setTypeface(tf);
+
+/*
         recentBarR.setTypeface(tf);
         recentBarL.setTypeface(tf);
         recentBarR2.setTypeface(tf);
@@ -152,7 +154,7 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
         for (int i = 0; i < currentUser.getRecentlyViewedWorkOrders().size(); i++) {
             WorkOrder workOrder = currentUser.getRecentlyViewedWorkOrders().get(i);
             recentlyViewedLayout.addView(createRecentRowView(workOrder));
-        }
+        }*/
 
     }
 
@@ -161,15 +163,14 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
         submitAllActions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Submit Clicked");
+                submitAllActions.setClickable(false);
                 syncActions();
             }
         });
 
-        recentlyViewedLayout.setOnClickListener(new View.OnClickListener() {
+      /*  recentlyViewedLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                toggleRecentlyViewed(false);
+            public void onClick(View v) { toggleRecentlyViewed(false);
             }
         });
 
@@ -183,15 +184,12 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
                     SnackbarManager.show(Snackbar.with(self).text("No Recently Viewed").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
                 }
             }
-        });
+        });*/
 
     }
 
-    public void refreshActions() {
-        actionAdapter.notifyDataSetChanged();
-    }
 
-    private View createRecentRowView(final WorkOrder workOrder) {
+   /* private View createRecentRowView(final WorkOrder workOrder) {
 
         LayoutInflater inflater = getLayoutInflater();
         View rowView = inflater.inflate(R.layout.list_item_recent, null);
@@ -205,7 +203,6 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "rowView wo: "+workOrder);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("WorkOrder", workOrder);
                 bundle.putString("Title", "New Action");
@@ -217,8 +214,6 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
     }
 
     private void toggleRecentlyViewed(boolean onlyHide) {
-        Log.d(TAG, "actions list = " + currentUser.getActions());
-
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_in);
         Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_out_bottom);
         if (recentlyViewedLayout.getVisibility() == View.VISIBLE) {
@@ -231,19 +226,23 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
             recentlyViewedBarLayout.startAnimation(slideDown);
         }
 
-    }
+    }*/
 
-    //Start the HTTP POSTs to submit actions from queue.
-    //Remove from queue upon successful POST
+    // Start the HTTP POST calls to submit actions from queue
     private void syncActions() {
+        int submitCount = 0;
         for (Action action : currentUser.getActions()) {
             if (!action.isSubmitted()) {
                 Log.d(TAG, "Submitting Action " + currentUser.getActions().indexOf(action) + "...");
                 submitAction(action);
             } else {
                 Log.d(TAG, "Action " + currentUser.getActions().indexOf(action) + ": already submitted");
+                submitCount++;
             }
         }
+        submitAllActions.setClickable(true);
+        if (submitCount >= currentUser.getActions().size())
+            SnackbarManager.show(Snackbar.with(self).text("No more actions to submit").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
     }
 
     private void submitAction(final Action action) {
@@ -251,23 +250,22 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
         Log.d(TAG, "submitAction timestamp = " + timeStamp);
 
         submittingItem(currentUser.getActions().indexOf(action));
+        action.setSubmitted(true);
 
-        if (action.getHours() > 0) {
-            ApiManager.getService().addTime(currentUser.getUsername(), String.valueOf(action.getHours()), action.getWorkOrder().getProposalPhase(), action.getTimeType(), timeStamp, currentUser.getToken(), new Callback<String>() {
-                @Override
-                public void success(String s, Response response) {
-                    Log.d(TAG, "Action addTime Success");
-                    action.setSubmitted(true);
-                    dimItem(currentUser.getActions().indexOf(action));
-                }
+        ApiManager.getService().addTime(currentUser.getUsername(), String.valueOf(action.getHours()), action.getWorkOrder().getProposalPhase(), action.getTimeType(), timeStamp, currentUser.getToken(), new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                Log.d(TAG, "Action addTime Success");
+                completedItem(currentUser.getActions().indexOf(action));
+            }
 
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.e(TAG, "Action addTime Fail: " + error.getMessage());
-                    restoreItem(currentUser.getActions().indexOf(action));
-                }
-            });
-        }
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e(TAG, "Action addTime Fail: " + error.getMessage());
+                failedItem(currentUser.getActions().indexOf(action));
+                action.setSubmitted(false);
+            }
+        });
 
         ApiManager.getService().addActionTaken(currentUser.getUsername(), action.getActionTaken(), action.getWorkOrder().getProposalPhase(), timeStamp, currentUser.getToken(), new Callback<String>() {
             @Override
@@ -281,8 +279,8 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
             }
         });
 
-        if (action.getNotes().size() > 0) {
-            ApiManager.getService().addNote(currentUser.getUsername(), action.getNotes().get(0).getNote(), action.getWorkOrder().getProposalPhase(), timeStamp, currentUser.getToken(), new Callback<String>() {
+        if (!action.getNote().equals("")) {
+            ApiManager.getService().addNote(currentUser.getUsername(), action.getNote(), action.getWorkOrder().getProposalPhase(), timeStamp, currentUser.getToken(), new Callback<String>() {
                 @Override
                 public void success(String s, Response response) {
                     Log.d(TAG, "Action addNote Success");
@@ -295,7 +293,7 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
             });
         }
 
-        if (!action.getUpdatedStatus().equals(action.getWorkOrder().getStatus())) {
+        if (!action.getUpdatedStatus().equals(action.getWorkOrder().getStatus())) { // Action status has changed from work order status
             ApiManager.getService().updateStatus(currentUser.getUsername(), action.getWorkOrder().getProposalPhase(), action.getUpdatedStatus(), timeStamp, currentUser.getToken(), new Callback<String>() {
                 @Override
                 public void success(String s, Response response) {
@@ -326,7 +324,6 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "MenuItem clicked! " + item);
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -362,12 +359,16 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
         Bundle bundle = new Bundle();
         bundle.putSerializable("WorkOrder", action.getWorkOrder());
         bundle.putString("Title", "Edit Action");
-        if (action.isSubmitted()){
+        if (action.isSubmitted()) {
             bundle.putBoolean("ViewMode", true);
         } else {
             bundle.putBoolean("EditMode", true);
         }
         bundle.putSerializable("ActionToEdit", action);
         DialogUtils.createAddActionDialog(this, bundle);
+    }
+
+    public void refreshActions() {
+        actionAdapter.notifyDataSetChanged();
     }
 }

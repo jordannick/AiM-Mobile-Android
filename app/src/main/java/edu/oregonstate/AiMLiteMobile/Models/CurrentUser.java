@@ -51,7 +51,9 @@ public class CurrentUser {
     }
 
     public static CurrentUser get(Context c){
+        Log.d(TAG, "CurrentUser Get "+ c);
         if (currentUser == null) {
+            Log.d(TAG, "NEW CurrentUser Get "+ c);
             currentUser = new CurrentUser(c);
         }
         return currentUser;

@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
  * Created by sellersk on 7/6/2015.
  */
 public class NavigationDrawer {
+    public static final String TAG = "NavigationDrawer";
 
     private AppCompatActivity delegate;
     private CurrentUser currentUser;
@@ -81,6 +83,8 @@ public class NavigationDrawer {
         icons[3] = R.string.icon_logout;*/
 
         iconTypeface = Typeface.createFromAsset(delegate.getApplicationContext().getAssets(), "fonts/FontAwesome.otf");
+        Log.d(TAG, "delegate = " +delegate);
+        Log.d(TAG, "currentUser = "+currentUser+ " ; username = "+ currentUser.getUsername());
         adapter = new NavigationAdapter(delegate, navTitles, icons, currentUser.getUsername().toUpperCase(), iconTypeface);
         recyclerViewDrawer.setAdapter(adapter);
 

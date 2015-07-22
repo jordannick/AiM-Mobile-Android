@@ -175,7 +175,7 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
     }
 
     private void setupOfflineMode(){
-
+        currentUser.loadSavedWorkOrders(recAdapter);
     }
 
     @Override
