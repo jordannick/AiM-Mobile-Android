@@ -91,6 +91,13 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         currentUser = CurrentUser.get(getApplicationContext());
+
+        // Cheese fix
+        if (currentUser.getUsername() == null){
+            currentUser.forceLogout(this);
+            return;
+        }
+
         workOrder = (WorkOrder)getIntent().getSerializableExtra(WorkOrder.WORK_ORDER_EXTRA);
         currentUser.addRecentlyViewedWorkOrder(workOrder);
 
@@ -225,16 +232,16 @@ public class DetailActivity extends AppCompatActivity {
 
         switch (workOrder.getStatus()){
 
-            case "ASSIGNED":
+            case Constants.STATUS_ASSIGNED:
                 statusIcon.setImageResource(R.drawable.status_assigned);
                 break;
-            case "WORK IN PROGRESS":
+            case Constants.STATUS_IN_PROGRESS:
                 statusIcon.setImageResource(R.drawable.status_work_in_progress);
                 break;
-            case "WORK COMPLETE":
+            case Constants.STATUS_COMPLETE:
                 statusIcon.setImageResource(R.drawable.status_work_complete);
                 break;
-            case "ON HOLD":
+            case Constants.STATUS_ON_HOLD:
                 statusIcon.setImageResource(R.drawable.status_on_hold);
                 break;
         }

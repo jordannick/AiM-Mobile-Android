@@ -71,6 +71,13 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         currentUser = CurrentUser.get(getApplicationContext());
+
+        // Cheese fix
+        if (currentUser.getUsername() == null){
+            currentUser.forceLogout(this);
+            return;
+        }
+
         notificationManager = NotificationManager.get(this, recyclerViewDrawerNotification);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);

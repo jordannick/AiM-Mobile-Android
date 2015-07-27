@@ -118,6 +118,16 @@ public class CurrentUser {
 
     }
 
+    public void forceLogout(Activity activity){
+        Intent intent = new Intent(activity, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("autologin", true);
+        clearAll();
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
     public ArrayList<WorkOrder> getWorkOrders(){
         return workOrders;
     }

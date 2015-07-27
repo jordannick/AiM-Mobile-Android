@@ -21,6 +21,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.TimeZone;
 
+import edu.oregonstate.AiMLiteMobile.Constants;
 import edu.oregonstate.AiMLiteMobile.Models.Note;
 import edu.oregonstate.AiMLiteMobile.Models.Notice;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
@@ -152,7 +153,25 @@ public class ApiManager {
                         wo.setCategory(obj.getString("category"));
                         wo.setPriority(obj.getString("pri_code"));
                         wo.setDateElements(obj.getString("ent_date"));
-                        wo.setStatus(obj.getString("status_code"));
+
+                        switch (obj.getString("status_code")){
+                            case "ASSIGNED":
+                                wo.setStatus(Constants.STATUS_ASSIGNED);
+                                break;
+                            case "WORK IN PROGRESS":
+                                wo.setStatus(Constants.STATUS_IN_PROGRESS);
+                                break;
+                            case "WORK COMPLETE":
+                                wo.setStatus(Constants.STATUS_COMPLETE);
+                                break;
+                            case "ON HOLD":
+                                wo.setStatus(Constants.STATUS_ON_HOLD);
+                            default:
+                                wo.setStatus(obj.getString("status_code"));
+                        }
+
+
+
                         wo.setContactName(obj.getString("contact"));
                         wo.setDepartment(obj.getString("department"));
                         wo.setProposalPhase(String.format("%s-%s", obj.getString("proposal"), obj.getString("sort_code")));

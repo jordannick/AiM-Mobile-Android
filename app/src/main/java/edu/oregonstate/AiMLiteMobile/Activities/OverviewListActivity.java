@@ -157,6 +157,20 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
 
         currentUser = CurrentUser.get(getApplicationContext());
 
+        /*
+        A quick cheese fix to get around the crashing if OverviewListActivity is destroyed and everything in CurrentUser is null.
+        Just goes back to login screen and starts over.
+        */
+        if (currentUser.getUsername() == null){
+            /*Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("autologin", true);
+            activity.startActivity(intent);
+            activity.finish();*/
+            currentUser.forceLogout(this);
+            return;
+        }
 
         notificationManager = NotificationManager.get(this, recyclerViewDrawerNotification);
         navigationDrawer = new NavigationDrawer(this);

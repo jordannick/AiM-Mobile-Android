@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Activities.ActionQueueListActivity;
+import edu.oregonstate.AiMLiteMobile.Constants;
 import edu.oregonstate.AiMLiteMobile.Helpers.InputFilterMinMax;
 import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
@@ -117,10 +118,16 @@ public class AddActionDialogFragment extends DialogFragment {
 
     private void populateViews() {
         // Populate the time types spinner from time types in work order
-        ArrayList<String> spinnerArray = workOrder.getTimeTypes();
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(), R.layout.simple_spinner_item_custom, spinnerArray);
-        spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_custom);
-        timeTypeSpinner.setAdapter(spinnerArrayAdapter);
+        ArrayList<String> timeTypesSpinnerArray = workOrder.getTimeTypes();
+        ArrayAdapter<String> timeTypesSpinnerArrayAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(), R.layout.simple_spinner_item_custom, timeTypesSpinnerArray);
+        timeTypesSpinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_custom);
+        timeTypeSpinner.setAdapter(timeTypesSpinnerArrayAdapter);
+
+        // Populate status spinner from statuses in constants
+        String[] statusSpinnerArray = {Constants.STATUS_ASSIGNED, Constants.STATUS_IN_PROGRESS, Constants.STATUS_COMPLETE};
+        ArrayAdapter<String> statusSpinnerArrayAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(), R.layout.simple_spinner_item_custom, statusSpinnerArray);
+        statusSpinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_custom);
+        statusSpinner.setAdapter(statusSpinnerArrayAdapter);
 
         // Restrict input decimals in hours worked box
         hoursEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -140,8 +147,8 @@ public class AddActionDialogFragment extends DialogFragment {
             }
         } else {
             //TODO hardcoded string here may change
-            if (spinnerArray.contains("REG - REGULAR TIME")) { // Default to regular time type
-                timeTypeSpinner.setSelection(spinnerArrayAdapter.getPosition("REG - REGULAR TIME"));
+            if (timeTypesSpinnerArray.contains("REG - REGULAR TIME")) { // Default to regular time type
+                timeTypeSpinner.setSelection(timeTypesSpinnerArrayAdapter.getPosition("REG - REGULAR TIME"));
             }
             statusSpinner.setSelection(((ArrayAdapter) statusSpinner.getAdapter()).getPosition(workOrder.getStatus()));
             Log.d(TAG, "status workorder: " + workOrder.getStatus());

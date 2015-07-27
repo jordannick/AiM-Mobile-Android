@@ -2,9 +2,9 @@
 <resources>
     <!-- Example arrays for testing -->
     <string-array name="statusItems">
-        <item>ASSIGNED</item>
-        <item>WORK IN PROGRESS</item>
-        <item>WORK COMPLETE</item>
+        <item>Assigned</item>
+        <item>Work in Progress</item>
+        <item>Work Complete</item>
     </string-array>
 
     <string-array name="actionTakenItems">
