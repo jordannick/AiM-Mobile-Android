@@ -140,6 +140,7 @@ public class AddActionDialogFragment extends DialogFragment {
         hoursEditText.setFilters(new InputFilter[]{new InputFilterMinMax(4, 2)});
         hoursEditText.setGravity(Gravity.CENTER);
 
+
         // Populate fields
         if (inEditMode() || inViewMode()) {
             if (actionToEdit != null) {
@@ -155,7 +156,9 @@ public class AddActionDialogFragment extends DialogFragment {
             if (spinnerArray.contains("REG - REGULAR TIME")) { // Default to regular time type
                 timeTypeSpinner.setSelection(spinnerArrayAdapter.getPosition("REG - REGULAR TIME"));
             }
-            statusSpinner.setSelection(((ArrayAdapter) actionSpinner.getAdapter()).getPosition(workOrder.getStatus()));
+            statusSpinner.setSelection(((ArrayAdapter) statusSpinner.getAdapter()).getPosition(workOrder.getStatus()));
+            Log.d(TAG, "status workorder: "+workOrder.getStatus());
+            Log.d(TAG, "status spinner: "+statusSpinner.getSelectedItem());
         }
     }
 

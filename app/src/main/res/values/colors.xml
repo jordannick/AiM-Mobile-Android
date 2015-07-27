@@ -56,7 +56,7 @@
     <color name="workOrderList_sectionHeaderDivider">#727272</color>
 
     <!--Action Add-->
-    <color name="addAction_sectionTitles">#F57C00</color>
+    <color name="addAction_sectionTitles">#747474</color><!--F57C00-->
     <color name="addAction_hoursEntryBg">#BBDEFB</color>
 
 

@@ -32,6 +32,7 @@ import java.util.Date;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.ActionAdapter;
+import edu.oregonstate.AiMLiteMobile.Adapters.RecentAdapter;
 import edu.oregonstate.AiMLiteMobile.Helpers.DialogUtils;
 import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
@@ -46,7 +47,7 @@ import retrofit.client.Response;
 /**
  * Created by sellersk on 2/19/2015.
  */
-public class ActionQueueListActivity extends AppCompatActivity implements ActionAdapter.Callbacks {
+public class ActionQueueListActivity extends AppCompatActivity implements ActionAdapter.Callbacks, RecentAdapter.Callbacks {
     private static final String TAG = "AiM_ActionQueueActivity";
     private static CurrentUser currentUser;
     private static NotificationManager notificationManager;
@@ -80,6 +81,8 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
     TextView submitAllIcon;
     @Bind(R.id.button_recent_icon)
     TextView recentlyViewedIcon;
+    @Bind(R.id.button_recent)
+    RelativeLayout recentlyViewedButton;
 
 
     @Override
@@ -165,6 +168,15 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
             public void onClick(View v) {
                 submitAllActions.setClickable(false);
                 syncActions();
+            }
+        });
+
+        final RecentAdapter recentAdapter = new RecentAdapter(currentUser.getRecentlyViewedWorkOrders(), this);
+
+        recentlyViewedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogUtils.createRecentlyViewedDialog(self, recentAdapter);
             }
         });
 
@@ -366,6 +378,14 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
         }
         bundle.putSerializable("ActionToEdit", action);
         DialogUtils.createAddActionDialog(this, bundle);
+    }
+
+    @Override
+    public void onRecentSelected(WorkOrder workOrder){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("WorkOrder", workOrder);
+        bundle.putString("Title", "New Action");
+        DialogUtils.createAddActionDialog(self, bundle);
     }
 
     public void refreshActions() {
