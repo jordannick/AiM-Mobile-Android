@@ -1,4 +1,4 @@
-package edu.oregonstate.AiMLiteMobile;
+package edu.oregonstate.AiMLiteMobile.Models;
 
 import java.io.Serializable;
 import java.util.ArrayList;

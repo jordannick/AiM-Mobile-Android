@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import edu.oregonstate.AiMLiteMobile.Models.Action;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.R;
 
@@ -33,7 +32,6 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
         this.recentlyCompleted = recentlyCompleted;
     }
 
-
     @Override
     public RecentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_recent, parent, false);
@@ -52,7 +50,6 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
                 mCallbacks.onRecentSelected(workOrder);
             }
         });
-
     }
 
     @Override
@@ -71,6 +68,5 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
             workOrderDesc = (TextView) v.findViewById(R.id.timeLog_recentDescription);
         }
     }
-
 
 }

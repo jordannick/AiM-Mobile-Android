@@ -18,7 +18,7 @@ import com.nispok.snackbar.SnackbarManager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import edu.oregonstate.AiMLiteMobile.InternalStorageWriter;
+import edu.oregonstate.AiMLiteMobile.Helpers.InternalStorageWriter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseLogin;

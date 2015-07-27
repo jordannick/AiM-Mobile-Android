@@ -1,19 +1,15 @@
 package edu.oregonstate.AiMLiteMobile.Fragments;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import edu.oregonstate.AiMLiteMobile.InternalStorageWriter;
+import edu.oregonstate.AiMLiteMobile.Helpers.InternalStorageWriter;
 import edu.oregonstate.AiMLiteMobile.R;
 
 /**

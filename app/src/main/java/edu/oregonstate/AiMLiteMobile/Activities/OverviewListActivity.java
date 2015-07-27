@@ -1,11 +1,9 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
 import android.app.Activity;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.MenuCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,8 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
-import android.text.TextUtils;
 import android.util.Log;
 
 import android.view.Gravity;
@@ -36,6 +32,7 @@ import com.nispok.snackbar.SnackbarManager;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.NavigationAdapter;
+import edu.oregonstate.AiMLiteMobile.Constants;
 import edu.oregonstate.AiMLiteMobile.Fragments.CustomSearchView;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
@@ -45,7 +42,7 @@ import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseLastUpdated;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseNotices;
 import edu.oregonstate.AiMLiteMobile.Network.ResponseWorkOrders;
-import edu.oregonstate.AiMLiteMobile.NotificationManager;
+import edu.oregonstate.AiMLiteMobile.Helpers.NotificationManager;
 import edu.oregonstate.AiMLiteMobile.R;
 import edu.oregonstate.AiMLiteMobile.Adapters.WorkOrderAdapter;
 import retrofit.Callback;
@@ -159,6 +156,8 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
         activity = this;
 
         currentUser = CurrentUser.get(getApplicationContext());
+
+
         notificationManager = NotificationManager.get(this, recyclerViewDrawerNotification);
         navigationDrawer = new NavigationDrawer(this);
 
@@ -221,6 +220,7 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
 
     @Override
     protected void onDestroy() {
+        Log.d(TAG, "OverviewListActivity DESTROYED");
         super.onDestroy();
     }
 
@@ -242,7 +242,6 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -280,10 +279,10 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
         sectionIcon2.setText(R.string.icon_admin);
         sectionIcon3.setText(R.string.icon_recentlyCompleted);
 
-        setClickListener(sectionIcon0, "Daily");
-        setClickListener(sectionIcon1, "Backlog");
-        setClickListener(sectionIcon2, "Admin");
-        setClickListener(sectionIcon3, "Recently Completed");
+        setClickListener(sectionIcon0, Constants.SECTION_DAILY);
+        setClickListener(sectionIcon1, Constants.SECTION_BACKLOG);
+        setClickListener(sectionIcon2, Constants.SECTION_ADMIN);
+        setClickListener(sectionIcon3, Constants.SECTION_COMPLETED);
     }
 
 

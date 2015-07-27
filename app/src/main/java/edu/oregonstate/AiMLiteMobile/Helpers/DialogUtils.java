@@ -1,7 +1,5 @@
 package edu.oregonstate.AiMLiteMobile.Helpers;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -9,18 +7,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import edu.oregonstate.AiMLiteMobile.Adapters.NoteAdapter;
 import edu.oregonstate.AiMLiteMobile.Adapters.RecentAdapter;
 import edu.oregonstate.AiMLiteMobile.Fragments.AddActionDialogFragment;
-import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.R;
 
 /**
@@ -59,15 +54,16 @@ public class DialogUtils {
         lv.setSelector(android.R.color.transparent);
         lv.setAdapter(notesAdapter);
         alertDialog.show();
-/*
+
+        /*
         DisplayMetrics displayMetrics = c.getResources().getDisplayMetrics();
         float dpHeight = displayMetrics.heightPixels;
         float dpWidth = displayMetrics.widthPixels;
         int height = ((Double)(dpHeight * 0.77)).intValue();
         int width = ((Double)(dpWidth * 0.925)).intValue();
         Log.d(TAG, "height = " + height + " ; width = " + width);
-        alertDialog.getWindow().setLayout(width, height);*/
-
+        alertDialog.getWindow().setLayout(width, height);
+        */
     }
 
     public static void createRecentlyViewedDialog(Context c, RecentAdapter recentAdapter){
@@ -89,17 +85,16 @@ public class DialogUtils {
         rv.setLayoutManager(linearLayoutManager);
         rv.setAdapter(recentAdapter);
         alertDialog.show();
-       /* int height = ((Double)(alertDialog.getWindow().getDecorView().getHeight() * 0.75)).intValue();
-        int width = ((Double)(alertDialog.getWindow().getDecorView().getHeight() * 0.9)).intValue();*/
-       /* DisplayMetrics displayMetrics = c.getResources().getDisplayMetrics();
 
+        /*
+        DisplayMetrics displayMetrics = c.getResources().getDisplayMetrics();
         float dpHeight = displayMetrics.heightPixels;
         float dpWidth = displayMetrics.widthPixels;
-
         int height = ((Double)(dpHeight * 0.77)).intValue();
         int width = ((Double)(dpWidth * 0.925)).intValue();
         Log.d(TAG, "height = "+height+" ; width = "+width);
-        alertDialog.getWindow().setLayout(width, height);*/
+        alertDialog.getWindow().setLayout(width, height);
+        */
     }
 
     public static void createAddActionDialog(AppCompatActivity activity, Bundle bundle){

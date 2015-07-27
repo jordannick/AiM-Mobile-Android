@@ -24,7 +24,7 @@
                     android:background="@color/colorPrimaryDark"
                     android:gravity="center"
                     android:padding="4dp"
-                    android:text="New Entry"
+                    android:text="Technician Actions"
                     android:textColor="#fff"
                     android:textSize="20dp" />
 

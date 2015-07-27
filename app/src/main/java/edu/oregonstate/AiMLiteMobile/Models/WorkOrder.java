@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
+import edu.oregonstate.AiMLiteMobile.Constants;
 import edu.oregonstate.AiMLiteMobile.R;
 
 /**
@@ -334,16 +335,16 @@ public class WorkOrder implements Serializable {
         this.mSection = mSection;
         int num = -1;
         switch (mSection){
-            case "Daily":
+            case Constants.SECTION_DAILY:
                 num = DAILY_SECTION_ID;
                 break;
-            case "Backlog":
+            case Constants.SECTION_BACKLOG:
                 num = BACKLOG_SECTION_ID;
                 break;
-            case "Admin":
+            case Constants.SECTION_ADMIN:
                 num = ADMIN_SECTION_ID;
                 break;
-            case "Recently Completed":
+            case Constants.SECTION_COMPLETED:
                 num = RECENTLY_COMPLETED_SECTION_ID;
                 break;
         }

@@ -2,6 +2,7 @@ package edu.oregonstate.AiMLiteMobile.Models;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -9,7 +10,7 @@ import java.util.Locale;
 /**
  * Created by jordan_n on 6/15/2015.
  */
-public class Notice {
+public class Notice implements Serializable {
 
     private static final String TAG = "AiM_Notice";
 

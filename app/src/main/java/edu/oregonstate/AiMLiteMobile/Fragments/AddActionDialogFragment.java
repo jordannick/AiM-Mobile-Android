@@ -45,32 +45,19 @@ public class AddActionDialogFragment extends DialogFragment {
     private static final double MAX_HOURS = 24;
     private static final double INCR_HOURS = 0.25;
 
-    @Bind(R.id.layout_action_add)
-    ScrollView dialogScrollView;
-    @Bind(R.id.spinner_updateStatus)
-    Spinner statusSpinner;
-    @Bind(R.id.spinner_actionTaken)
-    Spinner actionSpinner;
-    @Bind(R.id.spinner_timetype)
-    Spinner timeTypeSpinner;
-    @Bind(R.id.editText_note)
-    EditText noteEditText;
-    @Bind(R.id.hoursEditText)
-    TextView hoursEditText;
-    @Bind(R.id.hours_required)
-    TextView hoursRequired;
-    @Bind(R.id.action_required)
-    TextView actionRequired;
-    @Bind(R.id.dialogConfirm_buttonCancel)
-    Button buttonCancel;
-    @Bind(R.id.dialogConfirm_buttonConfirm)
-    Button buttonConfirm;
-    @Bind(R.id.button_addHours)
-    Button buttonAddHours;
-    @Bind(R.id.button_minusHours)
-    Button buttonMinusHours;
-    @Bind(R.id.dialogNewAction_title)
-    TextView dialogTitle;
+    @Bind(R.id.layout_action_add) ScrollView dialogScrollView;
+    @Bind(R.id.spinner_updateStatus) Spinner statusSpinner;
+    @Bind(R.id.spinner_actionTaken) Spinner actionSpinner;
+    @Bind(R.id.spinner_timetype) Spinner timeTypeSpinner;
+    @Bind(R.id.editText_note) EditText noteEditText;
+    @Bind(R.id.hoursEditText) TextView hoursEditText;
+    @Bind(R.id.hours_required) TextView hoursRequired;
+    @Bind(R.id.action_required) TextView actionRequired;
+    @Bind(R.id.dialogConfirm_buttonCancel) Button buttonCancel;
+    @Bind(R.id.dialogConfirm_buttonConfirm) Button buttonConfirm;
+    @Bind(R.id.button_addHours) Button buttonAddHours;
+    @Bind(R.id.button_minusHours) Button buttonMinusHours;
+    @Bind(R.id.dialogNewAction_title) TextView dialogTitle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -157,8 +144,8 @@ public class AddActionDialogFragment extends DialogFragment {
                 timeTypeSpinner.setSelection(spinnerArrayAdapter.getPosition("REG - REGULAR TIME"));
             }
             statusSpinner.setSelection(((ArrayAdapter) statusSpinner.getAdapter()).getPosition(workOrder.getStatus()));
-            Log.d(TAG, "status workorder: "+workOrder.getStatus());
-            Log.d(TAG, "status spinner: "+statusSpinner.getSelectedItem());
+            Log.d(TAG, "status workorder: " + workOrder.getStatus());
+            Log.d(TAG, "status spinner: " + statusSpinner.getSelectedItem());
         }
     }
 

@@ -1,6 +1,9 @@
 package edu.oregonstate.AiMLiteMobile.Models;
 
 import android.app.Activity;
+import android.app.Application;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,13 +11,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 import edu.oregonstate.AiMLiteMobile.Activities.LoginActivity;
 import edu.oregonstate.AiMLiteMobile.Adapters.WorkOrderAdapter;
-import edu.oregonstate.AiMLiteMobile.InternalStorageWriter;
+import edu.oregonstate.AiMLiteMobile.Constants;
+import edu.oregonstate.AiMLiteMobile.Helpers.InternalStorageWriter;
 
 /**
  * Created by jordan_n on 8/13/2014.
@@ -24,17 +29,17 @@ public class CurrentUser {
     private static final String TAG = "AiM_CurrentUser";
     private static CurrentUser currentUser;
     private static Context appContext;
-    private Preferences preferences;
+    private static Preferences preferences;
 
-    private String username;
-    private String password;
-    private String token;
-    private Long lastUpdated;
-    private Long lastRefreshed;
-    private ArrayList<WorkOrder> workOrders;
-    private ArrayList<Action> actions;
-    private ArrayList<Notice> notices;
-    private ArrayList<WorkOrder> recentlyViewedWorkOrders = new ArrayList<>();//Recently viewed workOrders to display in timeLog
+    private static String username;
+    private static String password;
+    private static String token;
+    private static Long lastUpdated;
+    private static Long lastRefreshed;
+    private static ArrayList<WorkOrder> workOrders;
+    private static ArrayList<Action> actions;
+    private static ArrayList<Notice> notices;
+    private static ArrayList<WorkOrder> recentlyViewedWorkOrders = new ArrayList<>();//Recently viewed workOrders to display in timeLog
 
     private int forceRefreshMin = 1;
     private int forceRefreshInterval = 1000 * 60 * forceRefreshMin;
@@ -42,8 +47,8 @@ public class CurrentUser {
     private InternalStorageWriter internalStorageWriter;
     private boolean offlineMode = false;
 
-    public final int RECENTLY_VIEWED_MAX = 5;
-    private final int EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 5;
+    /*public final int RECENTLY_VIEWED_MAX = 5;
+    private final int EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 5;*/
 
     private CurrentUser(Context appContext){
         CurrentUser.appContext = appContext;
@@ -54,7 +59,7 @@ public class CurrentUser {
     }
 
     public static CurrentUser get(Context c){
-        Log.d(TAG, "CurrentUser Get "+ c);
+        Log.d(TAG, "CurrentUser Get " + c);
         if (currentUser == null) {
             Log.d(TAG, "NEW CurrentUser Get "+ c);
             currentUser = new CurrentUser(c);
@@ -197,7 +202,7 @@ public class CurrentUser {
     }
 
     public boolean isUpdateExpired(Long currentTime){
-        if(currentTime > (lastUpdated+EXPIRATION_TIME)){
+        if(currentTime > (lastUpdated+ Constants.EXPIRATION_TIME)){
             this.lastUpdated = currentTime;
             return true;
         }else{
@@ -286,7 +291,7 @@ public class CurrentUser {
         if (index == -1) {
             int curSize = recentlyViewedWorkOrders.size();
             int newSize = curSize + 1;
-            if(newSize > RECENTLY_VIEWED_MAX){
+            if(newSize > Constants.RECENTLY_VIEWED_MAX){
                 //Remove oldest workOrder in arrayList
                 recentlyViewedWorkOrders.remove(curSize-1);
             }

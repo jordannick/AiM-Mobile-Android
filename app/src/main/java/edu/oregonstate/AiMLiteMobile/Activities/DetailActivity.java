@@ -1,6 +1,5 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -27,11 +26,12 @@ import java.util.Date;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.NoteAdapter;
+import edu.oregonstate.AiMLiteMobile.Constants;
 import edu.oregonstate.AiMLiteMobile.Helpers.DialogUtils;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
-import edu.oregonstate.AiMLiteMobile.NotificationManager;
+import edu.oregonstate.AiMLiteMobile.Helpers.NotificationManager;
 import edu.oregonstate.AiMLiteMobile.R;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -56,15 +56,9 @@ public class DetailActivity extends AppCompatActivity {
     @Bind(R.id.actionRow_valueAgo_detail) TextView valueAgo;
     @Bind(R.id.actionRow_stringAgo) TextView timeAgo;
     //@Bind(R.id.dateCreatedTextView) TextView dateCreated;
-    @Bind(R.id.detailView_textRequestor)
-    TextView requestor;
-
-    @Bind(R.id.detailView_requestedDepartment)
-    TextView requestorDepartment;
-
-    @Bind(R.id.detailView_requestedTime)
-    TextView requestorTime;
-
+    @Bind(R.id.detailView_textRequestor) TextView requestor;
+    @Bind(R.id.detailView_requestedDepartment) TextView requestorDepartment;
+    @Bind(R.id.detailView_requestedTime) TextView requestorTime;
     @Bind(R.id.detailView_textLocation) TextView location;
     @Bind(R.id.detailView_textPriority) TextView priority;
     @Bind(R.id.detailView_textStatus) TextView status;
@@ -72,8 +66,10 @@ public class DetailActivity extends AppCompatActivity {
     @Bind(R.id.detailView_textFunding) TextView funding;
     @Bind(R.id.detailView_textCategory) TextView category;
     @Bind(R.id.detailView_textShop) TextView shop;
+
     @Bind(R.id.imageView_priorityIconDetail) ImageView priorityIcon;
     @Bind(R.id.imageView_statusIcon) ImageView statusIcon;
+
     @Bind(R.id.button_moveSection_icon) TextView moveSectionTextIcon;
     @Bind(R.id.button_moveSection) RelativeLayout moveSection;
     @Bind(R.id.button_moveSection_text) TextView moveSectionTitle;
@@ -83,13 +79,9 @@ public class DetailActivity extends AppCompatActivity {
     @Bind(R.id.button_addAction) RelativeLayout addAction;
     @Bind(R.id.button_viewNotes) RelativeLayout viewNotes;
 
-    @Bind(R.id.detail_activity_layout)
-    DrawerLayout drawerLayout;
-    @Bind(R.id.right_drawer)
-    RecyclerView recyclerViewDrawerNotification;
-
-    @Bind(R.id.button_moveSection_loading)
-    ProgressBar moveSectionLoading;
+    @Bind(R.id.detail_activity_layout) DrawerLayout drawerLayout;
+    @Bind(R.id.right_drawer) RecyclerView recyclerViewDrawerNotification;
+    @Bind(R.id.button_moveSection_loading) ProgressBar moveSectionLoading;
 
 
     @Override
@@ -103,7 +95,6 @@ public class DetailActivity extends AppCompatActivity {
         currentUser.addRecentlyViewedWorkOrder(workOrder);
 
         self = this;
-        //ButterKnife Time
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
@@ -253,12 +244,16 @@ public class DetailActivity extends AppCompatActivity {
 
         notesAdapter = new NoteAdapter(this, workOrder.getNotes());
 
-        //Set up bottom two buttons
+        //Set up bottom buttons
         viewNotesIcon.setText(getString(R.string.icon_list));
         viewNotesIcon.setTypeface(FONTAWESOME);
         addActionIcon.setText(getString(R.string.icon_timeLog));
         addActionIcon.setTypeface(FONTAWESOME);
         viewNotesText.setText("Notes (" + notesAdapter.getCount() + ")");
+
+        if (!(workOrder.getSection().equals(Constants.SECTION_DAILY) || workOrder.getSection().equals(Constants.SECTION_BACKLOG))){
+            moveSection.setVisibility(View.GONE);
+        }
 
         addAction.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -285,10 +280,10 @@ public class DetailActivity extends AppCompatActivity {
     private void initMoveSection(){
         Typeface FONTAWESOME = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/FontAwesome.otf");
         moveSectionTextIcon.setTypeface(FONTAWESOME);
-        if (workOrder.getSection().equals("Daily Assignment")){
+        if (workOrder.getSection().equals(Constants.SECTION_DAILY)){
             moveSectionTextIcon.setText(getString(R.string.icon_moveToBacklog));
             moveSectionTitle.setText("To Backlog");
-        } else if (workOrder.getSection().equals("Backlog")){
+        } else if (workOrder.getSection().equals(Constants.SECTION_BACKLOG)){
             moveSectionTextIcon.setText(getString(R.string.icon_moveToDaily));
             moveSectionTitle.setText("To Daily");
         }
@@ -332,9 +327,9 @@ public class DetailActivity extends AppCompatActivity {
 
         String newSection = "";
 
-        if (workOrder.getSection().equals("Daily Assignment")) {
+        if (workOrder.getSection().equals(Constants.SECTION_DAILY)) {
             newSection = "Backlog";
-        } else if (workOrder.getSection().equals("Backlog")) {
+        } else if (workOrder.getSection().equals(Constants.SECTION_BACKLOG)) {
             newSection = "Daily Assignment";
         }
 

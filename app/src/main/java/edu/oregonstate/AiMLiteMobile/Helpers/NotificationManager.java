@@ -1,4 +1,4 @@
-package edu.oregonstate.AiMLiteMobile;
+package edu.oregonstate.AiMLiteMobile.Helpers;
 
 import android.content.Context;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import edu.oregonstate.AiMLiteMobile.Adapters.NoticeAdapter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.Notice;
+import edu.oregonstate.AiMLiteMobile.R;
 
 /**
  * Created by jordan_n on 7/1/2015.

@@ -157,11 +157,12 @@ public class ApiManager {
                         wo.setDepartment(obj.getString("department"));
                         wo.setProposalPhase(String.format("%s-%s", obj.getString("proposal"), obj.getString("sort_code")));
 
-                        if (obj.getString("section").equals("Daily Assignments")){
+                      /*  if (obj.getString("section").equals("Daily Assignments")){
                             wo.setSection("Daily");
                         } else {
                             wo.setSection(obj.getString("section"));
-                        }
+                        }*/
+                        wo.setSection(obj.getString("section"));
 
                         JSONArray objNotes = obj.getJSONArray("notes");
 

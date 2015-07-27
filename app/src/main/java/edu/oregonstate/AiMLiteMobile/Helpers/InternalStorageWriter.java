@@ -1,9 +1,8 @@
-package edu.oregonstate.AiMLiteMobile;
+package edu.oregonstate.AiMLiteMobile.Helpers;
 
 import android.content.Context;
 import android.util.Log;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,9 +11,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Random;
 
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
+import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListDataBean;
 
 /**
  * Created by sellersk on 7/7/2015.
@@ -22,12 +21,8 @@ import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 public class InternalStorageWriter {
     private static final String TAG = "InternalStorageWriter";
 
-
     private Context context;
     private String filename_workOrders;
-
-
-
 
     public InternalStorageWriter(Context context, String username) {
         this.context = context;
@@ -73,10 +68,7 @@ public class InternalStorageWriter {
         ArrayList<WorkOrder> workOrders = null;
         String filename = username.toLowerCase() + "_workOrders";
 
-
         try {
-
-
             FileInputStream fis = context.openFileInput(filename);
             //ObjectInputStream is = new ObjectInputStream(fis);   //Unneeded for availability check
             if (fis.available() > 0){
@@ -105,6 +97,5 @@ public class InternalStorageWriter {
     public static String[] getSavedFiles(Context context){
         return context.getFilesDir().list();
     }
-
 
 }

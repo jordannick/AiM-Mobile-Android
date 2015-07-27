@@ -16,6 +16,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.oregonstate.AiMLiteMobile.Constants;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
 import edu.oregonstate.AiMLiteMobile.R;
@@ -205,13 +206,13 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.Work
                                     results.add(item);
 
                                     //Recalculate section counts for filtered list
-                                    if (item.getWorkOrder().getSection().equals("Daily")) {
+                                    if (item.getWorkOrder().getSection().equals(Constants.SECTION_DAILY)) {
                                         dailyCount++;
-                                    } else if (item.getWorkOrder().getSection().equals("Backlog")) {
+                                    } else if (item.getWorkOrder().getSection().equals(Constants.SECTION_BACKLOG)) {
                                         backlogCount++;
-                                    } else if (item.getWorkOrder().getSection().equals("Admin")) {
+                                    } else if (item.getWorkOrder().getSection().equals(Constants.SECTION_ADMIN)) {
                                         adminCount++;
-                                    } else if (item.getWorkOrder().getSection().equals("Recently Completed")) {
+                                    } else if (item.getWorkOrder().getSection().equals(Constants.SECTION_COMPLETED)) {
                                         completedCount++;
                                     }
                                 }
@@ -223,13 +224,13 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.Work
 
                         for (WorkOrderListItem item : results) {
                             if (item.getType() == WorkOrderListItem.Type.SECTION) {
-                                if (item.getSectionTitle().equals("Daily")) {
+                                if (item.getSectionTitle().equals(Constants.SECTION_DAILY)) {
                                     item.setSectionCount(dailyCount);
-                                } else if (item.getSectionTitle().equals("Backlog")) {
+                                } else if (item.getSectionTitle().equals(Constants.SECTION_BACKLOG)) {
                                     item.setSectionCount(backlogCount);
-                                } else if (item.getSectionTitle().equals("Admin")) {
+                                } else if (item.getSectionTitle().equals(Constants.SECTION_ADMIN)) {
                                     item.setSectionCount(adminCount);
-                                } else if (item.getSectionTitle().equals("Recently Completed")) {
+                                } else if (item.getSectionTitle().equals(Constants.SECTION_COMPLETED)) {
                                     item.setSectionCount(completedCount);
                                 }
                             }
@@ -301,22 +302,22 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.Work
             //Log.d(TAG, "Array sizes. daily: " + daily.size() + ", admin: " + admin.size() + ", backlog: " + backlog.size() + " completed: " + completed.size());
             workOrderListItems = new ArrayList<>();
             sectionIndex[WorkOrder.DAILY_SECTION_ID] = workOrderListItems.size();
-            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Daily", R.string.icon_daily, null, daily.size()));
+            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, Constants.SECTION_DAILY, R.string.icon_daily, null, daily.size()));
             for (int i = 0; i < daily.size(); i++) {
                 workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, daily.get(i), 0));
             }
             sectionIndex[WorkOrder.BACKLOG_SECTION_ID] = workOrderListItems.size();
-            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Backlog", R.string.icon_backlog, null, backlog.size()));
+            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, Constants.SECTION_BACKLOG, R.string.icon_backlog, null, backlog.size()));
             for (int i = 0; i < backlog.size(); i++) {
                 workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, backlog.get(i), 0));
             }
             sectionIndex[WorkOrder.ADMIN_SECTION_ID] = workOrderListItems.size();
-            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Admin", R.string.icon_admin, null, admin.size()));
+            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, Constants.SECTION_ADMIN, R.string.icon_admin, null, admin.size()));
             for (int i = 0; i < admin.size(); i++) {
                 workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, admin.get(i), 0));
             }
             sectionIndex[WorkOrder.RECENTLY_COMPLETED_SECTION_ID] = workOrderListItems.size();
-            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, "Recently Completed", R.string.icon_recentlyCompleted, null, completed.size()));
+            workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.SECTION, Constants.SECTION_COMPLETED, R.string.icon_recentlyCompleted, null, completed.size()));
             for (int i = 0; i < completed.size(); i++) {
                 workOrderListItems.add(new WorkOrderListItem(WorkOrderListItem.Type.ITEM, null, -1, completed.get(i), 0));
             }

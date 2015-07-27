@@ -37,7 +37,7 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
         this.actions = actions;
     }
 
-    public void refreshActions(ArrayList<Action> actions){
+    public void refreshActions(ArrayList<Action> actions) {
         this.actions = actions;
         notifyDataSetChanged();
     }
@@ -53,10 +53,8 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
     @Override
     public void onViewRecycled(ActionViewHolder holder) {
         holder.submitText.setText("Ready to Submit");
-        //holder.submitText.setTextColor(context.getResources().getColor(android.R.color.tertiary_text_dark));
         holder.submitImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.submit_up));
-        //holder.submittedOverlay.setAlpha(0);
-        holder.notesCount.setText("No note");
+        holder.note.setText("No note");
         super.onViewRecycled(holder);
     }
 
@@ -77,23 +75,22 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
         holder.actionTaken.setText(action.getActionTaken());
 
         if (!action.getNote().equals("")) {
-            holder.notesCount.setText(action.getNote());
+            holder.note.setText(action.getNote());
         }
 
-        if (action.getUpdatedStatus() != null && !action.getUpdatedStatus().equals(action.getWorkOrder().getStatus())){
-           holder.oldStatus.setText(action.getWorkOrder().getStatus());
-           holder.newStatus.setText(action.getUpdatedStatus());
+        if (action.getUpdatedStatus() != null && !action.getUpdatedStatus().equals(action.getWorkOrder().getStatus())) {
+            holder.oldStatus.setText(action.getWorkOrder().getStatus());
+            holder.newStatus.setText(action.getUpdatedStatus());
         } else {
             holder.oldStatus.setVisibility(View.GONE);
             holder.actionChangedArrow.setVisibility(View.GONE);
             holder.newStatus.setText(action.getWorkOrder().getStatus());
         }
 
-
-       holder.timeSince.setText(prettyPrintDate(action.getDateStamp()));
+        holder.timeSince.setText(prettyPrintDate(action.getDateStamp()));
 
         if (action.getHours() > 0) {
-           holder.hours.setText(String.valueOf(action.getHours()));
+            holder.hours.setText(String.valueOf(action.getHours()));
         } else {
             holder.hours.setText("0");
         }
@@ -104,15 +101,10 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
         }
         holder.hoursType.setText(type);
 
-        //holder.notesCount.setText(String.valueOf(action.getNotes().size() + " Notes"));
-
-        if (action.isSubmitted()){
+        if (action.isSubmitted()) {
             holder.submitText.setText("Submitted!");
             holder.submitImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.submit_checked_grey));
             holder.submitText.setTextColor(context.getResources().getColor(android.R.color.tertiary_text_dark));
-
-            //holder.submittedOverlay.setVisibility(View.VISIBLE);
-            //holder.submittedOverlay.setAlpha(1.0f);
         }
     }
 
@@ -130,13 +122,10 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
         protected ImageView actionChangedArrow;
         protected TextView timeSince;
         protected TextView hours;
-        protected TextView notesCount;
+        protected TextView note;
         protected TextView hoursType;
-        //protected RelativeLayout submittedOverlay;
-
         protected TextView submitText;
         protected ImageView submitImage;
-
 
         public ActionViewHolder(View v) {
             super(v);
@@ -147,17 +136,14 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
             actionChangedArrow = (ImageView) v.findViewById(R.id.action_changed_arrow);
             timeSince = (TextView) v.findViewById(R.id.action_timeSince);
             hours = (TextView) v.findViewById(R.id.action_hours);
-            notesCount = (TextView) v.findViewById(R.id.action_note);
-            //submittedOverlay = (RelativeLayout) v.findViewById(R.id.action_submitted_overlay);
-
+            note = (TextView) v.findViewById(R.id.action_note);
             submitText = (TextView) v.findViewById(R.id.submit_text);
             submitImage = (ImageView) v.findViewById(R.id.submit_image);
             hoursType = (TextView) v.findViewById(R.id.hours_type);
         }
     }
 
-
-    private String prettyPrintDate(Date date){
+    private String prettyPrintDate(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy");
         return simpleDateFormat.format(date);
     }
