@@ -34,6 +34,7 @@ import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.NavigationAdapter;
 import edu.oregonstate.AiMLiteMobile.Constants;
 import edu.oregonstate.AiMLiteMobile.Fragments.CustomSearchView;
+import edu.oregonstate.AiMLiteMobile.Helpers.InternalStorageWriter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrderListItem;
@@ -65,30 +66,19 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
     private SearchView searchView;
     private MenuItem searchMenuItem;
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.recycler_view)
-    RecyclerView recyclerView;
-    @Bind(R.id.overview_activity_shortcuts)
-    LinearLayout sectionShortcutBar;
-    @Bind(R.id.overview_activity_section_icon0)
-    TextView sectionIcon0;
-    @Bind(R.id.overview_activity_section_icon1)
-    TextView sectionIcon1;
-    @Bind(R.id.overview_activity_section_icon2)
-    TextView sectionIcon2;
-    @Bind(R.id.overview_activity_section_icon3)
-    TextView sectionIcon3;
-    @Bind(R.id.overviewActivity_dimOverlay)
-    LinearLayout dimOverlay;
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.recycler_view) RecyclerView recyclerView;
+    @Bind(R.id.overview_activity_shortcuts) LinearLayout sectionShortcutBar;
+    @Bind(R.id.overview_activity_section_icon0) TextView sectionIcon0;
+    @Bind(R.id.overview_activity_section_icon1) TextView sectionIcon1;
+    @Bind(R.id.overview_activity_section_icon2) TextView sectionIcon2;
+    @Bind(R.id.overview_activity_section_icon3) TextView sectionIcon3;
+    @Bind(R.id.overviewActivity_dimOverlay) LinearLayout dimOverlay;
 
-    @Bind(R.id.overview_activity_search_container)
-    FrameLayout searchViewContainer;
+    @Bind(R.id.overview_activity_search_container) FrameLayout searchViewContainer;
 
-    @Bind(R.id.left_drawer_recycler)
-    RecyclerView recyclerViewDrawer;
-    @Bind(R.id.right_drawer)
-    RecyclerView recyclerViewDrawerNotification;
+    @Bind(R.id.left_drawer_recycler) RecyclerView recyclerViewDrawer;
+    @Bind(R.id.right_drawer) RecyclerView recyclerViewDrawerNotification;
     @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
 
     private CustomSearchView customSearchView;
@@ -132,7 +122,7 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
         recAdapter.getFilter().filter(newText, new Filter.FilterListener() {
             @Override
             public void onFilterComplete(int count) {
-                countText.setText(String.valueOf(recAdapter.getItemCount()-recAdapter.getNumSections()));
+                countText.setText(String.valueOf(recAdapter.getItemCount() - recAdapter.getNumSections()));
             }
         });
 
@@ -162,12 +152,6 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
         Just goes back to login screen and starts over.
         */
         if (currentUser.getUsername() == null){
-            /*Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra("autologin", true);
-            activity.startActivity(intent);
-            activity.finish();*/
             currentUser.forceLogout(this);
             return;
         }
@@ -215,7 +199,16 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
 
 
     private void setupOfflineMode(){
-        currentUser.loadSavedWorkOrders(recAdapter);
+        boolean hasSavedData = InternalStorageWriter.hasSavedData(getApplicationContext(), currentUser.getUsername());
+        boolean hasSavedActions = InternalStorageWriter.hasSavedActions(getApplicationContext(), currentUser.getUsername());
+
+        if (hasSavedData) currentUser.loadSavedWorkOrders(recAdapter);
+        if (hasSavedActions) {
+            currentUser.loadSavedActions();
+            Log.d(TAG, "actions = " +currentUser.getActions());
+        }
+
+
     }
 
     @Override
@@ -349,20 +342,20 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
             public void success(ResponseLastUpdated responseLastUpdated, Response response) {
                 Log.d(TAG, "requestLastUpdated SUCCESS ::: " + responseLastUpdated.getDate());
 
-                if(responseLastUpdated.isNullReturn()){
-                    if(currentUser.isUpdateExpired(System.currentTimeMillis())){ //If current time exceeds expirationDate of data, update
+                if (responseLastUpdated.isNullReturn()) {
+                    if (currentUser.isUpdateExpired(System.currentTimeMillis())) { //If current time exceeds expirationDate of data, update
                         Log.d(TAG, "requestLastUpdated ::: expired, update");
                         requestWorkOrders(displayConfirmation);
-                    }else{
+                    } else {
                         //Update unneeded, wait for expiration
                         Log.d(TAG, "requestLastUpdated ::: Data hasn't expired. No Update");
                         currentUser.setLastRefreshed(System.currentTimeMillis());
                     }
-                }else{
-                    if(currentUser.isUpdateNeeded(responseLastUpdated.getDate().getTime())){ //If newer time was retrieved, update.
+                } else {
+                    if (currentUser.isUpdateNeeded(responseLastUpdated.getDate().getTime())) { //If newer time was retrieved, update.
                         Log.d(TAG, "requestLastUpdated ::: newerTime, update");
                         requestWorkOrders(displayConfirmation);
-                    }else{
+                    } else {
                         Log.d(TAG, "requestLastUpdated ::: same time, no update needed");
                         currentUser.setLastRefreshed(System.currentTimeMillis());
                     }
@@ -397,7 +390,8 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
                 currentUser.setLastRefreshed(System.currentTimeMillis());
                 currentUser.setLastUpdated(System.currentTimeMillis());
 
-                if(displayConfirmation)SnackbarManager.show(Snackbar.with(activity).text("Work Orders Updated").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
+                if (displayConfirmation)
+                    SnackbarManager.show(Snackbar.with(activity).text("Work Orders Updated").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
             }
 
             @Override
@@ -419,6 +413,7 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
                 notificationManager.refreshNotices(responseNotices.getNotices());
                 //if (menu != null) notificationManager.updateNoticeCount(menu);
             }
+
             @Override
             public void failure(RetrofitError error) {
                 Log.e(TAG, "Failed requestNotices\nError: " + error);
@@ -428,6 +423,11 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
 
     private void setDimVisibility(int visibility) {
         dimOverlay.setVisibility(visibility);
+    }
+
+    private void promptUserLoadOfflineData(){
+
+
     }
 
 }

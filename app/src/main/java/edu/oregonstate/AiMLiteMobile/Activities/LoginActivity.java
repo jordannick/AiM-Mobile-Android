@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.login_username_icon) TextView userIcon;
     @Bind(R.id.login_password_icon) TextView passwordIcon;
     @Bind(R.id.forget_button) Button forgetAutoLoginButton;
+    @Bind(R.id.offline_button) Button offlineButton;
 
     private static CurrentUser sCurrentUser;
 
@@ -112,6 +113,26 @@ public class LoginActivity extends AppCompatActivity {
                 mPasswordField.requestFocus();*/
             }
         }
+
+        offlineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mUsername = "crosst";
+                mPassword = "aaa";
+
+                boolean hasSavedData = InternalStorageWriter.hasSavedData(getApplicationContext(), mUsername);
+                boolean hasSavedActions = InternalStorageWriter.hasSavedActions(getApplicationContext(), mUsername);
+                Log.d(TAG, "" + mUsername + " saved data: " + hasSavedData);
+                Log.d(TAG, "" + mUsername + " saved actions: " + hasSavedActions);
+                /*if(hasSavedData){
+                    offlineLogin();
+                }else{
+                    SnackbarManager.show(Snackbar.with(activity).text("No Offline Data").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
+                }*/
+
+                offlineLogin();
+            }
+        });
 
         //TODO: 3/10/15: Handle password authentication/matching to username
         //TODO: 3/19/15: Think about clearing stored JSON/prefs if it's tied to a different user.

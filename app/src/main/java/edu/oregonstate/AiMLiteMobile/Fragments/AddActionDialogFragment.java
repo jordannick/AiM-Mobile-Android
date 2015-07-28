@@ -42,9 +42,6 @@ public class AddActionDialogFragment extends DialogFragment {
     private Action actionToEdit;
     private double hoursWorked;
 
-    private static final double MIN_HOURS = 0;
-    private static final double MAX_HOURS = 24;
-    private static final double INCR_HOURS = 0.25;
 
     @Bind(R.id.layout_action_add) ScrollView dialogScrollView;
     @Bind(R.id.spinner_updateStatus) Spinner statusSpinner;
@@ -59,6 +56,7 @@ public class AddActionDialogFragment extends DialogFragment {
     @Bind(R.id.button_addHours) Button buttonAddHours;
     @Bind(R.id.button_minusHours) Button buttonMinusHours;
     @Bind(R.id.dialogNewAction_title) TextView dialogTitle;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -226,6 +224,9 @@ public class AddActionDialogFragment extends DialogFragment {
                         }
 
                         ((ActionQueueListActivity) getActivity()).refreshActions();
+
+                        currentUser.backupActions(currentUser.getActions());
+
                         actionDialog.dismiss();
 
                     }
@@ -249,8 +250,8 @@ public class AddActionDialogFragment extends DialogFragment {
                 }
 
                 hoursWorked = Math.round(hoursWorked * 4) / 4f; // Round to nearest quarter
-                hoursWorked += INCR_HOURS;
-                if (hoursWorked >= MAX_HOURS) hoursWorked = MAX_HOURS; // Don't allow too many hours
+                hoursWorked += Constants.INCR_HOURS;
+                if (hoursWorked >= Constants.MAX_HOURS) hoursWorked = Constants.MAX_HOURS; // Don't allow too many hours
                 hoursEditText.setText(String.valueOf(hoursWorked));
             }
         });
@@ -269,8 +270,8 @@ public class AddActionDialogFragment extends DialogFragment {
                 }
 
                 hoursWorked = Math.round(hoursWorked * 4) / 4f; // Round to nearest quarter
-                hoursWorked -= INCR_HOURS;
-                if (hoursWorked < MIN_HOURS) hoursWorked = MIN_HOURS; // Don't allow negative hours
+                hoursWorked -= Constants.INCR_HOURS;
+                if (hoursWorked < Constants.MIN_HOURS) hoursWorked = Constants.MIN_HOURS; // Don't allow negative hours
                 hoursEditText.setText(String.valueOf(hoursWorked));
             }
         });
@@ -310,11 +311,11 @@ public class AddActionDialogFragment extends DialogFragment {
             actionRequired.setVisibility(View.VISIBLE);
             isValid = false;
         }
-        if (hoursWorked <= MIN_HOURS) {
+        if (hoursWorked <= Constants.MIN_HOURS) {
             hoursRequired.setVisibility(View.VISIBLE);
             isValid = false;
         }
-        if (hoursWorked > MAX_HOURS) {
+        if (hoursWorked > Constants.MAX_HOURS) {
             hoursRequired.setVisibility(View.VISIBLE);
             hoursRequired.setText("Too many hours");
             isValid = false;
@@ -324,7 +325,7 @@ public class AddActionDialogFragment extends DialogFragment {
     }
 
     private Action createAction(String actionTaken, String status, String hours, String timeType, String noteString) {
-        double hoursDouble = MIN_HOURS;
+        double hoursDouble = Constants.MIN_HOURS;
 
         if (!hours.isEmpty()) {
             hoursDouble = Double.parseDouble(hours);

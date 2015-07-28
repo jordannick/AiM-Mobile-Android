@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import edu.oregonstate.AiMLiteMobile.Activities.LoginActivity;
+import edu.oregonstate.AiMLiteMobile.Adapters.ActionAdapter;
 import edu.oregonstate.AiMLiteMobile.Adapters.WorkOrderAdapter;
 import edu.oregonstate.AiMLiteMobile.Constants;
 import edu.oregonstate.AiMLiteMobile.Helpers.InternalStorageWriter;
@@ -143,6 +144,15 @@ public class CurrentUser {
         adapter.refreshWorkOrders(workOrders);
     }
 
+    public void backupActions(ArrayList<Action> actions){
+        internalStorageWriter.saveActions(actions);
+    }
+
+    public void loadSavedActions(/*ActionAdapter adapter*/){
+        ArrayList<Action> actions = internalStorageWriter.retrieveActions();
+        this.actions = actions;
+        //adapter.refreshActions(actions);
+    }
 
 
 
