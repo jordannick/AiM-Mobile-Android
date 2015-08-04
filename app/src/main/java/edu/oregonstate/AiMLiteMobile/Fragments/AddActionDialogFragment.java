@@ -231,6 +231,8 @@ public class AddActionDialogFragment extends DialogFragment {
 
                     }
                 }
+
+                currentUser.backupActions(currentUser.getActions());
             }
         });
 

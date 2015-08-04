@@ -174,6 +174,12 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
         if(getIntent().getBooleanExtra(LoginActivity.EXTRA_OFFLINE, false)){
             setupOfflineMode();
         }
+
+        boolean hasSavedActions = InternalStorageWriter.hasSavedActions(getApplicationContext(), currentUser.getUsername());
+        if (hasSavedActions) {
+            currentUser.loadSavedActions();
+            Log.d(TAG, "actions = " + currentUser.getActions());
+        }
     }
 
     private void initRecyclerView(){
@@ -199,14 +205,20 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
 
 
     private void setupOfflineMode(){
+
+
+
+
         boolean hasSavedData = InternalStorageWriter.hasSavedData(getApplicationContext(), currentUser.getUsername());
-        boolean hasSavedActions = InternalStorageWriter.hasSavedActions(getApplicationContext(), currentUser.getUsername());
+
 
         if (hasSavedData) currentUser.loadSavedWorkOrders(recAdapter);
-        if (hasSavedActions) {
-            currentUser.loadSavedActions();
-            Log.d(TAG, "actions = " +currentUser.getActions());
-        }
+
+        Log.d(TAG, "username: "+currentUser.getUsername());
+        Log.d(TAG, "password: "+currentUser.getPassword());
+        Log.d(TAG, "token: "+currentUser.getToken());
+        Log.d(TAG, "workorders: "+currentUser.getWorkOrders());
+        Log.d(TAG, "actions: "+currentUser.getActions());
 
 
     }
@@ -380,7 +392,7 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
             @Override
             public void success(ResponseWorkOrders responseWorkOrders, Response response) {
                 Log.d(TAG, "requestWorkOrders SUCCESS");
-                currentUser.getPreferences().saveWorkOrders(responseWorkOrders.getRawJson());
+                //currentUser.getPreferences().saveWorkOrders(responseWorkOrders.getRawJson());
                 currentUser.setWorkOrders(responseWorkOrders.getWorkOrders());
                 currentUser.backupWorkOrders(responseWorkOrders.getWorkOrders());
                 recAdapter.refreshWorkOrders(currentUser.getWorkOrders());

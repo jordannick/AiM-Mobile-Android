@@ -1,5 +1,7 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import com.nispok.snackbar.SnackbarManager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import edu.oregonstate.AiMLiteMobile.Helpers.DialogUtils;
 import edu.oregonstate.AiMLiteMobile.Helpers.InternalStorageWriter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Network.ApiManager;
@@ -120,38 +123,29 @@ public class LoginActivity extends AppCompatActivity {
                 mUsername = "crosst";
                 mPassword = "aaa";
 
-                boolean hasSavedData = InternalStorageWriter.hasSavedData(getApplicationContext(), mUsername);
-                boolean hasSavedActions = InternalStorageWriter.hasSavedActions(getApplicationContext(), mUsername);
-                Log.d(TAG, "" + mUsername + " saved data: " + hasSavedData);
-                Log.d(TAG, "" + mUsername + " saved actions: " + hasSavedActions);
-                /*if(hasSavedData){
-                    offlineLogin();
-                }else{
-                    SnackbarManager.show(Snackbar.with(activity).text("No Offline Data").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
-                }*/
+                if (InternalStorageWriter.hasSavedData(activity, mUsername)/* && sCurrentUser.getPreferences().getUsername() != "" && sCurrentUser.getPreferences().getToken() != ""*/) {
+                    Dialog.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                offlineLogin();
+                            offlineLogin();
+
+                        }
+                    };
+                    DialogUtils.createConfirmDialog(activity, "Load offline data for " + mUsername + "?", clickListener);
+                }else {
+                    SnackbarManager.show(Snackbar.with(activity).text("No Offline Data").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
+                }
             }
         });
 
-        //TODO: 3/10/15: Handle password authentication/matching to username
-        //TODO: 3/19/15: Think about clearing stored JSON/prefs if it's tied to a different user.
+
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mUsername = mUsernameField.getText().toString();
                 mPassword = mPasswordField.getText().toString();
 
-                if(mPassword.toLowerCase().equals("offline")){  //Offline mode enabled
-                    boolean hasSavedData = InternalStorageWriter.hasSavedData(getApplicationContext(), mUsername);
-                    Log.d(TAG, "" + mUsername + " saved data: " + hasSavedData);
-                    if(hasSavedData){
-                        offlineLogin();
-                    }else{
-                        SnackbarManager.show(Snackbar.with(activity).text("No Offline Data").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
-                    }
-
-                }else{
                     //Check for empty fields
                     if (!mUsername.matches("") && !mPassword.matches("")) {
                         //If both fields are not empty
@@ -164,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
                             mPasswordField.setError("Password required");
                         }
                     }
-                }
+
             }
         });
     }
@@ -173,7 +167,6 @@ public class LoginActivity extends AppCompatActivity {
         sCurrentUser.setUsername(mUsername);
         sCurrentUser.setOfflineMode(true);
         setEnableFormFields(true);
-
         startOverviewActivity(true);
     }
 
@@ -210,6 +203,22 @@ public class LoginActivity extends AppCompatActivity {
                 //TODO: Display descriptive error message, such as wrong password.
                 SnackbarManager.show(Snackbar.with(activity).text("Login Failed").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
                 setEnableFormFields(true);
+
+
+                // No network, will try checking stored work orders for offline view
+                if (error.getKind() == RetrofitError.Kind.NETWORK){
+                    if (InternalStorageWriter.hasSavedData(activity, mUsername)) {
+                        Dialog.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                offlineLogin();
+                            }
+                        };
+                        DialogUtils.createConfirmDialog(activity, "Load offline data for " + mUsername + "?", clickListener);
+                    }else {
+                        SnackbarManager.show(Snackbar.with(activity).text("No Offline Data").duration(Snackbar.SnackbarDuration.LENGTH_LONG));
+                    }
+                }
             }
         });
     }

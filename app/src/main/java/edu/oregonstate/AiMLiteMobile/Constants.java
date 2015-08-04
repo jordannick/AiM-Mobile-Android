@@ -3,7 +3,7 @@ package edu.oregonstate.AiMLiteMobile;
 /**
  * Created by jordan_n on 7/27/2015.
  */
-public abstract class Constants {
+public class Constants {
 
     /*
     Section titles used for headers and internal comparisons.

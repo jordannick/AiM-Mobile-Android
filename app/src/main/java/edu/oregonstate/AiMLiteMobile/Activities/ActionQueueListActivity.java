@@ -1,6 +1,11 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -127,8 +132,23 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
         submitAllActions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitAllActions.setClickable(false);
-                syncActions();
+
+
+                if (currentUser.getToken() == "" || currentUser.isOfflineMode() || !isNetwork()) {
+                    //Need to log in to get a token!
+                    //SnackbarManager.show(Snackbar.with(self).text("Must be online to submit").duration(Snackbar.SnackbarDuration.LENGTH_SHORT));
+                    Dialog.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //TODO determine whether to use forceLogout (which will autologin in immediately) or regular logout
+                            currentUser.forceLogout(self);
+                        }
+                    };
+                    DialogUtils.createConfirmDialog(self, "Must be online to submit. Log in now?", clickListener);
+                } else {
+                    submitAllActions.setClickable(false);
+                    syncActions();
+                }
             }
         });
 
@@ -179,6 +199,8 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
                 Log.e(TAG, "Action addTime Fail: " + error.getMessage());
                 failedItem(currentUser.getActions().indexOf(action));
                 action.setSubmitted(false);
+
+
             }
         });
 
@@ -293,5 +315,11 @@ public class ActionQueueListActivity extends AppCompatActivity implements Action
 
     public void refreshActions() {
         actionAdapter.notifyDataSetChanged();
+    }
+
+    private boolean isNetwork(){
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 }

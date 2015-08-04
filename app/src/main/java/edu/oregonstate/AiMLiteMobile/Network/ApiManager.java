@@ -22,6 +22,7 @@ import java.util.Random;
 import java.util.TimeZone;
 
 import edu.oregonstate.AiMLiteMobile.Constants;
+import edu.oregonstate.AiMLiteMobile.Helpers.Utils;
 import edu.oregonstate.AiMLiteMobile.Models.Note;
 import edu.oregonstate.AiMLiteMobile.Models.Notice;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
@@ -126,20 +127,13 @@ public class ApiManager {
         @Override
         public Object fromBody(TypedInput body, Type type) throws ConversionException {
             if (type == ResponseLogin.class){
-                ////Log.d(TAG, "CustomConverter TYPE MATCH: " + type.toString());
-                String token = "";
-                try {
-                    token =  (new JSONObject(fromStream(body.in()))).getString("token");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return (new ResponseLogin(token));
+               return ResponseLogin.parse(body);
             } else if(type == ResponseWorkOrders.class){
                 ////Log.d(TAG, "CustomConverter TYPE MATCH: " + type.toString());
                 ArrayList<WorkOrder> workOrders = new ArrayList<>();
                 JSONArray array = new JSONArray();
                 try {
-                    array = new JSONArray(fromStream(body.in()));
+                    array = new JSONArray(Utils.fromStream(body.in()));
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject obj = array.getJSONObject(i);
                         WorkOrder wo = new WorkOrder();
@@ -254,7 +248,7 @@ public class ApiManager {
                 JSONObject obj = new JSONObject();
                 try {
                     //array = new JSONArray(fromStream(body.in()));
-                    obj = new JSONObject(fromStream(body.in()));
+                    obj = new JSONObject(Utils.fromStream(body.in()));
                     //TODO find out actual notice response
 
                     JSONObject objNewlyAssigned = (JSONObject)obj.get("newly_assigned");
@@ -296,7 +290,7 @@ public class ApiManager {
                 String dateString = null;
                 Date date = null;
                 try {
-                    dateString = fromStream(body.in()).replaceAll("\"", "");
+                    dateString = Utils.fromStream(body.in()).replaceAll("\"", "");
 
                     if(dateString.toLowerCase().equals("null")){
                         Log.d(TAG, "RequestLastUpdated: FOUND NULL");
@@ -319,7 +313,7 @@ public class ApiManager {
             return null;
         }
 
-        public String fromStream(InputStream in) throws IOException {
+      /*  public static String fromStream(InputStream in) throws IOException {
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder out = new StringBuilder();
             //String newLine = System.getProperty("line.separator");
@@ -329,7 +323,7 @@ public class ApiManager {
 
             }
             return out.toString();
-        }
+        }*/
 
 
         @Override

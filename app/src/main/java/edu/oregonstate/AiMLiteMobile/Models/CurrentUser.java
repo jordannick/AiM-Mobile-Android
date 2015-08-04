@@ -48,9 +48,6 @@ public class CurrentUser {
     private InternalStorageWriter internalStorageWriter;
     private boolean offlineMode = false;
 
-    /*public final int RECENTLY_VIEWED_MAX = 5;
-    private final int EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 5;*/
-
     private CurrentUser(Context appContext){
         CurrentUser.appContext = appContext;
         workOrders = new ArrayList<>();
@@ -86,6 +83,9 @@ public class CurrentUser {
     }
 
     private void clearAll(){
+        username = "";
+        password = "";
+        token = "";
         workOrders.clear();
         actions.clear();
         notices.clear();
@@ -360,6 +360,7 @@ public class CurrentUser {
         public void saveAutoLogin(String username, String password) {
             prefsEditor.putString("username", username);
             prefsEditor.putString("password", password);
+
             prefsEditor.putBoolean("autologin", true);
             prefsEditor.apply();
         }
@@ -372,16 +373,24 @@ public class CurrentUser {
             return prefs.getString("password", "");
         }
 
+        public String getToken(){
+            return prefs.getString("token", "");
+        }
+
+        public void saveToken(String token){
+            prefsEditor.putString("token", token);
+        }
+
         public void saveUserCredentials(String username, String password){
             prefsEditor.putString("username", username);
             prefsEditor.putString("password", password);
             prefsEditor.apply();
         }
 
-        public void saveWorkOrders(String rawJson){
+        /*public void saveWorkOrders(String rawJson){
             prefsEditor.putString("work_order_data", rawJson);
             prefsEditor.apply();
-        }
+        }*/
 
         public Long getLastUpdated(){
             return prefs.getLong(username.toLowerCase() + "_last_updated", 0);
