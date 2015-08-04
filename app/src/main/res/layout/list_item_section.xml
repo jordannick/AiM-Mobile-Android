@@ -6,19 +6,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     card_view:cardCornerRadius="4dp"
     card_view:cardPreventCornerOverlap="true"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="3dp"
     app:cardBackgroundColor="@color/listItemSection_background"
     android:id="@+id/card_view"
-    android:layout_marginBottom="4dp"
-    android:layout_marginTop="4dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp">
+
+        android:paddingRight="16dp">
 
         <RelativeLayout
             android:id="@+id/listItem_section_layout"

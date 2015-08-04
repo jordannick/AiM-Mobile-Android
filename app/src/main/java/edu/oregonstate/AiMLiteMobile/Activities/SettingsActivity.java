@@ -1,13 +1,18 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
 import android.annotation.TargetApi;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Scene;
@@ -78,6 +83,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Bind(R.id.settings_scene_root) RelativeLayout sceneRoot;
     @Bind(R.id.settings_feedback_button) Button feedbackButton;
     @Bind(R.id.settings_files_button) Button filesButton;
+    @Bind(R.id.settings_notification_button) Button notificationButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,13 +119,35 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
+        notificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                issueNotification();
+            }
+        });
 
     }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void issueNotification(){
+        final int notificationID = 4;
+
+        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.notification)
+                .setContentTitle("New Notice")
+                .setContentText("This is a test notification.");
+
+        Intent resultIntent = new Intent(this, OverviewListActivity.class);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(OverviewListActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        notifBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(notificationID, notifBuilder.build());
+    }
+
 
 
 

@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -39,10 +40,14 @@ public class NavigationDrawer {
 
     private void initNavigationDrawer() {
 
-        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(delegate, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
+        final ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(delegate, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerStateChanged(int newState) {
                 super.onDrawerStateChanged(newState);
+                if(newState == DrawerLayout.STATE_SETTLING && !drawerLayout.isDrawerOpen(Gravity.LEFT)) {
+                    //Drawer is opening
+                    adapter.refreshHeaderLastUpdated();
+                }
             }
 
             @Override
@@ -55,7 +60,7 @@ public class NavigationDrawer {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                adapter.refreshHeaderLastUpdated();
+
             }
         };
 
