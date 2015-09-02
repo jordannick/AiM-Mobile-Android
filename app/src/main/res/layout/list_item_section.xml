@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+
+<!--<android.support.v7.widget.CardView
     android:layout_height="wrap_content"
     android:layout_width="wrap_content"
     xmlns:card_view="http://schemas.android.com/tools"
@@ -10,14 +11,17 @@
     android:layout_marginBottom="3dp"
     app:cardBackgroundColor="@color/listItemSection_background"
     android:id="@+id/card_view"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="16dp"
-
-        android:paddingRight="16dp">
+    xmlns:android="http://schemas.android.com/apk/res/android">-->
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="3dp"
+    android:background="@color/listItemSection_background"
+    android:paddingRight="16dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
         <RelativeLayout
             android:id="@+id/listItem_section_layout"
@@ -26,11 +30,11 @@
 
             <TextView
                 android:id="@+id/listItem_section_icon"
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:padding="4dp"
-                android:text="ICON"
+                android:text="IC"
                 android:textColor="@color/listItemSection_text"
                 android:textSize="20sp" />
 
@@ -42,9 +46,9 @@
                 android:layout_toRightOf="@id/listItem_section_icon"
                 android:padding="4dp"
                 android:text="Section"
+                android:textStyle="bold"
                 android:textColor="@color/listItemSection_text"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/list_item_section_count"
@@ -54,8 +58,9 @@
                 android:layout_centerVertical="true"
                 android:padding="4dp"
                 android:text="4"
+                android:textStyle="bold"
                 android:textColor="@color/listItemSection_text"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
         </RelativeLayout>
 
@@ -66,4 +71,3 @@
             android:background="@color/colorSecondaryText"
             />-->
     </RelativeLayout>
-</android.support.v7.widget.CardView>

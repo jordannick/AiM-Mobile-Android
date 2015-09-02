@@ -90,21 +90,27 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.Work
             holder.phaseId.setText(wo.getWorkOrder().getProposalPhase());
             holder.description.setText(wo.getWorkOrder().getDescription());
 
+            holder.priority.setText(wo.getWorkOrder().getPriority());
             switch (wo.getWorkOrder().getPriority()) {
                 case "TIME SENSITIVE":
-                    holder.priorityIcon.setImageResource(R.drawable.priority_time_sensitive);
+                    //holder.priorityIcon.setImageResource(R.drawable.priority_time_sensitive);
+                    holder.priority.setBackgroundColor(context.getResources().getColor(R.color.timeSensitive_yellow));
                     break;
                 case "URGENT":
-                    holder.priorityIcon.setImageResource(R.drawable.priority_urgent);
+                    //holder.priorityIcon.setImageResource(R.drawable.priority_urgent);
+                    holder.priority.setBackgroundColor(context.getResources().getColor(R.color.urgent_orange));
                     break;
                 case "EMERGENCY":
-                    holder.priorityIcon.setImageResource(R.drawable.priority_emergency);
+                    //holder.priorityIcon.setImageResource(R.drawable.priority_emergency);
+                    holder.priority.setBackgroundColor(context.getResources().getColor(R.color.emergency_red));
                     break;
                 case "ROUTINE":
-                    holder.priorityIcon.setImageResource(R.drawable.priority_none);
+                    //holder.priorityIcon.setImageResource(R.drawable.priority_none);
+                    holder.priority.setBackgroundColor(context.getResources().getColor(R.color.routine_green));
                     break;
                 case "SCHEDULED":
-                    holder.priorityIcon.setImageResource(R.drawable.priority_none);
+                    //holder.priorityIcon.setImageResource(R.drawable.priority_none);
+                    holder.priority.setBackgroundColor(context.getResources().getColor(R.color.scheduled_blue));
                     break;
 
             }
@@ -151,6 +157,7 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.Work
         protected TextView sectionIcon;
         protected TextView sectionTitle;
         protected TextView count;
+        protected TextView priority;
 
         public WorkOrderViewHolder(View v) {
             super(v);
@@ -162,6 +169,7 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.Work
             sectionIcon = (TextView) v.findViewById(R.id.listItem_section_icon);
             sectionTitle = (TextView) v.findViewById(R.id.listItem_section);
             count = (TextView) v.findViewById(R.id.list_item_section_count);
+            priority = (TextView) v.findViewById(R.id.row_priority);
         }
     }
 

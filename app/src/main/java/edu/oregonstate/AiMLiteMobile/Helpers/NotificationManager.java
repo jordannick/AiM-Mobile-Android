@@ -3,8 +3,10 @@ package edu.oregonstate.AiMLiteMobile.Helpers;
 import android.content.Context;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
@@ -37,7 +39,9 @@ public class NotificationManager {
         }
         notificationManager.initRecyclerView(c, recyclerViewDrawerNotification);
         return notificationManager;
+
     }
+
 
     //Set RecyclerView Adapter and LayoutManager for each activity that calls 'get'
     public void initRecyclerView(Context c, RecyclerView recyclerViewDrawerNotification) {

@@ -46,13 +46,17 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.NoticeView
     public void onBindViewHolder(NoticeViewHolder holder, int position) {
         Notice notice = notices.get(position);
         Typeface GUDEA = Typeface.createFromAsset(context.getAssets(), "fonts/Gudea-Regular.otf");
-        holder.type.setTypeface(GUDEA);
-        holder.description.setTypeface(GUDEA);
+        //holder.type.setTypeface(GUDEA);
+        //holder.description.setTypeface(GUDEA);
+        Typeface FONTAWESOME = Typeface.createFromAsset(context.getAssets(), "fonts/FontAwesome.otf");
+
 
         holder.type.setText(notice.getType());
+        holder.icon.setTypeface(FONTAWESOME);
+        holder.icon.setText(R.string.icon_exclamation);
         holder.description.setText(notice.getDescription());
         holder.valueAgo.setText(notice.getDateElements()[3]);
-        holder.valueAgo.setText(notice.getDateElements()[4]);
+        holder.stringAgo.setText(notice.getDateElements()[4]);
     }
 
     @Override
@@ -63,6 +67,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.NoticeView
     public static class NoticeViewHolder extends RecyclerView.ViewHolder {
 
         protected TextView type;
+        protected TextView icon;
         protected TextView description;
         protected TextView valueAgo;
         protected TextView stringAgo;
@@ -70,6 +75,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.NoticeView
         public NoticeViewHolder(View v) {
             super(v);
             type = (TextView) v.findViewById(R.id.row_type);
+            icon = (TextView) v.findViewById(R.id.row_icon);
             description = (TextView) v.findViewById(R.id.row_description);
             valueAgo = (TextView) v.findViewById(R.id.actionRow_valueAgo);
             stringAgo = (TextView) v.findViewById(R.id.actionRow_stringAgo);

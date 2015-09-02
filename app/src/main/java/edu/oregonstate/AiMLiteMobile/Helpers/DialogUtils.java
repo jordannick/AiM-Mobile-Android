@@ -1,5 +1,6 @@
 package edu.oregonstate.AiMLiteMobile.Helpers;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -111,4 +112,7 @@ public class DialogUtils {
         builder.setNegativeButton("Cancel", null);
         builder.show();
     }
+
 }
+
+

@@ -29,11 +29,17 @@ public class NavigationDrawer {
     private Typeface iconTypeface;
     private NavigationAdapter adapter;
 
+    private final int ORIENTATION_LANSCAPE = 2;
+    private final int ORIENTATION_PORTRAIT = 1;
+    private int orientation;
+
+
     public NavigationDrawer(AppCompatActivity delegate) {
         this.delegate = delegate;
         currentUser = CurrentUser.get(delegate);
         drawerLayout = (DrawerLayout) delegate.findViewById(R.id.drawer_layout);
         toolbar = (Toolbar) delegate.findViewById(R.id.toolbar);
+        orientation = delegate.getResources().getConfiguration().orientation;
         initNavigationDrawer();
         initFooterViews();
     }
@@ -74,17 +80,24 @@ public class NavigationDrawer {
         LinearLayoutManager linearLayoutManagerDrawer = new LinearLayoutManager(delegate);
         RecyclerView recyclerViewDrawer = (RecyclerView) delegate.findViewById(R.id.left_drawer_recycler);
         recyclerViewDrawer.setLayoutManager(linearLayoutManagerDrawer);
-        String[] navTitles = new String[2];
-        int[] icons = new int[2];
+        String[] navTitles = new String[5];
+        int[] icons = new int[5];
 
         navTitles[0] = "Search";
         icons[0] = R.string.icon_search;
         navTitles[1] = "Sort";
         icons[1] = R.string.icon_sort;
-/*        navTitles[2] = "Settings";
-        icons[2] = R.string.icon_settings;
-        navTitles[3] = "Log out";
-        icons[3] = R.string.icon_logout;*/
+        navTitles[2] = "Force Refresh";
+        icons[2] = R.string.icon_refresh;
+        navTitles[3] = "Settings";
+        icons[3] = R.string.icon_settings;
+        navTitles[4] = "Log out";
+        icons[4] = R.string.icon_logout;
+
+        if(orientation == ORIENTATION_PORTRAIT){
+            navTitles = new String[]{navTitles[0], navTitles[1]};
+            icons = new int[]{icons[0], icons[1]};
+        }
 
         iconTypeface = Typeface.createFromAsset(delegate.getApplicationContext().getAssets(), "fonts/FontAwesome.otf");
         Log.d(TAG, "delegate = " + delegate);
@@ -95,23 +108,24 @@ public class NavigationDrawer {
     }
 
     private void initFooterViews() {
-        TextView refreshIcon = (TextView) delegate.findViewById(R.id.nav_footer_refresh_icon);
-        TextView refreshTitle = (TextView) delegate.findViewById(R.id.nav_footer_refresh_title);
-        TextView settingsIcon = (TextView) delegate.findViewById(R.id.nav_footer_settings_icon);
-        TextView settingsTitle = (TextView) delegate.findViewById(R.id.nav_footer_settings_title);
-        TextView logoutIcon = (TextView) delegate.findViewById(R.id.nav_footer_logout_icon);
-        TextView logoutTitle = (TextView) delegate.findViewById(R.id.nav_footer_logout_title);
+        if(orientation == ORIENTATION_PORTRAIT) {
+            TextView refreshIcon = (TextView) delegate.findViewById(R.id.nav_footer_refresh_icon);
+            TextView refreshTitle = (TextView) delegate.findViewById(R.id.nav_footer_refresh_title);
+            TextView settingsIcon = (TextView) delegate.findViewById(R.id.nav_footer_settings_icon);
+            TextView settingsTitle = (TextView) delegate.findViewById(R.id.nav_footer_settings_title);
+            TextView logoutIcon = (TextView) delegate.findViewById(R.id.nav_footer_logout_icon);
+            TextView logoutTitle = (TextView) delegate.findViewById(R.id.nav_footer_logout_title);
 
-        refreshIcon.setTypeface(iconTypeface);
-        refreshIcon.setText(R.string.icon_refresh);
-        settingsIcon.setTypeface(iconTypeface);
-        settingsIcon.setText(R.string.icon_settings);
-        logoutIcon.setTypeface(iconTypeface);
-        logoutIcon.setText(R.string.icon_logout);
-        refreshTitle.setText("Force Refresh");
-        settingsTitle.setText("Settings");
-        logoutTitle.setText("Logout");
-
+            refreshIcon.setTypeface(iconTypeface);
+            refreshIcon.setText(R.string.icon_refresh);
+            settingsIcon.setTypeface(iconTypeface);
+            settingsIcon.setText(R.string.icon_settings);
+            logoutIcon.setTypeface(iconTypeface);
+            logoutIcon.setText(R.string.icon_logout);
+            refreshTitle.setText("Force Refresh");
+            settingsTitle.setText("Settings");
+            logoutTitle.setText("Logout");
+        }
     }
 
     public void invalidateAdapter() {

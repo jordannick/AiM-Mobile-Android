@@ -34,6 +34,7 @@
     <string name="icon_search">&#xf002;</string>
     <string name="icon_chart">&#xf080;</string>
     <string name="icon_sort">&#xf0dc;</string>
+    <string name="icon_exclamation">&#xf12a;</string>
 
     <string name="icon_moveToDaily">&#xf0aa;</string>
     <string name="icon_moveToBacklog">&#xf0ab;</string>

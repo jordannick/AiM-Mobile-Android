@@ -35,8 +35,8 @@ public class CurrentUser {
     private static String username;
     private static String password;
     private static String token;
-    private static Long lastUpdated;
-    private static Long lastRefreshed;
+    private Long lastUpdated;
+    private Long lastRefreshed;
     private static ArrayList<WorkOrder> workOrders;
     private static ArrayList<Action> actions;
     private static ArrayList<Notice> notices;

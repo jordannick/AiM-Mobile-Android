@@ -13,69 +13,78 @@
         android:background="@color/colorPrimaryDark"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <TextView
+<!--    <TextView
         android:id="@+id/settings_about_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/settings_about_text"
         android:layout_marginBottom="24dp"
+        android:textSize="12dp"
+        android:layout_toRightOf=""
         android:text="Developed by Specialized Admin Services"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
-    <Button
-        android:id="@+id/settings_feedback_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Send Feedback"
-        android:textSize="34dp"
-        android:textStyle="bold"
-        android:layout_margin="24dp"
-
-        android:layout_above="@id/settings_about_text"
-        android:layout_centerHorizontal="true"
-        android:onClick="feedbackOnClick"
-        android:textColor="@color/settings_feedback_button_text"
-        android:background="@color/material_teal"
-        android:padding="8dp"/>
+        android:layout_centerHorizontal="true"/>-->
 
 
 
 
-    <Button
-        android:id="@+id/settings_files_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Saved Files"
-        android:textStyle="bold"
-        android:textSize="26dp"
-        android:layout_margin="24dp"
-        android:textColor="@color/colorWhite"
-        android:background="@color/material_deep_purple"
-        android:layout_centerHorizontal="true"
-        android:padding="8dp"
-        android:layout_above="@id/settings_feedback_button"/>
+
+
 
     <Button
         android:id="@+id/settings_notification_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/material_green"
-        android:layout_above="@id/settings_files_button"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
         android:text="Notification"
         android:textColor="@color/colorWhite"
-        android:textSize="22dp"
-        android:padding="8dp"
+        android:textSize="12dp"
         android:textStyle="bold"
         />
-
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/settings_chart"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
+    <Button
+        android:id="@+id/settings_files_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Saved Files"
+        android:textStyle="bold"
+        android:textSize="12dp"
+        android:textColor="@color/colorWhite"
+        android:background="@color/material_deep_purple"
+        android:layout_above="@id/settings_notification_button"
+        />
+    <Button
+        android:id="@+id/settings_feedback_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Feedback"
+        android:textSize="12dp"
+        android:textStyle="bold"
+        android:layout_above="@id/settings_files_button"
+        android:onClick="feedbackOnClick"
+        android:textColor="@color/settings_feedback_button_text"
+        android:background="@color/material_teal"/>
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/settings_pie_chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/settings_chart_spinner"
+        android:layout_margin="36dp"
+        android:layout_below="@id/settings_toolbar"
+        />
+    <Spinner
+        android:id="@+id/settings_chart_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="24dp"
-        android:layout_above="@id/settings_notification_button"/>
+        android:layout_above="@+id/settings_notification_button"
+        android:layout_toRightOf="@id/settings_feedback_button">
+
+
+    </Spinner>
+
 
 
 

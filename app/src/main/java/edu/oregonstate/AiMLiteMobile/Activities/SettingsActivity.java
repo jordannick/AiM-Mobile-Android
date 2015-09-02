@@ -27,10 +27,13 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
@@ -57,9 +60,12 @@ import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import edu.oregonstate.AiMLiteMobile.ChartSpinnerAdapter;
 import edu.oregonstate.AiMLiteMobile.Fragments.AddActionDialogFragment;
 import edu.oregonstate.AiMLiteMobile.Fragments.BarChartDialogFragment;
 import edu.oregonstate.AiMLiteMobile.Fragments.ViewSavedFilesDialog;
+import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
+import edu.oregonstate.AiMLiteMobile.PieChartObj;
 import edu.oregonstate.AiMLiteMobile.R;
 import rx.Observable;
 import rx.Subscriber;
@@ -68,7 +74,7 @@ import rx.functions.Action1;
 /**
  * Created by sellersk on 7/14/2015.
  */
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity{
     public static final String TAG = "SettingsActivity";
 
     private boolean emailFieldVisible = false;
@@ -77,13 +83,16 @@ public class SettingsActivity extends AppCompatActivity {
     private Scene scene0;
     private Scene scene1;
     private Scene scene2;
-    private AppCompatActivity self;
 
     @Bind(R.id.settings_toolbar) Toolbar toolbar;
     @Bind(R.id.settings_scene_root) RelativeLayout sceneRoot;
     @Bind(R.id.settings_feedback_button) Button feedbackButton;
     @Bind(R.id.settings_files_button) Button filesButton;
     @Bind(R.id.settings_notification_button) Button notificationButton;
+    @Bind(R.id.settings_pie_chart) PieChart pieChart;
+    @Bind(R.id.settings_chart_spinner) Spinner chartSpinner;
+
+    private String[] spinnerArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,14 +100,19 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        self = this;
+
+        // AppCompat //
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setHomeButtonEnabled(true);
+
+
+        // PieChart // TEST
+        PieChartObj pieChartObj = new PieChartObj(this, pieChart, CurrentUser.get(this).getWorkOrders());
+
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
-
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/FontAwesome.otf");
+
         feedbackButton.setTypeface(tf);
         feedbackButton.setText(R.string.icon_chart);
 
@@ -126,7 +140,35 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        spinnerArray = new String[]{"Priority", "Building", "Creator"};
+        ChartSpinnerAdapter chartSpinnerAdapter = new ChartSpinnerAdapter(this, spinnerArray);
+        chartSpinner.setAdapter(chartSpinnerAdapter);
+        chartSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Configure chart based on item selected.
+                switch (spinnerArray[position]){
+                    case "test":
+                        Log.d(TAG, "test1 CLICKED");
+                        break;
+                    case "test2":
+                        Log.d(TAG, "test2 CLICKED");
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
     }
+
+
+
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void issueNotification(){

@@ -39,6 +39,7 @@ public class WorkOrder implements Serializable {
     ArrayList<Note> mNotes;
 
     String mContactName = "";
+    String mEditClerk = "";
     String mDepartment;
 
     //Row Display
@@ -351,4 +352,11 @@ public class WorkOrder implements Serializable {
         setSectionNum(num);
     }
 
+    public String getEditClerk() {
+        return mEditClerk;
+    }
+
+    public void setEditClerk(String editClerk) {
+        this.mEditClerk = editClerk;
+    }
 }

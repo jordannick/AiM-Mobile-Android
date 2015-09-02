@@ -37,12 +37,24 @@
                     android:textStyle="bold"
                     android:textColor="@color/cardView_cardText"/>
 
+
+                <TextView
+                    android:id="@+id/row_priority"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="10dp"
+                    android:textStyle="bold"
+                    android:padding="4dp"
+                    android:text="ROUTINE"
+                    android:textColor="@color/colorWhite"/>
                 <ImageView
                     android:id="@+id/imageView_priorityIconOverview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/priority_urgent" />
+                    android:src="@drawable/priority_urgent"
+                    android:visibility="gone"/>
                 <!--<ImageView
                     android:id="@+id/imageView_timeSensitive"
                     android:layout_width="wrap_content"

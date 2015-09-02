@@ -147,6 +147,7 @@ public class ApiManager {
                         wo.setCategory(obj.getString("category"));
                         wo.setPriority(obj.getString("pri_code"));
                         wo.setDateElements(obj.getString("ent_date"));
+                        wo.setEditClerk(obj.getString("edit_clerk"));
 
                         switch (obj.getString("status_code")){
                             case "ASSIGNED":

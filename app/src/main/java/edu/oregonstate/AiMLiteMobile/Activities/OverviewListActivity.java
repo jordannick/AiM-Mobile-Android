@@ -1,10 +1,14 @@
 package edu.oregonstate.AiMLiteMobile.Activities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.AudioAttributes;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.view.MenuCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -29,11 +33,15 @@ import android.widget.TextView;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.oregonstate.AiMLiteMobile.Adapters.NavigationAdapter;
 import edu.oregonstate.AiMLiteMobile.Constants;
 import edu.oregonstate.AiMLiteMobile.Fragments.CustomSearchView;
+import edu.oregonstate.AiMLiteMobile.Helpers.DialogUtils;
 import edu.oregonstate.AiMLiteMobile.Helpers.InternalStorageWriter;
 import edu.oregonstate.AiMLiteMobile.Models.CurrentUser;
 import edu.oregonstate.AiMLiteMobile.Models.WorkOrder;
@@ -74,6 +82,7 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
     @Bind(R.id.overview_activity_section_icon2) TextView sectionIcon2;
     @Bind(R.id.overview_activity_section_icon3) TextView sectionIcon3;
     @Bind(R.id.overviewActivity_dimOverlay) LinearLayout dimOverlay;
+    @Bind(R.id.overview_activity_offline) TextView offlineDisplay;
 
     @Bind(R.id.overview_activity_search_container) FrameLayout searchViewContainer;
 
@@ -111,8 +120,21 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
                 break;
             case 5: //Log Out
                 drawerLayout.closeDrawer(Gravity.LEFT);
-                currentUser.logoutUser(this);
+                //triggerVibration();
+                //currentUser.logoutUser(this);
                 break;
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void triggerVibration(){
+
+        Vibrator vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+        //AudioAttributes attributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();
+        if(vibrator.hasVibrator()){
+            long[] data;
+             data = new long[]{0l, 500l, 110l, 500l, 110l, 450l, 110l, 200l, 110l, 170l, 40l, 450l, 110l, 200l, 110l, 170l, 40l, 500l};
+            vibrator.vibrate(data, -1);
         }
     }
 
@@ -186,6 +208,8 @@ public class OverviewListActivity extends AppCompatActivity implements WorkOrder
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+
         recAdapter = new WorkOrderAdapter(currentUser.getWorkOrders(), this);
         recyclerView.setAdapter(recAdapter);
 
