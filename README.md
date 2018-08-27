@@ -1,4 +1,1 @@
-AiM-Mobile-Android
-==================
-
-Android
+Experimental app for tracking work orders, Android platform.
